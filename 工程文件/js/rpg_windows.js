@@ -469,13 +469,6 @@ Window_Base.prototype.drawGauge = function(x, y, width, rate, color1, color2) {
     this.contents.gradientFillRect(x, gaugeY, fillW, 10, color1, color2);
 };
 
-Window_Base.prototype.drawVerticalGauge = function(x, y, width, height, rate, color1, color2) {
-	var fillH = Math.floor(height * rate);
-	var fillY = y + height - fillH;
-	this.contents.fillRect(x, y, width, height, this.gaugeBackColor());
-	this.contents.gradientFillRect(x, fillY, width, fillH, color2, color1, true);
-}
-
 Window_Base.prototype.hpColor = function(actor) {
     if (actor.isDead()) {
         return this.deathColor();

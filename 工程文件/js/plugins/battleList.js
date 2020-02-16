@@ -3,6 +3,12 @@ var InuyamaBattle = {
 	hp: 100,
 	targetScore: 10,
 	enemyPic: "Inuyama",
+	initMsg: function(){
+		alert("you did it!")
+		$gameMessage.setBackground(1)
+		$gameMessage.setPositionType(1)
+		$gameMessage.add("Show Text Script Call")
+	},
 	startMsg: ["Mea酱,", "这次可别想逃跑哦！ ↓"],
 	playMsg: ["可不要指望我手下留情哦"],
 	mergeMsg: ["成功消行了吗，","还远远不够呢！"],
