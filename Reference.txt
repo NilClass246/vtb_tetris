@@ -1,9 +1,14 @@
-这里是借用的脚本和素材的列表。
+这里是借用的脚本和素材的鸣谢列表。
 
 Scripts:
-	YEP_CoreEngine	by yanfly
-	PrettyGauge	by Rocketmancer
-	Terrax Lighting System	by Terrax
+	Yanfly
+	Rocketmancer
+	Terrax
+	Drill_up
+	Galv
+	鳥小屋
+	Moghunter
+	过眼云烟
 
 Resources:
 	SkottyTV Window Skins	by Skotty TV

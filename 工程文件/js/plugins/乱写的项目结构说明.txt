@@ -18,15 +18,44 @@
 
 	PrettyGauges.js: 调整生命条形状的插件，借用。
 
+	DestinationWindow.js: 正在调试。
+
+	Drill_MenuParticle.js: 在菜单中制作粒子效果的插件。
+
+	Drill_WindowMenuButton.js: 在菜单中制作按钮的插件，暂时没有用处。
+
+	GALV_MessageStyles.js: 显示对话气泡的插件。
+	
+	MOG_ActorHud.js: 在地图中显示人物状态的插件。
+
+	MOG_Compass.js: 在地图上显示指南针并追踪目标的插件。
+
+	TerraxLighting,js: 调整光源的插件。
+
+	Torigoya_Tween.js: Torigoya系列插件的基础插件。
+
+	Torigoya_Achievement.js: 制作成就系统的插件。
+
+	Torigoya_Achievement_Tile.js: 改变成就系统显示方式的插件。
+
 	YEP_CoreEngine.js: 调整游戏中一系列设置的插件，借用。
 
+	YEP_QuestJournal.js: 制作任务系统的插件。
+
+	YEP_MessageCore.js: 文字显示的高级设置，目前基本没有使用。
+
+	YEP_MainMenuManager.js: 对菜单的高级设置，目前基本没有使用。
+
 变量和游戏工具方面：
-	变量和开关需要注意的只有两个： 
+	变量和开关需要注意的有两个： 
 		1号变量用于作为索引获取battleList.js中的战斗信息，在进行俄罗斯方块战斗前请务必设定好。
 		20号开关用于输出上场战斗的胜负，on为获胜，off为失败。
+
+	公共事件尽量不要碰。
 		
-	在游戏中使用插件命令调用 "tetris_start（）；" 即可进入战斗。
+	在游戏中使用插件命令调用 "tetris_start();" 即可进入战斗。
 	
 其他说明：
 	没有直接重写战斗系统，因为那个要牵涉的东西实在太多了，而且目前似乎没有必要，后期如果有了问题可以考虑。
-	目前的俄罗斯方块还有一些bug，T旋之类的操作可能会出现问题。
+	目前的俄罗斯方块还有一些bug，T旋之类的操作可能会出现问题，设置上还有些视觉的错位问题。
+	

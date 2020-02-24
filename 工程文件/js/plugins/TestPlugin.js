@@ -1,5 +1,5 @@
 function testCommand(){
-	if($gameVariables.value(1)== 0){
+	if($gameActors.actor(1).isEquipped($dataWeapons[1])){
 		alert("on");
 	}else{
 		alert("off");
