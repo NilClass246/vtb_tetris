@@ -645,26 +645,8 @@ Scene_Tetris.prototype.PlaceTest = function(battler, tempBlock, cur){
 	type = cur.type;
 	rotation = cur.rotation;
 	box = cur.box;
-
-	//this.player.cur.rotationTime = this.player.cur.rotationTime + 1;
-	//tempBlock = this.rotationRule(direction);
-	//this.player.cur.rotationTime = this.player.cur.rotationTime - 1;
-
 	x = Math.floor((tempBlock.x - battler.xposition) / this.xrange);
 	y = Math.floor((tempBlock.y - battler.yposition) / this.yrange);
-	//if(direction==1){
-	//	if(rotation + 1 <= this.data[type].length-1){
-	//		box = this.data[type][rotation+1];
-	//	}else{
-	//		box = this.data[type][0];
-	//	}
-	//}else{
-	//	if(rotation - 1 >= 0){
-	//		box = this.data[type][rotation-1];
-	//	}else{
-	//		box = this.data[type][this.data[type].length-1];
-	//	}
-	//}
 		
 	if(box){
 		len = box.length;
@@ -896,7 +878,7 @@ Scene_Tetris.prototype.rotationRule = function (direction) {
 					break;
 			}
 			if (tempBlock.rotationTime > 2) {
-				switch ((rotationTime-2) % 4) {
+				switch ((tempBlock.rotationTime-2) % 4) {
 					case 1:
 						tempBlock.y -= this.yrange;
 						break;
