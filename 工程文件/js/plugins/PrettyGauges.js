@@ -136,14 +136,17 @@
 		}
 	};
 	
-	Bitmap.prototype.fillTrap = function(x, y, width, widthpart, height, color1, color2) {
+	Bitmap.prototype.fillTrap = function(x, y, width, widthpart, height, color1, color2, leftType, rightType) {
+		var left = leftType || barTypeLeft;
+		var right = rightType || barTypeRight;
+
 		var context = this._context;
 		var grad = context.createLinearGradient(x, y, x + width, y);
 		grad.addColorStop(0, color1);
 		grad.addColorStop(1, color2);
 		context.save();
 		context.beginPath();
-		switch (barTypeLeft) {
+		switch (left) {
 			case "|":
 				context.moveTo(x, y + height)
 				context.lineTo(x, y)
@@ -165,7 +168,7 @@
 				context.moveTo(x, y + height)
 			break;
 		}
-		switch (barTypeRight) {
+		switch (right) {
 			case "|":
 				context.lineTo(x + width, y)
 				context.lineTo(x + width, y + height)
@@ -194,7 +197,10 @@
 		this._setDirty();
 	}
 	
-	Bitmap.prototype.outlineTrap = function(x, y, width, height, color1, color2) {
+	Bitmap.prototype.outlineTrap = function (x, y, width, height, color1, color2, leftType, rightType) {
+		var left = leftType || barTypeLeft;
+		var right = rightType || barTypeRight;
+
 		var context = this._context;
 		var grad = context.createLinearGradient(x, y, x + width, y);
 		var startCoords = [];
@@ -202,7 +208,7 @@
 		grad.addColorStop(1, color2);
 		context.save();
 		context.beginPath();
-		switch (barTypeLeft) {
+		switch (left) {
 			case "|":
 				startCoords = [x, y + height]
 				context.moveTo(x, y + height)
@@ -230,7 +236,7 @@
 			break;
 		}
 		
-		switch (barTypeRight) {
+		switch (right) {
 			case "|":
 				context.lineTo(x + width, y)
 				context.lineTo(x + width, y + height)
@@ -265,16 +271,22 @@
 		this.contents.fillTrap(x, gaugeY, width, width, barHeight, this.gaugeBackColor1(),  this.gaugeBackColor2());
 		this.contents.fillTrap(x, gaugeY, width, fillW, barHeight, color1, color2);
 		if (outline) { this.contents.outlineTrap(x, gaugeY, width, barHeight, outlineColor1, outlineColor2)}
-		
-		
+	}
+
+	Window_Base.prototype.drawThinGauge = function (x, y, width, rate, height, color1, color2) {
+		var fillW = Math.floor(width * rate);
+		var gaugeY = y + this.lineHeight() - 2 - height;
+		this.contents.fillTrap(x, gaugeY, width, width, height, this.gaugeBackColor1(), this.gaugeBackColor2());
+		this.contents.fillTrap(x, gaugeY, width, fillW, height, color1, color2);
+		if (outline) { this.contents.outlineTrap(x, gaugeY, width, height, outlineColor1, outlineColor2) }
 	}
 	
 	Window_Base.prototype.drawVerticalGauge = function(x, y, width, height, rate, color1, color2) {
 		var fillH = Math.floor(height * rate);
-		var fillY = y + height - fillH;
+		var fillY = y + height - 2 - fillH
 		this.contents.fillRect(x, y, width, height, this.gaugeBackColor1());
-		this.contents.fillTrap(x, fillY, width, fillH, fillH, color1, color2);
-		if (outline) { this.contents.outlineTrap(x, fillY, width, fillH, outlineColor1, outlineColor2)}
+		this.contents.fillTrap(x, fillY, width, fillH, fillH, color1, color2, "|", "|");
+		if (outline) { this.contents.outlineTrap(x, fillY, width, height, outlineColor1, outlineColor2,"|","|")};
 	};
 	
 })();

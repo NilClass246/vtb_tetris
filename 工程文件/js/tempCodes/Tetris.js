@@ -1,4 +1,6 @@
-//-----------------------------------------------------------------------------
+//=============================================================================
+// Tetris.js
+//=============================================================================
 /*:
 
  */
@@ -10,14 +12,13 @@ function Tetris_Window(){
 Tetris_Window.prototype = Object.create(Window_Base.prototype);
 Tetris_Window.prototype.constructor = Tetris_Window;
 
-Tetris_Window.prototype.initialize = function(){
+Tetris_Window.prototype.initialize = function () {
 	Window_Base.prototype.initialize.call(this, 0, 0, 350, 600);
 	this.refresh();
 }
 
 Tetris_Window.prototype.refresh = function(){
 	this.contents.clear();
-
 }
 
 function Scene_Tetris(){
@@ -30,7 +31,7 @@ Scene_Tetris.prototype.constructor = Scene_Tetris;
 Scene_Tetris.prototype.initialize = function(){
 	Scene_ItemBase.prototype.initialize.call(this);
 	this.initializeData();
-	// this.initializeSkill();
+	this.initializeActor();
 }
 
 Scene_Tetris.prototype.start = function(){
@@ -220,8 +221,19 @@ Scene_Tetris.prototype.initializeData = function(){
 	// this.skill = skillList[name]
 // }
 
+Scene_Tetris.prototype.initializeActor = function(){
+	var actor = $gameActors.actor(1)
+	var weapon = $gameActors.actor(1).equips()
+	
+	this.player = {
+		Hp = actor.hp,
+		Atk = actor.atk,
+
+	}
+}
+
 Scene_Tetris.prototype.drawArea = function(){
-	this.refreshWindow();
+	this.refreshPlayerWindow();
 	
 	for(i in this.game_area){
 		for(j in this.game_area[i]){
@@ -248,8 +260,8 @@ Scene_Tetris.prototype.update = function(){
 		// this.string = "";
 	// }
 	
-	this.Score_Board.contents.clear();
-	this.Score_Board.drawText("Score:"+this.SCORE, 0, 0);
+	//this.Score_Board.contents.clear();
+	//this.Score_Board.drawText("Score:"+this.SCORE, 0, 0);
 	
 	if (Input.isTriggered('ok')|| TouchInput.isPressed()) {
 		if(this.gameover){
@@ -261,7 +273,7 @@ Scene_Tetris.prototype.update = function(){
 				AudioManager.playSe(this.seTick);
 				this.oldTime = Date.now();
 				this.SCORE = 0;
-				this.refreshWindow();
+				this.refreshPlayerWindow();
 				this.shadow();
 				this.running = true;
 			}
@@ -283,15 +295,15 @@ Scene_Tetris.prototype.update = function(){
 	}
 	
 	if (Input.isTriggered('up')){
-		if (this.running && this.bRotate(this.cur,1)){
-			this.rotateBox(1);
+		if (this.running && this.PlaceTest(this.cur,1)){
+			this.rotateBox(this.cur,1);
 			this.shadow();
 		}
 	}
 	
 	if (Input.isTriggered('control')){
-		if (this.running && this.bRotate(this.cur,-1)){
-			this.rotateBox(-1);
+		if (this.running && this.PlaceTest(this.cur,-1)){
+			this.rotateBox(this.cur,-1);
 			this.shadow();
 		}
 	}
@@ -330,26 +342,26 @@ Scene_Tetris.prototype.update = function(){
 			AudioManager.playSe(this.seBoom);
 			this.running = false;
 			this.gameover = true;
-			this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_laugh");
+			//this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_laugh");
 			$gameSwitches.setValue(20, false);
 		}
 		
 		if(this.gaugeSCORE >= this.battleInfo.targetScore){
 			AudioManager.playSe(this.seBoom);
-			this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_defeated");
+			// this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_defeated");
 			this.enemyHP -=(10+(this.gaugeSCORE-this.battleInfo.targetScore));
 			this.gaugeSCORE = 0;
 			// this.hit.remove();
 		}
 		
-		this.Enemy_Board.contents.clear();
-		this.Enemy_Board.drawVerticalGauge(10, 25, 20, 300,this.enemyHP/this.battleInfo.hp, this.Enemy_Board.hpGaugeColor1(), this.Enemy_Board.hpGaugeColor2());
-		this.Enemy_Board.drawText(this.enemyHP, 5*("100".length - (this.enemyHP+"").length), 150);
+		//this.Enemy_Board.contents.clear();
+		//this.Enemy_Board.drawVerticalGauge(10, 25, 20, 300,this.enemyHP/this.battleInfo.hp, this.Enemy_Board.hpGaugeColor1(), this.Enemy_Board.hpGaugeColor2());
+		//this.Enemy_Board.drawText(this.enemyHP, 5*("100".length - (this.enemyHP+"").length), 150);
 		
 		if(this.enemyHP<=0){
 			this.say(this.battleInfo.winMsg);
 			AudioManager.playSe(this.seBoom);
-			this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_defeated");
+			//this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_defeated");
 			this.say(this.battleInfo.winMsg);
 			this.running = false;
 			this.gameover = true;
@@ -359,9 +371,9 @@ Scene_Tetris.prototype.update = function(){
 		this.n+=Date.now()-this.oldTime;	
 		
 		if(this.n>=this.step){
-			if(this.enemy.bitmap == ImageManager.loadPicture(this.battleInfo.enemyPic+ "_defeated")){
-				this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_normal");
-			}
+			//if(this.enemy.bitmap == ImageManager.loadPicture(this.battleInfo.enemyPic+ "_defeated")){
+			//	this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_normal");
+			//}
 			
 			// if(!this.moved){
 				// this.moved = true;
@@ -511,7 +523,7 @@ Scene_Tetris.prototype.createBox = function(){
 	
 }
 
-Scene_Tetris.prototype.bRotate = function(cur, direction){
+Scene_Tetris.prototype.PlaceTest = function(cur, direction){
 	var type = cur.type;
 	var rotation = cur.rotation;
 	var box = null;
@@ -620,75 +632,79 @@ Scene_Tetris.prototype.holdBox = function(){
 	}
 }
 
-Scene_Tetris.prototype.rotateBox = function(direction){
-	var type = this.cur.type;
-	var rotation = this.cur.rotation;
+Scene_Tetris.prototype.rotateBox = function(cur, direction){
+	var type = cur.type;
+	var rotation = cur.rotation;
 	if(direction==1){
 		if(rotation + 1 <= this.data[type].length-1){
-			this.cur.box = this.data[type][rotation+1];
-			this.removeChild(this.cur.block);
-			this.cur.block.bitmap = ImageManager.loadPicture(type + (rotation+1))
-			this.cur.rotation++;
-			this.addChild(this.cur.block);
+			cur.box = this.data[type][rotation+1];
+			this.removeChild(cur.block);
+			cur.block.bitmap = ImageManager.loadPicture(type + (rotation+1))
+			cur.rotation++;
+			this.addChild(cur.block);
 		}else{
-			this.cur.box = this.data[type][0];
-			this.removeChild(this.cur.block);
-			this.cur.block.bitmap = ImageManager.loadPicture(type);
-			this.cur.rotation = 0;
-			this.addChild(this.cur.block);
+			cur.box = this.data[type][0];
+			this.removeChild(cur.block);
+			cur.block.bitmap = ImageManager.loadPicture(type);
+			cur.rotation = 0;
+			this.addChild(cur.block);
 		}
 	}else{
 		if(rotation - 1 >= 0){
-			this.cur.box = this.data[type][rotation-1];
-			this.removeChild(this.cur.block);
+			cur.box = this.data[type][rotation-1];
+			this.removeChild(cur.block);
 			if(rotation-1 == 0){
-				this.cur.block.bitmap = ImageManager.loadPicture(type);
+				cur.block.bitmap = ImageManager.loadPicture(type);
 			}else{
-				this.cur.block.bitmap = ImageManager.loadPicture(type + (rotation-1));
+				cur.block.bitmap = ImageManager.loadPicture(type + (rotation-1));
 			}
-			this.cur.rotation -=1;
-			this.addChild(this.cur.block);
+			cur.rotation -=1;
+			this.addChild(cur.block);
 		}else{
-			this.cur.box = this.data[type][this.data[type].length-1];
-			this.removeChild(this.cur.block);
+			cur.box = this.data[type][this.data[type].length-1];
+			this.removeChild(cur.block);
 			if((this.data[type].length-1)==0){
-				this.cur.block.bitmap = ImageManager.loadPicture(type);
+				cur.block.bitmap = ImageManager.loadPicture(type);
 			}else{
-				this.cur.block.bitmap = ImageManager.loadPicture(type+(this.data[type].length-1));
+				cur.block.bitmap = ImageManager.loadPicture(type+(this.data[type].length-1));
 			}
-			this.cur.rotation = this.data[type].length-1;
-			this.addChild(this.cur.block);
+			cur.rotation = this.data[type].length-1;
+			this.addChild(cur.block);
 		}
 	}
 	
 	
 }
 
+/*
+ * Create Methods
+ */
+ 
 Scene_Tetris.prototype.create = function(){
 	Scene_ItemBase.prototype.create.call(this);
 	this.block_pics = ["1", "5", "j", "l", "o", "s", "t"];
 	
-	this.Enemy_Board = new Tetris_Window();
-	this.Enemy_Board.move(10, 25, 510, 380);
-	this.Enemy_Board.removeChildAt(0);
-	this.Enemy_Board.drawVerticalGauge(10, 25, 20, 300, this.enemyHP/this.battleInfo.hp, this.Enemy_Board.hpGaugeColor1(), this.Enemy_Board.hpGaugeColor2());
-	this.Enemy_Board.drawText(this.enemyHP, 5*("100".length - (this.enemyHP+"").length), 150);
+	//this.Enemy_Board = new Tetris_Window();
+	//this.Enemy_Board.move(10, 25, 510, 380);
+	//this.Enemy_Board.removeChildAt(0);
+	//this.Enemy_Board.drawVerticalGauge(10, 25, 20, 300, this.enemyHP/this.battleInfo.hp, this.Enemy_Board.hpGaugeColor1(), this.Enemy_Board.hpGaugeColor2());
+	//this.Enemy_Board.drawText(this.enemyHP, 5*("100".length - (this.enemyHP+"").length), 150);
 	
-	this.enemy = new Sprite();
-	this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_normal");
-	this.enemy.x = 125;
-	this.enemy.y = 55;
-	this.Enemy_Board.addChild(this.enemy);
+	//this.enemy = new Sprite();
+	//this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_normal");
+	//this.enemy.x = 125;
+	//this.enemy.y = 55;
+	//this.Enemy_Board.addChild(this.enemy);
 	
 	
 	// this.debug_window = new Tetris_Window();
 	
-	this.Score_Board = new Tetris_Window();
-	this.Score_Board.move(320, 25, 210, 80)
+	//this.Score_Board = new Tetris_Window();
+	//this.Score_Board.move(320, 25, 210, 80)
 	
-	this.Target_Score_Board = new Tetris_Window();
-	this.Target_Score_Board.move(320, 110, 210, 80)
-	this.Target_Score_Board.drawText("目标分数："+this.battleInfo.targetScore, 0,0)
+	//this.Target_Score_Board = new Tetris_Window();
+	//this.Target_Score_Board.move(320, 110, 210, 80)
+	//this.Target_Score_Board.drawText("目标分数："+this.battleInfo.targetScore, 0,0)
 
 	// this.skillBoard = new Tetris_Window();
 	
@@ -703,10 +719,10 @@ Scene_Tetris.prototype.create = function(){
 	this.Main_Window.move(this.xposition, this.yposition-5, this.ROW*this.xrange+50, this.COL*this.yrange);
 	this.Main_Window.drawVerticalGauge(this.ROW*this.xrange, 0, 10, this.COL*this.yrange, this.gaugeSCORE/this.battleInfo.targetScore, this.Main_Window.hpGaugeColor1(), this.Main_Window.hpGaugeColor1());
 	
-	this.addWindow(this.Enemy_Board);
+	//this.addWindow(this.Enemy_Board);
 	this.addWindow(this.Main_Window);
-	this.addWindow(this.Score_Board);
-	this.addWindow(this.Target_Score_Board);
+	// this.addWindow(this.Score_Board);
+	// this.addWindow(this.Target_Score_Board);
 	// this.addWindow(this.Instruction_Board);
 	this.addWindow(this.msgBoard);
 	// this.addWindow(this.debug_window);
@@ -714,7 +730,7 @@ Scene_Tetris.prototype.create = function(){
 	
 	for(var i=0; i<4; i++){
 		this.nextWindows.push(new Tetris_Window());
-		this.nextWindows[i].move(830, 25+130*i, 140, 140);
+		this.nextWindows[i].move(830, 25+100*i, 100, 100);
 		if(i==0){
 			this.nextWindows[i].drawText("next", 25, -10);
 		}
@@ -766,12 +782,47 @@ Scene_Tetris.prototype.calPositionX = function(cur){
 	return 25;
 }
 
-Scene_Tetris.prototype.refreshWindow = function(){
+Scene_Tetris.prototype.refreshPlayerWindow = function(){
 	this.removeChild(this.Main_Window);
 	this.Main_Window = new Tetris_Window();
 	this.Main_Window.move(this.xposition, this.yposition-5, this.ROW*this.xrange+50, this.COL*this.yrange);
 	this.Main_Window.drawVerticalGauge(this.ROW*this.xrange, 0, 10, this.COL*this.yrange, this.gaugeSCORE/this.battleInfo.targetScore, this.Main_Window.hpGaugeColor1(), this.Main_Window.hpGaugeColor1());
 	this.addWindow(this.Main_Window);
+}
+
+Scene_Tetris.prototype.AIactionsRender = function (cur, solution) {
+	var targetX = solution.x * this.xrange + this.xposition;
+	var box = cur.box.slice();
+	var type = cur.type;
+	var rotation = cur.rotation;
+	var curX = cur.block.x;
+	var actionQueue = [];
+	
+	while (box != solution.box) {
+		actionQueue.push("rotate");
+		if (this.data[type][rotation + 1]) {
+			box = this.data[type][rotation];
+		} else {
+			box = this.data[type][0];
+		}
+			
+	}
+
+	while (curX < targetX) {
+		actionQueue.push("moveRight");
+		curX += this.xrange;
+	}
+
+	while (curX > targetY) {
+		actionQueue.push("moveLeft");
+		curX -= this.xrange;
+	}
+
+	if (curX = targetX) {
+		actionQueue.push("downwards");
+	}
+
+
 }
 
 function tetris_start(){
