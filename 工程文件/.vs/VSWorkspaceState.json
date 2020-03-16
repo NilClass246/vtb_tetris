@@ -1,10 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\data",
     "\\js",
+    "\\js\\libs",
     "\\js\\plugins",
     "\\js\\tempCodes"
   ],
-  "SelectedNode": "\\js\\rpg_windows.js",
+  "SelectedNode": "\\js\\plugins\\battleList.js",
   "PreviewInSolutionExplorer": false
 }
