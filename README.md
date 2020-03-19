@@ -4,7 +4,7 @@
 
 开发工具：RPGmaker MV
 
-Version: 0.4
+Version: 0.5
 ### 结构说明
 **素材说明**
 
