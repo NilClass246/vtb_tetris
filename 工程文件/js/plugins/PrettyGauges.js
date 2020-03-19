@@ -264,7 +264,18 @@
 		context.restore();
 		this._setDirty();
 	}
-	
+
+	Bitmap.prototype.drawLine = function (Xinit, Yinit, Xtarget, Ytarget) {
+		var context = this._context;
+		context.save();
+		context.beginPath();
+		context.moveTo(Xinit, Yinit);
+		context.lineTo(Xtarget, Ytarget);
+		context.closePath();
+		context.strokeStyle = 'grey';
+		context.stroke();
+	}
+
 	Window_Base.prototype.drawGauge = function(x, y, width, rate, color1, color2) {
 		var fillW = Math.floor(width * rate);
 		var gaugeY = y + this.lineHeight() - 2 - barHeight;
