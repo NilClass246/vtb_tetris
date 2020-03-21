@@ -9,6 +9,7 @@ Scripts:
 	鳥小屋
 	Moghunter
 	过眼云烟
+	杨志
 
 Resources:
 	SkottyTV Window Skins	by Skotty TV

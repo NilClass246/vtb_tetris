@@ -1,6 +1,6 @@
 [
 null,
-{"id":1,"list":[{"code":121,"indent":0,"parameters":[1,1,0]},{"code":121,"indent":0,"parameters":[20,20,0]},{"code":122,"indent":0,"parameters":[1,1,0,0,0]},{"code":121,"indent":0,"parameters":[21,21,0]},{"code":0,"indent":0,"parameters":[]}],"name":"变量列表","switchId":1,"trigger":0},
+{"id":1,"list":[{"code":121,"indent":0,"parameters":[1,1,0]},{"code":121,"indent":0,"parameters":[20,20,0]},{"code":122,"indent":0,"parameters":[1,1,0,0,0]},{"code":121,"indent":0,"parameters":[21,21,0]},{"code":122,"indent":0,"parameters":[3,3,0,0,0]},{"code":122,"indent":0,"parameters":[2,2,0,0,0]},{"code":0,"indent":0,"parameters":[]}],"name":"变量列表","switchId":1,"trigger":0},
 {"id":2,"list":[{"code":108,"indent":0,"parameters":["id: 1"]},{"code":408,"indent":0,"parameters":["icon: 64"]},{"code":408,"indent":0,"parameters":["title: 成功打开成就系统！"]},{"code":408,"indent":0,"parameters":["第一次的成就！"]},{"code":0,"indent":0,"parameters":[]}],"name":"成就列表","switchId":1,"trigger":0},
 {"id":3,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0},
 {"id":4,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0}

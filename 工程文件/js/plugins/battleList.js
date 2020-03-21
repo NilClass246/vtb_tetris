@@ -31,6 +31,7 @@ var AITest = [
 
 var TwoSlimes = [
 	{
+		name: "Slime",
 		category: "enemy",
 		xposition: 800,
 		yposition: 250,
@@ -45,13 +46,14 @@ var TwoSlimes = [
 
 		curHp: 0,
 		Mhp: 200,
-		Atk: 10,
+		Atk: 35,
 		Def: 20,
 		curEng: 0,
-		MEng: 1000,
+		MEng: 500,
 		EngSpd: 1
 	},
 	{
+		name: "Slime",
 		category: "enemy",
 		xposition: 975,
 		yposition: 400,
@@ -66,10 +68,10 @@ var TwoSlimes = [
 
 		curHp: 0,
 		Mhp: 200,
-		Atk: 10,
+		Atk: 35,
 		Def: 20,
 		curEng: 0,
-		MEng: 1000,
+		MEng: 500,
 		EngSpd: 1
 	}
 ]
