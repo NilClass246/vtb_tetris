@@ -1,12 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\data",
     "\\js",
     "\\js\\libs",
     "\\js\\plugins",
     "\\js\\tempCodes"
   ],
-  "SelectedNode": "\\js\\plugins\\Torigoya_Achievement.js",
+  "SelectedNode": "\\js\\rpg_managers.js",
   "PreviewInSolutionExplorer": false
 }

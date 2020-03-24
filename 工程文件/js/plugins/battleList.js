@@ -45,6 +45,7 @@ var TwoSlimes = [
 		pictureName: "Slime",
 
 		curHp: 0,
+		displayHp: 0,
 		Mhp: 200,
 		Atk: 35,
 		Def: 20,
@@ -67,6 +68,7 @@ var TwoSlimes = [
 		pictureName: "Slime",
 
 		curHp: 0,
+		displayHp: 0,
 		Mhp: 200,
 		Atk: 35,
 		Def: 20,
