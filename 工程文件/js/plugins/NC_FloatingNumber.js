@@ -78,4 +78,49 @@ FNumber.prototype.change = function (newNumber) {
 }
 
 
+function PopNumber() {
+	this.initialize.apply(this, arguments);
+}
 
+PopNumber.prototype = Object.create(Sprite.prototype);
+PopNumber.prototype.constructor = PopNumber;
+
+PopNumber.prototype.initialize = function (sprite) {
+	Sprite.prototype.initialize.call(this);
+	this.curSprite = sprite
+	this.EnAblEd = false;
+	this.poped = false;
+	this.completed = false;
+	this.curSprite.opacity = 0;
+	this.addChild(this.curSprite);
+}
+
+PopNumber.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.EnAblEd) {
+		if (!this.poped) {
+			this.curSprite.y+=1
+			this.curSprite.opacity += 10;
+			if (this.curSprite.opacity == 255) {
+				this.poped = true;
+			}
+		} else {
+			this.curSprite.opacity -= 10;
+			this.curSprite.y += 1
+			if (this.curSprite.opacity == 0) {
+				this.poped = false;
+				this.EnAblEd = false;
+				this.curSprite.move(this.x, this.y);
+				this.completed = true;
+			}
+		}
+    }
+}
+
+PopNumber.prototype.activate = function () {
+	this.EnAblEd = true;
+}
+
+PopNumber.prototype.isCompleted = function () {
+	return this.completed;
+}

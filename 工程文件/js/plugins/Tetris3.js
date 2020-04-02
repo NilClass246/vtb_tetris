@@ -60,7 +60,6 @@ Scene_Tetris.prototype.initialize = function () {
 
 Scene_Tetris.prototype.initialize_Actor = function () {
 	actor = $gameActors.actor(1)
-	weapon = $gameActors.actor(1).weapons()[0]
 
 	this.player = {
 		category: "player",
@@ -116,12 +115,20 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 	//	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	//	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	//	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	//	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	//	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	//	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+	//	[0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+	//	[1, 1, 1, 1, 1, 1, 0, 0, 0, 1],
+	//	[1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
 	//]
 
 	this.player.picture.bitmap = ImageManager.loadPicture("redDumpling");
+}
+
+Scene_Tetris.prototype.loadSkills = function () {
+	weapon = $gameActors.actor(1).weapons()[0]
+	this.skillList = [];
+	this.skillList.push(skill_List[weapon['name']]);
+
+
 }
 
 Scene_Tetris.prototype.initialize_Enemy = function () {
@@ -369,13 +376,14 @@ Scene_Tetris.prototype.initializeData = function () {
 	this.enemyGaugeWindows = [];
 
 	this.lastKick = false;
-	this.isWaitingTspin = false;
 	this.isWaitingCloseUp = false;
-	this.CloseUpDuration = 0;
-	this.Tspinpoped = false;
 	this.holded = false;
 	this.exceeded = false;
 	this.merged = false;
+
+	this.GameOverFinished = false;
+
+	this.PopList = [];
 }
 
 Scene_Tetris.prototype.loadKeyMapper = function () {
@@ -434,7 +442,8 @@ Scene_Tetris.prototype.loadBlockSkin = function () {
 		'l': null,
 		't': null,
 		'j': null,
-		'1': null
+		'1': null,
+		'r': null,
 	}
 	for (i in this.block_pics) {
 		for (j = 0; j < 4; j++) {
@@ -452,6 +461,7 @@ Scene_Tetris.prototype.loadBlockSkin = function () {
 		}
 		this.blockSkin[this.block_pics[i]] = ImageManager.loadPicture(this.skinID + this.block_pics[i] + 'block');
 	}
+	this.blockSkin['r'] = ImageManager.loadPicture(this.skinID + 'rblock');
 }
 
 Scene_Tetris.prototype.start = function () {
@@ -464,12 +474,12 @@ Scene_Tetris.prototype.update = function () {
 	Scene_MenuBase.prototype.update.call(this);
 	$gameScreen.update();
 	if (Input.isTriggered('ok')|| TouchInput.isPressed()) {
-		if(this.gameover){
+		if (this.GameOverFinished){
 			this.startFadeOut(60, false);
 			this.unloadKeyMapper();
 			SceneManager.pop(Scene_Tetris);
-		}else{
-			if (!this.running) {
+		} else {
+			if (!this.running && !this.gameover) {
 				// this.say(this.battleInfo.playMsg)
 				AudioManager.playSe(this.seTick);
 				this.player.oldTime = Date.now();
@@ -481,6 +491,13 @@ Scene_Tetris.prototype.update = function () {
 		}
 	}
 
+	if (!this.GameOverFinished && this.gameover) {
+		this.GameOverWindow.x -= 5;
+		if (this.GameOverWindow.x == 900) {
+			this.GameOverFinished = true;
+        }
+    }
+
 	if (this.running) {
 		this.update_Actor();
 		this.update_Enemy();
@@ -489,18 +506,25 @@ Scene_Tetris.prototype.update = function () {
 	}
 }
 
-Scene_Tetris.prototype.isGameOver = function(){
-	if(this.player.Hp<=0||this.exceeded){
+Scene_Tetris.prototype.isGameOver = function () {
+
+	if (this.player.Hp <= 0 || this.exceeded) {
 		AudioManager.playSe(this.seBoom);
 		this.running=false;
 		this.gameover=true;
 		$gameSwitches.setValue(20, false);
+		this.GameOverWindow = new Tetris_Window(1200, 100, 300, 100);
+		this.GameOverWindow.drawText('战败！确认以退出..', 0, 0);
+		this.addWindow(this.GameOverWindow);
 	}
 	if(this.enemies.length<=0){
 		AudioManager.playSe(this.seBoom);
 		this.running=false;
 		this.gameover=true;
 		$gameSwitches.setValue(20, true);
+		this.GameOverWindow = new Tetris_Window(1200, 100, 200, 100);
+		this.GameOverWindow.drawText('胜利！确认以退出..', 0, 0);
+		this.addWindow(this.GameOverWindow);
 	}
 }
 
@@ -601,11 +625,9 @@ Scene_Tetris.prototype.update_Actor = function(){
 	}
 	
 	if (this.player.cur.block.y < this.yposition){
-		// this.say(this.battleInfo.defeatMsg)
 		AudioManager.playSe(this.seBoom);
 		this.running = false;
 		this.gameover = true;
-		//this.enemy.bitmap = ImageManager.loadPicture(this.battleInfo.enemyPic+ "_laugh");
 		$gameSwitches.setValue(20, false);
 	}
 	
@@ -669,20 +691,15 @@ Scene_Tetris.prototype.update_Enemy = function () {
 }
 
 Scene_Tetris.prototype.update_Animation = function () {
-	if (this.isWaitingTspin) {
-		if (!this.Tspinpoped) {
-			this.TspinPopup.opacity += 10;
-			if (this.TspinPopup.opacity == 255) {
-				this.Tspinpoped = true;
-			}
-		}else{
-			this.TspinPopup.opacity -= 10;
-			if (this.TspinPopup.opacity == 0) {
-				this.Tspinpoped = false;
-				this.isWaitingTspin = false;
-			}
-		}
-	}
+
+	if (this.PopList.length >= 1) {
+		for (i in this.PopList) {
+			if (this.PopList[i].isCompleted()) {
+				this.removeChild(this.PopList[i]);
+				this.PopList.splice(i, 1)
+            }
+        }
+    }
 
 	if (this.player.displayHp > this.player.Hp) {
 		this.player.displayHp -= 1;
@@ -703,10 +720,6 @@ Scene_Tetris.prototype.update_Animation = function () {
 	}
 }
 
-Scene_Tetris.prototype.set_Tspin_Animation = function () {
-	this.isWaitingTspin = true
-}
-
 Scene_Tetris.prototype.resetCollideDelay = function (battler) {
 	if (this.collide(battler, battler.cur) && battler.delay_reset_times > 0) {
 		battler.n = 0;
@@ -722,23 +735,21 @@ Scene_Tetris.prototype.mergeBox = function(battler){
 	x = Math.floor((battler.cur.block.x-battler.xposition)/this.xrange);
 
 	for (i = 0; i < len; i++){
-		if(i+y>=0){
-			for(j=0; j<box[i].length; j++){
-				if(box[i][j] !==0 && battler.field[i+y] && battler.field[i+y][j+x] == 0){
+		if (i + y >= 0) {
+			for (j = 0; j < box[i].length; j++) {
+				if (box[i][j] !== 0 && battler.field[i + y] && battler.field[i + y][j + x] == 0) {
 					battler.field[i + y][j + x] = box[i][j];
-					if (i + y == 0) {
-						this.exceeded = true;
-					}
 				}
-			}	
-		}
+			}
+		} else {
+			this.exceeded = true;
+        }
 	}	
 
 	arr = this.isRemove(battler);
-	Tspined = this.isTspin(this.player)
-	
 	if (arr) {
 		this.merged = true;
+		Tspined = this.isTspin(this.player)
 		if(arr[0]){
 			AudioManager.playSe(this.seBoom);
 		}
@@ -747,7 +758,7 @@ Scene_Tetris.prototype.mergeBox = function(battler){
 			battler.field.unshift(new Array(this.ROW).fill(0));
 		}
 		if (Tspined) {
-			this.set_Tspin_Animation();
+			this.TspinPopup.activate();
 			this.player.SCORE += Math.pow(5, arr.length);
 			this.player.gaugeSCORE += Math.pow(5, arr.length);
 		} else {
@@ -832,6 +843,7 @@ Scene_Tetris.prototype.isTspin = function (battler){
 	if (blockCount >= 3) {
 		return true
 	}
+	return false;
 }
 
 Scene_Tetris.prototype.drawArea = function(battler){
@@ -870,6 +882,9 @@ Scene_Tetris.prototype.drawArea = function(battler){
 						break;
 					case 7:
 						blocktype = '1';
+						break;
+					case 10:
+						blocktype = 'r';
 						break;
 				}
 				blackBlock.bitmap = this.blockSkin[blocktype];
@@ -1273,17 +1288,35 @@ Scene_Tetris.prototype.AttAck = function (source, target, damage) {
 		if (finaldamage >= 0) {
 			target.curHp -= finaldamage;
 		}
+		pop = new PopNumber(new FNumber(finaldamage, 7));
+		this.addChild(pop)
+		pop.move(target.xposition + target.width / 3, target.yposition + target.height/3)
+		this.PopList.push(pop);
+		pop.activate();
 		this.createXYanimationWindow(1, target.xposition + target.width / 2, target.yposition + target.height / 2);
 	} else {
 		finaldamage = 3 * (damage) - 2 * (target.Def)
 		if (finaldamage >= 0) {
 			target.Hp -= finaldamage
 		}
+		pop = new PopNumber(new FNumber(finaldamage, 7));
+		this.addChild(pop)
+		pop.move(135, 350)
+		this.PopList.push(pop);
+		pop.activate();
 		this.createXYanimationWindow(1, target.xposition - 125, target.yposition + 200);
 	}
 }
 
 Scene_Tetris.prototype.addMergableTrashLine = function (number) {
+	rnd = Math.floor(Math.random() * this.ROW);
+	for (i = 0; i < number; i++) {
+		tempLine = new Array(this.ROW).fill(10);
+		tempLine[rnd] = 0;
+		this.player.field.shift();
+		this.player.field.push(tempLine);
+	}
+	this.drawArea(this.player);
 }
 
 Scene_Tetris.prototype.create = function () {
@@ -1293,11 +1326,12 @@ Scene_Tetris.prototype.create = function () {
 	this.createBox(this.player);
 	this.refreshNextWindows();
 	this.drawArea(this.player);
-	this.TspinPopup = new Sprite();
+
+	TspinPopup = new Sprite();
+	TspinPopup.bitmap = ImageManager.loadPicture('tspin');
+	this.TspinPopup = new PopNumber(TspinPopup);
 	this.TspinPopup.x = this.player.xposition + 65;
-	this.TspinPopup.y = this.player.yposition + 100;;
-	this.TspinPopup.bitmap = ImageManager.loadPicture('tspin');
-	this.TspinPopup.opacity = 0;
+	this.TspinPopup.y = this.player.yposition + 75;
 	this.addChild(this.TspinPopup);
 }
 

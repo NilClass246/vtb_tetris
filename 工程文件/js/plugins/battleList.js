@@ -51,7 +51,10 @@ var TwoSlimes = [
 		Def: 20,
 		curEng: 0,
 		MEng: 500,
-		EngSpd: 1
+		EngSpd: 1,
+
+		Gold: 20,
+		Exp: 20
 	},
 	{
 		name: "Slime",
@@ -74,7 +77,10 @@ var TwoSlimes = [
 		Def: 20,
 		curEng: 0,
 		MEng: 500,
-		EngSpd: 1
+		EngSpd: 1,
+
+		Gold: 20,
+		Exp: 20
 	}
 ]
 
@@ -82,3 +88,19 @@ var enemy_List = [
 	AITest,
 	TwoSlimes
 ]
+
+var skill_List = {
+	'½£': function () {
+		for (i in this.player.next) {
+			this.player.next[i] = {
+				block: new Sprite(),
+				type: 't',
+				rotation: 0,
+				rotationTime: 0,
+				box: this.data['t'][0].slice()
+			}
+			this.player.next[i].block.bitmap = ImageManager.loadPicture(this.minoSkin['t'][0])
+		}
+		this.refreshNextWindows();
+    }
+}
