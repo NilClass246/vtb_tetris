@@ -10,6 +10,7 @@ Scripts:
 	Moghunter
 	过眼云烟
 	杨志
+	SumRndmDde http://sumrndm.site/
 
 Resources:
 	SkottyTV Window Skins	by Skotty TV

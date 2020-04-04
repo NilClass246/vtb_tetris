@@ -1,5 +1,5 @@
 {
-    "name": "VtbTetris",
+    "name": "TetrisDemo",
     "main": "index.html",
     "js-flags": "--expose-gc",
     "window": {

@@ -40,6 +40,49 @@ Tetris_Window.prototype.refresh = function () {
 	this.contents.clear();
 }
 
+function Notice_Widnow() {
+	this.initialize.apply(this, arguments);
+}
+
+Notice_Widnow.prototype = Object.create(Window_Base.prototype);
+Notice_Widnow.prototype.constructor = Notice_Widnow;
+
+Notice_Widnow.prototype.initialize = function (duration) {
+	Window_Base.prototype.initialize.call(this, 1200, 100, 405, 100);
+	this.duration = duration;
+	this.curTime = duration;
+	this.targetPosition = 800;
+	this.layed = false;
+	this.completed = false;
+	this.refresh();
+}
+
+Notice_Widnow.prototype.update = function () {
+	Window_Base.prototype.update.call(this);
+	if (!this.completed) {
+		if (!this.layed) {
+			this.x -= 7;
+			if (this.x <= this.targetPosition) {
+				this.layed = true;
+			}
+		} else {
+			if (this.curTime != 0) {
+				this.curTime -= 1
+			} else {
+				this.x += 7;
+				if (this.x >= 1200) {
+					this.layed = false;
+					this.completed = true;
+                }
+			}
+		}
+    }
+}
+
+Notice_Widnow.prototype.refresh = function () {
+	this.contents.clear();
+}
+
 function Scene_Tetris() {
 	this.initialize.apply(this, arguments);
 }
@@ -367,6 +410,7 @@ Scene_Tetris.prototype.initializeData = function () {
 
 	this.arr_delay = $gameVariables.value(3);
 	this.das_dalay = $gameVariables.value(2);
+	this.soft_drop_speed = $gameVariables.value(4);
 	this.das_delay_count_right = 0;
 	this.arr_delay_count_right = 0;
 	this.das_delay_count_left = 0;
@@ -473,8 +517,8 @@ Scene_Tetris.prototype.start = function () {
 Scene_Tetris.prototype.update = function () {
 	Scene_MenuBase.prototype.update.call(this);
 	$gameScreen.update();
-	if (Input.isTriggered('ok')|| TouchInput.isPressed()) {
-		if (this.GameOverFinished){
+	if (Input.isTriggered('ok') || TouchInput.isPressed()) {
+		if (this.gameover) {
 			this.startFadeOut(60, false);
 			this.unloadKeyMapper();
 			SceneManager.pop(Scene_Tetris);
@@ -491,13 +535,6 @@ Scene_Tetris.prototype.update = function () {
 		}
 	}
 
-	if (!this.GameOverFinished && this.gameover) {
-		this.GameOverWindow.x -= 5;
-		if (this.GameOverWindow.x == 900) {
-			this.GameOverFinished = true;
-        }
-    }
-
 	if (this.running) {
 		this.update_Actor();
 		this.update_Enemy();
@@ -513,18 +550,14 @@ Scene_Tetris.prototype.isGameOver = function () {
 		this.running=false;
 		this.gameover=true;
 		$gameSwitches.setValue(20, false);
-		this.GameOverWindow = new Tetris_Window(1200, 100, 300, 100);
-		this.GameOverWindow.drawText('战败！确认以退出..', 0, 0);
-		this.addWindow(this.GameOverWindow);
+		this.say('战败！确认以退出..', 200)
 	}
 	if(this.enemies.length<=0){
 		AudioManager.playSe(this.seBoom);
 		this.running=false;
 		this.gameover=true;
 		$gameSwitches.setValue(20, true);
-		this.GameOverWindow = new Tetris_Window(1200, 100, 200, 100);
-		this.GameOverWindow.drawText('胜利！确认以退出..', 0, 0);
-		this.addWindow(this.GameOverWindow);
+		this.say('胜利！确认以退出..', 200)
 	}
 }
 
@@ -619,7 +652,7 @@ Scene_Tetris.prototype.update_Actor = function(){
 	}
 
 	if (Input.isPressed('down') & !this.collide(this.player, this.player.cur)) {
-		this.player.step = 4;
+		this.player.step = this.soft_drop_speed;
 	}else{
 		this.player.step = 50;
 	}
@@ -749,8 +782,9 @@ Scene_Tetris.prototype.mergeBox = function(battler){
 	arr = this.isRemove(battler);
 	if (arr) {
 		this.merged = true;
-		Tspined = this.isTspin(this.player)
-		if(arr[0]){
+		Tspined = false;
+		if (arr[0]) {
+			Tspined = this.isTspin(this.player)
 			AudioManager.playSe(this.seBoom);
 		}
 		for (i = 0; i < arr.length; i++){
@@ -1333,6 +1367,8 @@ Scene_Tetris.prototype.create = function () {
 	this.TspinPopup.x = this.player.xposition + 65;
 	this.TspinPopup.y = this.player.yposition + 75;
 	this.addChild(this.TspinPopup);
+
+	this.say('按确认键开始游戏', 200);
 }
 
 Scene_Tetris.prototype.createPlayerWindows = function () {
@@ -1444,6 +1480,13 @@ Scene_Tetris.prototype.refreshNextWindows = function () {
 		this.player.next[i].block.y = 25;
 		this.player.nextWindows[i].addChild(this.player.next[i].block);
 	}
+}
+
+Scene_Tetris.prototype.say = function (txt, duration) {
+	this.removeChild(this.NoticeBox);
+	this.NoticeBox = new Notice_Widnow(duration);
+	this.NoticeBox.drawText(txt, 0, 0);
+	this.addWindow(this.NoticeBox);
 }
 
 function tetris_start() {
