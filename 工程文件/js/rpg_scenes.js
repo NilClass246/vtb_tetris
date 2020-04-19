@@ -439,10 +439,10 @@ Scene_Title.prototype.create = function() {
     this.createWindowLayer();
     this.createCommandWindow();
 
-    this.TitleSprite = new Sprite();
-    this.TitleSprite.bitmap = ImageManager.loadPicture('TITLE');
-    this.TitleSprite.move(450, 150);
-    this.addChild(this.TitleSprite)
+    //this.TitleSprite = new Sprite();
+    //this.TitleSprite.bitmap = ImageManager.loadPicture('TITLE');
+    //this.TitleSprite.move(450, 150);
+    //this.addChild(this.TitleSprite)
 };
 
 Scene_Title.prototype.start = function() {

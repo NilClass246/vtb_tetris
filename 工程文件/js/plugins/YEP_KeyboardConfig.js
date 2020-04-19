@@ -228,6 +228,16 @@ Yanfly.KeyConfig.version = 1.04;
  * @parent ---Key Names---
  * @desc This is the Down action will appear for the config text.
  * @default Move ▼ Down
+ * 
+ * @param Skill One Key
+ * @parent ---Key Names---
+ * @desc This is the Skill One action will appear on a key.
+ * @default skill one
+ *
+ * @param Skill One Text
+ * @parent ---Key Names---
+ * @desc This is the Down action will appear for the config text.
+ * @default skill one
  *
  * @help
  * ============================================================================
@@ -435,6 +445,8 @@ Yanfly.Param.KeyConfigRightKey = String(Yanfly.Parameters['Right Key']);
 Yanfly.Param.KeyConfigRightTx = String(Yanfly.Parameters['Right Text']);
 Yanfly.Param.KeyConfigDownKey = String(Yanfly.Parameters['Down Key']);
 Yanfly.Param.KeyConfigDownTx = String(Yanfly.Parameters['Down Text']);
+Yanfly.Param.KeyConfigSkillOneKey = String(Yanfly.Parameters['Skill One Key']);
+Yanfly.Param.KeyConfigSkillOneTx = String(Yanfly.Parameters['Skill One Text']);
 
 //=============================================================================
 // DataManager
@@ -506,7 +518,7 @@ ConfigManager.defaultMap = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.wasdMap = {
   8: 'tab', 13: 'ok', 16: 'shift', 74: 'control', 27: 'escape',
   32: 'ok', 33: 'pageup', 34: 'pagedown', 37: 'left', 38: 'up', 39: 'right',
-  40: 'down', 87: 'space', 65: 'left', 83: 'down', 68: 'right',
+  40: 'down',85:'skillone', 87: 'space', 65: 'left', 83: 'down', 68: 'right',
   75: 'up', 76: 'escape', 77: 'menu', 219: 'pageup',  221: 'pagedown', 45: 'escape',
   46: 'ok', 35: 'escape', 36: 'menu', 96: 'escape', 98: 'down', 100: 'left',
   102: 'right', 104: 'up', 120: 'debug' 
@@ -620,15 +632,17 @@ if (Yanfly.Param.BCEList['numDivide'] !== 0) ConfigManager.wasdMap[111] =
 
 Yanfly.KeyConfig.ConfigManager_makeData = ConfigManager.makeData;
 ConfigManager.makeData = function() {
-  var config = Yanfly.KeyConfig.ConfigManager_makeData.call(this);
-	config.keyMapper = this.keyMapper;
+    var config = Yanfly.KeyConfig.ConfigManager_makeData.call(this);
+    config.keyMapper = this.keyMapper;
+    config.TetrisKeyMapper = this.TetrisKeyMapper;
 	return config;
 };
 
 Yanfly.KeyConfig.ConfigManager_applyData = ConfigManager.applyData;
 ConfigManager.applyData = function(config) {
   Yanfly.KeyConfig.ConfigManager_applyData.call(this, config);
-	this.keyMapper = this.readKeyConfig(config, 'keyMapper');
+    this.keyMapper = this.readKeyConfig(config, 'keyMapper');
+    this.TetrisKeyMapper = this.readKeyConfig(config, 'TetrisKeyMapper');
 	this.applyKeyConfig();
 };
 
@@ -930,7 +944,10 @@ Window_KeyConfig.prototype.actionKey = function(action) {
 			break;
 		case 'down':
 			return Yanfly.Param.KeyConfigDownKey;
-			break;
+            break;
+        case 'skillone':
+            return Yanfly.Param.KeyConfigSkillOneKey;
+            break;
     default:
       if (Imported.YEP_ButtonCommonEvents) {
         if (Yanfly.Param.BCEList[action]) {
@@ -1091,7 +1108,8 @@ Window_KeyAction.prototype.makeCommandList = function() {
 	this.addCommand(Yanfly.Param.KeyConfigLeftTx, 'ok', true, 'left');
 	this.addCommand(Yanfly.Param.KeyConfigUpTx, 'ok', true, 'up');
 	this.addCommand(Yanfly.Param.KeyConfigRightTx, 'ok', true, 'right');
-	this.addCommand(Yanfly.Param.KeyConfigDownTx, 'ok', true, 'down');
+    this.addCommand(Yanfly.Param.KeyConfigDownTx, 'ok', true, 'down');
+    this.addCommand(Yanfly.Param.KeyConfigSkillOneTx, 'ok', true, 'skillone');
   if (Imported.YEP_ButtonCommonEvents) this.addButtonCommonEvents();
 };
 

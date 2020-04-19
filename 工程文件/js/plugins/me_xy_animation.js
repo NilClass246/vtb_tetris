@@ -65,7 +65,6 @@ Sprite_XY_animation.prototype.updateVisibility = function() {
 };
 
 Sprite_XY_animation.prototype.updateAnimationSprites = function() {
-	console.log(1)
     if (this._animationSprites.length > 0) {
         var sprites = this._animationSprites.clone();
         this._animationSprites = [];
