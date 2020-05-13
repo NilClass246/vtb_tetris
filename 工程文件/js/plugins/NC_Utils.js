@@ -1,5 +1,5 @@
 //============================================================
-// ����˹����Ļ����趨
+// 俄罗斯方块的基本设定
 //============================================================
 
 var TetrisManager = TetrisManager || {};
@@ -205,25 +205,79 @@ TetrisManager.IRuleSet = {
 
 TetrisManager.AIFrequency = 20;
 
+TetrisManager.ROW = 10;
+
+TetrisManager.COL = 24;
+
+TetrisManager.Count_Blocks = 0;
+
+TetrisManager.Count_Buttons = 0;
+
+TetrisManager.Count_Lines = 0;
+
+TetrisManager.curhighestCombo = 0;
+
+TetrisManager.curhighestLPM = 0;
+
+TetrisManager.curhighestAPM = 0;
+
+TetrisManager.highestLPM = 0;
+
+TetrisManager.highestAPM = 0;
+
+TetrisManager.makeData = function () {
+	var tet = {};
+
+	tet.highestLPM = TetrisManager.highestLPM;
+	tet.highestAPM = TetrisManager.highestAPM;
+
+	return tet
+}
+
+TetrisManager.save = function () {
+	StorageManager.save(514, JSON.stringify(TetrisManager.makeData()));
+}
+
+TetrisManager.load = function () {
+	var json;
+	var tet = {};
+	try {
+		json = StorageManager.load(514);
+	} catch (e) {
+		console.error(e);
+	}
+	if (json) {
+		tet = JSON.parse(json);
+	}
+	if (tet['highestLPM']) {
+		TetrisManager.highestLPM = Number(tet['highestLPM']);
+	}
+	if (tet['highestAPM']) {
+		TetrisManager.highestAPM = Number(tet['highestAPM']);
+	}
+}
+
+TetrisManager.TimerActivated = false;
+
 //============================================================
-// ������תϵͳ
+// 超级旋转系统
 //============================================================
 
 TetrisManager.PlaceTest = function (battler, tempBlock, cur) {
-	rotation = cur.rotation;
-	box = cur.box;
-	x = Math.floor((tempBlock.x - battler.xposition) / battler.xrange);
-	y = Math.floor((tempBlock.y - battler.yposition) / battler.yrange);
+	var rotation = cur.rotation;
+	var box = cur.box;
+	var x = Math.floor((tempBlock.x - battler.xposition) / battler.xrange);
+	var y = Math.floor((tempBlock.y - battler.yposition) / battler.yrange);
 
 	if (box) {
-		len = box.length;
+		var len = box.length;
 	} else {
 		return false;
 	}
 
-	for (i = 0; i < len; i++) {
+	for (var i = 0; i < len; i++) {
 		if (i + y >= 0) {
-			for (j = 0; j < box[i].length; j++) {
+			for (var j = 0; j < box[i].length; j++) {
 				if (box[i][j] !== 0) {
 					if (j + x < 0 || j + x >= battler.field[i].length || i + y >= battler.field.length || (j + x >= 0 && battler.field[i + y] && battler.field[i + y][j + x] != 0)) {
 						return false;
@@ -233,7 +287,7 @@ TetrisManager.PlaceTest = function (battler, tempBlock, cur) {
 		}
 	}
 	return true;
-} 
+}
 
 TetrisManager.rotateRight = function (battler) {
 	tempCur = {
@@ -395,7 +449,7 @@ TetrisManager.collide = function (battler, cur) {
 }
 
 //============================================================
-// �����
+// 杂项方法
 //============================================================
 
 TetrisManager.copy2DArray = function (origin) {
@@ -411,8 +465,306 @@ TetrisManager.copy2DArray = function (origin) {
 	return ArrayCopy;
 }
 
+TetrisManager.keepTwoDigits = function (num) {
+	if ((!num && num !== 0) || (num == Infinity)) {
+		return num;
+    }
+	var tempNum = Math.floor(num * 100) / 100
+	tempNum = tempNum + "";
+	tempNum2 = tempNum
+	var n = tempNum2.split(".")
+	if (n[1]) {
+		for (var i = 0; i < (2 - n[1].length); i++) {
+			tempNum += "0"
+		}
+	} else {
+		tempNum += ".00";
+	}
+	
+	return tempNum
+}
+
+TetrisManager.setTimer = function () {
+	TetrisManager.oldTime = Date.now();
+	TetrisManager.TimerActivated = true;
+}
+
+TetrisManager.getElapsedTime = function () {
+	if (TetrisManager.TimerActivated) {
+		return Math.floor((Date.now() - TetrisManager.oldTime) / 10) / 100;
+	} else {
+		return 0;
+    }
+}
+
+TetrisManager.desetTimer = function () {
+	TetrisManager.TimerActivated = false;
+}
+
+//============================================================
+// 敌人数据
+//============================================================
+
+var AITest = [
+	{
+		name: "Inuyama",
+		category: "enemy",
+		xposition: 840,
+		yposition: 24,
+		width: 260,
+		height: 325,
+
+		pictureBoard: null,
+		picture: new Sprite(),
+		pictureName: "Inuyama",
+
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 200,
+		Atk: 50,
+		Def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		xrange: 12,
+		yrange: 12
+
+	}
+]
+
+var TwoSlimes = [
+	{
+		name: "Slime",
+		category: "enemy",
+		xposition: 816,
+		yposition: 84,
+
+		avatar: new Sprite(),
+		avatarName: "Slime_Avatar",
+
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 200,
+		Atk: 35,
+		Def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		Gold: 20,
+		Exp: 20,
+
+		xrange: 12,
+		yrange: 12,
+	},
+	{
+		name: "Slime",
+		category: "enemy",
+		xposition: 1020,
+		yposition: 276,
+
+		avatar: new Sprite(),
+		avatarName: "Slime_Avatar",
+
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 200,
+		Atk: 35,
+		Def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		Gold: 20,
+		Exp: 20,
+
+		xrange: 12,
+		yrange: 12,
+	}
+]
+
+TetrisManager.enemy_List = [
+	AITest,
+	TwoSlimes
+]
+
+var sword = function () {
+	for (i in this.player.next) {
+		this.player.nextWindows[i].removeChild(this.player.next[i].block);
+		this.player.next[i] = {
+			block: new Sprite(),
+			type: 't',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['t'][0].slice()
+		}
+		this.player.next[i].block.bitmap = this.minoSkin['t'][0]
+		var effect = new SpinningBox(this.player.xposition + this.ROW * this.player.xrange + 110, this.player.yposition - 5 + 90 * i + 40 - 565)
+		effect.move(25, 565)
+		this.addChild(effect);
+		AudioManager.playSe(this.seBoom);
+	}
+	this.refreshNextWindows();
+}
+
+TetrisManager.skill_List = [sword]
+
+//TODO: 重写技能系统
+
+//============================================================
+// 解密数据
+//============================================================
+
+//TODO: 更换字体
+
+function Puzzle_Manager() {
+	this.initialize.apply(this, arguments);
+}
+
+Puzzle_Manager.prototype.initialize = function (ID) {
+	this.puzzleID = ID;
+	this.scene = SceneManager._scene;
+	this.victory = false;
+	this.startTime = Date.now();
+}
+
+Puzzle_Manager.prototype.create = function () {
+	switch (this.puzzleID) {
+		case 0:
+			this.SCORE = 0;
+			this.progress = 0;
+			this.targetSCORE = $gameVariables.value(12)
+			this.barX = 845;
+			this.barY = 110;
+			this.timeLimit = $gameVariables.value(11);
+			this.curTime = this.getElapsedTime();
+			this.ProgressBar = new ProgressBar(this.targetSCORE);
+			this.ProgressBar.move(this.barX, this.barY);
+			this.scene.addChild(this.ProgressBar)
+			this.ProgressBar.setPhase($gameVariables.value(7), "ui\\EasyBar")
+			this.ProgressBar.setPhase($gameVariables.value(8), "ui\\NormalBar")
+			this.ProgressBar.setPhase($gameVariables.value(9), "ui\\HardBar")
+			this.ProgressBar.setPhase($gameVariables.value(10), "ui\\LunaticBar")
+			this.targetBoard = new Tetris_Window(845, 5, 350, 100);
+			this.targetBoard.drawText("在"+this.timeLimit+"秒内获取尽量多的分数！", 0, 0)
+			this.scene.addWindow(this.targetBoard);
+			this.OtherWindow = new Tetris_Window(845, 180, 350, 435);
+			this.OtherWindow.drawText("点击确认键开始游戏", 0, 0);
+			this.scene.addWindow(this.OtherWindow);
+			break;
+		case 1:
+			this.SCORE = 0;
+			this.timeLimit = $gameVariables.value(11);
+			this.targetBoard = new Tetris_Window(0, 0, 300, 100);
+			this.targetBoard.contents.fontSize = 20;
+			//this.targetBoard.removeChildAt(0);
+			this.targetBoard.drawText("在" + this.timeLimit + "秒内获取尽量多的分数！", 0, 0);
+			this.scene.addWindow(this.targetBoard);
+			this.BarChart = new BarChartWindow(200, 400, "分数", 10);
+			this.BarChart.x = 0;
+			this.BarChart.y = 100;
+			this.BarChart.addNewBar(0);
+			this.BarChart.addNewBar(20);
+			this.scene.addWindow(this.BarChart);
+			break;
+		case 2:
+			this.timeLimit = $gameVariables.value(11);
+			this.targetBoard = new Target_Window("在" + this.timeLimit + "秒内获取尽量多的分数！")
+			this.scene.addChild(this.targetBoard);
+
+			this.infoBoard = new Tetris_Window(285, 142, 135, 500);
+			this.infoBoard.contents.fontSize = 18;
+			this.infoBoard.removeChildAt(0)
+			this.infoBoard.drawText(
+				"Time Left ", 0, 0)
+			this.infoBoard.drawText(
+				TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
+				20, 25)
+			this.infoBoard.drawText(
+				"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
+				0, 310)
+			this.infoBoard.drawText(
+				"APM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+				0, 335)
+			this.scene.addWindow(this.infoBoard);
+			this.ProgressBar = new VerticalProgressBar(50);
+			this.ProgressBar.move(75, 80);
+			this.infoBoard.addChild(this.ProgressBar);
+			this.ProgressBar.addPhase($gameVariables.value(7), "ui\\EasyBar")
+			this.ProgressBar.addPhase($gameVariables.value(8), "ui\\NormalBar")
+			this.ProgressBar.addPhase($gameVariables.value(9), "ui\\HardBar")
+			this.ProgressBar.addPhase($gameVariables.value(10), "ui\\LunaticBar")
+
+			break;
+	}
+}
+
+Puzzle_Manager.prototype.update = function (score) {
+	switch (this.puzzleID) {
+		case 0:
+			this.curTime = this.getElapsedTime();
+			if (this.SCORE != score) {
+				this.progress += score - this.SCORE;
+				this.SCORE = score;
+			}
+			if (this.progress > $gameVariables.value(7)) {
+				this.progress -= 0.01;
+			}
+			this.ProgressBar.changeNumber(this.progress)
+			if (this.SCORE >= this.targetSCORE||this.curTime >= this.timeLimit) {
+				this.victory = true;
+			}
+			if (this.victory) {
+				this.OtherWindow.contents.clear();
+				this.OtherWindow.drawText("挑战完成！", 0, 0);
+			} else {
+				this.OtherWindow.contents.clear();
+				var leftTime = (this.timeLimit - this.curTime)
+				this.OtherWindow.drawThinGauge(0, 25, 310, leftTime / this.timeLimit, 20, this.OtherWindow.mpGaugeColor1(), this.OtherWindow.mpGaugeColor2());
+				leftTime = TetrisManager.keepTwoDigits(leftTime);
+				this.OtherWindow.drawText("Time Left：" + leftTime + "sec", 0, 0);
+            }
+			break;
+		case 1:
+			this.BarChart.changeValue(0, score);
+			break;
+		case 2:
+			if (this.timeLimit - TetrisManager.getElapsedTime() <= 0) {
+				this.victory = true;
+			}
+			if (this.victory) {
+				this.end = new Target_Window("时间到！");
+				this.scene.addChild(this.end);
+			} else {
+				this.infoBoard.refresh()
+				this.infoBoard.drawText(
+					"Time Left ", 0, 0)
+				this.infoBoard.drawText(
+					TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
+					20, 25)
+				this.infoBoard.drawText(
+					"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
+					0, 310)
+				this.infoBoard.drawText(
+					"APM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+					0, 335)
+				this.ProgressBar.changeNumber(score)
+            }
+			break;
+	}
+}
+
+Puzzle_Manager.prototype.getElapsedTime = function () {
+	return Math.floor((Date.now() - this.startTime) / 10) / 100;
+}
+
+Puzzle_Manager.prototype.isEnded = function () {
+	return this.victory;
+}
+
 //=============================================================================
-// ** С�������
+// 小组件定义
 //=============================================================================
 
 function Tetris_Window() {
@@ -473,6 +825,381 @@ Notice_Widnow.prototype.update = function () {
 }
 
 Notice_Widnow.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+//-----------------------------------------------------------------------------
+
+function AfterMath_Window() {
+	this.initialize.apply(this, arguments);
+}
+
+AfterMath_Window.prototype = Object.create(Window_Base.prototype);
+AfterMath_Window.prototype.constructor = AfterMath_Window;
+
+AfterMath_Window.prototype.initialize = function (info) {
+	Window_Base.prototype.initialize.call(this, 100, 100, 1000, 424);
+	this.score = info.score;
+	this.combo = info.combo;
+	this.LPM = info.LPM;
+	this.APM = info.APM;
+	this.layed = false;
+	this.refresh();
+	this.drawText("本局分数：" + this.score, 0, 0);
+	this.drawText("本局最大连击：" + this.combo, 0, 28);
+	this.drawText("本局LPM：" + TetrisManager.keepTwoDigits(this.LPM), 0, 56);
+	this.drawText("本局APM：" + TetrisManager.keepTwoDigits(this.APM), 0, 84);
+
+	this.contents.drawLine(500, 0, 500, 424, 5, "black");
+
+	if (this.score >= $gameVariables.value(21)) {
+		$gameVariables.setValue(21, this.score);
+    }
+	this.drawText("历史最高分：" + $gameVariables.value(21), 525, 0);
+
+	if (this.combo >= $gameVariables.value(22)) {
+		$gameVariables.setValue(22, this.combo);
+	}
+	this.drawText("历史最高连击：" + $gameVariables.value(22), 525, 28);
+
+	if (this.LPM >= TetrisManager.highestLPM) {
+		TetrisManager.highestLPM =  this.LPM;
+	}
+	this.drawText("历史最高LPM：" + TetrisManager.keepTwoDigits(TetrisManager.highestLPM), 525, 56);
+
+	if (this.APM >= TetrisManager.highestAPM) {
+		TetrisManager.highestAPM = this.APM;
+	}
+	this.drawText("历史最高APM：" + TetrisManager.keepTwoDigits(TetrisManager.highestAPM), 525, 84);
+
+	this.opacity = 0;
+	this.backOpacity = 255;
+}
+
+AfterMath_Window.prototype.update = function () {
+	Window_Base.prototype.update.call(this);
+	if (!this.layed) {
+		//this.x += 25;
+		this.opacity += 10;
+		if (this.opacity >= 255) {
+			this.layed = true;
+        }
+    }
+}
+
+AfterMath_Window.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+AfterMath_Window.prototype.isLayed = function () {
+	return this.layed;
+}
+
+//-----------------------------------------------------------------------------
+
+function Chart_Window() {
+	this.initialize.apply(this, arguments);
+}
+
+Chart_Window.prototype = Object.create(Window_Base.prototype);
+Chart_Window.prototype.constructor = Chart_Window;
+
+Chart_Window.prototype.initialize = function (width, height, labelX, labelY, Xmax, Ymax) {
+	Window_Base.prototype.initialize.call(this, 0, 0, width + 36, height + 36);
+	this.ChartHeight = height;
+	this.ChartWidth = width;
+	this.points = [];
+	this.labelX = labelX;
+	this.labelY = labelY;
+	this.Xmax = Xmax;
+	this.Ymax = Ymax;
+	this.displayXmax = Xmax;
+	this.displayYmax = Ymax;
+	this.ActIvAtEd = false;
+	this.cursor = 0;
+}
+
+Chart_Window.prototype.update = function () {
+	Window_Base.prototype.update.call(this);
+	if (this.ActIvAtEd) {
+		this.refresh();
+		if (this.displayXmax < this.Xmax) {
+			this.displayXmax += 1;
+			console.log(this.displayXmax)
+		}
+		if (this.displayYmax < this.Ymax) {
+			this.displayYmax += 1;
+			console.log(this.displayYmax)
+		}
+		for (var i = 0; i < this.points.length; i++) {
+			if (this.points[i + 1]) {
+				var x = (this.points[i].x / this.displayXmax) * this.ChartWidth;
+				var y = (1-this.points[i].y / this.displayYmax) * this.ChartHeight;
+				var Nextx = (this.points[i + 1].x / this.displayXmax) * this.ChartWidth;
+				var Nexty = (1-this.points[i + 1].y / this.displayYmax) * this.ChartHeight;
+				this.contents.drawLine(x, y, Nextx, Nexty, 5);
+			}
+		}
+	}
+}
+
+Chart_Window.prototype.InputPoint = function (x, y) {
+	if (x >= this.Xmax) {
+		this.Xmax = this.Xmax * 2;
+	}
+	if (y >= this.Ymax) {
+		this.Ymax = this.Ymax * 2;
+	}
+	var point = {
+		x: x,
+		y: y
+	}
+	this.points.push(point);
+}
+
+Chart_Window.prototype.ActIvAtE = function () {
+	this.ActIvAtEd = true;
+}
+
+Chart_Window.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+//-----------------------------------------------------------------------------
+
+function BarChartWindow() {
+	this.initialize.apply(this, arguments);
+}
+
+BarChartWindow.prototype = Object.create(Window_Base.prototype);
+BarChartWindow.prototype.constructor = BarChartWindow;
+
+BarChartWindow.prototype.initialize = function (width, height, labelY, Ymax) {
+	this.modiAmount = 15;
+	Window_Base.prototype.initialize.call(this, 0, 0, width + 36, height + 36,);
+	this.ChartHeight = height;
+	this.ChartWidth = width;
+	this.standardBarWidth = 20;
+	this.labelY = labelY;
+	this.Ymax = Ymax;
+	this.bars = [];
+	this.oldLength = this.bars.length;
+	this.contents.drawLine(0, this.ChartHeight - 18, this.ChartWidth, this.ChartHeight - 18, 4, 'white');
+	this.contents.drawLine(18, 0, 18, this.ChartHeight, 4, 'white');
+	this.fontSize = 5;
+	this.drawText(this.labelY, 0, -5);
+}
+
+BarChartWindow.prototype.update = function () {
+	Window_Base.prototype.update.call(this);
+
+	if (this.oldLength != this.bars.length) {
+		for (var i = 0; i < this.bars.length; i++) {
+			this.bars[i].changeX(Math.floor((i+1)*(this.ChartWidth / (this.bars.length + 1)) + 18 + this.modiAmount));
+		}
+		this.oldLength = this.bars.length;
+	}
+}
+
+BarChartWindow.prototype.addNewBar = function (amount) {
+	var bar = new DataBar(
+		this.ChartWidth + 18,
+		this.ChartHeight+5,
+		this.standardBarWidth,
+		this.ChartHeight,
+		amount,
+		this.Ymax
+	)
+	this.addChild(bar)
+	this.bars.push(bar);
+}
+
+BarChartWindow.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+BarChartWindow.prototype.changeValue = function (id, amount) {
+	while (amount >= this.Ymax) {
+		this.Ymax = this.Ymax * 2;
+		for (var i = 0; i < this.bars.length; i++) {
+			this.bars[i].changeMaxValue(this.Ymax);
+        }
+	}
+	this.bars[id].changeValue(amount);
+}
+
+//-----------------------------------------------------------------------------
+
+function DataBar() {
+	this.initialize.apply(this, arguments);
+}
+
+DataBar.prototype = Object.create(Sprite.prototype);
+DataBar.prototype.constructor = DataBar;
+
+DataBar.prototype.initialize = function (x, y, width, height, curAmount, maxAmount) {
+	Sprite.prototype.initialize.call(this);
+	this.curAmount = curAmount;
+	this.displayAmount = curAmount;
+
+	this.maxAmount = maxAmount;
+	this.displayYmax = maxAmount;
+
+	this.BarWidth = width;
+	this.displayWidth = width;
+
+	this.BarHeight = height
+	this.anchor.y = 1;
+	this.anchor.x = 0.5;
+
+	this.curX = x;
+	this.displayX = x;
+	this.curY = y;
+
+	this.Ycursor = 0;
+	this.cursorAmount = 2;
+	this.move(this.displayX, y);
+	this.bitmap = ImageManager.loadPicture("ui\\BarGrad");
+	this.setFrame(0, this.Ycursor, this.displayWidth, (this.displayAmount / this.displayYmax) * this.BarHeight);
+
+	this.FNumber = new FNumber(this.displayAmount, 9)
+	this.FNumber.changeDirection("mid");
+	this.addChild(this.FNumber)
+	this.layed = false;
+}
+
+DataBar.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.displayAmount != this.curAmount) {
+		if (this.displayAmount < this.curAmount) {
+			this.displayAmount += 0.5;
+		} else {
+			this.displayAmount -= 0.5;
+		}
+		this.FNumber.change(Math.floor(this.displayAmount));
+	}
+	if (this.displayWidth != this.BarWidth) {
+		if (this.displayWidth < this.BarWidth) {
+			this.displayWidth += 1;
+		} else {
+			this.displayWidth -= 1;
+        }
+	}
+
+	if (this.displayYmax != this.maxAmount) {
+		if (this.displayYmax < this.maxAmount) {
+			this.displayYmax += 0.5;
+		} else {
+			this.displayYmax -= 0.5;
+		}
+	}
+
+	if (this.displayX != this.curX) {
+		if (this.displayX < this.curX) {
+			this.displayX += 1;
+		} else {
+			this.displayX -= 1;
+        }
+	}
+
+	if (this.Ycursor <= 0) {
+		this.cursorAmount = 2;
+	}
+	this.Ycursor += this.cursorAmount;
+	this.move(this.displayX, this.curY);
+	var rate = (this.displayAmount / this.displayYmax);
+	if (rate >= 1) {
+		rate = 1;
+    }
+	var Aheight = rate * this.BarHeight;
+	if ((this.Ycursor + Aheight + 1) >= 1248) {
+		this.cursorAmount = -2;
+	}
+	this.setFrame(0, this.Ycursor, this.displayWidth, Aheight);
+	this.FNumber.move(-10, Aheight / (-2));
+}
+
+DataBar.prototype.changeAll = function (x, y, width, height, curAmount, maxAmount) {
+	this.curAmount = curAmount;
+	this.maxAmount = maxAmount;
+	this.BarWidth = width;
+	this.BarHeight = height
+	this.curX = x;
+	this.curY = y
+	this.bitmap = ImageManager.loadPicture("ui\\BarGrad");
+	this.setFrame(0, 0, this.BarWidth, (this.curAmount / this.maxAmount) * this.BarHeight);
+}
+
+DataBar.prototype.changeValue = function (amount) {
+	this.curAmount = amount
+}
+
+DataBar.prototype.changeMaxValue = function (maxAmount) {
+	this.maxAmount = maxAmount;
+}
+
+DataBar.prototype.changeWidth = function (width) {
+	this.BarWidth = width;
+}
+
+DataBar.prototype.changeX = function (x) {
+	this.curX = x;
+}
+
+//-----------------------------------------------------------------------------
+
+function Test_Window() {
+	this.initialize.apply(this, arguments);
+}
+
+Test_Window.prototype = Object.create(Window_Base.prototype);
+Test_Window.prototype.constructor = Test_Window;
+
+Test_Window.prototype.initialize = function () {
+	Window_Base.prototype.initialize.call(this, 0, 0, 1200, 624);
+}
+
+Test_Window.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+//-----------------------------------------------------------------------------
+
+function Target_Window() {
+	this.initialize.apply(this, arguments);
+}
+
+Target_Window.prototype = Object.create(Window_Base.prototype);
+Target_Window.prototype.constructor = Target_Window;
+
+Target_Window.prototype.initialize = function (txt) {
+	Window_Base.prototype.initialize.call(this, 0, 275, 1200, 75);
+	txtList = txt.split("");
+	this.drawText(txt, 600-(txtList.length*28)/2, 0);
+	this.opacity = 0;
+	this.layed = false;
+	this.lastTime = 100;
+}
+
+Target_Window.prototype.update = function () {
+	Window_Base.prototype.update.call(this);
+	if (!this.layed) {
+		this.opacity += 5;
+		if (this.opacity >= 255) {
+			this.layed = true;
+		}
+	} else {
+		this.lastTime -= 1;
+		if (this.lastTime <= 0) {
+			this.opacity -= 5;
+			if (this.opacity <= 0) {
+				this.destroy();
+			}
+        }
+    }
+}
+
+Target_Window.prototype.refresh = function () {
 	this.contents.clear();
 }
 
@@ -545,7 +1272,7 @@ SkillButton.prototype.update = function () {
 		this.prepared = true;
 	} else {
 		this.rate -= 0.01;
-    }
+	}
 }
 
 SkillButton.prototype.updateRate = function (rate) {
@@ -597,114 +1324,490 @@ SpinningBox.prototype.update = function () {
 	this.time -= 1;
 	if (this.time <= 0) {
 		this.destroy();
+	}
+}
+
+//-----------------------------------------------------------------------------
+function ProgressBar() {
+	this.initialize.apply(this, arguments);
+}
+
+ProgressBar.prototype = Object.create(Sprite.prototype);
+ProgressBar.prototype.constructor = ProgressBar;
+
+ProgressBar.prototype.initialize = function (maxAmount) {
+	Sprite.prototype.initialize.call(this);
+	this.curAmount = 0;
+	this.maxAmount = maxAmount;
+	this.BarContent = new Sprite();
+	this.frame = new Sprite();
+	this.BarContent.bitmap = ImageManager.loadPicture("ui\\ProgressBarContent");
+	this.frame.bitmap = ImageManager.loadPicture("ui\\ProgressBarFrame");
+	this.Xcursor = 0;
+
+	this.BarContent.move(10, 0);
+	this.addChild(this.BarContent);
+	this.BarContent.setFrame(this.Xcursor, 0, 0, this.BarContent.bitmap.height);
+	this.addChild(this.frame)
+}
+
+ProgressBar.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.curAmount / this.maxAmount >= 1) {
+		width = 330;
+	} else {
+		width = 330 * (this.curAmount / this.maxAmount);
+	}
+	this.Xcursor += 7;
+	if ((this.Xcursor + width) >= this.BarContent.bitmap.width) {
+		this.Xcursor = 0;
+	}
+	this.BarContent.setFrame(this.Xcursor, 0, width, this.BarContent.bitmap.height);
+}
+
+ProgressBar.prototype.changeNumber = function (num) {
+	this.curAmount = num;
+}
+
+ProgressBar.prototype.setPhase = function (amount, picname) {
+	var barX = 350 * (amount / this.maxAmount);
+	var PhaseBar = new Sprite();
+	PhaseBar.bitmap = ImageManager.loadPicture("ui\\PhaseBar");
+	PhaseBar.anchor.x = 0.5;
+	PhaseBar.move(barX, -5);
+
+	var pic = new Sprite();
+	pic.bitmap = ImageManager.loadPicture(picname);
+	pic.anchor.x = 0.5;
+	this.addChild(pic);
+	pic.move(barX, 55);
+
+	this.addChild(PhaseBar);
+	this.addChild(pic);
+}
+
+//-----------------------------------------------------------------------------
+
+function VerticalProgressBar() {
+	this.initialize.apply(this, arguments);
+}
+
+VerticalProgressBar.prototype = Object.create(Sprite.prototype);
+VerticalProgressBar.prototype.constructor = VerticalProgressBar;
+
+VerticalProgressBar.prototype.initialize = function (maxAmount) {
+	Sprite.prototype.initialize.call(this);
+	this.changeTime = 10;
+	this.curAmount = 0;
+	this.displayAmount = 0;
+	this.maxAmount = maxAmount;
+	this.displayMax = maxAmount;
+	this.BarContent = new Sprite();
+	this.frame = new Sprite();
+	this.BarContent.bitmap = ImageManager.loadPicture("ui\\BarGrad");
+	this.frame.bitmap = ImageManager.loadPicture("ui\\VerticalProgressBarFrame");
+	this.Ycursor = 0;
+	this.maxLength = 250;
+	this.cursorAmount = 2;
+
+	this.BarContent.move(0, this.maxLength);
+	this.addChild(this.BarContent);
+	this.BarContent.setFrame(0, this.Ycursor, 15, this.maxLength);
+	this.addChild(this.frame)
+
+	this.phases = [];
+}
+
+VerticalProgressBar.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.displayAmount != this.curAmount) {
+		if (this.displayAmount < this.curAmount) {
+			this.displayAmount += (this.curAmount - this.displayAmount) / this.changeTime;
+		} else {
+			this.displayAmount -= (this.curAmount - this.displayAmount) / this.changeTime;
+        }
+	}
+
+	if (this.displayMax != this.maxAmount) {
+		if (this.displayMax < this.maxAmount) {
+			this.displayMax += (this.maxAmount - this.displayMax) / this.changeTime;
+		} else {
+			this.displayMax -= (this.maxAmount - this.displayMax) / this.changeTime;
+		}
+    }
+
+
+	if (this.Ycursor <= 0) {
+		this.cursorAmount = 2;
+	}
+	this.Ycursor += this.cursorAmount;
+	var rate = (this.displayAmount / this.displayMax);
+	if (rate >= 1) {
+		rate = 1;
+	}
+	var Aheight = rate * this.maxLength;
+	if ((this.Ycursor + Aheight + 1) >= 1248) {
+		this.cursorAmount = -2;
+	}
+	this.BarContent.move(0, this.maxLength - Aheight);
+	this.BarContent.setFrame(0, this.Ycursor, 15, Aheight);
+
+	if (this.phases) {
+		for (var i = 0; i < this.phases.length; i++) {
+			var barY = (1 - (this.phases[i].amount / this.displayMax)) * this.maxLength;
+			if (barY < 0) {
+				barY = 0;
+            }
+			this.phases[i].bar.move(7.5, barY);
+			this.phases[i].pic.move(-5, barY);
+        }
     }
 }
 
-//============================================================
-// ��������
-//============================================================
-
-var AITest = [
-	{
-		name: "Inuyama",
-		category: "enemy",
-		xposition: 840,
-		yposition: 24,
-		width: 260,
-		height: 325,
-
-		pictureBoard: null,
-		picture: new Sprite(),
-		pictureName: "Inuyama",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 50,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		xrange: 12,
-		yrange: 12
-
-	}
-]
-
-var TwoSlimes = [
-	{
-		name: "Slime",
-		category: "enemy",
-		xposition: 816,
-		yposition: 84,
-
-		avatar: new Sprite(),
-		avatarName: "Slime_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 12,
-		yrange: 12
-	},
-	{
-		name: "Slime",
-		category: "enemy",
-		xposition: 1020,
-		yposition: 276,
-
-		avatar: new Sprite(),
-		avatarName: "Slime_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 12,
-		yrange: 12
-	}
-]
-
-TetrisManager.enemy_List = [
-	AITest,
-	TwoSlimes
-]
-
-var sword = function () {
-	for (i in this.player.next) {
-		this.player.nextWindows[i].removeChild(this.player.next[i].block);
-		this.player.next[i] = {
-			block: new Sprite(),
-			type: 't',
-			rotation: 0,
-			rotationTime: 0,
-			box: TetrisManager.data['t'][0].slice()
-		}
-		this.player.next[i].block.bitmap = this.minoSkin['t'][0]
-		var effect = new SpinningBox(this.player.xposition + this.ROW * this.player.xrange + 110, this.player.yposition - 5 + 90 * i + 40 - 565)
-		effect.move(25, 565)
-		this.addChild(effect);
-		AudioManager.playSe(this.seBoom);
-	}
-	this.refreshNextWindows();
+VerticalProgressBar.prototype.changeNumber = function (num) {
+	this.curAmount = num;
+	while (num >= this.maxAmount) {
+		this.maxAmount = this.maxAmount * 1.5
+    }
 }
 
-TetrisManager.skill_List = [sword]
+VerticalProgressBar.prototype.addPhase = function (amount, picname) {
+	var bar = new Sprite();
+	bar.bitmap = ImageManager.loadPicture("ui\\VerticalPhaseBar");
+	bar.anchor.x = 0.5;
+	bar.anchor.y = 0.5;
+
+	var pic = new Sprite();
+	pic.bitmap = ImageManager.loadPicture(picname);
+	pic.anchor.y = 0.5;
+	pic.anchor.x = 1;
+
+	var phase = {
+		amount: amount,
+		bar: bar,
+		pic: pic
+	}
+
+	this.phases.push(phase);
+	this.addChild(this.phases[this.phases.length - 1].bar)
+	this.addChild(this.phases[this.phases.length - 1].pic)
+}
+
+//-----------------------------------------------------------------------------
+
+function FNumber() {
+	this.initialize.apply(this, arguments);
+}
+
+FNumber.prototype = Object.create(Sprite.prototype);
+FNumber.prototype.constructor = FNumber;
+
+FNumber.prototype.initialize = function (number, maxdigits, skin) {
+	Sprite.prototype.initialize.call(this);
+	this.oldNumber = null;
+	this.curNumber = number;
+	this.maxdigits = maxdigits;
+	this.loadimg(skin);
+	this.ExtendDir = "right"
+}
+
+FNumber.prototype.loadimg = function (skin) {
+	if (skin) {
+		this.number_img = ImageManager.loadPicture(skin)
+	} else {
+		this.number_img = ImageManager.loadPicture('numbers')
+    }
+}
+
+FNumber.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.curNumber !== this.oldNumber) {
+		this.create_number();
+	}
+}
+
+FNumber.prototype.changeDirection = function (dir) {
+	this.ExtendDir = dir
+	this.create_number();
+}
+
+FNumber.prototype.create_number = function () {
+	//if (this.number_sprites) {
+	//	this.removeChildren();
+	//for (var i = 0; i < this.number_sprites.length; i++) {
+	//	this.removeChild(this.number_sprites[i])
+	//}
+	//}
+	this.removeChildren();
+	var numbers = Math.abs(this.curNumber).toString().split("");
+	this.number_sprites = [];
+	for (var i = 0; i < this.maxdigits; i++) {
+		if (i > (numbers.length - 1)) { continue }
+		this.number_sprites.push(new Sprite());
+		this.number_sprites[i].bitmap = this.number_img;
+		var n = Number(numbers[i]);
+		this.number_sprites[i].setFrame(n * (this.number_sprites[i].bitmap.width / 10), 0, (this.number_sprites[i].bitmap.width / 10), this.number_sprites[i].bitmap.height)
+		switch (this.ExtendDir) {
+			case "left":
+				this.number_sprites[i].x = (i * (this.number_sprites[i].bitmap.width / 10)) - ((numbers.length - 1) * (this.number_sprites[i].bitmap.width / 10))
+				break;
+			case "right":
+				this.number_sprites[i].x = i * (this.number_sprites[i].bitmap.width / 10);
+				break;
+			case "mid":
+				this.number_sprites[i].x = (i * (this.number_sprites[i].bitmap.width / 10)) - (((numbers.length - 1) * (this.number_sprites[i].bitmap.width / 10)) / 2)
+				break;
+		}
+		//this.number_sprites[i].y = this.y;
+		this.addChild(this.number_sprites[i])
+	}
+	this.oldNumber = this.curNumber;
+}
+
+FNumber.prototype.change = function (newNumber) {
+	this.curNumber = newNumber;
+}
+
+FNumber.prototype.changeNumSkin = function (skin) {
+	this.number_img = ImageManager.loadPicture(skin);
+	this.create_number();
+}
+
+//-----------------------------------------------------------------------------
+
+function PopNumber() {
+	this.initialize.apply(this, arguments);
+}
+
+PopNumber.prototype = Object.create(Sprite.prototype);
+PopNumber.prototype.constructor = PopNumber;
+
+PopNumber.prototype.initialize = function (sprite) {
+	Sprite.prototype.initialize.call(this);
+	this.curSprite = sprite
+	this.EnAblEd = false;
+	this.poped = false;
+	this.completed = false;
+	this.curSprite.opacity = 0;
+	this.addChild(this.curSprite);
+}
+
+PopNumber.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.EnAblEd) {
+		if (!this.poped) {
+			this.curSprite.y += 0.5
+			this.curSprite.opacity += 10;
+			if (this.curSprite.opacity >= 255) {
+				this.poped = true;
+			}
+		} else {
+			this.curSprite.opacity -= 10;
+			this.curSprite.y += 0.5
+			if (this.curSprite.opacity <= 0) {
+				this.poped = false;
+				this.EnAblEd = false;
+				this.curSprite.move(this.x, this.y);
+				this.completed = true;
+				this.destroy();
+			}
+		}
+	}
+}
+
+PopNumber.prototype.activate = function () {
+	this.EnAblEd = true;
+}
+
+PopNumber.prototype.isCompleted = function () {
+	return this.completed;
+}
+
+//-----------------------------------------------------------------------------
+
+function ComboSprite() {
+	this.initialize.apply(this, arguments);
+}
+
+ComboSprite.prototype = Object.create(Sprite.prototype);
+ComboSprite.prototype.constructor = ComboSprite;
+
+ComboSprite.prototype.initialize = function (combo) {
+	Sprite.prototype.initialize.call(this);
+	console.log("inner: " + combo);
+	this.ComboPic = new Sprite();
+	this.ComboPic.bitmap = ImageManager.loadPicture("ui\\ComboX");
+	this.ComboNum = new FNumber(combo, 9, "BigNumbers")
+	this.ComboNum.x = 200;
+	this.opacity = 0;
+	this.addChild(this.ComboNum);
+	this.addChild(this.ComboPic);
+	this.layed = false;
+	this.ExItIng = false;
+}
+
+ComboSprite.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (!this.layed && !this.ExItIng) {
+		this.opacity += 5;
+		if (this.opacity >= 255) {
+			this.layed = true;
+		}
+	}
+	if (this.ExItIng) {
+		this.opacity -= 5;
+		if (this.opacity <= 0) {
+			this.destroy();
+		}
+	} 
+}
+
+ComboSprite.prototype.deactivate = function () {
+	this.ExItIng = true;
+}
+
+//-----------------------------------------------------------------------------
+
+function Sprite_Canvas() {
+	this.initialize.apply(this, arguments);
+}
+
+Sprite_Canvas.prototype = Object.create(Sprite.prototype);
+Sprite_Canvas.prototype.constructor = Sprite_Canvas;
+
+Sprite_Canvas.prototype.initialize = function () {
+	Sprite.prototype.initialize.call(this);
+	this.loadWindowskin();
+}
+
+Sprite_Canvas.prototype.loadWindowskin = function () {
+	this.windowskin = ImageManager.loadSystem('Window');
+};
+
+Sprite_Canvas.prototype.resetFontSettings = function () {
+	this.bitmap.fontFace = this.standardFontFace();
+	this.bitmap.fontSize = this.standardFontSize();
+	this.resetTextColor();
+}
+
+Sprite_Canvas.prototype.resetTextColor = function () {
+	this.changeTextColor(this.normalColor());
+}
+
+Sprite_Canvas.prototype.changeTextColor = function (color) {
+	this.bitmap.textColor = color;
+}
+
+Sprite_Canvas.prototype.textColor = function (n) {
+	var px = 96 + (n % 8) * 12 + 6;
+	var py = 144 + Math.floor(n / 8) * 12 + 6;
+	return this.windowskin.getPixel(px, py);
+};
+
+Sprite_Canvas.prototype.normalColor = function () {
+	return this.textColor(0);
+};
+
+Sprite_Canvas.prototype.standardFontFace = function () {
+	if ($gameSystem.isChinese()) {
+		return 'SimHei, Heiti TC, sans-serif';
+	} else if ($gameSystem.isKorean()) {
+		return 'Dotum, AppleGothic, sans-serif';
+	} else {
+		return 'GameFont';
+	}
+};
+
+Sprite_Canvas.prototype.standardFontSize = function () {
+	return 28;
+};
+
+//-----------------------------------------------------------------------------
+
+function Something() {
+	this.initialize.apply(this, arguments);
+}
+
+Something.prototype = Object.create(Sprite_Canvas.prototype);
+Something.prototype.constructor = Something;
+
+Something.prototype.initialize = function () {
+	Sprite_Canvas.prototype.initialize.call(this);
+	this.bitmap = ImageManager.loadPicture("Window");
+	this.resetFontSettings();
+	this.bitmap.drawText("hello world");
+}
+
+//=============================================================================
+// 地图遮罩
+//=============================================================================
+
+TetrisManager.SceneMapCreateDisplayObjects = Scene_Map.prototype.createDisplayObjects;
+
+Scene_Map.prototype.createDisplayObjects = function () {
+	TetrisManager.SceneMapCreateDisplayObjects.call(this);
+	//TetrisManager.addOverlay();
+}
+
+TetrisManager.removeOverlay = function () {
+	SceneManager._scene.removeChild(TetrisManager.CameraOverlay);
+}
+
+TetrisManager.addOverlay = function () {
+	TetrisManager.CameraOverlay = new Sprite();
+	TetrisManager.CameraOverlay.bitmap = ImageManager.loadPicture("Camera");
+	SceneManager._scene.addChild(TetrisManager.CameraOverlay);
+}
+
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣳⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠙⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠈⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣠⣤⣤⣴⣶⣤⣤⣄⣀⣙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⡀⢀⢀⢀⠉⠉⠙⠛⠛⠿⠿⠿⣿⣿⣿⣿⡿⠟⠋⠁
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣴⣿⡟⠛⠛⠛⣿⣿⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣀
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣠⣶⣿⣿⣿⣤⣶⣤⣾⣿⣿⣿⣋⣠⣿⡿⠁⠉⢙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣥⣠⣤⣿⣣⣿⠋⣉⣩⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣰⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⢱⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢟⣿⣿⣿⣿⡟⠁⢀⣿⡟⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣿⣿⣿⣿⣿⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣣⣿⣿⣿⡿⠋⢀⢀⣸⡿⢱⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢸⣿⣿⣿⣿⡃⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⡿⢋⣼⣿⣿⣿⠋⢀⢀⢀⣰⠟⠁⣾⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣿⣿⣿⣿⡟⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢡⣿⢟⣴⣿⣿⠿⠋⠁⢀⣠⣤⡾⠋⢀⣸⣿⣿⣿⠋⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢰⣿⣿⣿⣿⠁⢀⠘⣿⣿⣿⣿⣿⡿⡿⠋⠁⢀⠋⢀⠈⠉⣿⣄⢀⢀⢀⠈⠋⠁⢀⢀⢠⣿⣿⣿⠏⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢠⣴⣶⡄
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣼⣿⣿⣿⣏⣀⣀⣀⣿⣿⣿⣿⠟⢀⢀⢀⢀⢀⢀⢀⢀⢀⠛⢿⣷⣤⣀⢀⢀⢀⢀⢀⣾⣿⠿⠁⢀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⢠⣿⣿⣿⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠳⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠉⠛⠿⢷⣶⣤⣀⡾⠋⢀⢀⢀⢀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⣸⣿⣿⣿⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣰⣿⣿⣿⣿⢿⣿⣀⡀⣽⣿⣿⣿⣿⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠉⠛⠿⠶⣦⣤⣄⣀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⣿⢀⢀⢸⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣰⢿⣿⣿⣿⣿⢀⠉⠉⠁⠙⠛⠛⠛⠿⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠘⠛⠻⠷⣦⢀⢀⢀⢀⢀⢀⠈⠙⠛⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢀⢀⢀⢀⣿⢀⢀⢸⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣸⠃⣾⣿⣿⣿⡇⣠⡄⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣾⣿⣿⣿⣶⣶⣤⢀⢀⢀⢀⢀⢀⢀⢀⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⢀⢀⢀⢸⡏⢀⢀⢸⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣾⠃⢀⣿⣿⣿⣿⣿⣿⣇⡀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠐⠛⠛⠋⠛⢻⣿⣿⣿⣿⣿⣶⣦⡀⢀⢀⢀⡿⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⢀⢀⢀⢀⣸⡇⢀⢀⢸⡇
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣾⠃⢀⣰⣿⣿⣿⡿⡿⠋⠛⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠛⠛⢿⣿⣿⣿⣿⣿⣿⣿⣶⡶⠂⢀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⣿⠁⢀⢀⣾⠁
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣾⠏⣀⣼⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⢀⢀⠈⠛⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠉⠿⣿⣿⣋⣿⣿⣷⠆⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢀⢀⢀⢠⡿⢀⢀⢀⣿
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣾⢏⣼⡿⣻⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠋⠉⠉⠁⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⢀⢀⢀⢸⡇⢀⢀⢀⣿
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣾⣣⣿⣿⣿⣿⣿⣿⣿⣿⣇⢀⢀⢀⢀⢀⣿⡄⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣤⣤⣠⣶⣶⣿⡀⢀⢀⢀⢀⢀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⢀⢀⢀⢀⣿⡅⢀⢀⢠⣿
+//⢀⢀⢀⢀⢀⢀⢀⢀⢀⣾⣿⣿⢯⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⠹⢷⡟⣰⠆⢠⢀⡀⡀⢀⢀⢀⢀⢀⢀⢀⠈⠁⢻⣿⣿⣿⣿⣷⣤⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⢀⢀⢀⢠⣿⠁⢀⢀⢸⣿⣄
+//⢀⢀⢀⢀⢀⢀⢀⢀⣾⣿⡿⢣⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⢀⢀⢀⢀⢀⢀⠉⢀⠳⠎⠱⠇⠋⠁⢀⢀⢀⢀⢀⢀⢀⢀⠛⠛⠛⠛⠛⠻⠿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠶⣦⣤⣀⢸⡏⢀⢀⢀⢸⡏⠻⣷⣤⡀
+//⢀⢀⢀⢀⢀⢀⢀⣾⣿⡟⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠛⠿⢿⣦⡄⢀⠈⠙⠛⠃⢀⢀⢀⢸⣇⢀⢀⠙⣿
+//⢀⢀⢀⢀⢀⢀⣸⣿⠋⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⢀⢀⠛⢀⢀⢀⢀⢀⢀⢀⢀⢀⠈⠉⢀⢀⢀⣿
+//⢀⢀⢀⢀⢀⣾⡿⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣴⣿⣿⣿⣿⣿⣿⡿⠫⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢿⡀
+//⢀⢀⢀⢠⣾⣿⠃⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣀⣀⡀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡃⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣾⣇
+//⢀⢀⢀⣾⣿⣏⣾⣿⣿⣿⣿⣿⣿⣿⠟⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣿⠈⢷⡀
+//⢀⢀⢸⣿⣿⣽⣿⣿⣿⣿⣿⣿⡿⠃⢀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣿⡀⢀⠱
+//⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⢀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠸⣧⡀⢀⡆
+//⢀⢀⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣿⣷⣶⣶⣄⣀⣀⣤⣴⣦⣤⣤⣀⢀⣠⣤⣀⡀⠹⠷⢀⠇
+//⢀⢀⣿⣿⣿⣿⣿⣿⣿⡿⠁⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⣉⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣀⣤⣾
+//⢀⢀⢻⣿⣿⣿⣿⣿⣿⠃⢀⢀⢀⣿⡿⠋⣿⣿⣿⣿⡟⠛⠛⠻⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⠟⢀⣾⣿⣦⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃
+//⢀⢀⣸⣿⣿⣿⣿⣿⡿⢀⢀⢀⠸⠟⢠⣾⣿⣿⣿⣿⡇⢀⢀⢀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠟⠛⠋⠉⠉⠉⢀⣼⣿⣿⠋⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠛⠿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏
+//⢀⢀⣿⣿⣿⣿⣿⣿⠇⢀⢀⢀⢀⢠⣿⣿⡟⠘⣿⣿⡇⢀⢀⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠛⠛⠉⠁⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⡟⠁⢀⣾⣿⠟⠉⠁⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠉⠉⠉⠙⠛⠛⠿⢿⡏
+//⢀⢰⣿⣿⣿⣿⣿⣿⢀⢀⢀⡒⢀⣿⣿⠟⢀⢀⠹⣿⡇⢀⢀⣨⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣴⣿⡿⠋⢀⣴⣿⠟⠁⢀⢀⢠⣿⣿⣿⣿⣿⡿⢀⠹⣿⣿⣿⣿⣿⣿⡄
+//⢀⣼⣿⣿⣿⣿⣿⡏⢀⢀⣘⠇⣾⣿⡟⢀⢀⢀⢀⢻⠇⢀⡈⠛⠛⢿⣿⣿⣿⣿⠿⠿⢿⡿⠋⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣴⣿⡿⠋⢀⣠⣾⣿⣿⢀⢀⢀⢀⣸⣿⣿⣿⣿⣿⢀⢀⢀⢨⣿⣿⣿⣿⣿⣇⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠐⠆
+//⢀⣿⣿⣿⣿⣿⣿⠇⢀⢀⣿⢸⣿⡿⠁⢀⢀⢀⢀⢀⢀⠾⠃⢀⢀⢀⠉⠙⠁⢴⣾⡿⠋⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣠⣾⣿⡿⠋⢀⣠⣾⣿⣿⣿⣿⡄⢀⢀⢀⣿⣿⣿⣿⣿⡇⢀⢀⢀⣾⢿⣿⣿⣿⣿⣿⡀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⠰⠆
+//⢀⣿⣿⣿⣿⣿⡿⢀⢀⢸⣏⣿⡿⠁⢀⢀⢀⢀⢀⣰⠆⢀⢀⢀⢀⢀⢀⢀⣠⡾⠋⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣠⣾⣿⠿⠋⢀⣤⣿⣿⣿⣿⠟⠉⠈⠁⢀⢀⢸⣿⣿⣿⣿⡟⢀⢀⢀⣰⣿⠈⣿⣿⣿⣿⣿⣷⡀
+//⢀⣿⣿⣿⣿⣿⡇⠰⠆⣶⣾⡿⠁⢀⢀⢀⢀⢀⣸⣋⣀⣀⣀⣘⣛⠃⢶⣾⠟⠁⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣤⣾⣿⠟⢁⣠⣴⣿⣿⣿⡿⠛⠁⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⡿⢀⢀⢀⢠⣿⠇⢀⣿⣿⣿⣿⣿⣿⠃
+//⢀⣿⣿⣿⣿⣿⢀⢀⣸⣷⣿⠃⢀⢀⢀⢀⢀⢰⡿⠿⠿⠿⢿⣿⣿⣿⡿⠁⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣠⣶⣿⠟⢋⣠⣴⣿⣿⣿⡿⠟⠁⢀⢀⢀⢀⣶⢀⢀⢀⣿⣿⣿⣿⡟⠁⢀⢀⢀⣼⠏⢀⢀⣿⣿⣿⣿⡏⠁

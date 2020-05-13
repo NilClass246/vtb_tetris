@@ -265,14 +265,20 @@
 		this._setDirty();
 	}
 
-	Bitmap.prototype.drawLine = function (Xinit, Yinit, Xtarget, Ytarget) {
+	Bitmap.prototype.drawLine = function (Xinit, Yinit, Xtarget, Ytarget, lineWidth, color) {
 		var context = this._context;
-		context.save();
 		context.beginPath();
 		context.moveTo(Xinit, Yinit);
 		context.lineTo(Xtarget, Ytarget);
 		context.closePath();
-		context.strokeStyle = 'grey';
+		if (lineWidth) {
+			context.lineWidth = lineWidth;
+		}
+		if (color) {
+			context.strokeStyle = color
+		} else {
+			context.strokeStyle = 'grey';
+        }
 		context.stroke();
 	}
 

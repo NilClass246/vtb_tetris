@@ -527,9 +527,6 @@ Game_Actor.prototype.performCollapse = function () {
 			//this.addNewState(6);
 			//this.refresh();
 
-			//todo
-			//death animation
-
 
 			/*Sprite_Enemy.prototype.updateBitmap = function() {
     	Sprite_Battler.prototype.updateBitmap.call(this);

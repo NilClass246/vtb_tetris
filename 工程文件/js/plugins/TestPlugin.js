@@ -46,5 +46,5 @@ function testCommand(){
 	//for (i in ActionQueue) {
 	//	console.log(ActionQueue[i])
  //   }
-	alert(TetrisManager.data['o'].length)
+	SceneManager._screenWidth -= 5
 }

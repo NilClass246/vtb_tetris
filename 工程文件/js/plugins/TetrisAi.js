@@ -24,7 +24,7 @@ Position_Manager.prototype.inputData = function (field, cur) {
 }
 
 Position_Manager.prototype.generateAllSolution = function () {
-	solution_list = [];
+	var solution_list = [];
 	for (var i = 0; i < TetrisManager.data[this.cur.type].length; i++) {
 		for (var j = 0; j < this.field[0].length; j++) {
 			var tempBlock = {
@@ -103,8 +103,8 @@ Position_Manager.prototype.calculatePDValue = function (field, solution) {
 			//boardBuriedHoles
 
 			if ((this.isFilled(field, i, j)) && (!this.isFilled(field, i + 1, j))) {
-				curX = j-1;
-				curY = i+1;
+				var curX = j-1;
+				var curY = i+1;
 				rightWall = false;
 				leftWall = false;
 				while (this.isFilled(field, curY, curX)) {
@@ -115,8 +115,8 @@ Position_Manager.prototype.calculatePDValue = function (field, solution) {
 					curY += 1;
 				}
 
-				curX = j;
-				curY = i;
+				var curX = j;
+				var curY = i;
 				while (this.isFilled(field, curY, curX)) {
 					if (this.isFilled(field, curY + 1, curX + 1)) {
 						rightWall = true;
@@ -154,7 +154,7 @@ Position_Manager.prototype.calculatePDValue = function (field, solution) {
 			cancelledROWs++;
 		}
 
-		wellNum = 0
+		var wellNum = 0
 		while (wells[wellCursor]) {
 			arr = wells.splice(wellCursor, 1)
 			for (var k = 0; k < arr.length; k++) {
@@ -200,7 +200,7 @@ Position_Manager.prototype.isExisted = function (field, i, j) {
 }
 
 Position_Manager.prototype.findBestSolution = function () {
-	solution_list = this.generateAllSolution();
+	var solution_list = this.generateAllSolution();
 	var BestSolution = solution_list[0];
 	var BestPDValue = this.calculatePDValue(this.merge(solution_list[0]), solution_list[0]);
 	for (var i = 0; i < solution_list.length; i++) {
@@ -214,9 +214,9 @@ Position_Manager.prototype.findBestSolution = function () {
 }
 
 Position_Manager.prototype.render_ActionQueue = function () {
-	BestSolution = this.findBestSolution();
-	ActionQueue = [];
-	tempCur = {
+	var BestSolution = this.findBestSolution();
+	var ActionQueue = [];
+	var tempCur = {
 		x: 4,
 		y: 0,
 		rotation: 0,
@@ -243,10 +243,10 @@ Position_Manager.prototype.render_ActionQueue = function () {
 }
 
 Position_Manager.prototype.collide = function (tempBlock, field) {
-	box = tempBlock.box;
-	len = tempBlock.box.length;
-	x = Number(tempBlock.x);
-	y = Number(tempBlock.y)+1;
+	var box = tempBlock.box;
+	var len = tempBlock.box.length;
+	var x = Number(tempBlock.x);
+	var y = Number(tempBlock.y)+1;
 	for (i = 0; i < len; i++) {
 		if (i + y >= 0) {
 			for (j = 0; j < box[i].length; j++) {
@@ -275,8 +275,8 @@ Position_Manager.prototype.RotateRight = function (tempBlock) {
 		Rule = TetrisManager.IRuleSet[((tempBlock.rotationTime % 4) + '')];
 	}
 
-	xHow = Rule[0][0];
-	yHow = Rule[0][1];
+	var xHow = Rule[0][0];
+	var yHow = Rule[0][1];
 
 	tempBlock.x += xHow
 	tempBlock.y += yHow
@@ -287,10 +287,10 @@ Position_Manager.prototype.RotateRight = function (tempBlock) {
 Position_Manager.prototype.merge = function (solution) {
 	tempfield = TetrisManager.copy2DArray(this.field);
 
-	box = solution.box;
-	len = solution.box.length;
-	y = Number(solution.y)
-	x = Number(solution.x)
+	var box = solution.box;
+	var len = solution.box.length;
+	var y = Number(solution.y)
+	var x = Number(solution.x)
 	for (i = 0; i < len; i++) {
 		if (i + y >= 0) {
 			for (j = 0; j < box[i].length; j++) {

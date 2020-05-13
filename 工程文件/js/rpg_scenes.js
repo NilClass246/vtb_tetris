@@ -176,6 +176,10 @@ Scene_Base.prototype.addWindow = function(window) {
     this._windowLayer.addChild(window);
 };
 
+Scene_Base.prototype.removeWindow = function (window) {
+    this._windowLayer.removeChild(window);
+};
+
 /**
  * Request a fadeIn screen process.
  * 
