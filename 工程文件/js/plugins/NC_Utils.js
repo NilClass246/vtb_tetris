@@ -161,26 +161,28 @@ TetrisManager.data = {
 
 TetrisManager.block_pics = ["o", "s", "5", "l", "t", "j", "1"];
 
+TetrisManager.blockInitalPos = 3;
+
 TetrisManager.generalKick = {
-	"1to2": [[0, 0], [-1, 0], [-1, 1], [0, 2], [-1, 2]],
-	"2to1": [[0, 0], [1, 0], [1, 1], [0, 2], [1, 2]],
-	"2to3": [[0, 0], [1, 0], [1, 1], [0, 2], [1, 2]],
-	"3to2": [[0, 0], [-1, 0], [-1, 1], [0, 2], [-1, -2]],
+	"1to2": [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
+	"2to1": [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
+	"2to3": [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
+	"3to2": [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
 	"3to4": [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-	"4to3": [[0, 0], [-1, 0], [-1, 1], [0, 2], [-1, 2]],
-	"4to1": [[0, 0], [-1, 0], [-1, 1], [0, 2], [-1, 2]],
-	"1to4": [[0, 0], [1, 0], [1, 1], [0, 2], [1, 2]]
+	"4to3": [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+	"4to1": [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+	"1to4": [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]]
 }
 
 TetrisManager.IKick = {
-	"1to2": [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, 2]],
-	"2to1": [[0, 0], [2, 0], [-1, 0], [2, 1], [-1, -2]],
-	"2to3": [[0, 0], [-1, 0], [2, 0], [-1, 2], [2, 1]],
-	"3to2": [[0, 0], [1, 0], [-2, 1], [1, -2], [-2, -1]],
-	"3to4": [[0, 0], [2, 0], [-1, 0], [2, 1], [-1, -2]],
-	"4to3": [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, 2]],
-	"4to1": [[0, 0], [1, 0], [-2, 0], [1, -2], [-2, 1]],
-	"1to4": [[0, 0], [-1, 0], [2, 1], [-1, 2], [2, -1]]
+	"1to2": [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, -2]],
+	"2to1": [[0, 0], [2, 0], [-1, 0], [2, -1], [-1, 2]],
+	"2to3": [[0, 0], [-1, 0], [2, 0], [-1, -2], [2, 1]],
+	"3to2": [[0, 0], [1, 0], [-2, 0], [1, 2], [-2, -1]],
+	"3to4": [[0, 0], [2, 0], [-1, 0], [2, -1], [-1, 2]],
+	"4to3": [[0, 0], [-2, 0], [1, 0], [-2, 1], [1, -2]],
+	"4to1": [[0, 0], [1, 0], [-2, 0], [1, 2], [-2, -1]],
+	"1to4": [[0, 0], [-1, 0], [2, 0], [-1, -2], [2, 1]]
 }
 
 TetrisManager.GeneralRuleSet = {
@@ -207,7 +209,7 @@ TetrisManager.AIFrequency = 20;
 
 TetrisManager.ROW = 10;
 
-TetrisManager.COL = 24;
+TetrisManager.COL = 40;
 
 TetrisManager.Count_Blocks = 0;
 
@@ -225,11 +227,15 @@ TetrisManager.highestLPM = 0;
 
 TetrisManager.highestAPM = 0;
 
+TetrisManager.AboveLines = 16;
+
 TetrisManager.makeData = function () {
 	var tet = {};
 
-	tet.highestLPM = TetrisManager.highestLPM;
-	tet.highestAPM = TetrisManager.highestAPM;
+	tet.ArrDelay = $gameVariables.value(3)
+	tet.DasDelay = $gameVariables.value(2)
+	tet.softDropSpeed = $gameVariables.value(4)
+	tet.AiSpeed = $gameVariables.value(5)
 
 	return tet
 }
@@ -249,15 +255,136 @@ TetrisManager.load = function () {
 	if (json) {
 		tet = JSON.parse(json);
 	}
-	if (tet['highestLPM']) {
-		TetrisManager.highestLPM = Number(tet['highestLPM']);
-	}
-	if (tet['highestAPM']) {
-		TetrisManager.highestAPM = Number(tet['highestAPM']);
-	}
+	if (tet['ArrDelay'] !== undefined) {
+		$gameVariables.setValue(3, Number(tet['ArrDelay']))
+	} else {
+		$gameVariables.setValue(3, 3)
+    }
+	if (tet['DasDelay'] !== undefined) {
+		$gameVariables.setValue(2, Number(tet['DasDelay']))
+	} else {
+		$gameVariables.setValue(2, 10)
+    }
+	if (tet['softDropSpeed'] !== undefined) {
+		$gameVariables.setValue(4, Number(tet['softDropSpeed']))
+	} else {
+		$gameVariables.setValue(4, 20)
+    }
+	if (tet['AiSpeed'] !== undefined) {
+		$gameVariables.setValue(5, Number(tet['AiSpeed']))
+	} else {
+		$gameVariables.setValue(5, 20)
+    }
 }
 
 TetrisManager.TimerActivated = false;
+
+TetrisManager.keyCodeList = {
+	"8": "backspace",
+	"9": "tab",
+	"13": "enter",
+	"16": "shift",
+	"17": "ctrl",
+	"18": "alt",
+	"19": "pause_break",
+	"20": "caps_lock",
+	"27": "escape",
+	"33": "page_up",
+	"34": "page_down",
+	"35": "end",
+	"36": "home",
+	"37": "left_arrow",
+	"38": "up_arrow",
+	"39": "right_arrow",
+	"40": "down_arrow",
+	"45": "insert",
+	"46": "delete",
+	"48": "0",
+	"49": "1",
+	"50": "2",
+	"51": "3",
+	"52": "4",
+	"53": "5",
+	"54": "6",
+	"55": "7",
+	"56": "8",
+	"57": "9",
+	"65": "a",
+	"66": "b",
+	"67": "c",
+	"68": "d",
+	"69": "e",
+	"70": "f",
+	"71": "g",
+	"72": "h",
+	"73": "i",
+	"74": "j",
+	"75": "k",
+	"76": "l",
+	"77": "m",
+	"78": "n",
+	"79": "o",
+	"80": "p",
+	"81": "q",
+	"82": "r",
+	"83": "s",
+	"84": "t",
+	"85": "u",
+	"86": "v",
+	"87": "w",
+	"88": "x",
+	"89": "y",
+	"90": "z",
+	"91": "left_window_key",
+	"92": "right_window_key",
+	"93": "select_key",
+	"96": "numpad_0",
+	"97": "numpad_1",
+	"98": "numpad_2",
+	"99": "numpad_3",
+	"100": "numpad_4",
+	"101": "numpad_5",
+	"102": "numpad_6",
+	"103": "numpad_7",
+	"104": "numpad_8",
+	"105": "numpad_9",
+	"106": "multiply",
+	"107": "add",
+	"109": "subtract",
+	"110": "decimal_point",
+	"111": "divide",
+	"112": "f1",
+	"113": "f2",
+	"114": "f3",
+	"115": "f4",
+	"116": "f5",
+	"117": "f6",
+	"118": "f7",
+	"119": "f8",
+	"120": "f9",
+	"121": "f10",
+	"122": "f11",
+	"123": "f12",
+	"144": "num_lock",
+	"145": "scroll_lock",
+	"186": "semi_colon",
+	"187": "equal_sign",
+	"188": "comma",
+	"189": "dash",
+	"190": "period",
+	"191": "forward_slash",
+	"192": "grave_accent",
+	"219": "open_bracket",
+	"220": "back_slash",
+	"221": "close_braket",
+	"222": "single_quote"
+}
+
+TetrisManager.BlankLines = 2;
+
+TetrisManager.GaugeConstant = 10;
+
+TetrisManager.Temps = {};
 
 //============================================================
 // 超级旋转系统
@@ -290,12 +417,12 @@ TetrisManager.PlaceTest = function (battler, tempBlock, cur) {
 }
 
 TetrisManager.rotateRight = function (battler) {
-	tempCur = {
+	var tempCur = {
 		box: null,
 		rotation: battler.cur.rotation
 	};
-	type = battler.cur.type;
-	rotation = battler.cur.rotation;
+	var type = battler.cur.type;
+	var rotation = battler.cur.rotation;
 	if ((rotation + 1) < (TetrisManager.data[type].length)) {
 		tempCur.box = TetrisManager.data[type][rotation + 1];
 		tempCur.rotation += 1;
@@ -307,12 +434,12 @@ TetrisManager.rotateRight = function (battler) {
 }
 
 TetrisManager.rotateLeft = function (battler) {
-	tempCur = {
+	var tempCur = {
 		box: null,
 		rotation: battler.cur.rotation
 	};
-	type = battler.cur.type;
-	rotation = battler.cur.rotation;
+	var type = battler.cur.type;
+	var rotation = battler.cur.rotation;
 	if (rotation - 1 >= 0) {
 		tempCur.box = TetrisManager.data[type][rotation - 1];
 		tempCur.rotation -= 1;
@@ -325,7 +452,7 @@ TetrisManager.rotateLeft = function (battler) {
 }
 
 TetrisManager.rotationRule = function (battler, direction) {
-	tempBlock = {
+	var tempBlock = {
 		x: battler.cur.block.x,
 		y: battler.cur.block.y,
 		rotationTime: battler.cur.rotationTime + direction
@@ -356,10 +483,10 @@ TetrisManager.rotationRule = function (battler, direction) {
 }
 
 TetrisManager.kickTheWall = function (battler, tempBlock, tempBox, direction) {
-	type = battler.cur.type;
-	rotation = battler.cur.rotation;
-	beginning = rotation + 1;
-	ending = null;
+	var type = battler.cur.type;
+	var rotation = battler.cur.rotation;
+	var beginning = rotation + 1;
+	var ending = null;
 	if (rotation + direction < 0) {
 		ending = 4
 	}
@@ -370,11 +497,11 @@ TetrisManager.kickTheWall = function (battler, tempBlock, tempBox, direction) {
 		ending = rotation + direction + 1
 	}
 
-	key = beginning + "to" + ending;
+	var key = beginning + "to" + ending;
 
 	if (type == "1") {
 		for (i in TetrisManager.IKick[key]) {
-			smallTemp = {
+			var smallTemp = {
 				x: tempBlock.x,
 				y: tempBlock.y
 			}
@@ -396,7 +523,7 @@ TetrisManager.kickTheWall = function (battler, tempBlock, tempBox, direction) {
 
 	if (type != "o" && type != "1") {
 		for (i in TetrisManager.generalKick[key]) {
-			smallTemp = {
+			var smallTemp = {
 				x: tempBlock.x,
 				y: tempBlock.y
 			}
@@ -418,13 +545,13 @@ TetrisManager.kickTheWall = function (battler, tempBlock, tempBox, direction) {
 }
 
 TetrisManager.getRotationResult = function (battler, direction) {
-	tempBlock = TetrisManager.rotationRule(battler, direction);
+	var tempBlock = TetrisManager.rotationRule(battler, direction);
 	if (direction == 1) {
 		tempBox = TetrisManager.rotateRight(battler);
 	} else {
 		tempBox = TetrisManager.rotateLeft(battler);
 	}
-	Finaltemp = TetrisManager.kickTheWall(battler, tempBlock, tempBox, direction);
+	var Finaltemp = TetrisManager.kickTheWall(battler, tempBlock, tempBox, direction);
 	return Finaltemp
 }
 
@@ -513,7 +640,7 @@ var AITest = [
 		yposition: 24,
 		width: 260,
 		height: 325,
-
+		assumeYpos: 84,
 		pictureBoard: null,
 		picture: new Sprite(),
 		pictureName: "Inuyama",
@@ -539,7 +666,7 @@ var TwoSlimes = [
 		category: "enemy",
 		xposition: 816,
 		yposition: 84,
-
+		assumeYpos: 84,
 		avatar: new Sprite(),
 		avatarName: "Slime_Avatar",
 
@@ -563,7 +690,7 @@ var TwoSlimes = [
 		category: "enemy",
 		xposition: 1020,
 		yposition: 276,
-
+		assumeYpos: 276,
 		avatar: new Sprite(),
 		avatarName: "Slime_Avatar",
 
@@ -584,9 +711,109 @@ var TwoSlimes = [
 	}
 ]
 
+var FourKnights = [
+	{
+		name: "Knight",
+		category: "enemy",
+		xposition: 832,
+		yposition: 84,
+		assumeYpos: 84,
+		avatar: new Sprite(),
+		avatarName: "Knight_Avatar",
+
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 200,
+		Atk: 35,
+		Def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		Gold: 20,
+		Exp: 20,
+
+		xrange: 9,
+		yrange: 9,
+	},
+	{
+		name: "Knight",
+		category: "enemy",
+		xposition: 1032,
+		yposition: 84,
+		assumeYpos: 84,
+		avatar: new Sprite(),
+		avatarName: "Knight_Avatar",
+
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 200,
+		Atk: 35,
+		Def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		Gold: 20,
+		Exp: 20,
+
+		xrange: 9,
+		yrange: 9,
+	},
+	{
+		name: "Knight",
+		category: "enemy",
+		xposition: 832,
+		yposition: 84,
+		assumeYpos: 384,
+		avatar: new Sprite(),
+		avatarName: "Knight_Avatar",
+
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 200,
+		Atk: 35,
+		Def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		Gold: 20,
+		Exp: 20,
+
+		xrange: 9,
+		yrange: 9,
+	},
+	{
+		name: "Knight",
+		category: "enemy",
+		xposition: 1032,
+		yposition: 84,
+		assumeYpos: 384,
+		avatar: new Sprite(),
+		avatarName: "Knight_Avatar",
+
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 200,
+		Atk: 35,
+		Def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		Gold: 20,
+		Exp: 20,
+
+		xrange: 9,
+		yrange: 9,
+	}
+]
+
 TetrisManager.enemy_List = [
 	AITest,
-	TwoSlimes
+	TwoSlimes,
+	FourKnights
 ]
 
 var sword = function () {
@@ -615,8 +842,6 @@ TetrisManager.skill_List = [sword]
 //============================================================
 // 解密数据
 //============================================================
-
-//TODO: 更换字体
 
 function Puzzle_Manager() {
 	this.initialize.apply(this, arguments);
@@ -673,7 +898,29 @@ Puzzle_Manager.prototype.create = function () {
 			this.targetBoard = new Target_Window("在" + this.timeLimit + "秒内获取尽量多的分数！")
 			this.scene.addChild(this.targetBoard);
 
-			this.infoBoard = new Tetris_Window(285, 142, 135, 500);
+			this.CheckBoard = new Tetris_Window(0, 0, 300, 300);
+			this.CheckBoard.contents.fontSize = 18;
+			this.CheckBoard.removeChildAt(0)
+			this.EasyCheck = new CheckBox();
+			this.CheckBoard.addChild(this.EasyCheck);
+			this.EasyCheck.move(15, 21);
+			this.CheckBoard.drawText("Easy: " + $gameVariables.value(7)+"分", 28, 0);
+			this.NormalCheck = new CheckBox();
+			this.CheckBoard.addChild(this.NormalCheck)
+			this.NormalCheck.move(15, 49)
+			this.CheckBoard.drawText("Normal: " + $gameVariables.value(8) + "分", 28, 28);
+			this.HardCheck = new CheckBox();
+			this.CheckBoard.addChild(this.HardCheck);
+			this.HardCheck.move(15, 77)
+			this.CheckBoard.drawText("Hard: " + $gameVariables.value(9) + "分", 28, 56);
+			this.LunaticCheck = new CheckBox();
+			this.CheckBoard.addChild(this.LunaticCheck);
+			this.LunaticCheck.move(15, 105);
+			this.CheckBoard.drawText("Lunatic: " + $gameVariables.value(10) + "分", 28, 84);
+
+			this.scene.addChild(this.CheckBoard);
+
+			this.infoBoard = new Tetris_Window(285, 142, 200, 500);
 			this.infoBoard.contents.fontSize = 18;
 			this.infoBoard.removeChildAt(0)
 			this.infoBoard.drawText(
@@ -685,7 +932,7 @@ Puzzle_Manager.prototype.create = function () {
 				"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
 				0, 310)
 			this.infoBoard.drawText(
-				"APM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+				"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
 				0, 335)
 			this.scene.addWindow(this.infoBoard);
 			this.ProgressBar = new VerticalProgressBar(50);
@@ -730,9 +977,6 @@ Puzzle_Manager.prototype.update = function (score) {
 			this.BarChart.changeValue(0, score);
 			break;
 		case 2:
-			if (this.timeLimit - TetrisManager.getElapsedTime() <= 0) {
-				this.victory = true;
-			}
 			if (this.victory) {
 				this.end = new Target_Window("时间到！");
 				this.scene.addChild(this.end);
@@ -747,10 +991,25 @@ Puzzle_Manager.prototype.update = function (score) {
 					"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
 					0, 310)
 				this.infoBoard.drawText(
-					"APM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+					"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
 					0, 335)
 				this.ProgressBar.changeNumber(score)
+
+				this.EasyCheck.ChEck();
+				if (score >= $gameVariables.value(8)) {
+					this.NormalCheck.ChEck();
+					if (score >= $gameVariables.value(9)) {
+						this.HardCheck.ChEck();
+						if (score >= $gameVariables.value(10)) {
+							this.LunaticCheck.ChEck();
+                        }
+                    }
+                }
             }
+
+			if (this.timeLimit - TetrisManager.getElapsedTime() <= 0) {
+				this.victory = true;
+			}
 			break;
 	}
 }
@@ -848,7 +1107,7 @@ AfterMath_Window.prototype.initialize = function (info) {
 	this.drawText("本局分数：" + this.score, 0, 0);
 	this.drawText("本局最大连击：" + this.combo, 0, 28);
 	this.drawText("本局LPM：" + TetrisManager.keepTwoDigits(this.LPM), 0, 56);
-	this.drawText("本局APM：" + TetrisManager.keepTwoDigits(this.APM), 0, 84);
+	this.drawText("本局KPM：" + TetrisManager.keepTwoDigits(this.APM), 0, 84);
 
 	this.contents.drawLine(500, 0, 500, 424, 5, "black");
 
@@ -862,15 +1121,15 @@ AfterMath_Window.prototype.initialize = function (info) {
 	}
 	this.drawText("历史最高连击：" + $gameVariables.value(22), 525, 28);
 
-	if (this.LPM >= TetrisManager.highestLPM) {
-		TetrisManager.highestLPM =  this.LPM;
+	if (this.LPM >= $gameVariables.value(23)) {
+		$gameVariables.setValue(23, this.LPM);
 	}
-	this.drawText("历史最高LPM：" + TetrisManager.keepTwoDigits(TetrisManager.highestLPM), 525, 56);
+	this.drawText("历史最高LPM：" + $gameVariables.value(23), 525, 56);
 
-	if (this.APM >= TetrisManager.highestAPM) {
-		TetrisManager.highestAPM = this.APM;
+	if (this.APM >= $gameVariables.value(24)) {
+		$gameVariables.setValue(24, this.APM);
 	}
-	this.drawText("历史最高APM：" + TetrisManager.keepTwoDigits(TetrisManager.highestAPM), 525, 84);
+	this.drawText("历史最高KPM：" + $gameVariables.value(24), 525, 84);
 
 	this.opacity = 0;
 	this.backOpacity = 255;
@@ -925,11 +1184,9 @@ Chart_Window.prototype.update = function () {
 		this.refresh();
 		if (this.displayXmax < this.Xmax) {
 			this.displayXmax += 1;
-			console.log(this.displayXmax)
 		}
 		if (this.displayYmax < this.Ymax) {
 			this.displayYmax += 1;
-			console.log(this.displayYmax)
 		}
 		for (var i = 0; i < this.points.length; i++) {
 			if (this.points[i + 1]) {
@@ -1026,6 +1283,79 @@ BarChartWindow.prototype.changeValue = function (id, amount) {
         }
 	}
 	this.bars[id].changeValue(amount);
+}
+
+//-----------------------------------------------------------------------------
+
+function SkillWindow() {
+	this.initialize.apply(this, arguments);
+}
+
+SkillWindow.prototype = Object.create(Window_Selectable.prototype);
+SkillWindow.prototype.constructor = SkillWindow;
+
+SkillWindow.prototype.initialize = function () {
+	Window_Selectable.prototype.initialize.call(this, 0, 0, 300, 100);
+	this._itemNum = 3;
+	this.deactivate();
+}
+
+SkillWindow.prototype.start = function () {
+	this.createContents();
+	this.refresh();
+	this.open();
+	this.activate();
+	this.select(0);
+}
+
+SkillWindow.prototype.maxCols = function () {
+	return this._itemNum;
+}
+
+SkillWindow.prototype.maxItems = function () {
+	return this._itemNum;
+};
+
+SkillWindow.prototype.spacing = function () {
+	return 1;
+};
+
+SkillWindow.prototype.drawItem = function (index) {
+	this.drawItemRect(index)
+}
+
+SkillWindow.prototype.drawItemRect = function (index) {
+	var rect = this.itemRect(index);
+	var color = this.gaugeBackColor();
+	this.drawRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2, color);
+}
+
+
+SkillWindow.prototype.drawRect = function (dx, dy, dw, dh, color) {
+	this.changePaintOpacity(false);
+	this.contents.fillRect(dx, dy, dw, dh, color);
+	this.changePaintOpacity(true);
+};
+
+SkillWindow.prototype.isTouchOkEnabled = function () {
+	return true;
+};
+
+SkillWindow.prototype.isOkEnabled = function () {
+	return true;
+};
+
+SkillWindow.prototype.itemWidth = function () {
+	return 32;
+};
+
+SkillWindow.prototype.isOkTriggered = function () {
+	return Input.isTriggered('ok');
+};
+
+SkillWindow.prototype.processOk = function () {
+	SoundManager.playOk();
+	alert(this.index());
 }
 
 //-----------------------------------------------------------------------------
@@ -1174,7 +1504,7 @@ Target_Window.prototype.constructor = Target_Window;
 
 Target_Window.prototype.initialize = function (txt) {
 	Window_Base.prototype.initialize.call(this, 0, 275, 1200, 75);
-	txtList = txt.split("");
+	var txtList = txt.split("");
 	this.drawText(txt, 600-(txtList.length*28)/2, 0);
 	this.opacity = 0;
 	this.layed = false;
@@ -1200,6 +1530,50 @@ Target_Window.prototype.update = function () {
 }
 
 Target_Window.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+//-----------------------------------------------------------------------------
+
+function CountDown_Window() {
+	this.initialize.apply(this, arguments);
+}
+
+CountDown_Window.prototype = Object.create(Window_Base.prototype)
+CountDown_Window.prototype.constructor = CountDown_Window;
+
+CountDown_Window.prototype.initialize = function () {
+	Window_Base.prototype.initialize.call(this, 0, 275, 1200, 75);
+	this.removeChildAt(0)
+	this.Count = 5;
+	this.curTime = 0;
+	this.stage = 0;
+	this.drawText(this.Count, 600, 0);
+	this.ExItIng = false;
+}
+
+CountDown_Window.prototype.update = function () {
+	Window_Base.prototype.update.call(this);
+	this.curTime += 1;
+	if (this.curTime >= 60) {
+		this.curTime = 0;
+		this.Count -= 1;
+		if (this.Count >= 1) {
+			this.refresh();
+			this.drawText(this.Count, 600, 0);
+        }
+	}
+
+	if (this.Count <= 1) {
+		this.opacity -= 20;
+		if (this.opacity <= 0) {
+			this.destroy();
+        }
+	}
+	
+}
+
+CountDown_Window.prototype.refresh = function () {
 	this.contents.clear();
 }
 
@@ -1309,7 +1683,6 @@ SpinningBox.prototype.initialize = function (Xdistance, Ydistance) {
 	this.time = 75
 	this.Xstep = Xdistance / this.time;
 	this.Ystep = Ydistance / this.time;
-	console.log(this.Xstep + " " + this.Ystep)
 	this.anchor.x = 0.5;
 	this.anchor.y = 0.5;
 }
@@ -1397,7 +1770,7 @@ VerticalProgressBar.prototype.constructor = VerticalProgressBar;
 
 VerticalProgressBar.prototype.initialize = function (maxAmount) {
 	Sprite.prototype.initialize.call(this);
-	this.changeTime = 10;
+	this.changeTime = TetrisManager.GaugeConstant;
 	this.curAmount = 0;
 	this.displayAmount = 0;
 	this.maxAmount = maxAmount;
@@ -1505,7 +1878,7 @@ FNumber.prototype.constructor = FNumber;
 FNumber.prototype.initialize = function (number, maxdigits, skin) {
 	Sprite.prototype.initialize.call(this);
 	this.oldNumber = null;
-	this.curNumber = number;
+	this.curNumber = Math.floor(number);
 	this.maxdigits = maxdigits;
 	this.loadimg(skin);
 	this.ExtendDir = "right"
@@ -1521,7 +1894,7 @@ FNumber.prototype.loadimg = function (skin) {
 
 FNumber.prototype.update = function () {
 	Sprite.prototype.update.call(this);
-	if (this.curNumber !== this.oldNumber) {
+	if (this.curNumber !== this.oldNumber || this.oldNumber === null) {
 		this.create_number();
 	}
 }
@@ -1565,7 +1938,7 @@ FNumber.prototype.create_number = function () {
 }
 
 FNumber.prototype.change = function (newNumber) {
-	this.curNumber = newNumber;
+	this.curNumber = Math.floor(newNumber);
 }
 
 FNumber.prototype.changeNumSkin = function (skin) {
@@ -1634,7 +2007,6 @@ ComboSprite.prototype.constructor = ComboSprite;
 
 ComboSprite.prototype.initialize = function (combo) {
 	Sprite.prototype.initialize.call(this);
-	console.log("inner: " + combo);
 	this.ComboPic = new Sprite();
 	this.ComboPic.bitmap = ImageManager.loadPicture("ui\\ComboX");
 	this.ComboNum = new FNumber(combo, 9, "BigNumbers")
@@ -1736,6 +2108,37 @@ Something.prototype.initialize = function () {
 	this.bitmap = ImageManager.loadPicture("Window");
 	this.resetFontSettings();
 	this.bitmap.drawText("hello world");
+}
+
+//-----------------------------------------------------------------------------
+
+function CheckBox() {
+	this.initialize.apply(this, arguments);
+}
+
+CheckBox.prototype = Object.create(Sprite.prototype);
+CheckBox.prototype.constructor = CheckBox;
+
+CheckBox.prototype.initialize  = function() {
+	Sprite.prototype.initialize.call(this);
+	this.bitmap = ImageManager.loadPicture("ui\\CheckBox");
+	this.Check = new Sprite();
+	this.Check.bitmap = ImageManager.loadPicture("ui\\Check");
+	this.added = false;
+}
+
+CheckBox.prototype.ChEck = function () {
+	if (!this.added) {
+		this.addChild(this.Check);
+		this.added = true;
+	}
+}
+
+CheckBox.prototype.UnChEck = function () {
+	if (this.added) {
+		this.removeChild(this.Check);
+		this.added = false;
+    }
 }
 
 //=============================================================================

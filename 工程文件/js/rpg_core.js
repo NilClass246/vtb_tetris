@@ -3058,6 +3058,7 @@ Input.clear = function() {
     this._previousState = {};
     this._gamepadStates = [];
     this._latestButton = null;
+    this._latestButtons = [];
     this._pressedTime = 0;
     this._dir4 = 0;
     this._dir8 = 0;
@@ -3078,8 +3079,10 @@ Input.update = function() {
     } else {
         this._latestButton = null;
     }
+    this._latestButtons = [];
     for (var name in this._currentState) {
         if (this._currentState[name] && !this._previousState[name]) {
+            this._latestButtons.push(name);
             this._latestButton = name;
             this._pressedTime = 0;
             this._date = Date.now();
@@ -3117,7 +3120,18 @@ Input.isTriggered = function(keyName) {
     if (this._isEscapeCompatible(keyName) && this.isTriggered('escape')) {
         return true;
     } else {
-        return this._latestButton === keyName && this._pressedTime === 0;
+        for (var i = 0; i < this._latestButtons.length; i++) {
+            if (this._latestButtons[i] === keyName && this._pressedTime === 0) {
+                console.log(this._latestButtons.length)
+                console.log(this._latestButtons[0]);
+                if (this._latestButtons[1]) {
+                    console.log(this._latestButtons[1]);
+                }
+                console.log(">"+this._latestButtons[i]);
+            }
+            return this._latestButtons[i] === keyName && this._pressedTime === 0;
+        }
+        //return this._latestButton === keyName && this._pressedTime === 0;
     }
 };
 

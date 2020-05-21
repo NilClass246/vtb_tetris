@@ -216,8 +216,13 @@ Position_Manager.prototype.findBestSolution = function () {
 Position_Manager.prototype.render_ActionQueue = function () {
 	var BestSolution = this.findBestSolution();
 	var ActionQueue = [];
+	if (this.cur.type == "o") {
+		var x = TetrisManager.blockInitalPos + 1;
+	} else {
+		var x = TetrisManager.blockInitalPos;
+    }
 	var tempCur = {
-		x: 4,
+		x: x,
 		y: 0,
 		rotation: 0,
 		rotationTime: 0

@@ -1086,8 +1086,8 @@ FootStepsSprites.prototype.updatePosition = function(sprite) {
 //==============================
 // * Update Duration
 //==============================
-FootStepsSprites.prototype.updateDuration = function(i) {
-    if (this._footsprites[i].opacity > 0) {this._footsprites[i].opacity -= 2; return};
+FootStepsSprites.prototype.updateDuration = function (i) {
+    if (this._footsprites[i].opacity > 0) {this._footsprites[i].opacity -= 10; return};
 	this.removeChild(this._footsprites[i]);
 	this._footsprites.splice(i, 1);
 };

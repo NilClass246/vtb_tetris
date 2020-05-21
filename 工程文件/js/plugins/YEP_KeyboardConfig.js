@@ -1191,8 +1191,7 @@ Scene_KeyConfig.prototype.createKeyActionWindow = function() {
 };
 
 Scene_KeyConfig.prototype.commandDefault = function() {
-    ConfigManager.TetrisKeyMapper = 
-    JSON.parse(JSON.stringify(ConfigManager.defaultMap));
+    ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap));
 	this.refreshWindows();
 };
 
