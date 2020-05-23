@@ -227,7 +227,7 @@ TetrisManager.highestLPM = 0;
 
 TetrisManager.highestAPM = 0;
 
-TetrisManager.AboveLines = 16;
+TetrisManager.AboveLines = 20;
 
 TetrisManager.makeData = function () {
 	var tet = {};

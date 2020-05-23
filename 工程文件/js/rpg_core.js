@@ -2968,7 +2968,8 @@ function Input() {
  * @static
  * @method initialize
  */
-Input.initialize = function() {
+Input.initialize = function () {
+    this.running = true;
     this.clear();
     this._wrapNwjsAlert();
     this._setupEventHandlers();
@@ -3072,25 +3073,39 @@ Input.clear = function() {
  * @static
  * @method update
  */
-Input.update = function() {
-    this._pollGamepads();
-    if (this._currentState[this._latestButton]) {
-        this._pressedTime++;
-    } else {
-        this._latestButton = null;
-    }
-    this._latestButtons = [];
-    for (var name in this._currentState) {
-        if (this._currentState[name] && !this._previousState[name]) {
-            this._latestButtons.push(name);
-            this._latestButton = name;
-            this._pressedTime = 0;
-            this._date = Date.now();
+Input.update = function () {
+    if (this.running) {
+        this._pollGamepads();
+        if (this._currentState[this._latestButton]) {
+            this._pressedTime++;
+        } else {
+            this._latestButton = null;
         }
-        this._previousState[name] = this._currentState[name];
+        this._latestButtons = [];
+        for (var name in this._currentState) {
+            if (this._currentState[name] && !this._previousState[name]) {
+                this._latestButtons.push(name);
+                this._latestButton = name;
+                this._pressedTime = 0;
+                this._date = Date.now();
+            }
+            this._previousState[name] = this._currentState[name];
+        }
+        this._updateDirection();
     }
-    this._updateDirection();
 };
+
+Input.stop = function () {
+    this.running = false;
+}
+
+Input.begin = function () {
+    this.running = true;
+}
+
+Input.isRunning = function () {
+    return this.running;
+}
 
 /**
  * Checks whether a key is currently pressed down.
@@ -3116,24 +3131,31 @@ Input.isPressed = function(keyName) {
  * @param {String} keyName The mapped name of the key
  * @return {Boolean} True if the key is triggered
  */
-Input.isTriggered = function(keyName) {
+Input.isTriggered = function (keyName) {
     if (this._isEscapeCompatible(keyName) && this.isTriggered('escape')) {
         return true;
     } else {
         for (var i = 0; i < this._latestButtons.length; i++) {
-            if (this._latestButtons[i] === keyName && this._pressedTime === 0) {
-                console.log(this._latestButtons.length)
-                console.log(this._latestButtons[0]);
-                if (this._latestButtons[1]) {
-                    console.log(this._latestButtons[1]);
-                }
-                console.log(">"+this._latestButtons[i]);
+            if (this._latestButtons[i] === keyName) {
+                //console.log(this._latestButtons.length)
+                //console.log(this._latestButtons[0]);
+                //if (this._latestButtons[1]) {
+                //    console.log(this._latestButtons[1]);
+                //}
+                //console.log(">" + this._latestButtons[i]);
+                return true;
             }
-            return this._latestButtons[i] === keyName && this._pressedTime === 0;
+            //console.log(keyName);
+            //return this._latestButtons[i] === keyName
+            //    && this._pressedTime === 0;
         }
         //return this._latestButton === keyName && this._pressedTime === 0;
     }
 };
+
+Input.getLastestButtons = function () {
+    return this._latestButtons;
+}
 
 /**
  * Checks whether a key is just pressed or a key repeat occurred.
