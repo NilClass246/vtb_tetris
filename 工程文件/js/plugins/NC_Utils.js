@@ -227,7 +227,7 @@ TetrisManager.highestLPM = 0;
 
 TetrisManager.highestAPM = 0;
 
-TetrisManager.AboveLines = 20;
+TetrisManager.AboveLines = 16;
 
 TetrisManager.makeData = function () {
 	var tet = {};
@@ -629,215 +629,25 @@ TetrisManager.desetTimer = function () {
 }
 
 //============================================================
-// 敌人数据
+// 内部方法继承
 //============================================================
-
-var AITest = [
-	{
-		name: "Inuyama",
-		category: "enemy",
-		xposition: 840,
-		yposition: 24,
-		width: 260,
-		height: 325,
-		assumeYpos: 84,
-		pictureBoard: null,
-		picture: new Sprite(),
-		pictureName: "Inuyama",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 50,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		xrange: 12,
-		yrange: 12
-
-	}
-]
-
-var TwoSlimes = [
-	{
-		name: "Slime",
-		category: "enemy",
-		xposition: 816,
-		yposition: 84,
-		assumeYpos: 84,
-		avatar: new Sprite(),
-		avatarName: "Slime_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 12,
-		yrange: 12,
-	},
-	{
-		name: "Slime",
-		category: "enemy",
-		xposition: 1020,
-		yposition: 276,
-		assumeYpos: 276,
-		avatar: new Sprite(),
-		avatarName: "Slime_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 12,
-		yrange: 12,
-	}
-]
-
-var FourKnights = [
-	{
-		name: "Knight",
-		category: "enemy",
-		xposition: 832,
-		yposition: 84,
-		assumeYpos: 84,
-		avatar: new Sprite(),
-		avatarName: "Knight_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 9,
-		yrange: 9,
-	},
-	{
-		name: "Knight",
-		category: "enemy",
-		xposition: 1032,
-		yposition: 84,
-		assumeYpos: 84,
-		avatar: new Sprite(),
-		avatarName: "Knight_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 9,
-		yrange: 9,
-	},
-	{
-		name: "Knight",
-		category: "enemy",
-		xposition: 832,
-		yposition: 84,
-		assumeYpos: 384,
-		avatar: new Sprite(),
-		avatarName: "Knight_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 9,
-		yrange: 9,
-	},
-	{
-		name: "Knight",
-		category: "enemy",
-		xposition: 1032,
-		yposition: 84,
-		assumeYpos: 384,
-		avatar: new Sprite(),
-		avatarName: "Knight_Avatar",
-
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		Atk: 35,
-		Def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 9,
-		yrange: 9,
-	}
-]
-
-TetrisManager.enemy_List = [
-	AITest,
-	TwoSlimes,
-	FourKnights
-]
-
-var sword = function () {
-	for (i in this.player.next) {
-		this.player.nextWindows[i].removeChild(this.player.next[i].block);
-		this.player.next[i] = {
-			block: new Sprite(),
-			type: 't',
-			rotation: 0,
-			rotationTime: 0,
-			box: TetrisManager.data['t'][0].slice()
+//TODO: Damn, why is the call method not working???
+TetrisManager.Temps.is_OccasionOk = Game_BattlerBase.prototype.isOccasionOk
+Game_BattlerBase.prototype.isOccasionOk = function (item) {
+	if (SceneManager._scene instanceof Scene_Tetris || SceneManager._scene instanceof Scene_Puzzle) {
+		return item.occasion === 0 || item.occasion === 1;
+	} else {
+		if ($gameParty.inBattle()) {
+			return item.occasion === 0 || item.occasion === 1;
+		} else {
+			return item.occasion === 0 || item.occasion === 2;
 		}
-		this.player.next[i].block.bitmap = this.minoSkin['t'][0]
-		var effect = new SpinningBox(this.player.xposition + this.ROW * this.player.xrange + 110, this.player.yposition - 5 + 90 * i + 40 - 565)
-		effect.move(25, 565)
-		this.addChild(effect);
-		AudioManager.playSe(this.seBoom);
 	}
-	this.refreshNextWindows();
 }
 
-TetrisManager.skill_List = [sword]
-
-//TODO: 重写技能系统
+Window_Selectable.prototype.getOpenness = function () {
+	return this.openness;
+}
 
 //============================================================
 // 解密数据
@@ -856,43 +666,6 @@ Puzzle_Manager.prototype.initialize = function (ID) {
 
 Puzzle_Manager.prototype.create = function () {
 	switch (this.puzzleID) {
-		case 0:
-			this.SCORE = 0;
-			this.progress = 0;
-			this.targetSCORE = $gameVariables.value(12)
-			this.barX = 845;
-			this.barY = 110;
-			this.timeLimit = $gameVariables.value(11);
-			this.curTime = this.getElapsedTime();
-			this.ProgressBar = new ProgressBar(this.targetSCORE);
-			this.ProgressBar.move(this.barX, this.barY);
-			this.scene.addChild(this.ProgressBar)
-			this.ProgressBar.setPhase($gameVariables.value(7), "ui\\EasyBar")
-			this.ProgressBar.setPhase($gameVariables.value(8), "ui\\NormalBar")
-			this.ProgressBar.setPhase($gameVariables.value(9), "ui\\HardBar")
-			this.ProgressBar.setPhase($gameVariables.value(10), "ui\\LunaticBar")
-			this.targetBoard = new Tetris_Window(845, 5, 350, 100);
-			this.targetBoard.drawText("在"+this.timeLimit+"秒内获取尽量多的分数！", 0, 0)
-			this.scene.addWindow(this.targetBoard);
-			this.OtherWindow = new Tetris_Window(845, 180, 350, 435);
-			this.OtherWindow.drawText("点击确认键开始游戏", 0, 0);
-			this.scene.addWindow(this.OtherWindow);
-			break;
-		case 1:
-			this.SCORE = 0;
-			this.timeLimit = $gameVariables.value(11);
-			this.targetBoard = new Tetris_Window(0, 0, 300, 100);
-			this.targetBoard.contents.fontSize = 20;
-			//this.targetBoard.removeChildAt(0);
-			this.targetBoard.drawText("在" + this.timeLimit + "秒内获取尽量多的分数！", 0, 0);
-			this.scene.addWindow(this.targetBoard);
-			this.BarChart = new BarChartWindow(200, 400, "分数", 10);
-			this.BarChart.x = 0;
-			this.BarChart.y = 100;
-			this.BarChart.addNewBar(0);
-			this.BarChart.addNewBar(20);
-			this.scene.addWindow(this.BarChart);
-			break;
 		case 2:
 			this.timeLimit = $gameVariables.value(11);
 			this.targetBoard = new Target_Window("在" + this.timeLimit + "秒内获取尽量多的分数！")
@@ -934,48 +707,21 @@ Puzzle_Manager.prototype.create = function () {
 			this.infoBoard.drawText(
 				"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
 				0, 335)
+
 			this.scene.addWindow(this.infoBoard);
 			this.ProgressBar = new VerticalProgressBar(50);
 			this.ProgressBar.move(75, 80);
 			this.infoBoard.addChild(this.ProgressBar);
-			this.ProgressBar.addPhase($gameVariables.value(7), "ui\\EasyBar")
-			this.ProgressBar.addPhase($gameVariables.value(8), "ui\\NormalBar")
-			this.ProgressBar.addPhase($gameVariables.value(9), "ui\\HardBar")
 			this.ProgressBar.addPhase($gameVariables.value(10), "ui\\LunaticBar")
-
+			this.ProgressBar.addPhase($gameVariables.value(9), "ui\\HardBar")
+			this.ProgressBar.addPhase($gameVariables.value(8), "ui\\NormalBar")
+			this.ProgressBar.addPhase($gameVariables.value(7), "ui\\EasyBar")
 			break;
 	}
 }
 
 Puzzle_Manager.prototype.update = function (score) {
 	switch (this.puzzleID) {
-		case 0:
-			this.curTime = this.getElapsedTime();
-			if (this.SCORE != score) {
-				this.progress += score - this.SCORE;
-				this.SCORE = score;
-			}
-			if (this.progress > $gameVariables.value(7)) {
-				this.progress -= 0.01;
-			}
-			this.ProgressBar.changeNumber(this.progress)
-			if (this.SCORE >= this.targetSCORE||this.curTime >= this.timeLimit) {
-				this.victory = true;
-			}
-			if (this.victory) {
-				this.OtherWindow.contents.clear();
-				this.OtherWindow.drawText("挑战完成！", 0, 0);
-			} else {
-				this.OtherWindow.contents.clear();
-				var leftTime = (this.timeLimit - this.curTime)
-				this.OtherWindow.drawThinGauge(0, 25, 310, leftTime / this.timeLimit, 20, this.OtherWindow.mpGaugeColor1(), this.OtherWindow.mpGaugeColor2());
-				leftTime = TetrisManager.keepTwoDigits(leftTime);
-				this.OtherWindow.drawText("Time Left：" + leftTime + "sec", 0, 0);
-            }
-			break;
-		case 1:
-			this.BarChart.changeValue(0, score);
-			break;
 		case 2:
 			if (this.victory) {
 				this.end = new Target_Window("时间到！");
@@ -994,7 +740,6 @@ Puzzle_Manager.prototype.update = function (score) {
 					"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
 					0, 335)
 				this.ProgressBar.changeNumber(score)
-
 				this.EasyCheck.ChEck();
 				if (score >= $gameVariables.value(8)) {
 					this.NormalCheck.ChEck();
@@ -1025,7 +770,7 @@ Puzzle_Manager.prototype.isEnded = function () {
 //=============================================================================
 // 小组件定义
 //=============================================================================
-
+//TODO: 制作锁定系统
 function Tetris_Window() {
 	this.initialize.apply(this, arguments);
 }
@@ -1154,136 +899,46 @@ AfterMath_Window.prototype.isLayed = function () {
 	return this.layed;
 }
 
-//-----------------------------------------------------------------------------
+//============================================================
+// 技能系统
+//============================================================
 
-function Chart_Window() {
+function SkillManager() {
 	this.initialize.apply(this, arguments);
 }
 
-Chart_Window.prototype = Object.create(Window_Base.prototype);
-Chart_Window.prototype.constructor = Chart_Window;
-
-Chart_Window.prototype.initialize = function (width, height, labelX, labelY, Xmax, Ymax) {
-	Window_Base.prototype.initialize.call(this, 0, 0, width + 36, height + 36);
-	this.ChartHeight = height;
-	this.ChartWidth = width;
-	this.points = [];
-	this.labelX = labelX;
-	this.labelY = labelY;
-	this.Xmax = Xmax;
-	this.Ymax = Ymax;
-	this.displayXmax = Xmax;
-	this.displayYmax = Ymax;
-	this.ActIvAtEd = false;
-	this.cursor = 0;
-}
-
-Chart_Window.prototype.update = function () {
-	Window_Base.prototype.update.call(this);
-	if (this.ActIvAtEd) {
-		this.refresh();
-		if (this.displayXmax < this.Xmax) {
-			this.displayXmax += 1;
-		}
-		if (this.displayYmax < this.Ymax) {
-			this.displayYmax += 1;
-		}
-		for (var i = 0; i < this.points.length; i++) {
-			if (this.points[i + 1]) {
-				var x = (this.points[i].x / this.displayXmax) * this.ChartWidth;
-				var y = (1-this.points[i].y / this.displayYmax) * this.ChartHeight;
-				var Nextx = (this.points[i + 1].x / this.displayXmax) * this.ChartWidth;
-				var Nexty = (1-this.points[i + 1].y / this.displayYmax) * this.ChartHeight;
-				this.contents.drawLine(x, y, Nextx, Nexty, 5);
-			}
-		}
+SkillManager.prototype.initialize = function (skillIDList) {
+	this.skill_list = [];
+	this.skillButton_list = [];
+	for (var i = 0; i < skillIDList.length; i++) {
+		console.log('ID:' + skillIDList[i]);
+		this.skill_list.push(TetrisManager.skill_List[skillIDList[i]]);
+		this.skill_list[i].Reset();
+		this.skillButton_list.push(new SkillButton(skillIDList[i]));
 	}
+
+	this._help_window = new Window_SkillHelp(100, 100, 200, 200);
+	this._help_window.move(0, 350, 350, 150);
+	this._help_window.deactivate();
+	this._help_window.close()
+
+	this._skill_window = new SkillWindow(this.skillButton_list, this._help_window);
 }
 
-Chart_Window.prototype.InputPoint = function (x, y) {
-	if (x >= this.Xmax) {
-		this.Xmax = this.Xmax * 2;
-	}
-	if (y >= this.Ymax) {
-		this.Ymax = this.Ymax * 2;
-	}
-	var point = {
-		x: x,
-		y: y
-	}
-	this.points.push(point);
+SkillManager.prototype.startSkill = function (id) {
+	this.skill_list[id].MakeEffect();
 }
 
-Chart_Window.prototype.ActIvAtE = function () {
-	this.ActIvAtEd = true;
-}
-
-Chart_Window.prototype.refresh = function () {
-	this.contents.clear();
-}
-
-//-----------------------------------------------------------------------------
-
-function BarChartWindow() {
-	this.initialize.apply(this, arguments);
-}
-
-BarChartWindow.prototype = Object.create(Window_Base.prototype);
-BarChartWindow.prototype.constructor = BarChartWindow;
-
-BarChartWindow.prototype.initialize = function (width, height, labelY, Ymax) {
-	this.modiAmount = 15;
-	Window_Base.prototype.initialize.call(this, 0, 0, width + 36, height + 36,);
-	this.ChartHeight = height;
-	this.ChartWidth = width;
-	this.standardBarWidth = 20;
-	this.labelY = labelY;
-	this.Ymax = Ymax;
-	this.bars = [];
-	this.oldLength = this.bars.length;
-	this.contents.drawLine(0, this.ChartHeight - 18, this.ChartWidth, this.ChartHeight - 18, 4, 'white');
-	this.contents.drawLine(18, 0, 18, this.ChartHeight, 4, 'white');
-	this.fontSize = 5;
-	this.drawText(this.labelY, 0, -5);
-}
-
-BarChartWindow.prototype.update = function () {
-	Window_Base.prototype.update.call(this);
-
-	if (this.oldLength != this.bars.length) {
-		for (var i = 0; i < this.bars.length; i++) {
-			this.bars[i].changeX(Math.floor((i+1)*(this.ChartWidth / (this.bars.length + 1)) + 18 + this.modiAmount));
-		}
-		this.oldLength = this.bars.length;
-	}
-}
-
-BarChartWindow.prototype.addNewBar = function (amount) {
-	var bar = new DataBar(
-		this.ChartWidth + 18,
-		this.ChartHeight+5,
-		this.standardBarWidth,
-		this.ChartHeight,
-		amount,
-		this.Ymax
-	)
-	this.addChild(bar)
-	this.bars.push(bar);
-}
-
-BarChartWindow.prototype.refresh = function () {
-	this.contents.clear();
-}
-
-BarChartWindow.prototype.changeValue = function (id, amount) {
-	while (amount >= this.Ymax) {
-		this.Ymax = this.Ymax * 2;
-		for (var i = 0; i < this.bars.length; i++) {
-			this.bars[i].changeMaxValue(this.Ymax);
+SkillManager.prototype.update = function () {
+	for (var i = 0; i < this.skill_list.length; i++) {
+		if (this.skill_list[i].running) {
+			if (this.skill_list[i].isCompleted()) {
+				this.skill_list[i].Finish();
+            }
         }
-	}
-	this.bars[id].changeValue(amount);
+    }
 }
+
 
 //-----------------------------------------------------------------------------
 
@@ -1294,19 +949,51 @@ function SkillWindow() {
 SkillWindow.prototype = Object.create(Window_Selectable.prototype);
 SkillWindow.prototype.constructor = SkillWindow;
 
-SkillWindow.prototype.initialize = function () {
-	Window_Selectable.prototype.initialize.call(this, 0, 0, 300, 100);
+SkillWindow.prototype.initialize = function (skillButtonList, helpWindow) {
+	Window_Selectable.prototype.initialize.call(this);
+	this.skillButton_list = skillButtonList;
+
+	this.setHelpWindow(helpWindow);
 	this._itemNum = 3;
+	this.openness = 0;
 	this.deactivate();
 }
 
 SkillWindow.prototype.start = function () {
+	for (var i = 0; i < this.skillButton_list.length; i++) {
+		this.skillButton_list[i].move(this.padding, this.padding)
+		this.addChild(this.skillButton_list[i]);
+    }
+	this.updatePlacement();
 	this.createContents();
 	this.refresh();
 	this.open();
 	this.activate();
 	this.select(0);
 }
+
+SkillWindow.prototype.updatePlacement = function () {
+	this.width = this.windowWidth();
+	this.height = this.windowHeight();
+	this.x = 0
+	this.y = 545;
+};
+
+SkillWindow.prototype.itemWidth = function () {
+	return 50;
+};
+
+SkillWindow.prototype.itemHeight = function () {
+	return 50;
+};
+
+SkillWindow.prototype.windowWidth = function () {
+	return this.maxCols() * this.itemWidth() + this.padding * 2;
+};
+
+SkillWindow.prototype.windowHeight = function () {
+	return this.itemWidth() + this.padding * 2;
+};
 
 SkillWindow.prototype.maxCols = function () {
 	return this._itemNum;
@@ -1320,6 +1007,10 @@ SkillWindow.prototype.spacing = function () {
 	return 1;
 };
 
+SkillWindow.prototype.update = function () {
+	Window_Selectable.prototype.update.call(this);
+}
+
 SkillWindow.prototype.drawItem = function (index) {
 	this.drawItemRect(index)
 }
@@ -1330,6 +1021,9 @@ SkillWindow.prototype.drawItemRect = function (index) {
 	this.drawRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2, color);
 }
 
+SkillWindow.prototype.getRectColor = function (index) {
+	return this.gaugeBackColor();
+};
 
 SkillWindow.prototype.drawRect = function (dx, dy, dw, dh, color) {
 	this.changePaintOpacity(false);
@@ -1337,6 +1031,14 @@ SkillWindow.prototype.drawRect = function (dx, dy, dw, dh, color) {
 	this.changePaintOpacity(true);
 };
 
+SkillWindow.prototype.updateHelp = function () {
+	if (!this._helpWindow) return;
+	if (this.skillButton_list[this.index()] && this.skillButton_list[this.index()]._skill.description ) {
+		this._helpWindow.setText(this.skillButton_list[this.index()]._skill.description);
+	} else {
+		this._helpWindow.setText("无说明")
+    }
+}
 SkillWindow.prototype.isTouchOkEnabled = function () {
 	return true;
 };
@@ -1345,8 +1047,8 @@ SkillWindow.prototype.isOkEnabled = function () {
 	return true;
 };
 
-SkillWindow.prototype.itemWidth = function () {
-	return 32;
+SkillWindow.prototype.isCancelEnabled = function () {
+	return true;
 };
 
 SkillWindow.prototype.isOkTriggered = function () {
@@ -1355,125 +1057,39 @@ SkillWindow.prototype.isOkTriggered = function () {
 
 SkillWindow.prototype.processOk = function () {
 	SoundManager.playOk();
-	alert(this.index());
+	for (var i = 0; i < this.skillButton_list.length; i++) {
+		this.removeChild(this.skillButton_list[i]);
+	}
+	this.deactivate();
+	this.close();
+	this._helpWindow.deactivate();
+	this._helpWindow.close();
+	SceneManager._scene._Skill_Manager.startSkill(this.index());
 }
 
+SkillWindow.prototype.processCancel = function(){
+	SoundManager.playCancel();
+	for (var i = 0; i < this.skillButton_list.length; i++) {
+		this.removeChild(this.skillButton_list[i]);
+	}
+	SceneManager._scene.openPauseWindow();
+	this.deactivate();
+	this.close();
+	this._helpWindow.deactivate();
+	this._helpWindow.close();
+}
 //-----------------------------------------------------------------------------
 
-function DataBar() {
+function Window_SkillHelp(){
 	this.initialize.apply(this, arguments);
 }
 
-DataBar.prototype = Object.create(Sprite.prototype);
-DataBar.prototype.constructor = DataBar;
+Window_SkillHelp.prototype = Object.create(Window_Help.prototype);
+Window_SkillHelp.prototype.constructor = Window_SkillHelp;
 
-DataBar.prototype.initialize = function (x, y, width, height, curAmount, maxAmount) {
-	Sprite.prototype.initialize.call(this);
-	this.curAmount = curAmount;
-	this.displayAmount = curAmount;
-
-	this.maxAmount = maxAmount;
-	this.displayYmax = maxAmount;
-
-	this.BarWidth = width;
-	this.displayWidth = width;
-
-	this.BarHeight = height
-	this.anchor.y = 1;
-	this.anchor.x = 0.5;
-
-	this.curX = x;
-	this.displayX = x;
-	this.curY = y;
-
-	this.Ycursor = 0;
-	this.cursorAmount = 2;
-	this.move(this.displayX, y);
-	this.bitmap = ImageManager.loadPicture("ui\\BarGrad");
-	this.setFrame(0, this.Ycursor, this.displayWidth, (this.displayAmount / this.displayYmax) * this.BarHeight);
-
-	this.FNumber = new FNumber(this.displayAmount, 9)
-	this.FNumber.changeDirection("mid");
-	this.addChild(this.FNumber)
-	this.layed = false;
-}
-
-DataBar.prototype.update = function () {
-	Sprite.prototype.update.call(this);
-	if (this.displayAmount != this.curAmount) {
-		if (this.displayAmount < this.curAmount) {
-			this.displayAmount += 0.5;
-		} else {
-			this.displayAmount -= 0.5;
-		}
-		this.FNumber.change(Math.floor(this.displayAmount));
-	}
-	if (this.displayWidth != this.BarWidth) {
-		if (this.displayWidth < this.BarWidth) {
-			this.displayWidth += 1;
-		} else {
-			this.displayWidth -= 1;
-        }
-	}
-
-	if (this.displayYmax != this.maxAmount) {
-		if (this.displayYmax < this.maxAmount) {
-			this.displayYmax += 0.5;
-		} else {
-			this.displayYmax -= 0.5;
-		}
-	}
-
-	if (this.displayX != this.curX) {
-		if (this.displayX < this.curX) {
-			this.displayX += 1;
-		} else {
-			this.displayX -= 1;
-        }
-	}
-
-	if (this.Ycursor <= 0) {
-		this.cursorAmount = 2;
-	}
-	this.Ycursor += this.cursorAmount;
-	this.move(this.displayX, this.curY);
-	var rate = (this.displayAmount / this.displayYmax);
-	if (rate >= 1) {
-		rate = 1;
-    }
-	var Aheight = rate * this.BarHeight;
-	if ((this.Ycursor + Aheight + 1) >= 1248) {
-		this.cursorAmount = -2;
-	}
-	this.setFrame(0, this.Ycursor, this.displayWidth, Aheight);
-	this.FNumber.move(-10, Aheight / (-2));
-}
-
-DataBar.prototype.changeAll = function (x, y, width, height, curAmount, maxAmount) {
-	this.curAmount = curAmount;
-	this.maxAmount = maxAmount;
-	this.BarWidth = width;
-	this.BarHeight = height
-	this.curX = x;
-	this.curY = y
-	this.bitmap = ImageManager.loadPicture("ui\\BarGrad");
-	this.setFrame(0, 0, this.BarWidth, (this.curAmount / this.maxAmount) * this.BarHeight);
-}
-
-DataBar.prototype.changeValue = function (amount) {
-	this.curAmount = amount
-}
-
-DataBar.prototype.changeMaxValue = function (maxAmount) {
-	this.maxAmount = maxAmount;
-}
-
-DataBar.prototype.changeWidth = function (width) {
-	this.BarWidth = width;
-}
-
-DataBar.prototype.changeX = function (x) {
-	this.curX = x;
+Window_SkillHelp.initialize = function (x, y, width, height) {
+	Window_Base.prototype.initialize.call(this, x, y, width, height);
+	this._text = '';
 }
 
 //-----------------------------------------------------------------------------
@@ -1535,50 +1151,6 @@ Target_Window.prototype.refresh = function () {
 
 //-----------------------------------------------------------------------------
 
-function CountDown_Window() {
-	this.initialize.apply(this, arguments);
-}
-
-CountDown_Window.prototype = Object.create(Window_Base.prototype)
-CountDown_Window.prototype.constructor = CountDown_Window;
-
-CountDown_Window.prototype.initialize = function () {
-	Window_Base.prototype.initialize.call(this, 0, 275, 1200, 75);
-	this.removeChildAt(0)
-	this.Count = 5;
-	this.curTime = 0;
-	this.stage = 0;
-	this.drawText(this.Count, 600, 0);
-	this.ExItIng = false;
-}
-
-CountDown_Window.prototype.update = function () {
-	Window_Base.prototype.update.call(this);
-	this.curTime += 1;
-	if (this.curTime >= 60) {
-		this.curTime = 0;
-		this.Count -= 1;
-		if (this.Count >= 1) {
-			this.refresh();
-			this.drawText(this.Count, 600, 0);
-        }
-	}
-
-	if (this.Count <= 1) {
-		this.opacity -= 20;
-		if (this.opacity <= 0) {
-			this.destroy();
-        }
-	}
-	
-}
-
-CountDown_Window.prototype.refresh = function () {
-	this.contents.clear();
-}
-
-//-----------------------------------------------------------------------------
-
 function MergeEffect() {
 	this.initialize.apply(this, arguments);
 }
@@ -1619,85 +1191,110 @@ SkillButton.prototype.constructor = SkillButton;
 
 SkillButton.prototype.initialize = function (skillID) {
 	Sprite.prototype.initialize.call(this);
-	this.skill = TetrisManager.skill_List[skillID];
-	this.skillcover = new Sprite();
-	this.skillcover.bitmap = ImageManager.loadPicture("Skills\\SkillCover");
-	this.skillframe = new Sprite();
-	this.skillframe.bitmap = ImageManager.loadPicture("Skills\\SkillFrame");
-	this.skillicon = new Sprite();
-	this.skillicon.bitmap = ImageManager.loadPicture("Skills\\" + skillID);
-
-	this.addChild(this.skillicon);
-	this.addChild(this.skillcover);
-	this.addChild(this.skillframe);
-	this.rate = 1;
-	this.oldrate = 1;
-	this.prepared = false;
-}
-
-SkillButton.prototype.update = function () {
-	Sprite.prototype.update.call(this);
-	if (this.rate != this.oldrate) {
-		this.skillcover.setFrame(0, this.skillcover.bitmap.height * (1 - this.rate), this.skillcover.bitmap.width, this.skillcover.bitmap.height * this.rate);
-		this.skillcover.move(0, this.skillcover.bitmap.height * (1 - this.rate))
-		this.oldrate = this.rate;
-	}
-	if (this.rate <= 0) {
-		this.prepared = true;
-	} else {
-		this.rate -= 0.01;
-	}
-}
-
-SkillButton.prototype.updateRate = function (rate) {
-	this.rate = 1 - rate;
-}
-
-SkillButton.prototype.isPrepared = function () {
-	return this.prepared;
-}
-
-SkillButton.prototype.getSkill = function () {
-	return this.skill;
-}
-
-SkillButton.prototype.reset = function () {
-	this.rate = 1;
-	this.prepared = false;
+	this._skill = TetrisManager.skill_List[skillID];
+	this.bitmap = ImageManager.loadPicture("Skills\\" + TetrisManager.skill_List[skillID].pic);
 }
 
 //-----------------------------------------------------------------------------
+// 技能特效的抽象类
+function Attack_Effect() {
+	this.initialize.apply(this, arguments);
+}
+
+Attack_Effect.prototype = Object.create(Sprite.prototype);
+Attack_Effect.prototype.constructor = Attack_Effect;
+
+Attack_Effect.prototype.initialize = function () {
+	Sprite.prototype.initialize.call(this);
+	this.completed = false;
+}
+
+Attack_Effect.prototype.isCompleted = function () {
+	return this.completed;
+}
+
+Attack_Effect.prototype.Complete = function () {
+	this.completed = true;
+}
+
+//-----------------------------------------------------------------------------
+
+function DiminishingBox() {
+	this.initialize.apply(this, arguments);
+}
+
+DiminishingBox.prototype = Object.create(Attack_Effect.prototype);
+DiminishingBox.prototype.constructor = DiminishingBox;
+
+DiminishingBox.prototype.initialize = function (speed) {
+	Attack_Effect.prototype.initialize.call(this);
+	this.bitmap = ImageManager.loadPicture("theBox")
+	this.anchor.x = 0.5;
+	this.anchor.y = 0.5;
+	this.scale.x = 1;
+	this.scale.y = 1;
+	this.speed = speed
+	this._time = 1 / this.speed;
+}
+
+DiminishingBox.prototype.update = function () {
+	Attack_Effect.prototype.update.call(this);
+	this.rotation += Math.PI / 60;
+	this.scale.x -= this.speed;
+	this.scale.y -= this.speed;
+	this._time -= 1;
+	if (this._time <= 0) {
+		this.Complete();
+		this.destroy();
+    }
+}
 
 function SpinningBox() {
 	this.initialize.apply(this, arguments);
 }
 
-SpinningBox.prototype = Object.create(Sprite.prototype);
+SpinningBox.prototype = Object.create(Attack_Effect.prototype);
 SpinningBox.prototype.constructor = SpinningBox;
 
 SpinningBox.prototype.initialize = function (Xdistance, Ydistance) {
-	Sprite.prototype.initialize.call(this);
+	Attack_Effect.prototype.initialize.call(this);
 	this.Xdistance = Xdistance;
 	this.Ydistance = Ydistance;
-	this.bitmap = ImageManager.loadPicture("theBox")
-	this.time = 75
+	this.time = 30
+	this.interval = 1;
+	this.counter = 0;
 	this.Xstep = Xdistance / this.time;
 	this.Ystep = Ydistance / this.time;
-	this.anchor.x = 0.5;
-	this.anchor.y = 0.5;
+	this.Xcursor = 0;
+	this.Ycursor = 0;
+	this.sampleBox = new DiminishingBox(0.01);
+
 }
 
 SpinningBox.prototype.update = function () {
-	Sprite.prototype.update.call(this);
-	this.rotation += Math.PI / 60
-	this.x += this.Xstep;
-	this.Xdistance -= this.Xstep;
-	this.y += this.Ystep;
-	this.Ydistance -= this.Ystep;
-	this.time -= 1;
+	Attack_Effect.prototype.update.call(this);
 	if (this.time <= 0) {
+		this.Complete();
+	} else {
+		this.Xcursor += this.Xstep;
+		this.Xdistance -= this.Xstep;
+		this.Ycursor += this.Ystep;
+		this.Ydistance -= this.Ystep;
+		this.counter += 1;
+		if (this.counter >= this.interval) {
+			var box = new DiminishingBox(0.01);
+			box.move(this.Xcursor, this.Ycursor);
+			this.addChild(box);
+			this.counter = 0;
+		}
+
+    }
+
+	if ((-this.time) >= this.sampleBox._time) {
 		this.destroy();
 	}
+
+	this.time -= 1;
 }
 
 //-----------------------------------------------------------------------------
@@ -1794,19 +1391,11 @@ VerticalProgressBar.prototype.initialize = function (maxAmount) {
 VerticalProgressBar.prototype.update = function () {
 	Sprite.prototype.update.call(this);
 	if (this.displayAmount != this.curAmount) {
-		if (this.displayAmount < this.curAmount) {
-			this.displayAmount += (this.curAmount - this.displayAmount) / this.changeTime;
-		} else {
-			this.displayAmount -= (this.curAmount - this.displayAmount) / this.changeTime;
-        }
+		this.displayAmount += (this.curAmount - this.displayAmount) / this.changeTime;
 	}
 
 	if (this.displayMax != this.maxAmount) {
-		if (this.displayMax < this.maxAmount) {
-			this.displayMax += (this.maxAmount - this.displayMax) / this.changeTime;
-		} else {
-			this.displayMax -= (this.maxAmount - this.displayMax) / this.changeTime;
-		}
+		this.displayMax += (this.maxAmount - this.displayMax) / this.changeTime;
     }
 
 
@@ -2139,6 +1728,59 @@ CheckBox.prototype.UnChEck = function () {
 		this.removeChild(this.Check);
 		this.added = false;
     }
+}
+
+//-----------------------------------------------------------------------------
+
+function targetMark() {
+	this.initialize.apply(this, arguments);
+}
+
+targetMark.prototype = Object.create(Sprite.prototype);
+targetMark.prototype.constructor = targetMark;
+
+targetMark.prototype.initialize = function (target) {
+	Sprite.prototype.initialize.call(this);
+	this.bitmap = ImageManager.loadPicture("Target");
+	this.anchor.x = 0.5
+	this.anchor.y = 0.5
+	this.scale.x = target.scaleX;
+	this.targetScaleX = target.scaleX;
+	this.scale.y = target.scaleY;
+	this.targetScaleY = target.scaleY;
+	this.move(
+		target.xposition + (TetrisManager.ROW / 2) * target.xrange,
+		target.yposition + ((TetrisManager.COL - TetrisManager.AboveLines) / 2) * target.yrange + TetrisManager.AboveLines * target.yrange
+	)
+
+	this.targetX = this.x;
+	this.targetY = this.y;
+}
+
+targetMark.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.scale.x != this.targetScaleX) {
+		this.scale.x += (this.targetScaleX - this.scale.x) / TetrisManager.GaugeConstant;
+	}
+
+	if (this.scale.y != this.targetScaleY) {
+		this.scale.y += (this.targetScaleY - this.scale.y) / TetrisManager.GaugeConstant;
+	}
+
+	if (this.x != this.targetX) {
+		this.x += (this.targetX - this.x) / TetrisManager.GaugeConstant;
+	}
+
+	if (this.y != this.targetY) {
+		this.y += (this.targetY - this.y) / TetrisManager.GaugeConstant;
+	}
+}
+
+targetMark.prototype.aim = function (target) {
+	this.targetScaleX = target.scaleX;
+	this.targetScaleY = target.scaleY;
+	this.targetX = target.xposition + (TetrisManager.ROW / 2) * target.xrange;
+	this.targetY = target.yposition + ((TetrisManager.COL - TetrisManager.AboveLines) / 2) * target.yrange + TetrisManager.AboveLines * target.yrange
 }
 
 //=============================================================================

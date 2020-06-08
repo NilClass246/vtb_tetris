@@ -229,15 +229,15 @@ Yanfly.KeyConfig.version = 1.04;
  * @desc This is the Down action will appear for the config text.
  * @default Move ▼ Down
  * 
- * @param Skill One Key
+ * @param Tab Key
  * @parent ---Key Names---
- * @desc This is the Skill One action will appear on a key.
- * @default skill one
+ * @desc This is the Tab action will appear on a key.
+ * @default tab
  *
- * @param Skill One Text
+ * @param Tab Text
  * @parent ---Key Names---
- * @desc This is the Down action will appear for the config text.
- * @default skill one
+ * @desc This is the Tab action will appear for the config text.
+ * @default tab
  *
  * @help
  * ============================================================================
@@ -445,8 +445,8 @@ Yanfly.Param.KeyConfigRightKey = String(Yanfly.Parameters['Right Key']);
 Yanfly.Param.KeyConfigRightTx = String(Yanfly.Parameters['Right Text']);
 Yanfly.Param.KeyConfigDownKey = String(Yanfly.Parameters['Down Key']);
 Yanfly.Param.KeyConfigDownTx = String(Yanfly.Parameters['Down Text']);
-Yanfly.Param.KeyConfigSkillOneKey = String(Yanfly.Parameters['Skill One Key']);
-Yanfly.Param.KeyConfigSkillOneTx = String(Yanfly.Parameters['Skill One Text']);
+Yanfly.Param.KeyConfigTabKey = String(Yanfly.Parameters['Tab Key']);
+Yanfly.Param.KeyConfigTabTx = String(Yanfly.Parameters['Tab Text']);
 
 //=============================================================================
 // DataManager
@@ -516,9 +516,9 @@ ConfigManager.keyMapper = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.defaultMap = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.wasdMap = {
-  8: 'tab', 13: 'ok', 16: 'shift', 74: 'control', 27: 'escape',
+  9: 'tab', 13: 'ok', 16: 'shift', 74: 'control', 27: 'escape',
   32: 'ok', 33: 'pageup', 34: 'pagedown', 37: 'left', 38: 'up', 39: 'right',
-  40: 'down',85:'skillone', 87: 'space', 65: 'left', 83: 'down', 68: 'right',
+  40: 'down', 87: 'space', 65: 'left', 83: 'down', 68: 'right',
   75: 'up', 76: 'escape', 77: 'menu', 219: 'pageup',  221: 'pagedown', 45: 'escape',
   46: 'ok', 35: 'escape', 36: 'menu', 96: 'escape', 98: 'down', 100: 'left',
   102: 'right', 104: 'up', 120: 'debug' 
@@ -716,7 +716,7 @@ function Window_KeyConfig() {
 
 Window_KeyConfig._keyLayout = [
 	'~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', ' ', 'Ins',
-	'Home', 'PgUp', ' ', '#pD/', '*', '#pD-', ' ', 'Q', 'W', 'E', 'R', 'T', 'Y',
+	'Home', 'PgUp', ' ', '#pD/', '*', '#pD-', 'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y',
 	'U', 'I', 'O', 'P', '[', ']', '\\', 'Del', 'End', 'PgDn', '#pD7', '#pD8',
 	'#pD9', '+', ' ', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'",
 	'Enter', 'Enter', ' ', ' ', ' ', '#pD4', '#pD5', '#pD6', '+', 'Shift',
@@ -730,7 +730,7 @@ Window_KeyConfig._refId = {
 	'~':    192, '0':     48, '1':     49, '2':     50, '3':     51, '4':     52,
 	'5':     53, '6':     54, '7':     55, '8':     56, '9':     57, '-':    189,
 	'=':    187, 'Ins':   45,	'Home':  36, 'PgUp':  33, '#pD/': 111, '*':    106,
-	'#pD-': 109, 'Q':     81, 'W':     87, 'E':     69, 'R':     82, 'T':     84,
+	'#pD-': 109, 'Tab': 9, 'Q':     81, 'W':     87, 'E':     69, 'R':     82, 'T':     84,
 	'Y':     89, 'U':     85, 'I':     73, 'O':     79, 'P':     80, '[':    219,
 	']':    221, '\\':   220, 'Del':   46, 'End':   35, 'PgDn':  34, '#pD7': 103,
 	'#pD8': 104, '#pD9': 105, '+':    107, 'A':     65, 'S':     83, 'D':     68,
@@ -945,8 +945,8 @@ Window_KeyConfig.prototype.actionKey = function(action) {
 		case 'down':
 			return Yanfly.Param.KeyConfigDownKey;
             break;
-        case 'skillone':
-            return Yanfly.Param.KeyConfigSkillOneKey;
+        case 'tab':
+            return Yanfly.Param.KeyConfigTabKey;
             break;
     default:
       if (Imported.YEP_ButtonCommonEvents) {
@@ -1109,7 +1109,7 @@ Window_KeyAction.prototype.makeCommandList = function() {
 	this.addCommand(Yanfly.Param.KeyConfigUpTx, 'ok', true, 'up');
 	this.addCommand(Yanfly.Param.KeyConfigRightTx, 'ok', true, 'right');
     this.addCommand(Yanfly.Param.KeyConfigDownTx, 'ok', true, 'down');
-    this.addCommand(Yanfly.Param.KeyConfigSkillOneTx, 'ok', true, 'skillone');
+    this.addCommand(Yanfly.Param.KeyConfigTabTx, 'ok', true, 'tab');
   if (Imported.YEP_ButtonCommonEvents) this.addButtonCommonEvents();
 };
 

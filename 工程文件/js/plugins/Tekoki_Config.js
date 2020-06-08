@@ -51,6 +51,18 @@
 ConfigManager.ARRDelay = 3;
 ConfigManager.DASDelay = 10;
 ConfigManager.SoftSpeed = 20;
+ConfigManager.isDancePad = false;
+
+Input.defaultDancePadInput = {
+    0: 'up',
+    1: 'down',
+    2: 'right',
+    3: 'left',
+    4: 'menu',
+    5: 'shift',
+    6: 'cancel',
+    7: 'ok'
+}
 
 TetrisManager.Temps.ConfigManager_makeData = ConfigManager.makeData;
 ConfigManager.makeData = function () {
@@ -58,6 +70,7 @@ ConfigManager.makeData = function () {
     config.ARRDelay = this.ARRDelay;
     config.DASDelay = this.DASDelay;
     config.SoftSpeed = this.SoftSpeed;
+    config.isDancePad = this.isDancePad;
     return config;
 };
 
@@ -67,6 +80,7 @@ ConfigManager.applyData = function (config) {
     this.ARRDelay = this.readARR(config, 'ARRDelay');
     this.DASDelay = this.readDAS(config, 'DASDelay');
     this.SoftSpeed = this.readSoft(config, 'SoftSpeed');
+    this.isDancePad = this.readFlag(config, 'isDancePad');
 };
 
 ConfigManager.readARR = function (config, name) {
@@ -104,6 +118,7 @@ Window_Options.prototype.addGeneralOptions = function () {
     this.addCommand('方块移动速度(ARR)设置', 'ARRParams', true);
     this.addCommand('方块灵敏度(DAS)设置', 'DASParams', true);
     this.addCommand('软降倍率设置', 'SoftParams', true);
+    this.addCommand('是否使用跳舞毯配置', 'isDancePad');
 }
 
 TetrisManager.Temps.Window_Options_drawItem = Window_Options.prototype.drawItem;
@@ -131,6 +146,16 @@ Window_Options.prototype.processOk = function () {
         Window_Command.prototype.processOk.call(this);
     } else {
         TetrisManager.Temps.Window_Options_processOk.call(this);
+    }
+};
+
+TetrisManager.Temps.Window_Options_changeValue = Window_Options.prototype.changeValue;
+Window_Options.prototype.changeValue = function (symbol, value) {
+    TetrisManager.Temps.Window_Options_changeValue.call(this, symbol, value);
+    if (ConfigManager.isDancePad) {
+        Input.gamepadMapper = Input.defaultDancePadInput
+    } else {
+        Input.gamepadMapper = Input.defaultgamepadInput;
     }
 };
 

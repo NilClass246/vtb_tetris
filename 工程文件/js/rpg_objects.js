@@ -2771,7 +2771,7 @@ Game_BattlerBase.prototype.paySkillCost = function(skill) {
     this._tp -= this.skillTpCost(skill);
 };
 
-Game_BattlerBase.prototype.isOccasionOk = function(item) {
+Game_BattlerBase.prototype.isOccasionOk = function (item) {
     if ($gameParty.inBattle()) {
         return item.occasion === 0 || item.occasion === 1;
     } else {

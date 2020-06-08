@@ -2363,7 +2363,7 @@ Spriteset_Map.prototype.createWeather = function() {
     this.addChild(this._weather);
 };
 
-Spriteset_Map.prototype.updateTileset = function() {
+Spriteset_Map.prototype.updateTileset = function () {
     if (this._tileset !== $gameMap.tileset()) {
         this.loadTileset();
     }
@@ -2397,7 +2397,7 @@ Spriteset_Map.prototype.updateParallax = function() {
     }
 };
 
-Spriteset_Map.prototype.updateTilemap = function() {
+Spriteset_Map.prototype.updateTilemap = function () {
     this._tilemap.origin.x = $gameMap.displayX() * $gameMap.tileWidth();
     this._tilemap.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
 };

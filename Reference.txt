@@ -11,10 +11,13 @@ Scripts:
 	过眼云烟
 	杨志
 	SumRndmDde http://sumrndm.site/
+	OcRam
 
 Resources:
 	SkottyTV Window Skins	by Skotty TV
 	ItaHoly Window Skins	by ItaHoly
+Tilesets:
+	Cossio - Modern TileSets	by Cossio
 
 灵感参考：
 https://www.pixiv.net/artworks/80389496

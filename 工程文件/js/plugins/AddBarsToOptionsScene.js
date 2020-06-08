@@ -185,7 +185,7 @@ Window_Options.prototype.initialize_BarSprite = function(){
         {
             //バー画像
             var bitmap = ImageManager.load_MenuUi($img_bar_ABOS);
-            for(var i = 0; i < 12; i++)
+            for(var i = 0; i < 13; i++)
             {
                 this.sprite_img_bar[i] = new Sprite(bitmap);
                 //一回飛ばす
@@ -204,7 +204,7 @@ Window_Options.prototype.initialize_BarSprite = function(){
         {
             //ボタン画像
             var bitmap = ImageManager.load_MenuUi($img_button_ABOS);
-            for(var i = 0; i < 12; i++)
+            for(var i = 0; i < 13; i++)
             {
                 this.sprite_img_button[i] = new Sprite(bitmap);
                 //一回飛ばす

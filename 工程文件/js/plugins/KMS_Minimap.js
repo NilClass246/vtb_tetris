@@ -875,8 +875,7 @@ Sprite_Minimap.prototype.updateObjectSprites = function()
     this._objectSprites.forEach(function(sprite)
     {
         var obj = sprite.getObject();
-        if (!obj || !this.isInDrawRange(obj.x - 1, obj.y - 1))
-        {
+        if (!obj || !this.isInDrawRange(obj.x - 1, obj.y - 1)) {
             sprite.visible = false;
             return;
         }
@@ -1373,6 +1372,7 @@ Sprite_MinimapIcon.prototype.updateImage = function()
         {
             this.setIconIndex(iconIndex);
         }
+        this.visible = true;
     }
     else
     {
