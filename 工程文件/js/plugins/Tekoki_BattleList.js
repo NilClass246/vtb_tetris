@@ -33,6 +33,8 @@
  * 目前还在测试阶段。
  * meameasuki！
  */
+
+TetrisManager = TetrisManager || {};
  
 var EmptySlot = [];
 
@@ -203,6 +205,9 @@ TetrisManager.skill_List = {
 		name: "剑",
 		pic: "剑",
 		running: false,
+		isPrepared: true,
+		oldTime: 0,
+		CD: 0,
 		description: "T旋之魂\n将接下来的方块全部替换为T块",
 		MakeEffect: function () {
 			this.running = true
@@ -219,9 +224,7 @@ TetrisManager.skill_List = {
             }
 		},
 		isCompleted: function () {
-			if (this.SpinBoxes[this.SpinBoxes.length-1].isCompleted()) {
-				return true;
-            }
+			return true;
 		},
 		Finish: function () {
 			var scene = SceneManager._scene
@@ -239,14 +242,122 @@ TetrisManager.skill_List = {
 				player.next[i].block.scale.y = player.scaleY;
 			}
 			scene.refreshNextWindows();
-			SoundManager.playOk();
-			SceneManager._scene.closePauseScreen();
-			SceneManager._scene.beginRunning();
 			this.running = false;
 		},
 		Reset: function () {
-			this.SpinBox = null;
-			this.running = false;
+			this.isPrepared = false;
+			this.CD = 2;
+			this.oldTime = Date.now();
 		}
+	},
+	"占位测试": {
+		name: "占位测试",
+		pic: "占位测试",
+		running: false,
+		isPrepared: true,
+		CD: 0,
+		description: "测试用技能(中毒)",
+		MakeEffect: function () {
+			this.running = true
+			var scene = SceneManager._scene
+			scene._enemies[scene.findRNGEnemy()].StateBoard.applyStates("4", 10);
+
+		},
+		isCompleted: function () {
+			return true;
+		},
+		Finish: function () {
+			this.running = false;
+		},
+		Reset: function () {
+        }
+    }
+
+
+}
+
+TetrisManager.state_List = {
+	"1": {
+		id: 1,
+		count: 0,
+		updated: false,
+		onGain: function (owner) {
+		},
+		update: function () {
+		},
+		onLose: function () {
+		}
+    },
+	"4": {
+		id: 4,
+		count: 0,
+		updated: false,
+		onGain: function (owner) {
+			this.owner = owner
+			this.oldTime = Date.now();
+		},
+		update: function () {
+			if (((Date.now() - this.oldTime) / 1000) > 1) {
+				if (this.owner.category == 'enemy') {
+					this.owner.curHp -= this.count
+					if (this.owner.curHp < 0) {
+						this.owner.curHp = 0;
+                    }
+				} else {
+					this.owner.gainHp(-this.count);
+                }
+				this.oldTime = Date.now();
+				this.count -= 1;
+				this.updated = true;
+			}
+			if (this.count <= 0) {
+				this.owner.removeState(4);
+            }
+		},
+		onLose: function () {
+			
+		}
+	},
+	"8": {
+		id: 8,
+		count: 0,
+		updated: false,
+		onGain: function (owner) {
+			this.owner = owner
+			this.oldTime = Date.now();
+			if (this.owner.category == "enemy") {
+				this.owner.running = false;
+			} else {
+				SceneManager._scene.getPlayer().running = false;
+			}
+		},
+		update: function () {
+			if (((Date.now() - this.oldTime) / 1000) > 1) {
+				this.oldTime = Date.now();
+				this.count -= 1;
+				this.updated = true;
+			}
+			if (this.count <= 0) {
+				this.owner.removeState(8);
+			}
+		},
+		onLose: function () {
+			if (this.owner.category == "enemy") {
+				this.owner.running = true;
+			} else {
+				SceneManager._scene.getPlayer().running = true;
+			}
+		}
+    }
+}
+
+TetrisManager.item_List = {
+	"1": function () {
+		var actor = $gameActors.actor(1)
+		actor.gainHp(500);
+		SceneManager._scene._playerStateBoard.applyStates("4", 10)
+	},
+	"2": function () {
+		SceneManager._scene._playerStateBoard.applyStates("8", 5)
 	}
 }

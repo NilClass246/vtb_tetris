@@ -3,10 +3,8 @@
     "",
     "\\data",
     "\\js",
-    "\\js\\libs",
-    "\\js\\plugins",
-    "\\js\\tempCodes"
+    "\\js\\plugins"
   ],
-  "SelectedNode": "\\js\\plugins\\YEP_PictureSpritesheets.js",
+  "SelectedNode": "\\js\\plugins\\NC_Utils.js",
   "PreviewInSolutionExplorer": false
 }

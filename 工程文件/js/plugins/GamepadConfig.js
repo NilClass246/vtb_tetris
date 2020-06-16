@@ -72,6 +72,14 @@ Yanfly.GamepadConfig = Yanfly.GamepadConfig || {};
  * @desc This is the help description for the Control button.
  * @default Control
  * 
+ * @param Tab Button
+ * @desc This is the command name for the Tab button.
+ * @default Tab
+ * 
+ * @param Tab Help
+ * @desc This is the help description for the Tab button.
+ * @default Tab
+ * 
  * @param OK Button
  * @desc This is the command name for the OK button.
  * @default OK / Talk
@@ -169,6 +177,8 @@ Yanfly.Param.GamepadConfigSpaceTx = String(Yanfly.Parameters['Space Button']);
 Yanfly.Param.GamepadConfigSpaceHelp = String(Yanfly.Parameters['Space Help']);
 Yanfly.Param.GamepadConfigControlTx = String(Yanfly.Parameters['Control Button']);
 Yanfly.Param.GamepadConfigControlHelp = String(Yanfly.Parameters['Control Help']);
+Yanfly.Param.GamepadConfigTabTx = String(Yanfly.Parameters['Tab Button']);
+Yanfly.Param.GamepadConfigTabHelp = String(Yanfly.Parameters['Tab Help']);
 Yanfly.Param.GamepadConfigOkTx = String(Yanfly.Parameters['OK Button']);
 Yanfly.Param.GamepadConfigOkHelp = String(Yanfly.Parameters['OK Help']);
 Yanfly.Param.GamepadConfigCancelTx = String(Yanfly.Parameters['Cancel Button']);
@@ -199,6 +209,7 @@ Input.TetrisgamepadInput = {
 	5: 'pagedown',
 	6: 'control',
 	7: 'up',
+	8: 'tab',
 	13: 'down',
 	14: 'left',
 	15: 'right',
@@ -276,6 +287,7 @@ ConfigManager.TetrisgamepadInput = {
 	5: 'pagedown',
 	6: 'control',
 	7: 'up',
+	8: 'tab',
 	13: 'down',
 	14: 'left',
 	15: 'right',
@@ -315,6 +327,7 @@ ConfigManager.readGamepadConfig = function(config, name) {
 			5: 'pagedown',
 			6: 'control',
 			7: 'up',
+			8: 'tab',
 			13: 'down',
 			14: 'left',
 			15: 'right',
@@ -401,17 +414,17 @@ Window_GamepadConfig.prototype.windowWidth = function() {
 };
 
 Window_GamepadConfig.prototype.makeCommandList = function(index) {
-	for (var i = 0; i < 12; ++i) {
+	for (var i = 0; i < 13; ++i) {
 		var text = this.getButtonTypeText(i);
 		this.addCommand(text, 'button', true);
 	}
 	this.addCommand('', 'filler', true);
-	this.addCommand(this.getButtonTypeText(13), 'reset', true);
-	this.addCommand(this.getButtonTypeText(14), 'finish', true);
+	this.addCommand(this.getButtonTypeText(14), 'reset', true);
+	this.addCommand(this.getButtonTypeText(15), 'finish', true);
 };
 
 Window_GamepadConfig.prototype.drawItem = function(index) {
-	if (index > 11) {
+	if (index > 12) {
 		Window_Command.prototype.drawItem.call(this, index);
 	} else {
 		var rect = this.itemRectForText(index);
@@ -438,12 +451,13 @@ Window_GamepadConfig.prototype.getButtonTypeText = function (index) {
 	if (index === 9) return Yanfly.Param.GamepadConfigMenuTx;
 	if (index === 10) return Yanfly.Param.GamepadConfigPgUpTx;
 	if (index === 11) return Yanfly.Param.GamepadConfigPgDnTx;
-	if (index === 13) return Yanfly.Param.GamepadConfigResetTx;
-	if (index === 14) return Yanfly.Param.GamepadConfigFinishTx;
+	if (index === 12) return Yanfly.Param.GamepadConfigTabTx;
+	if (index === 14) return Yanfly.Param.GamepadConfigResetTx;
+	if (index === 15) return Yanfly.Param.GamepadConfigFinishTx;
 };
 
 Window_GamepadConfig.prototype.getButtonConfig = function(index) {
-	if (index > 11) return '';
+	if (index > 12) return '';
 	var key = this.getButtonKey(index);
 	var button = Input.getGamepadButton(key);
   return Yanfly.Param.GamepadConfigButton.format(button);
@@ -462,6 +476,7 @@ Window_GamepadConfig.prototype.getButtonKey = function(index) {
 	if (index === 9) return 'menu';
 	if (index === 10) return 'pageup';
 	if (index === 11) return 'pagedown';
+	if (index === 12) return 'tab';
 };
 
 Window_GamepadConfig.prototype.itemTextAlign = function() {
@@ -514,10 +529,13 @@ Window_GamepadConfig.prototype.updateHelp = function() {
 		case 11:
 			this._helpWindow.setText(Yanfly.Param.GamepadConfigPgDnHelp);
 			break;
-		case 13:
-			this._helpWindow.setText(Yanfly.Param.GamepadConfigResetHelp);
+		case 12:
+			this._helpWindow.setText(Yanfly.Param.GamepadConfigTabHelp);
 			break;
 		case 14:
+			this._helpWindow.setText(Yanfly.Param.GamepadConfigResetHelp);
+			break;
+		case 15:
 			this._helpWindow.setText(Yanfly.Param.GamepadConfigFinishHelp);
 			break;
 		default:
@@ -605,6 +623,7 @@ Scene_GamepadConfig.prototype.commandReset = function() {
 		5: 'pagedown',
 		6: 'control',
 		7: 'up',
+		8: 'tab',
 		13: 'down',
 		14: 'left',
 		15: 'right',

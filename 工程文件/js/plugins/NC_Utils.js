@@ -159,6 +159,8 @@ TetrisManager.data = {
 	]
 };
 
+TetrisManager.twoPMode = false;
+
 TetrisManager.block_pics = ["o", "s", "5", "l", "t", "j", "1"];
 
 TetrisManager.blockInitalPos = 3;
@@ -280,25 +282,25 @@ TetrisManager.load = function () {
 TetrisManager.TimerActivated = false;
 
 TetrisManager.keyCodeList = {
-	"8": "backspace",
-	"9": "tab",
-	"13": "enter",
-	"16": "shift",
-	"17": "ctrl",
-	"18": "alt",
-	"19": "pause_break",
-	"20": "caps_lock",
-	"27": "escape",
-	"33": "page_up",
-	"34": "page_down",
-	"35": "end",
-	"36": "home",
-	"37": "left_arrow",
-	"38": "up_arrow",
-	"39": "right_arrow",
-	"40": "down_arrow",
-	"45": "insert",
-	"46": "delete",
+	"8": "BACKSPACE",
+	"9": "TAB",
+	"13": "ENTER",
+	"16": "SHIFT",
+	"17": "CTRL",
+	"18": "ALT",
+	"19": "PAUSE_BREAK",
+	"20": "CAPS_LOCK",
+	"27": "ESCAPE",
+	"33": "PAGE_UP",
+	"34": "PAGE_DOWN",
+	"35": "END",
+	"36": "HOME",
+	"37": "LEFT_ARROW",
+	"38": "UP_ARROW",
+	"39": "RIGHT_ARROW",
+	"40": "DOWN_ARROW",
+	"45": "INSERT",
+	"46": "DELETE",
 	"48": "0",
 	"49": "1",
 	"50": "2",
@@ -309,75 +311,75 @@ TetrisManager.keyCodeList = {
 	"55": "7",
 	"56": "8",
 	"57": "9",
-	"65": "a",
-	"66": "b",
-	"67": "c",
-	"68": "d",
-	"69": "e",
-	"70": "f",
-	"71": "g",
-	"72": "h",
-	"73": "i",
-	"74": "j",
-	"75": "k",
-	"76": "l",
-	"77": "m",
-	"78": "n",
-	"79": "o",
-	"80": "p",
-	"81": "q",
-	"82": "r",
-	"83": "s",
-	"84": "t",
-	"85": "u",
-	"86": "v",
-	"87": "w",
-	"88": "x",
-	"89": "y",
-	"90": "z",
-	"91": "left_window_key",
-	"92": "right_window_key",
-	"93": "select_key",
-	"96": "numpad_0",
-	"97": "numpad_1",
-	"98": "numpad_2",
-	"99": "numpad_3",
-	"100": "numpad_4",
-	"101": "numpad_5",
-	"102": "numpad_6",
-	"103": "numpad_7",
-	"104": "numpad_8",
-	"105": "numpad_9",
-	"106": "multiply",
-	"107": "add",
-	"109": "subtract",
-	"110": "decimal_point",
-	"111": "divide",
-	"112": "f1",
-	"113": "f2",
-	"114": "f3",
-	"115": "f4",
-	"116": "f5",
-	"117": "f6",
-	"118": "f7",
-	"119": "f8",
-	"120": "f9",
-	"121": "f10",
-	"122": "f11",
-	"123": "f12",
-	"144": "num_lock",
-	"145": "scroll_lock",
-	"186": "semi_colon",
-	"187": "equal_sign",
-	"188": "comma",
-	"189": "dash",
-	"190": "period",
-	"191": "forward_slash",
-	"192": "grave_accent",
-	"219": "open_bracket",
-	"220": "back_slash",
-	"221": "close_braket",
-	"222": "single_quote"
+	"65": "A",
+	"66": "B",
+	"67": "C",
+	"68": "D",
+	"69": "E",
+	"70": "F",
+	"71": "G",
+	"72": "H",
+	"73": "I",
+	"74": "J",
+	"75": "K",
+	"76": "L",
+	"77": "M",
+	"78": "N",
+	"79": "O",
+	"80": "P",
+	"81": "Q",
+	"82": "R",
+	"83": "S",
+	"84": "T",
+	"85": "U",
+	"86": "V",
+	"87": "W",
+	"88": "X",
+	"89": "Y",
+	"90": "Z",
+	"91": "LEFT_WINDOW_KEY",
+	"92": "RIGHT_WINDOW_KEY",
+	"93": "SELECT_KEY",
+	"96": "NUMPAD_0",
+	"97": "NUMPAD_1",
+	"98": "NUMPAD_2",
+	"99": "NUMPAD_3",
+	"100": "NUMPAD_4",
+	"101": "NUMPAD_5",
+	"102": "NUMPAD_6",
+	"103": "NUMPAD_7",
+	"104": "NUMPAD_8",
+	"105": "NUMPAD_9",
+	"106": "MULTIPLY",
+	"107": "ADD",
+	"109": "SUBTRACT",
+	"110": "DECIMAL_POINT",
+	"111": "DIVIDE",
+	"112": "F1",
+	"113": "F2",
+	"114": "F3",
+	"115": "F4",
+	"116": "F5",
+	"117": "F6",
+	"118": "F7",
+	"119": "F8",
+	"120": "F9",
+	"121": "F10",
+	"122": "F11",
+	"123": "F12",
+	"144": "NUM_LOCK",
+	"145": "SCROLL_LOCK",
+	"186": "SEMI_COLON",
+	"187": "EQUAL_SIGN",
+	"188": "COMMA",
+	"189": "DASH",
+	"190": "PERIOD",
+	"191": "FORWARD_SLASH",
+	"192": "GRAVE_ACCENT",
+	"219": "OPEN_BRACKET",
+	"220": "BACK_SLASH",
+	"221": "CLOSE_BRAKET",
+	"222": "SINGLE_QUOTE"
 }
 
 TetrisManager.BlankLines = 2;
@@ -911,22 +913,42 @@ SkillManager.prototype.initialize = function (skillIDList) {
 	this.skill_list = [];
 	this.skillButton_list = [];
 	for (var i = 0; i < skillIDList.length; i++) {
-		console.log('ID:' + skillIDList[i]);
-		this.skill_list.push(TetrisManager.skill_List[skillIDList[i]]);
-		this.skill_list[i].Reset();
+		this.skill_list.push(
+			Object.create(TetrisManager.skill_List[skillIDList[i]])
+		);
 		this.skillButton_list.push(new SkillButton(skillIDList[i]));
 	}
 
-	this._help_window = new Window_SkillHelp(100, 100, 200, 200);
-	this._help_window.move(0, 350, 350, 150);
-	this._help_window.deactivate();
-	this._help_window.close()
+	for (name in Input.keyMapper) {
+		if (Input.keyMapper[name] == 'skillone') {
+			if (this.skillButton_list[0]) {
+				this.skillButton_list[0].writeHotKey(TetrisManager.keyCodeList[String(name)]);
+            }
+		}
 
-	this._skill_window = new SkillWindow(this.skillButton_list, this._help_window);
+		if (Input.keyMapper[name] == 'skilltwo') {
+			if (this.skillButton_list[1]) {
+				this.skillButton_list[1].writeHotKey(TetrisManager.keyCodeList[String(name)]);
+            }
+		}
+
+		if (Input.keyMapper[name] == 'skillthree') {
+			if (this.skillButton_list[2]) {
+				this.skillButton_list[2].writeHotKey(TetrisManager.keyCodeList[String(name)]);
+            }
+		}
+    }
+
+	this._skill_board = new skillBoard(this.skillButton_list);
 }
 
 SkillManager.prototype.startSkill = function (id) {
-	this.skill_list[id].MakeEffect();
+	if (this.skill_list[id]&&this.skill_list[id].isPrepared) {
+		this.skillButton_list[id].shine();
+		this.skill_list[id].MakeEffect();
+		this.skill_list[id].Reset();
+		this.skillButton_list[id].writeCDTxt(this.skill_list[id].CD);
+    }
 }
 
 SkillManager.prototype.update = function () {
@@ -935,8 +957,29 @@ SkillManager.prototype.update = function () {
 			if (this.skill_list[i].isCompleted()) {
 				this.skill_list[i].Finish();
             }
+		}
+		if (!this.skill_list[i].isPrepared) {
+			if ((Date.now() - this.skill_list[i].oldTime) / 1000 > 1) {
+				this.skill_list[i].CD -= 1;
+				this.skillButton_list[i].writeCDTxt(this.skill_list[i].CD);
+				this.skill_list[i].oldTime = Date.now();
+				if (this.skill_list[i].CD <= 0) {
+					this.skill_list[i].isPrepared = true;
+                }
+            }
         }
-    }
+	}
+	if (Input.isTriggered('skillone')) {
+		this.startSkill(0);
+	}
+
+	if (Input.isTriggered('skilltwo')) {
+		this.startSkill(1);
+	}
+
+	if (Input.isTriggered('skillthree')) {
+		this.startSkill(2);
+	}
 }
 
 
@@ -961,7 +1004,7 @@ SkillWindow.prototype.initialize = function (skillButtonList, helpWindow) {
 
 SkillWindow.prototype.start = function () {
 	for (var i = 0; i < this.skillButton_list.length; i++) {
-		this.skillButton_list[i].move(this.padding, this.padding)
+		this.skillButton_list[i].move(this.padding+this.spacing()+i*this.itemWidth(), this.padding)
 		this.addChild(this.skillButton_list[i]);
     }
 	this.updatePlacement();
@@ -1036,9 +1079,10 @@ SkillWindow.prototype.updateHelp = function () {
 	if (this.skillButton_list[this.index()] && this.skillButton_list[this.index()]._skill.description ) {
 		this._helpWindow.setText(this.skillButton_list[this.index()]._skill.description);
 	} else {
-		this._helpWindow.setText("无说明")
+		this._helpWindow.setText("No Description")
     }
 }
+
 SkillWindow.prototype.isTouchOkEnabled = function () {
 	return true;
 };
@@ -1078,6 +1122,276 @@ SkillWindow.prototype.processCancel = function(){
 	this._helpWindow.deactivate();
 	this._helpWindow.close();
 }
+
+//-----------------------------------------------------------------------------
+
+function skillBoard() {
+	this.initialize.apply(this, arguments);
+}
+
+skillBoard.prototype = Object.create(Sprite.prototype);
+skillBoard.prototype.constructor = skillBoard;
+
+skillBoard.prototype.initialize = function (skillButtonlist) {
+	Sprite.prototype.initialize.call(this);
+	this.skillButton_list = skillButtonlist
+	this.background = new Tetris_Window(-5, -5, 160, 60);
+	this.addChild(this.background);
+	for (var i = 0; i < this.skillButton_list.length; i++) {
+		this.skillButton_list[i].move(i * 50, 0);
+		this.addChild(this.skillButton_list[i]);
+	}
+	for (var i = 0; i < 3 - this.skillButton_list.length; i++) {
+		var sprite = new Sprite(ImageManager.loadPicture("Skills\\SkillFrame"));
+		sprite.move(50 * (this.skillButton_list.length + i), 0);
+		this.addChild(sprite);
+    }
+}
+
+
+
+//-----------------------------------------------------------------------------
+
+function itemBoard() {
+	this.initialize.apply(this, arguments);
+}
+
+itemBoard.prototype = Object.create(Sprite.prototype);
+itemBoard.prototype.constructor = itemBoard;
+
+itemBoard.prototype.initialize = function () {
+	Sprite.prototype.initialize.call(this);
+	this._data = $gameParty.allItems().filter(function (item) {
+		return DataManager.isItem(item) && item.itypeId === 1;
+	}, this);
+	this.boardIndex = 0;
+	this.setIndex = 0;
+	this.lastSet = -1;
+	this.iconSets = [];
+	this.changingIcon = false;
+	this.background = new Tetris_Window(-5, -5, 5 * 38 + 10, 48);
+	this.addChild(this.background);
+
+	this.Icons = [];
+	for (var i = 0; i < this._data.length; i++) {
+		if (this._data[i]) {
+			this.Icons.push(new itemIcon(this._data[i]))
+			//this.curIcons[i].move(i * 38, 0);
+			//this.addChild(this.curIcons[i])
+        }
+	}
+
+	for (name in Input.keyMapper) {
+		if (Input.keyMapper[name] == 'itemone') {
+			this.itemOneHotKey = TetrisManager.keyCodeList[String(name)];
+		}
+		if (Input.keyMapper[name] == 'itemtwo') {
+			this.itemTwoHotKey = TetrisManager.keyCodeList[String(name)];
+		}
+		if (Input.keyMapper[name] == 'itemthree') {
+			this.itemThreeHotKey = TetrisManager.keyCodeList[String(name)];
+		}
+		if (Input.keyMapper[name] == 'itemfour') {
+			this.itemFourHotKey = TetrisManager.keyCodeList[String(name)];
+		}
+	}
+
+	var count = 0;
+	var tempSet = 0;
+	this.iconSets.push(new Sprite());
+	for (var i = 0; i < this.Icons.length; i++) {
+		if (count >= 4) {
+			count = 0;
+			tempSet += 1;
+			this.iconSets.push(new Sprite());
+		}
+		switch (count) {
+			case 0:
+				this.Icons[i].writeHotKey(this.itemOneHotKey);
+				break;
+			case 1:
+				this.Icons[i].writeHotKey(this.itemTwoHotKey);
+				break;
+			case 2:
+				this.Icons[i].writeHotKey(this.itemThreeHotKey);
+				break;
+			case 3:
+				this.Icons[i].writeHotKey(this.itemFourHotKey);
+				break;
+		}
+		this.Icons[i].move(count * 38, 0);
+		this.iconSets[tempSet].addChild(this.Icons[i]);
+		count += 1;
+	}
+
+	this.itemArrow = new Sprite(ImageManager.loadPicture('ui\\ItemArrow'));
+	this.itemArrow.move(4 * 38 + 10, 0)
+	this.addChild(this.itemArrow)
+	this.addChild(this.iconSets[this.setIndex]);
+}
+
+itemBoard.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (Input.isTriggered('itemone')) {
+		var id = this.boardIndex + 0
+		this.useItem(id);
+	}
+	if (Input.isTriggered('itemtwo')) {
+		var id = this.boardIndex + 1
+		this.useItem(id);
+	}
+	if (Input.isTriggered('itemthree')) {
+		var id = this.boardIndex + 2
+		this.useItem(id);
+	}
+	if (Input.isTriggered('itemfour')) {
+		var id = this.boardIndex + 3
+		this.useItem(id);
+	}
+
+	if (Input.isTriggered('itemshift')) {
+		if (!this.changingIcon) {
+			if (this._data[this.boardIndex + 4]) {
+				this.boardIndex += 4;
+				this.setIndex += 1;
+				this.lastSet = this.setIndex - 1;
+			} else {
+				this.boardIndex = 0;
+				this.setIndex = 0;
+				this.lastSet = this.iconSets.length - 1;
+			}
+			this.removeChild(this.iconSets[this.setIndex]);
+			this.iconSets[this.setIndex].move(4 * 38, 0);
+			this.iconSets[this.setIndex].opacity = 0;
+			this.addChild(this.iconSets[this.setIndex]);
+			console.log(this.setIndex);
+			this.changingIcon = true;
+        }
+	}
+
+	if (this.changingIcon) {
+		if (this.iconSets.length > 1) {
+			this.iconSets[this.lastSet].x -= 4 * 38 / 10;
+			this.iconSets[this.setIndex].x -= 4 * 38 / 10;
+			this.iconSets[this.lastSet].opacity -= 255 / 10;
+			this.iconSets[this.setIndex].opacity += 255 / 10;
+			if (this.iconSets[this.lastSet].opacity <= 0) {
+				this.changingIcon = false;
+			}
+		} else {
+			this.iconSets[this.setIndex].x -= 4 * 38 / 10;
+			this.iconSets[this.setIndex].opacity += 255 / 10;
+			if (this.iconSets[this.setIndex].opacity >= 255) {
+				this.changingIcon = false;
+			}
+        }
+    }
+}
+
+itemBoard.prototype.useItem = function (id) {
+	var item = this._data[id];
+	if (item && $gameParty.numItems(item) > 0) {
+		SoundManager.playUseItem();
+		//TODO: this.playSeForItem();
+		this.user().useItem(item);
+		this.applyItem(item);
+		//this.checkCommonEvent();
+		this.Icons[id].writeNum($gameParty.numItems(item))
+		this.Icons[id].shine();
+    }
+}
+
+itemBoard.prototype.user = function () {
+	return $gameActors.actor(1);
+}
+
+itemBoard.prototype.applyItem = function (item) {
+	var id = String(item["id"]);
+	if (TetrisManager.item_List[id]) {
+		TetrisManager.item_List[id]();
+    }
+}
+
+
+
+function itemIcon() {
+	this.initialize.apply(this, arguments);
+}
+
+itemIcon.prototype = Object.create(Sprite.prototype);
+itemIcon.prototype.constructor = itemIcon;
+
+itemIcon.prototype.initialize = function (item) {
+	Sprite.prototype.initialize.call(this);
+	var iconIndex = item.iconIndex
+	this.icon = new Sprite(ImageManager.loadSystem('IconSet'))
+	var pw = 32;
+	var ph = 32;
+	var sx = iconIndex % 16 * pw;
+	var sy = Math.floor(iconIndex / 16) * ph;
+	this.icon.setFrame(sx, sy, pw, ph);
+	this.icon.move(3, 3);
+	this.addChild(this.icon);
+	this.iconFrame = new Sprite(ImageManager.loadPicture('ui\\ItemFrame'));
+	this.iconCover = new Sprite(ImageManager.loadPicture('ui\\ItemCover'));
+	this.iconCover.opacity = 0;
+	this.addChild(this.iconFrame);
+	this.addChild(this.iconCover);
+	this.hotKeyTxt = new Sprite(new Bitmap(32, 32));
+	this.hotKeyTxt.bitmap.fontSize = 14;
+	this.hotKeyTxt.anchor.y = 0.5;
+	this.addChild(this.hotKeyTxt);
+	this.numTxt = new Sprite(new Bitmap(32, 32));
+	this.numTxt.bitmap.fontSize = 18;
+	this.numTxt.move(0, 16);
+	this.addChild(this.numTxt);
+	this.writeNum($gameParty.numItems(item))
+	this.anchor.x = 0.5;
+	this.anchor.y = 0.5;
+
+	this.shining = false;
+	this.shined = false;
+}
+
+itemIcon.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.shining && !this.shined) {
+		this.scale.x += 0.1;
+		this.scale.y += 0.1;
+		if (this.scale.x >= 1.5) {
+			this.shined = true;
+		}
+	}
+
+	if (this.shined) {
+		this.scale.x -= 0.1
+		this.scale.y -= 0.1
+		if (this.scale.x <= 1) {
+			this.shining = false;
+			this.shined = false;
+		}
+	}
+}
+
+itemIcon.prototype.writeNum = function (num) {
+	if (num > 0) {
+		this.numTxt.bitmap.clear();
+		this.numTxt.bitmap.drawText(String(num), 0, 0, 32, 32, 'right');
+	} else {
+		this.numTxt.bitmap.clear();
+		this.iconCover.opacity = 200;
+    }
+}
+
+itemIcon.prototype.writeHotKey = function (keyname) {
+	this.hotKeyTxt.bitmap.clear();
+	this.hotKeyTxt.bitmap.drawText(keyname, 0, 0, 32, 32, 'left');
+}
+
+itemIcon.prototype.shine = function () {
+	this.shining = true;
+}
+
 //-----------------------------------------------------------------------------
 
 function Window_SkillHelp(){
@@ -1191,10 +1505,205 @@ SkillButton.prototype.constructor = SkillButton;
 
 SkillButton.prototype.initialize = function (skillID) {
 	Sprite.prototype.initialize.call(this);
+	this._skillID = skillID;
 	this._skill = TetrisManager.skill_List[skillID];
 	this.bitmap = ImageManager.loadPicture("Skills\\" + TetrisManager.skill_List[skillID].pic);
+	this.skillFrame = new Sprite();
+	this.skillFrame.bitmap = ImageManager.loadPicture("Skills\\SkillFrame");
+	this.addChild(this.skillFrame);
+	this.skillCover = new Sprite(ImageManager.loadPicture("Skills\\SkillCover"));
+	this.skillCover.opacity = 0;
+	this.addChild(this.skillCover);
+	this.hotKeyTxt = new Sprite(new Bitmap(50, 50));
+	this.hotKeyTxt.bitmap.fontSize = 14;
+	this.hotKeyTxt.anchor.y = 0.5;
+	this.addChild(this.hotKeyTxt);
+	this.CDTxt = new Sprite(new Bitmap(50, 50));
+	this.CDTxt.bitmap.fontSize = 18;
+	this.addChild(this.CDTxt);
+
+	this.shining = false;
+	this.shined = false;
+
 }
 
+SkillButton.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.shining && !this.shined) {
+		this.scale.x += 0.1;
+		this.scale.y += 0.1;
+		if (this.scale.x >= 1.5) {
+			this.shined = true;
+		}
+	}
+
+	if (this.shined) {
+		this.scale.x -= 0.1
+		this.scale.y -= 0.1
+		if (this.scale.x <= 1) {
+			this.shining = false;
+			this.shined = false;
+		}
+	}
+}
+
+SkillButton.prototype.writeHotKey = function (string) {
+	this.hotKeyTxt.bitmap.clear();
+	this.hotKeyTxt.bitmap.drawText(string, 0, 0, 50, 50, 'left');
+}
+
+SkillButton.prototype.writeCDTxt = function (number) {
+	if (number > 0) {
+		this.skillCover.opacity = 255;
+		this.CDTxt.bitmap.clear();
+		this.CDTxt.bitmap.drawText(String(number), 0, 0, 50, 50, 'center');
+	} else {
+		this.skillCover.opacity = 0;
+		this.CDTxt.bitmap.clear();
+    }
+}
+
+SkillButton.prototype.shine = function () {
+	this.shining = true;
+}
+
+
+//-----------------------------------------------------------------------------
+//Buff系统
+
+function stateBoard() {
+	this.initialize.apply(this, arguments);
+}
+
+stateBoard.prototype = Object.create(Sprite.prototype);
+stateBoard.prototype.constructor = stateBoard;
+
+stateBoard.prototype.initialize = function (owner) {
+	Sprite.prototype.initialize.call(this);
+	this._owner = owner
+	this._currentStates = {};
+	this._previousStates = {};
+	this.oldTime = Date.now();
+	this._stateicons = {};
+	this._statelist = {};
+	this.iconPos = 0;
+}
+
+stateBoard.prototype.refreshStates = function () {
+	for (var i = 0; i < this._owner._states.length; i++) {
+		this._currentStates[String(this._owner._states[i])] = true;
+	}
+
+	for (var strid in this._currentStates) {
+		if (this._owner._states.indexOf(Number(strid)) == -1) {
+			this._currentStates[strid] = false;
+		}
+
+		if (this._currentStates[strid] && !this._previousStates[strid]) {
+			if (!this._statelist[strid]) {
+				this._statelist[strid] = Object.create(TetrisManager.state_List[strid])
+				this._statelist[strid].onGain(this._owner);
+            }
+			var stateicon = new stateIcon(this._statelist[strid])
+			this._stateicons[strid] = stateicon;
+			this._stateicons[strid].move(this.iconPos, 0);
+			this.addChild(this._stateicons[strid])
+			this.iconPos += 32;
+		}
+		if (!this._currentStates[strid] && this._previousStates[strid]) {
+			this._statelist[strid].onLose();
+			this._statelist[strid] = null;
+			this.removeChild(this._stateicons[strid]);
+			this.iconPos -= 32;
+		}
+
+		if (this._statelist[strid]) {
+			this._statelist[strid].update();
+			if (this._statelist[strid].updated) {
+				this._stateicons[strid].shine();
+				this._statelist[strid].updated = false;
+            }
+		}
+
+		this._previousStates[strid] = this._currentStates[strid];
+	}
+}
+
+stateBoard.prototype.applyStates = function (strid, layers) {
+	if (this._statelist[strid]) {
+		this._statelist[strid].count += layers;
+	} else {
+		this._owner._states.push(Number(strid));
+		this._statelist[strid] = Object.create(TetrisManager.state_List[strid])
+		this._statelist[strid].onGain(this._owner);
+		this._statelist[strid].count += layers;
+    }
+}
+
+stateBoard.prototype.clearAllStates = function () {
+	if (this._owner._states.contains(1)) {
+		this._owner._states = [1];
+	} else {
+		this._owner._states = [];
+    }
+}
+
+function stateIcon() {
+	this.initialize.apply(this, arguments);
+}
+
+stateIcon.prototype = Object.create(Sprite.prototype);
+stateIcon.prototype.constructor = stateIcon;
+
+stateIcon.prototype.initialize = function (state) {
+	Sprite.prototype.initialize.call(this);
+	this._state = state
+	this.bitmap = ImageManager.loadSystem("IconSet");
+	var iconIndex = $dataStates[Number(this._state.id)].iconIndex;
+	var sx = iconIndex % 16 * 32;
+	var sy = Math.floor(iconIndex / 16) * 32;
+	this.setFrame(sx, sy, 32, 32);
+	this.anchor.x = 0.5;
+	this.anchor.y = 0.5;
+	this._textLayer = new Sprite(new Bitmap(32, 32));
+	this._textLayer.anchor.x = 0.5;
+	this._textLayer.anchor.y = 0.5;
+	this.addChild(this._textLayer);
+	this._textLayer.bitmap.fontSize = 18;
+	this.shining = false;
+	this.shined = false;
+}
+
+stateIcon.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this._state.count > 0) {
+		this._textLayer.bitmap.clear()
+		this._textLayer.bitmap.drawText(this._state.count, 0, 0, 32, 32, 'right');
+    }
+
+	if (this.shining && !this.shined) {
+		this.scale.x += 0.1;
+		this.scale.y += 0.1;
+		if (this.scale.x >= 1.5) {
+			this.shined = true;
+        }
+	}
+
+	if (this.shined) {
+		this.scale.x -= 0.1
+		this.scale.y -= 0.1
+		if (this.scale.x <= 1) {
+			this.shining = false;
+			this.shined = false;
+        }
+    }
+}
+
+stateIcon.prototype.shine = function () {
+	this.shining = true;
+}
+
+//TODO: 本地化
 //-----------------------------------------------------------------------------
 // 技能特效的抽象类
 function Attack_Effect() {
@@ -1229,6 +1738,7 @@ DiminishingBox.prototype.constructor = DiminishingBox;
 DiminishingBox.prototype.initialize = function (speed) {
 	Attack_Effect.prototype.initialize.call(this);
 	this.bitmap = ImageManager.loadPicture("theBox")
+	this.tint = 0x9900cc;
 	this.anchor.x = 0.5;
 	this.anchor.y = 0.5;
 	this.scale.x = 1;
@@ -1295,65 +1805,6 @@ SpinningBox.prototype.update = function () {
 	}
 
 	this.time -= 1;
-}
-
-//-----------------------------------------------------------------------------
-function ProgressBar() {
-	this.initialize.apply(this, arguments);
-}
-
-ProgressBar.prototype = Object.create(Sprite.prototype);
-ProgressBar.prototype.constructor = ProgressBar;
-
-ProgressBar.prototype.initialize = function (maxAmount) {
-	Sprite.prototype.initialize.call(this);
-	this.curAmount = 0;
-	this.maxAmount = maxAmount;
-	this.BarContent = new Sprite();
-	this.frame = new Sprite();
-	this.BarContent.bitmap = ImageManager.loadPicture("ui\\ProgressBarContent");
-	this.frame.bitmap = ImageManager.loadPicture("ui\\ProgressBarFrame");
-	this.Xcursor = 0;
-
-	this.BarContent.move(10, 0);
-	this.addChild(this.BarContent);
-	this.BarContent.setFrame(this.Xcursor, 0, 0, this.BarContent.bitmap.height);
-	this.addChild(this.frame)
-}
-
-ProgressBar.prototype.update = function () {
-	Sprite.prototype.update.call(this);
-	if (this.curAmount / this.maxAmount >= 1) {
-		width = 330;
-	} else {
-		width = 330 * (this.curAmount / this.maxAmount);
-	}
-	this.Xcursor += 7;
-	if ((this.Xcursor + width) >= this.BarContent.bitmap.width) {
-		this.Xcursor = 0;
-	}
-	this.BarContent.setFrame(this.Xcursor, 0, width, this.BarContent.bitmap.height);
-}
-
-ProgressBar.prototype.changeNumber = function (num) {
-	this.curAmount = num;
-}
-
-ProgressBar.prototype.setPhase = function (amount, picname) {
-	var barX = 350 * (amount / this.maxAmount);
-	var PhaseBar = new Sprite();
-	PhaseBar.bitmap = ImageManager.loadPicture("ui\\PhaseBar");
-	PhaseBar.anchor.x = 0.5;
-	PhaseBar.move(barX, -5);
-
-	var pic = new Sprite();
-	pic.bitmap = ImageManager.loadPicture(picname);
-	pic.anchor.x = 0.5;
-	this.addChild(pic);
-	pic.move(barX, 55);
-
-	this.addChild(PhaseBar);
-	this.addChild(pic);
 }
 
 //-----------------------------------------------------------------------------
@@ -1467,7 +1918,7 @@ FNumber.prototype.constructor = FNumber;
 FNumber.prototype.initialize = function (number, maxdigits, skin) {
 	Sprite.prototype.initialize.call(this);
 	this.oldNumber = null;
-	this.curNumber = Math.floor(number);
+	this.curNumber = Math.round(number);
 	this.maxdigits = maxdigits;
 	this.loadimg(skin);
 	this.ExtendDir = "right"
@@ -1527,7 +1978,7 @@ FNumber.prototype.create_number = function () {
 }
 
 FNumber.prototype.change = function (newNumber) {
-	this.curNumber = Math.floor(newNumber);
+	this.curNumber = Math.round(newNumber);
 }
 
 FNumber.prototype.changeNumSkin = function (skin) {
@@ -1625,78 +2076,6 @@ ComboSprite.prototype.update = function () {
 
 ComboSprite.prototype.deactivate = function () {
 	this.ExItIng = true;
-}
-
-//-----------------------------------------------------------------------------
-
-function Sprite_Canvas() {
-	this.initialize.apply(this, arguments);
-}
-
-Sprite_Canvas.prototype = Object.create(Sprite.prototype);
-Sprite_Canvas.prototype.constructor = Sprite_Canvas;
-
-Sprite_Canvas.prototype.initialize = function () {
-	Sprite.prototype.initialize.call(this);
-	this.loadWindowskin();
-}
-
-Sprite_Canvas.prototype.loadWindowskin = function () {
-	this.windowskin = ImageManager.loadSystem('Window');
-};
-
-Sprite_Canvas.prototype.resetFontSettings = function () {
-	this.bitmap.fontFace = this.standardFontFace();
-	this.bitmap.fontSize = this.standardFontSize();
-	this.resetTextColor();
-}
-
-Sprite_Canvas.prototype.resetTextColor = function () {
-	this.changeTextColor(this.normalColor());
-}
-
-Sprite_Canvas.prototype.changeTextColor = function (color) {
-	this.bitmap.textColor = color;
-}
-
-Sprite_Canvas.prototype.textColor = function (n) {
-	var px = 96 + (n % 8) * 12 + 6;
-	var py = 144 + Math.floor(n / 8) * 12 + 6;
-	return this.windowskin.getPixel(px, py);
-};
-
-Sprite_Canvas.prototype.normalColor = function () {
-	return this.textColor(0);
-};
-
-Sprite_Canvas.prototype.standardFontFace = function () {
-	if ($gameSystem.isChinese()) {
-		return 'SimHei, Heiti TC, sans-serif';
-	} else if ($gameSystem.isKorean()) {
-		return 'Dotum, AppleGothic, sans-serif';
-	} else {
-		return 'GameFont';
-	}
-};
-
-Sprite_Canvas.prototype.standardFontSize = function () {
-	return 28;
-};
-
-//-----------------------------------------------------------------------------
-
-function Something() {
-	this.initialize.apply(this, arguments);
-}
-
-Something.prototype = Object.create(Sprite_Canvas.prototype);
-Something.prototype.constructor = Something;
-
-Something.prototype.initialize = function () {
-	Sprite_Canvas.prototype.initialize.call(this);
-	this.bitmap = ImageManager.loadPicture("Window");
-	this.resetFontSettings();
-	this.bitmap.drawText("hello world");
 }
 
 //-----------------------------------------------------------------------------

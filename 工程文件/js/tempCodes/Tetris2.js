@@ -61,7 +61,7 @@ Scene_Tetris.prototype.initializeActor = function () {
 }
 
 Scene_Tetris.prototype.initializeEnemy = function () {
-	this.enemies = [{
+	this._enemies = [{
 		category: "enemy",
 		xposition: 0,
 		yposition: 0,
@@ -80,22 +80,22 @@ Scene_Tetris.prototype.initializeEnemy = function () {
 	}];
 
 
-	for (i in this.enemies) {
-		this.enemies[i].field = new Array(this.COL);
-		for (j in this.enemies[i]) {
+	for (i in this._enemies) {
+		this._enemies[i].field = new Array(this.COL);
+		for (j in this._enemies[i]) {
 
-			this.enemies[i].field[j] = new Array(this.ROW).fill(0);
+			this._enemies[i].field[j] = new Array(this.ROW).fill(0);
 		}
 
 
-		this.enemies[i].pathGenerator = new Position_Manager(this.enemies[i].field, this.data);
+		this._enemies[i].pathGenerator = new Position_Manager(this._enemies[i].field, this.data);
 	}
 	game_field = new Array(this.COL);
 	for (var i = 0; i < game_field.length; i++) {
 		game_field[i] = new Array(this.ROW).fill(0);
 	}
 
-	this.enemies[0].pathGenerator = new Position_Manager(game_field, this.data);
+	this._enemies[0].pathGenerator = new Position_Manager(game_field, this.data);
 }
 
 Scene_Tetris.prototype.initializeData = function () {
@@ -262,20 +262,20 @@ Scene_Tetris.prototype.update = function () {
 }
 
 Scene_Tetris.prototype.updateEnemy = function () {
-	for (i in this.enemies) {
-		this.enemies[i].n += Date.now()
-		if (this.enemies[i].n >= this.enemies[i].step) {
-			var nextAction = this.enemies[i].actionQueue.shift();
+	for (i in this._enemies) {
+		this._enemies[i].n += Date.now()
+		if (this._enemies[i].n >= this._enemies[i].step) {
+			var nextAction = this._enemies[i].actionQueue.shift();
 			switch (nextAction) {
 				case "rotate":
-					this.rotateBox(this.enemies[i].cur, 1);
+					this.rotateBox(this._enemies[i].cur, 1);
 				case "moveRight":
-					this.enemies[i].cur.block.x += this.xrange;
+					this._enemies[i].cur.block.x += this.xrange;
 				case "moveLeft":
-					this.enemies[i].cur.block.x -= this.xrange;
+					this._enemies[i].cur.block.x -= this.xrange;
 				case "downwards":
-					this.enemies[i].step = 500;
-					this.enemies[i].cur.block.y += this.yrange;
+					this._enemies[i].step = 500;
+					this._enemies[i].cur.block.y += this.yrange;
 			}
 		}
 	}
@@ -398,8 +398,8 @@ Scene_Tetris.prototype.create = function () {
 	this.createPlayerWindows();
 	this.createEnemyWindows();
 	this.createBox(this.player);
-	for (i in this.enemies) {
-		this.createBox(this.enemies[i]);
+	for (i in this._enemies) {
+		this.createBox(this._enemies[i]);
 	}
 }
 
@@ -425,11 +425,11 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 }
 
 Scene_Tetris.prototype.createEnemyWindows = function () {
-	for (i = 0; i < this.enemies.length;i++) {
-		this.enemies[i].xposition = this.player.xposition + 500;
-		this.enemies[i].yposition = this.player.yposition;
-		this.enemies[i].mainWindow.move(this.enemies[i].xposition, this.enemies[i].yposition - 5, this.ROW * this.xrange + 50, this.COL * this.yrange);
-		this.addWindow(this.enemies[i].mainWindow);
+	for (i = 0; i < this._enemies.length;i++) {
+		this._enemies[i].xposition = this.player.xposition + 500;
+		this._enemies[i].yposition = this.player.yposition;
+		this._enemies[i].mainWindow.move(this._enemies[i].xposition, this._enemies[i].yposition - 5, this.ROW * this.xrange + 50, this.COL * this.yrange);
+		this.addWindow(this._enemies[i].mainWindow);
 	}
 }
 

@@ -238,6 +238,86 @@ Yanfly.KeyConfig.version = 1.04;
  * @parent ---Key Names---
  * @desc This is the Tab action will appear for the config text.
  * @default tab
+ * 
+ * @param SkillOne Key
+ * @parent ---Key Names---
+ * @desc This is the SkillOne action will appear on a key.
+ * @default SkillOne
+ * 
+ * @param SkillOne Text
+ * @parent ---Key Names---
+ * @desc This is the SkillOne action will appear for the config text.
+ * @default SkillOne
+ * 
+ * @param SkillTwo Key
+ * @parent ---Key Names---
+ * @desc This is the SkillTwo action will appear on a key.
+ * @default SkillTwo
+ *
+ * @param SkillTwo Text
+ * @parent ---Key Names---
+ * @desc This is the SkillTwo action will appear for the config text.
+ * @default SkillTwo
+ * 
+ * @param SkillThree Key
+ * @parent ---Key Names---
+ * @desc This is the SkillThree action will appear on a key.
+ * @default SkillThree
+ *
+ * @param SkillThree Text
+ * @parent ---Key Names---
+ * @desc This is the SkillThree action will appear for the config text.
+ * @default SkillThree
+ * 
+ * @param ItemOne Key
+ * @parent ---Key Names---
+ * @desc This is the ItemOne action will appear on a key.
+ * @default ItemOne
+ *
+ * @param ItemOne Text
+ * @parent ---Key Names---
+ * @desc This is the ItemOne action will appear for the config text.
+ * @default ItemOne
+ * 
+ * @param ItemTwo Key
+ * @parent ---Key Names---
+ * @desc This is the ItemTwo action will appear on a key.
+ * @default ItemTwo
+ *
+ * @param ItemTwo Text
+ * @parent ---Key Names---
+ * @desc This is the ItemTwo action will appear for the config text.
+ * @default ItemTwo
+ * 
+ * @param ItemThree Key
+ * @parent ---Key Names---
+ * @desc This is the ItemThree action will appear on a key.
+ * @default ItemThree
+ *
+ * @param ItemThree Text
+ * @parent ---Key Names---
+ * @desc This is the ItemThree action will appear for the config text.
+ * @default ItemThree
+ * 
+ * @param ItemFour Key
+ * @parent ---Key Names---
+ * @desc This is the ItemFour action will appear on a key.
+ * @default ItemFour
+ *
+ * @param ItemFour Text
+ * @parent ---Key Names---
+ * @desc This is the ItemFour action will appear for the config text.
+ * @default ItemFour
+ * 
+ * @param ItemShift Key
+ * @parent ---Key Names---
+ * @desc This is the ItemShift action will appear on a key.
+ * @default ItemShift
+ *
+ * @param ItemShift Text
+ * @parent ---Key Names---
+ * @desc This is the ItemShift action will appear for the config text.
+ * @default ItemShift
  *
  * @help
  * ============================================================================
@@ -447,6 +527,24 @@ Yanfly.Param.KeyConfigDownKey = String(Yanfly.Parameters['Down Key']);
 Yanfly.Param.KeyConfigDownTx = String(Yanfly.Parameters['Down Text']);
 Yanfly.Param.KeyConfigTabKey = String(Yanfly.Parameters['Tab Key']);
 Yanfly.Param.KeyConfigTabTx = String(Yanfly.Parameters['Tab Text']);
+Yanfly.Param.KeyConfigSkillOneKey = String(Yanfly.Parameters['SkillOne Key']);
+Yanfly.Param.KeyConfigSkillOneTx = String(Yanfly.Parameters['SkillOne Text']);
+Yanfly.Param.KeyConfigSkillTwoKey = String(Yanfly.Parameters['SkillTwo Key']);
+Yanfly.Param.KeyConfigSkillTwoTx = String(Yanfly.Parameters['SkillTwo Text']);
+Yanfly.Param.KeyConfigSkillThreeKey = String(Yanfly.Parameters['SkillThree Key']);
+Yanfly.Param.KeyConfigSkillThreeTx = String(Yanfly.Parameters['SkillThree Text']);
+Yanfly.Param.KeyConfigItemOneKey = String(Yanfly.Parameters['ItemOne Key']);
+Yanfly.Param.KeyConfigItemOneTx = String(Yanfly.Parameters['ItemOne Text']);
+Yanfly.Param.KeyConfigItemTwoKey = String(Yanfly.Parameters['ItemTwo Key']);
+Yanfly.Param.KeyConfigItemTwoTx = String(Yanfly.Parameters['ItemTwo Text']);
+Yanfly.Param.KeyConfigItemThreeKey = String(Yanfly.Parameters['ItemThree Key']);
+Yanfly.Param.KeyConfigItemThreeTx = String(Yanfly.Parameters['ItemThree Text']);
+Yanfly.Param.KeyConfigItemFourKey = String(Yanfly.Parameters['ItemFour Key']);
+Yanfly.Param.KeyConfigItemFourTx = String(Yanfly.Parameters['ItemFour Text']);
+Yanfly.Param.KeyConfigItemShiftKey = String(Yanfly.Parameters['ItemShift Key']);
+Yanfly.Param.KeyConfigItemShiftTx = String(Yanfly.Parameters['ItemShift Text']);
+
+
 
 //=============================================================================
 // DataManager
@@ -511,7 +609,6 @@ Input._switchButton = function(button) {
 //=============================================================================
 // ConfigManager
 //=============================================================================
-
 ConfigManager.keyMapper = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.defaultMap = JSON.parse(JSON.stringify(Input.keyMapper));
@@ -523,6 +620,7 @@ ConfigManager.wasdMap = {
   46: 'ok', 35: 'escape', 36: 'menu', 96: 'escape', 98: 'down', 100: 'left',
   102: 'right', 104: 'up', 120: 'debug' 
 };
+
 //ConfigManager.wasdMap = {
 //    9: 'tab', 13: 'ok', 16: 'shift', 17: 'control', 18: 'control', 27: 'escape',
 //    32: 'ok', 33: 'pageup', 34: 'pagedown', 37: 'left', 38: 'up', 39: 'right',
@@ -906,58 +1004,82 @@ Window_KeyConfig.prototype.drawItemAction = function(index) {
 
 Window_KeyConfig.prototype.actionKey = function(action) {
 		switch(action) {
-		case 'ok':
-			return Yanfly.Param.KeyConfigOkKey;
-            break;
-        case 'space':
-            return Yanfly.Param.KeyConfigSPACEKey;
-            break;
-		case 'escape':
-			return Yanfly.Param.KeyConfigEscKey;
-			break;
-		case 'cancel':
-			return Yanfly.Param.KeyConfigCancelKey;
-			break;
-		case 'menu':
-			return Yanfly.Param.KeyConfigMenuKey;
-			break;
-		case 'shift':
-			return Yanfly.Param.KeyConfigShiftKey;
-            break;
-        case 'control':
-            return Yanfly.Param.KeyConfigControlKey;
-            break;
-        case 'pageup':
-            return Yanfly.Param.KeyConfigPageUpKey;
-            break;
-        case 'pagedown':
-            return Yanfly.Param.KeyConfigPageDnKey;
-            break;
-		case 'left':
-			return Yanfly.Param.KeyConfigLeftKey;
-			break;
-		case 'up':
-			return Yanfly.Param.KeyConfigUpKey;
-			break;
-		case 'right':
-			return Yanfly.Param.KeyConfigRightKey;
-			break;
-		case 'down':
-			return Yanfly.Param.KeyConfigDownKey;
-            break;
-        case 'tab':
-            return Yanfly.Param.KeyConfigTabKey;
-            break;
-    default:
-      if (Imported.YEP_ButtonCommonEvents) {
-        if (Yanfly.Param.BCEList[action]) {
-          var id = Yanfly.Param.BCEList[action];
-          var ev = $dataCommonEvents[id];
-          return ev.configKey;
-        }
-      }
-      return '';
-      break;
+		    case 'ok':
+			    return Yanfly.Param.KeyConfigOkKey;
+                break;
+            case 'space':
+                return Yanfly.Param.KeyConfigSPACEKey;
+                break;
+		    case 'escape':
+			    return Yanfly.Param.KeyConfigEscKey;
+			    break;
+		    case 'cancel':
+			    return Yanfly.Param.KeyConfigCancelKey;
+			    break;
+		    case 'menu':
+			    return Yanfly.Param.KeyConfigMenuKey;
+			    break;
+		    case 'shift':
+			    return Yanfly.Param.KeyConfigShiftKey;
+                break;
+            case 'control':
+                return Yanfly.Param.KeyConfigControlKey;
+                break;
+            case 'pageup':
+                return Yanfly.Param.KeyConfigPageUpKey;
+                break;
+            case 'pagedown':
+                return Yanfly.Param.KeyConfigPageDnKey;
+                break;
+		    case 'left':
+			    return Yanfly.Param.KeyConfigLeftKey;
+			    break;
+		    case 'up':
+			    return Yanfly.Param.KeyConfigUpKey;
+			    break;
+		    case 'right':
+			    return Yanfly.Param.KeyConfigRightKey;
+			    break;
+		    case 'down':
+			    return Yanfly.Param.KeyConfigDownKey;
+                break;
+            case 'tab':
+                return Yanfly.Param.KeyConfigTabKey;
+                break;
+            case 'skillone':
+                return Yanfly.Param.KeyConfigSkillOneKey;
+                break;
+            case 'skilltwo':
+                return Yanfly.Param.KeyConfigSkillTwoKey;
+                break;
+            case 'skillthree':
+                return Yanfly.Param.KeyConfigSkillThreeKey;
+                break;
+            case 'itemone':
+                return Yanfly.Param.KeyConfigItemOneKey;
+                break;
+            case 'itemtwo':
+                return Yanfly.Param.KeyConfigItemTwoKey;
+                break;
+            case 'itemthree':
+                return Yanfly.Param.KeyConfigItemThreeKey;
+                break;
+            case 'itemfour':
+                return Yanfly.Param.KeyConfigItemFourKey;
+                break;
+            case 'itemshift':
+                return Yanfly.Param.KeyConfigItemShiftKey;
+                break;
+            default:
+                if (Imported.YEP_ButtonCommonEvents) {
+                    if (Yanfly.Param.BCEList[action]) {
+                        var id = Yanfly.Param.BCEList[action];
+                        var ev = $dataCommonEvents[id];
+                        return ev.configKey;
+                    }
+                }
+                return '';
+                break;
 		}
 };
 
@@ -1110,6 +1232,14 @@ Window_KeyAction.prototype.makeCommandList = function() {
 	this.addCommand(Yanfly.Param.KeyConfigRightTx, 'ok', true, 'right');
     this.addCommand(Yanfly.Param.KeyConfigDownTx, 'ok', true, 'down');
     this.addCommand(Yanfly.Param.KeyConfigTabTx, 'ok', true, 'tab');
+    this.addCommand(Yanfly.Param.KeyConfigSkillOneTx, 'ok', true, 'skillone');
+    this.addCommand(Yanfly.Param.KeyConfigSkillTwoTx, 'ok', true, 'skilltwo');
+    this.addCommand(Yanfly.Param.KeyConfigSkillThreeTx, 'ok', true, 'skillthree');
+    this.addCommand(Yanfly.Param.KeyConfigItemOneTx, 'ok', true, 'itemone');
+    this.addCommand(Yanfly.Param.KeyConfigItemTwoTx, 'ok', true, 'itemtwo');
+    this.addCommand(Yanfly.Param.KeyConfigItemThreeTx, 'ok', true, 'itemthree');
+    this.addCommand(Yanfly.Param.KeyConfigItemFourTx, 'ok', true, 'itemfour');
+    this.addCommand(Yanfly.Param.KeyConfigItemShiftTx, 'ok', true, 'itemshift');
   if (Imported.YEP_ButtonCommonEvents) this.addButtonCommonEvents();
 };
 

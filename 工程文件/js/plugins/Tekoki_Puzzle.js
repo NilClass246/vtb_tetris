@@ -240,7 +240,7 @@ Scene_Puzzle.prototype.isGameOver = function () {
 		this.gameover = true;
 		$gameSwitches.setValue(20, false);
 		var msg = new Target_Window("越界！");
-		this.addChild(msg);
+		this._upperLayer.addChild(msg);
 	}
 
 	if (this.puzzleInfo.isEnded()) {
@@ -253,7 +253,7 @@ Scene_Puzzle.prototype.isGameOver = function () {
 
 Scene_Puzzle.prototype.update_Actor = function () {
 
-	this.update_Movement();
+	this.update_Movement(this.player);
 
 	if (this.player.cur.block.y < this.yposition) {
 		AudioManager.playSe(this.seBoom);
@@ -285,15 +285,22 @@ Scene_Puzzle.prototype.update_Actor = function () {
 
 		this.player.n = 0;
 	}
-
+	//TODO: 双人模式
+	//TODO：TouchInput卡键修复
+	//TODO: Buff系统
 	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
 	TetrisManager.curhighestAPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
 }
 
 Scene_Puzzle.prototype.create = function () {
 	Scene_ItemBase.prototype.create.call(this);
+	//图层分级
 	this._blockLayer = new Sprite();
 	this.addChild(this._blockLayer);
+
+	this._upperLayer = new Sprite();
+	this.addChild(this._upperLayer);
+	//图层分级
 	this.puzzleInfo = new Puzzle_Manager(2);
 	this.puzzleInfo.create();
 	this.createPlayerWindows();
@@ -330,15 +337,15 @@ Scene_Puzzle.prototype.createPlayerWindows = function () {
 }
 
 Scene_Puzzle.prototype.refreshPlayerWindow = function(){
-	this.removeWindow(this.playerMainWindow);
-	this.playerMainWindow = new Tetris_Window(this.player.xposition - 15, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27, this.ROW * this.player.xrange + 65, (this.COL - TetrisManager.AboveLines) * this.player.yrange);
+	this.removeWindow(this.player.MainWindow);
+	this.player.MainWindow = new Tetris_Window(this.player.xposition - 15, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27, this.ROW * this.player.xrange + 65, (this.COL - TetrisManager.AboveLines) * this.player.yrange);
 	for (i = 0; i <= this.ROW; i++) {
-		this.playerMainWindow.contents.drawLine(i * this.player.xrange + 5, 0, i * this.player.xrange + 5, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 40);
+		this.player.MainWindow.contents.drawLine(i * this.player.xrange + 5, 0, i * this.player.xrange + 5, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 40);
 	}
 	for (i = 0; i <= this.COL; i++) {
-		this.playerMainWindow.contents.drawLine(4, i * this.player.yrange - 14, this.ROW * this.player.yrange + 4, i * this.player.yrange - 14);
+		this.player.MainWindow.contents.drawLine(4, i * this.player.yrange - 14, this.ROW * this.player.yrange + 4, i * this.player.yrange - 14);
 	}
-	this.addWindow(this.playerMainWindow);
+	this.addWindow(this.player.MainWindow);
 }
 
 function puzzle_start() {
