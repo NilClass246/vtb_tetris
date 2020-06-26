@@ -48,7 +48,7 @@ var TwoSlimes = [
 		avatar: new Sprite(),
 		avatarName: "Slime_Avatar",
 
-		Level: 1,
+		level: 1,
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
@@ -73,7 +73,7 @@ var TwoSlimes = [
 		avatar: new Sprite(),
 		avatarName: "Slime_Avatar",
 
-		Level: 1,
+		level: 1,
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
@@ -101,7 +101,7 @@ var FourKnights = [
 		avatar: new Sprite(),
 		avatarName: "Knight_Avatar",
 
-		Level: 3,
+		level: 3,
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
@@ -126,7 +126,7 @@ var FourKnights = [
 		avatar: new Sprite(),
 		avatarName: "Knight_Avatar",
 
-		Level: 3,
+		level: 3,
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
@@ -151,7 +151,7 @@ var FourKnights = [
 		avatar: new Sprite(),
 		avatarName: "Knight_Avatar",
 
-		Level: 3,
+		level: 3,
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
@@ -176,7 +176,7 @@ var FourKnights = [
 		avatar: new Sprite(),
 		avatarName: "Knight_Avatar",
 
-		Level: 3,
+		level: 3,
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,

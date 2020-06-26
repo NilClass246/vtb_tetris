@@ -12,6 +12,8 @@ Scripts:
 	杨志
 	SumRndmDde http://sumrndm.site/
 	OcRam
+	DKTools
+	
 
 Resources:
 	SkottyTV Window Skins	by Skotty TV

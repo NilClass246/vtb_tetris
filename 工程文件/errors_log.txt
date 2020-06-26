@@ -1,0 +1,63 @@
+Date: Tue Jun 23 2020 20:35:28 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'Enabled' of undefined
+Stack: TypeError: Cannot read property 'Enabled' of undefined
+    at Scene_Boot.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38532:36)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Tue Jun 23 2020 20:36:30 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'Enabled' of undefined
+Stack: TypeError: Cannot read property 'Enabled' of undefined
+    at Scene_Boot.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38532:36)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Tue Jun 23 2020 20:41:34 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'Enabled' of undefined
+Stack: TypeError: Cannot read property 'Enabled' of undefined
+    at Scene_Boot.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38532:36)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Tue Jun 23 2020 20:52:23 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'Enabled' of undefined
+Stack: TypeError: Cannot read property 'Enabled' of undefined
+    at Scene_Boot.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38532:36)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Tue Jun 23 2020 20:54:00 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'Enabled' of undefined
+Stack: TypeError: Cannot read property 'Enabled' of undefined
+    at Scene_Boot.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38532:36)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Torigoya_Tween.js:241:34)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Thu Jun 25 2020 19:27:53 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'value' of null
+Stack: TypeError: Cannot read property 'value' of null
+    at Object.TetrisManager.load (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:415:20)
+    at Scene_Boot.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:440:16)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38393:33)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Torigoya_Tween.js:241:34)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+

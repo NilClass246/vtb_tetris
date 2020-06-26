@@ -48,6 +48,7 @@
 // ** 场景定义
 //=============================================================================
 
+//TODO: 成就系统本地化
 function Scene_Tetris() {
 	this.initialize.apply(this, arguments);
 }
@@ -73,7 +74,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 	this.player = {
 		running: true,
 		category: "player",
-		xposition: 375,
+		xposition: 382,
 		yposition: 27,
 		xrange: 25,
 		yrange: 25,
@@ -95,10 +96,6 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		pictureBoard: new Tetris_Window(),
 		picture: new Sprite(),
 
-		displayHp: this.actor.hp,
-		Atk: this.actor.atk,
-
-		AtkFreq: 10,
 		delay_reset_times: 15,
 
 		TargetIndex: 0,
@@ -106,7 +103,13 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		scaleX: 1,
 		scaleY: 1,
 		Count_Combos: -1,
-		lastBack: false
+		lastBack: false,
+
+		//属性
+		displayHp: this.actor.hp,
+		atk: this.actor.atk,
+
+		AtkFreq: 10,
 	}
 
 	this.player.yposition -= TetrisManager.AboveLines * this.player.yrange;
@@ -252,6 +255,7 @@ Scene_Tetris.prototype.initializeData = function () {
 	TetrisManager.Count_Blocks = 0;
 	TetrisManager.Count_Buttons = 0;
 	TetrisManager.Count_Lines = 0;
+	TetrisManager.Count_Tspin = 0;
 	TetrisManager.curhighestCombo = 0;
 
 	this.layed = false;
@@ -277,6 +281,7 @@ Scene_Tetris.prototype.unloadKeyMapper = function () {
 	ConfigManager.save();
 	ConfigManager.load();
 	Input.gamepadMapper = Input.defaultgamepadInput;
+	TetrisManager.save();
 	//TetrisManager.twoPMode = false;
 }
 
@@ -490,7 +495,7 @@ Scene_Tetris.prototype.update_Actor = function () {
 	}
 
 	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
-	TetrisManager.curhighestAPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
+	TetrisManager.curhighestKPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
 }
 
 Scene_Tetris.prototype.changeTarget = function () {
@@ -704,7 +709,7 @@ Scene_Tetris.prototype.update_Enemy = function () {
 			}
 
 			CurEnemy.n += 1;
-			if (CurEnemy.n >= $gameVariables.value(5)) {
+			if (CurEnemy.n >= TetrisManager.AiSpeed) {
 				var nextStep = CurEnemy.actionQueue.shift();
 				switch (nextStep) {
 					case 'Rotate':
@@ -824,6 +829,7 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 				Cancelling.move(CancelX, CancelY);
 				this._blockLayer.addChild(Cancelling)
 			}
+			//Tspin加分
 			if (Tspined) {
 				var TspinPopup = new Sprite();
 				TspinPopup.bitmap = ImageManager.loadPicture('tspin');
@@ -833,14 +839,15 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 				this._blockLayer.addChild(operator.TspinPopup);
 				operator.TspinPopup.activate();
 				var tempScore = Math.pow(5, arr.length);
+				TetrisManager.Count_Tspin += 1;
 			} else {
 				var tempScore = Math.pow(3, arr.length);
 			}
-
+			//Combo加分
 			if (operator.Count_Combos > 0) {
 				tempScore = tempScore * (operator.Count_Combos+1);
 			}
-
+			//B2B加分
 			if (arr[0]) {
 				if (Tspined || arr.length >= 4) {
 					if (operator.lastBack) {
@@ -858,7 +865,7 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 					operator.lastBack = false
 				}
 			}
-
+			//加入分数
 			operator.SCORE += tempScore;
 			operator.gaugeSCORE += tempScore;
 			this.refreshScoreBoard();
@@ -1096,9 +1103,11 @@ Scene_Tetris.prototype.createBox = function (battler) {
 
 Scene_Tetris.prototype.addBox = function (battler, cur) {
 	if (cur.type == "o") {
-		cur.block.x = battler.xposition + (TetrisManager.blockInitalPos + 1) * battler.xrange + 7;
+		cur.block.x = battler.xposition + (TetrisManager.blockInitalPos + 1) * battler.xrange
+			//+ 7;
 	} else {
-		cur.block.x = battler.xposition + TetrisManager.blockInitalPos * battler.xrange + 7;
+		cur.block.x = battler.xposition + TetrisManager.blockInitalPos * battler.xrange
+			//+ 7;
     }
 	cur.block.y = battler.yposition + TetrisManager.AboveLines*battler.yrange;
 
@@ -1331,11 +1340,13 @@ Scene_Tetris.prototype.AttAck = function (source, target, damage) {
 Scene_Tetris.prototype.tryEscape = function () {
 	var enemyTotalLevel = 0;
 	for (var i = 0; i < this._enemies.length; i++) {
-		enemyTotalLevel += this._enemies[i].Level;
+		enemyTotalLevel += this._enemies[i].level;
 	}
 	var enemyAvgLevel = enemyTotalLevel / this._enemies.length;
 
-	if (this.actor.level >= enemyAvgLevel) {
+	var escapeRate = 1 - (enemyAvgLevel - this.actor.level) * 0.2;
+	console.log(escapeRate);
+	if (TetrisManager.randomnize(escapeRate)) {
 		AudioManager.playSe(this.seBoom);
 		this.running = false;
 		this.gameover = true;
@@ -1343,24 +1354,8 @@ Scene_Tetris.prototype.tryEscape = function () {
 		this.StartWindow.deactivate();
 		this.StartWindow.close();
 	} else {
-		var loserate = (enemyAvgLevel - this.actor.Level)*2;
-		if (loserate >= 10) {
-			this.startGame();
-			this.say('逃脱失败！', 200)
-		} else {
-			var rnd = Math.random() * 10;
-			if (rnd > loserate) {
-				AudioManager.playSe(this.seBoom);
-				this.running = false;
-				this.gameover = true;
-				this.say('成功逃脱！确认以退出...', 200)
-				this.StartWindow.deactivate();
-				this.StartWindow.close();
-			} else {
-				this.startGame();
-				this.say('逃脱失败！', 200)
-            }
-        }
+		this.startGame();
+		this.say('逃脱失败！', 200)
     }
 }
 
@@ -1531,7 +1526,7 @@ Scene_Tetris.prototype.refreshPlayerGauge = function(){
 
 Scene_Tetris.prototype.refreshPlayerWindow = function (operator) {
 	this.removeWindow(operator.MainWindow);
-	operator.MainWindow = new Tetris_Window(operator.xposition - 15, operator.yposition + TetrisManager.AboveLines * operator.yrange - 27, this.ROW * operator.xrange + 65, (this.COL - TetrisManager.AboveLines) * operator.yrange);
+	operator.MainWindow = new Tetris_Window(operator.xposition - 15 - 7, operator.yposition + TetrisManager.AboveLines * operator.yrange - 27, this.ROW * operator.xrange + 65, (this.COL - TetrisManager.AboveLines) * operator.yrange);
 	operator.MainWindow.drawVerticalGauge(265, 10, 10, (this.COL - TetrisManager.AboveLines) * operator.yrange, operator.gaugeSCORE / operator.AtkFreq, operator.MainWindow.hpGaugeColor1(), operator.MainWindow.hpGaugeColor1());
 	for (var i = 0; i <= this.ROW; i++) {
 		operator.MainWindow.contents.drawLine(i * operator.xrange + 5, 0, i * operator.xrange + 5, (this.COL - TetrisManager.AboveLines) * operator.yrange - 40);
@@ -1552,7 +1547,7 @@ Scene_Tetris.prototype.refreshScoreBoard = function () {
 
 Scene_Tetris.prototype.refreshEnemyWindow = function (enemy) {
 	this.removeWindow(enemy.mainWindow);
-	enemy.mainWindow = new Tetris_Window(enemy.xposition - 15, enemy.yposition + TetrisManager.AboveLines * enemy.yrange - 28, this.ROW * enemy.xrange + 65, (this.COL - TetrisManager.AboveLines) * enemy.yrange + 24)
+	enemy.mainWindow = new Tetris_Window(enemy.xposition - 15-7, enemy.yposition + TetrisManager.AboveLines * enemy.yrange - 28, this.ROW * enemy.xrange + 65, (this.COL - TetrisManager.AboveLines) * enemy.yrange + 24)
 	enemy.mainWindow.drawVerticalGauge(this.ROW * enemy.xrange + 12, 0, 10, (this.COL - TetrisManager.AboveLines) * enemy.yrange, enemy.curEng / enemy.MEng, enemy.mainWindow.hpGaugeColor1(), enemy.mainWindow.hpGaugeColor1());
 	for (var j = 0; j <= this.ROW; j++) {
 		enemy.mainWindow.contents.drawLine(j * enemy.xrange + 5, 0, j * enemy.xrange + 5, this.COL * enemy.yrange);
@@ -1633,9 +1628,22 @@ Scene_Tetris.prototype.createAfterMath = function () {
 	info.score = this.player.SCORE;
 	info.combo = TetrisManager.curhighestCombo;
 	info.LPM = TetrisManager.curhighestLPM;
-	info.APM = TetrisManager.curhighestAPM;
+	info.APM = TetrisManager.curhighestKPM;
+
 	this.AfterMathWindow = new AfterMath_Window(info);
 	this._upperLayer.addChild(this.AfterMathWindow);
+
+	TetrisManager.Records.Count_Blocks += TetrisManager.Count_Blocks;
+	TetrisManager.Records.Count_Buttons += TetrisManager.Count_Buttons;
+	TetrisManager.Records.Count_Lines += TetrisManager.Count_Lines;
+	TetrisManager.Records.Count_Tspin += TetrisManager.Count_Tspin;
+	TetrisManager.Records.Total_Score += this.player.SCORE;
+	if ($gameVariables.value(23) > TetrisManager.Records.highestLPM) {
+		TetrisManager.Records.highestLPM = $gameVariables.value(23);
+	}
+	if ($gameVariables.value(24) > TetrisManager.Records.highestKPM) {
+		TetrisManager.Records.highestKPM = $gameVariables.value(24);
+	}
 }
 
 Scene_Tetris.prototype.eliminateBUGs = function () {

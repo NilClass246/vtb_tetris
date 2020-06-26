@@ -4,6 +4,10 @@
 
 var TetrisManager = TetrisManager || {};
 
+TetrisManager.Temps = {};
+
+TetrisManager.Records = {};
+
 TetrisManager.data = {
 	'o': [
 		[
@@ -219,65 +223,17 @@ TetrisManager.Count_Buttons = 0;
 
 TetrisManager.Count_Lines = 0;
 
+TetrisManager.Count_Tspin = 0;
+
 TetrisManager.curhighestCombo = 0;
 
 TetrisManager.curhighestLPM = 0;
 
-TetrisManager.curhighestAPM = 0;
+TetrisManager.curhighestKPM = 0;
 
-TetrisManager.highestLPM = 0;
+//TetrisManager.highestLPM = 0;
 
-TetrisManager.highestAPM = 0;
-
-TetrisManager.AboveLines = 16;
-
-TetrisManager.makeData = function () {
-	var tet = {};
-
-	tet.ArrDelay = $gameVariables.value(3)
-	tet.DasDelay = $gameVariables.value(2)
-	tet.softDropSpeed = $gameVariables.value(4)
-	tet.AiSpeed = $gameVariables.value(5)
-
-	return tet
-}
-
-TetrisManager.save = function () {
-	StorageManager.save(514, JSON.stringify(TetrisManager.makeData()));
-}
-
-TetrisManager.load = function () {
-	var json;
-	var tet = {};
-	try {
-		json = StorageManager.load(514);
-	} catch (e) {
-		console.error(e);
-	}
-	if (json) {
-		tet = JSON.parse(json);
-	}
-	if (tet['ArrDelay'] !== undefined) {
-		$gameVariables.setValue(3, Number(tet['ArrDelay']))
-	} else {
-		$gameVariables.setValue(3, 3)
-    }
-	if (tet['DasDelay'] !== undefined) {
-		$gameVariables.setValue(2, Number(tet['DasDelay']))
-	} else {
-		$gameVariables.setValue(2, 10)
-    }
-	if (tet['softDropSpeed'] !== undefined) {
-		$gameVariables.setValue(4, Number(tet['softDropSpeed']))
-	} else {
-		$gameVariables.setValue(4, 20)
-    }
-	if (tet['AiSpeed'] !== undefined) {
-		$gameVariables.setValue(5, Number(tet['AiSpeed']))
-	} else {
-		$gameVariables.setValue(5, 20)
-    }
-}
+//TetrisManager.highestAPM = 0;
 
 TetrisManager.TimerActivated = false;
 
@@ -386,7 +342,105 @@ TetrisManager.BlankLines = 2;
 
 TetrisManager.GaugeConstant = 10;
 
-TetrisManager.Temps = {};
+TetrisManager.AboveLines = 16;
+
+TetrisManager.AiSpeed = 0;
+
+//============================================================
+// 成就参数
+//============================================================
+
+TetrisManager.Records.Count_Tspin = 0;
+
+TetrisManager.Records.Count_Blocks = 0;
+
+TetrisManager.Records.Count_Buttons = 0;
+
+TetrisManager.Records.Count_Lines = 0;
+
+TetrisManager.Records.highestLPM = 0;
+
+TetrisManager.Records.highestKPM = 0;
+
+TetrisManager.Records.Total_Score = 0;
+
+TetrisManager.localFileId = 4545;
+
+TetrisManager.webStorageKey = "Tekoki-Tetris";
+
+TetrisManager.makeData = function () {
+	var tet = TetrisManager.Records;
+	tet.AiSpeed = TetrisManager.AiSpeed;
+	return tet
+}
+
+TetrisManager.save = function () {
+	StorageManager.save(TetrisManager.localFileId, JSON.stringify(TetrisManager.makeData()));
+}
+
+TetrisManager.load = function () {
+	var json;
+	var tet = {};
+	try {
+		json = StorageManager.load(TetrisManager.localFileId);
+	} catch (e) {
+		console.error(e);
+	}
+	if (json) {
+		tet = JSON.parse(json);
+	}
+
+	for (name in tet) {
+		switch (name) {
+			case "Count_Tspin":
+				TetrisManager.Records.Count_Tspin = tet[name];
+				break;
+			case "Count_Blocks":
+				TetrisManager.Records.Count_Blocks = tet[name];
+				break;
+			case "Count_Buttons":
+				TetrisManager.Records.Count_Buttons = tet[name];
+				break;
+			case "Count_Lines":
+				TetrisManager.Records.Count_Lines = tet[name];
+				break;
+			case "highestLPM":
+				TetrisManager.Records.highestLPM = tet[name];
+				break;
+			case "highestKPM":
+				TetrisManager.Records.highestKPM = tet[name];
+				break;
+			case "Total_Score":
+				TetrisManager.Records.Total_Score = tet[name];
+				break;
+			case "AiSpeed":
+				TetrisManager.AiSpeed = tet[name];
+				break;
+        }
+	}
+}
+
+TetrisManager.Temps.StorageManager_localFilePath = StorageManager.localFilePath;
+StorageManager.localFilePath = function (savefileId) {
+	if (savefileId === TetrisManager.localFileId) {
+		return this.localFileDirectoryPath() + 'Tekoki.rpgsave';
+	}
+	return TetrisManager.Temps.StorageManager_localFilePath.apply(this, arguments);
+}
+
+TetrisManager.Temps.StorageManager_webStorageKey = StorageManager.webStorageKey;
+StorageManager.webStorageKey = function (savefileId) {
+	if (savefileId === TetrisManager.localFileId) {
+		return TetrisManager.webStorageKey;
+	}
+	return TetrisManager.Temps.StorageManager_webStorageKey.apply(this, arguments);
+};
+
+TetrisManager.Temps.Scene_Boot_Start = Scene_Boot.prototype.start;
+Scene_Boot.prototype.start = function () {
+	TetrisManager.Temps.Scene_Boot_Start.call(this);
+	TetrisManager.load();
+}
 
 //============================================================
 // 超级旋转系统
@@ -630,10 +684,21 @@ TetrisManager.desetTimer = function () {
 	TetrisManager.TimerActivated = false;
 }
 
+TetrisManager.randomnize = function (p) {
+	p = p * 100;
+	var rnd = Math.random() * 100;
+	if (rnd <= p) {
+		return true;
+	} else {
+		return false;
+    }
+}
+
 //============================================================
 // 内部方法继承
 //============================================================
 //TODO: Damn, why is the call method not working???
+
 TetrisManager.Temps.is_OccasionOk = Game_BattlerBase.prototype.isOccasionOk
 Game_BattlerBase.prototype.isOccasionOk = function (item) {
 	if (SceneManager._scene instanceof Scene_Tetris || SceneManager._scene instanceof Scene_Puzzle) {
@@ -902,6 +967,16 @@ AfterMath_Window.prototype.isLayed = function () {
 }
 
 //============================================================
+// 伤害系统
+//============================================================
+
+TetrisManager.HarmSystem = {};
+
+TetrisManager.HarmSystem.dealDamage = function () {
+
+}
+
+//============================================================
 // 技能系统
 //============================================================
 
@@ -1148,8 +1223,6 @@ skillBoard.prototype.initialize = function (skillButtonlist) {
     }
 }
 
-
-
 //-----------------------------------------------------------------------------
 
 function itemBoard() {
@@ -1311,8 +1384,6 @@ itemBoard.prototype.applyItem = function (item) {
 		TetrisManager.item_List[id]();
     }
 }
-
-
 
 function itemIcon() {
 	this.initialize.apply(this, arguments);
@@ -1703,7 +1774,6 @@ stateIcon.prototype.shine = function () {
 	this.shining = true;
 }
 
-//TODO: 本地化
 //-----------------------------------------------------------------------------
 // 技能特效的抽象类
 function Attack_Effect() {
@@ -2160,27 +2230,6 @@ targetMark.prototype.aim = function (target) {
 	this.targetScaleY = target.scaleY;
 	this.targetX = target.xposition + (TetrisManager.ROW / 2) * target.xrange;
 	this.targetY = target.yposition + ((TetrisManager.COL - TetrisManager.AboveLines) / 2) * target.yrange + TetrisManager.AboveLines * target.yrange
-}
-
-//=============================================================================
-// 地图遮罩
-//=============================================================================
-
-TetrisManager.SceneMapCreateDisplayObjects = Scene_Map.prototype.createDisplayObjects;
-
-Scene_Map.prototype.createDisplayObjects = function () {
-	TetrisManager.SceneMapCreateDisplayObjects.call(this);
-	//TetrisManager.addOverlay();
-}
-
-TetrisManager.removeOverlay = function () {
-	SceneManager._scene.removeChild(TetrisManager.CameraOverlay);
-}
-
-TetrisManager.addOverlay = function () {
-	TetrisManager.CameraOverlay = new Sprite();
-	TetrisManager.CameraOverlay.bitmap = ImageManager.loadPicture("Camera");
-	SceneManager._scene.addChild(TetrisManager.CameraOverlay);
 }
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀

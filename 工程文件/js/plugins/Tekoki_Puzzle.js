@@ -182,6 +182,7 @@ Scene_Puzzle.prototype.initializeData = function () {
 	TetrisManager.Count_Blocks = 0;
 	TetrisManager.Count_Buttons = 0;
 	TetrisManager.Count_Lines = 0;
+	TetrisManager.Count_Tspin
 	TetrisManager.curhighestCombo = 0;
 
 	this.layed = false;
@@ -289,7 +290,7 @@ Scene_Puzzle.prototype.update_Actor = function () {
 	//TODO：TouchInput卡键修复
 	//TODO: Buff系统
 	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
-	TetrisManager.curhighestAPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
+	TetrisManager.curhighestKPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
 }
 
 Scene_Puzzle.prototype.create = function () {

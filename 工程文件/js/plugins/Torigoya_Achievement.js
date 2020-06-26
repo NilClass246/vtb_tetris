@@ -697,6 +697,8 @@
         Scene_MenuBase.prototype.create.call(this);
         this.createHelpWindow();
         this.createAchievementWindow();
+        this._TetrisAchivement = new Window_TetrisAchievement(0, 200, 400, 400);
+        this.addWindow(this._TetrisAchivement);
     };
 
     Scene_Achievement.prototype.createAchievementWindow = function () {
@@ -710,6 +712,35 @@
     };
 
     Achievement.Scene_Achievement = Scene_Achievement;
+
+    // -------------------------------------------------------------------------
+    // Window_TetrisAchievement
+    // Added by NilClass
+
+    function Window_TetrisAchievement() {
+        this.initialize.apply(this, arguments);
+    }
+
+    Window_TetrisAchievement.prototype = Object.create(Window_Base.prototype);
+    Window_TetrisAchievement.prototype.constructor = Window_TetrisAchievement;
+
+    Window_TetrisAchievement.prototype.initialize = function (x, y, width, height) {
+        Window_Base.prototype.initialize.call(this, x, y, width, height);
+        this.refresh();
+
+        this.drawText("合并方块总数：" + TetrisManager.Records.Count_Blocks, 0, 0);
+        this.drawText("消行总数：" + TetrisManager.Records.Count_Lines, 0, 28);
+        this.drawText("Tspin总数：" + TetrisManager.Records.Count_Tspin, 0, 56);
+        this.drawText("得分总数：" + TetrisManager.Records.Total_Score, 0, 84);
+
+        this.drawText("全局最高LPM：" + TetrisManager.Records.highestLPM, 0, 140);
+        this.drawText("全局最高KPM：" + TetrisManager.Records.highestKPM, 0, 168);
+    }
+
+    Window_TetrisAchievement.prototype.refresh = function () {
+        this.contents.clear();
+    }
+
 
     // -------------------------------------------------------------------------
     // 保存周り

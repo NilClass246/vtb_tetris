@@ -1,10 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\data",
     "\\js",
-    "\\js\\plugins"
+    "\\js\\plugins",
+    "\\locales",
+    "\\locales\\cn"
   ],
-  "SelectedNode": "\\js\\plugins\\NC_Utils.js",
+  "SelectedNode": "\\locales\\cn\\TestField.json",
   "PreviewInSolutionExplorer": false
 }
