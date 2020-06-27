@@ -108,8 +108,11 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		//属性
 		displayHp: this.actor.hp,
 		atk: this.actor.atk,
+		def: this.actor.def,
+		cri: this.actor.cri,
 
 		AtkFreq: 10,
+		AtkType: 'normal'
 	}
 
 	this.player.yposition -= TetrisManager.AboveLines * this.player.yrange;
@@ -210,6 +213,10 @@ Scene_Tetris.prototype.initialize_Enemy = function () {
 		this._enemies[i].scaleY = this._enemies[i].yrange / this.player.yrange;
 
 		this._enemies[i].Count_Combos = -1;
+
+		if (!this._enemies[i].AtkType) {
+			this._enemies[i].AtkType = 'normal'
+        }
 
 	}
 }
@@ -479,16 +486,11 @@ Scene_Tetris.prototype.update_Actor = function () {
 	}
 
 	if (this.player.gaugeSCORE >= this.player.AtkFreq) {
-		var overkill = this.player.gaugeSCORE - this.player.AtkFreq
-		var damage = this.player.Atk + overkill;
-		if (this.multiple) {
-			if (this._enemies[this.player.TargetIndex]) {
-				this.AttAck(this.player, this._enemies[this.player.TargetIndex], damage);
-			} else {
 
-            }
-		} else {
-			this.AttAck(this.player, this._enemies[0], damage);
+		var overkill = this.player.gaugeSCORE - this.player.AtkFreq
+		var damage = this.player.atk + overkill;
+		if (this._enemies[this.player.TargetIndex]) {
+			this.AttAck(this.player, this._enemies[this.player.TargetIndex], damage);
 		}
 		this.player.gaugeSCORE = 0;
 		this.drawArea(this.player);
@@ -693,7 +695,7 @@ Scene_Tetris.prototype.update_Enemy = function () {
 			CurEnemy.StateBoard.refreshStates();
 
 			if (CurEnemy.curEng >= CurEnemy.MEng) {
-				this.AttAck(CurEnemy, this.player, CurEnemy.Atk);
+				this.AttAck(CurEnemy, this.player, CurEnemy.atk);
 				CurEnemy.curEng = 0;
 				this.refreshEnemyWindow(CurEnemy);
 				this.drawArea(CurEnemy);
@@ -1307,33 +1309,40 @@ Scene_Tetris.prototype.shadow = function(battler){
 }
 
 Scene_Tetris.prototype.AttAck = function (source, target, damage) {
-	if (target) {
-		if (target.category == "enemy") {
-			var finaldamage = 3 * (damage) - 2 * (target.Def)
-			if (finaldamage >= 0) {
-				target.curHp -= finaldamage;
-			}
-			if (target.curHp < 0) {
-				target.curHp = 0;
-				target.living = false;
-				this.changeTarget();
-			}
-			var pop = new PopNumber(new FNumber(finaldamage, 7));
-			this._blockLayer.addChild(pop)
-			pop.move(target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 10 * target.yrange);
-			pop.activate();
-			this.createXYanimationWindow(1, target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 12 * target.yrange);
-		} else {
-			var finaldamage = 3 * (damage) - 2 * (this.actor.def)
-			if (finaldamage >= 0) {
-				this.actor.gainHp(-finaldamage);
-			}
-			var pop = new PopNumber(new FNumber(finaldamage, 7));
-			this._blockLayer.addChild(pop)
-			pop.move(target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height / 2)
-			pop.activate();
-			this.createXYanimationWindow(1, target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height/2);
-		}
+	//if (target) {
+	//	if (target.category == "enemy") {
+	//		var finaldamage = 3 * (damage) - 2 * (target.Def)
+	//		if (finaldamage >= 0) {
+	//			target.curHp -= finaldamage;
+	//		}
+	//		if (target.curHp < 0) {
+	//			target.curHp = 0;
+	//			target.living = false;
+	//			this.changeTarget();
+	//		}
+	//		var pop = new PopNumber(new FNumber(finaldamage, 7));
+	//		this._blockLayer.addChild(pop)
+	//		pop.move(target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 10 * target.yrange);
+	//		pop.activate();
+	//		this.createXYanimationWindow(1, target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 12 * target.yrange);
+	//	} else {
+	//		var finaldamage = 3 * (damage) - 2 * (this.actor.def)
+	//		if (finaldamage >= 0) {
+	//			this.actor.gainHp(-finaldamage);
+	//		}
+	//		var pop = new PopNumber(new FNumber(finaldamage, 7));
+	//		this._blockLayer.addChild(pop)
+	//		pop.move(target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height / 2)
+	//		pop.activate();
+	//		this.createXYanimationWindow(1, target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height/2);
+	//	}
+ //   }
+
+	TetrisManager.HarmSystem.dealDamage(source, target, damage, source.AtkType);
+	if (source.category == 'enemy') {
+		source.StateBoard.onAttack();
+	} else {
+		this._playerStateBoard.onAttack();
     }
 }
 

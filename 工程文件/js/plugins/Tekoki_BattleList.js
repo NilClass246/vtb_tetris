@@ -52,8 +52,8 @@ var TwoSlimes = [
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
-		Atk: 35,
-		Def: 20,
+		atk: 35,
+		def: 20,
 		curEng: 0,
 		MEng: 30,
 		EngSpd: 2,
@@ -77,8 +77,8 @@ var TwoSlimes = [
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
-		Atk: 35,
-		Def: 20,
+		atk: 35,
+		def: 20,
 		curEng: 0,
 		MEng: 30,
 		EngSpd: 2,
@@ -105,8 +105,8 @@ var FourKnights = [
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
-		Atk: 35,
-		Def: 20,
+		atk: 35,
+		def: 20,
 		curEng: 0,
 		MEng: 30,
 		EngSpd: 2,
@@ -130,8 +130,8 @@ var FourKnights = [
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
-		Atk: 35,
-		Def: 20,
+		atk: 35,
+		def: 20,
 		curEng: 0,
 		MEng: 30,
 		EngSpd: 2,
@@ -155,8 +155,8 @@ var FourKnights = [
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
-		Atk: 35,
-		Def: 20,
+		atk: 35,
+		def: 20,
 		curEng: 0,
 		MEng: 30,
 		EngSpd: 2,
@@ -180,8 +180,8 @@ var FourKnights = [
 		curHp: 0,
 		displayHp: 0,
 		Mhp: 200,
-		Atk: 35,
-		Def: 20,
+		atk: 35,
+		def: 20,
 		curEng: 0,
 		MEng: 30,
 		EngSpd: 2,
@@ -280,6 +280,7 @@ TetrisManager.state_List = {
 	"1": {
 		id: 1,
 		count: 0,
+		type: 'out_battle',
 		updated: false,
 		onGain: function (owner) {
 		},
@@ -291,6 +292,7 @@ TetrisManager.state_List = {
 	"4": {
 		id: 4,
 		count: 0,
+		type: 'in_battle',
 		updated: false,
 		onGain: function (owner) {
 			this.owner = owner
@@ -298,14 +300,7 @@ TetrisManager.state_List = {
 		},
 		update: function () {
 			if (((Date.now() - this.oldTime) / 1000) > 1) {
-				if (this.owner.category == 'enemy') {
-					this.owner.curHp -= this.count
-					if (this.owner.curHp < 0) {
-						this.owner.curHp = 0;
-                    }
-				} else {
-					this.owner.gainHp(-this.count);
-                }
+				TetrisManager.HarmSystem.dealDamage(null, this.owner, this.count, 'poison')
 				this.oldTime = Date.now();
 				this.count -= 1;
 				this.updated = true;
@@ -314,13 +309,14 @@ TetrisManager.state_List = {
 				this.owner.removeState(4);
             }
 		},
-		onLose: function () {
+		//onLose: function () {
 			
-		}
+		//}
 	},
 	"8": {
 		id: 8,
 		count: 0,
+		type: 'in_battle',
 		updated: false,
 		onGain: function (owner) {
 			this.owner = owner
@@ -348,7 +344,7 @@ TetrisManager.state_List = {
 				SceneManager._scene.getPlayer().running = true;
 			}
 		}
-    }
+	}
 }
 
 TetrisManager.item_List = {

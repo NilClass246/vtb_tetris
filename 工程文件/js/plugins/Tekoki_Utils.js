@@ -972,8 +972,59 @@ AfterMath_Window.prototype.isLayed = function () {
 
 TetrisManager.HarmSystem = {};
 
-TetrisManager.HarmSystem.dealDamage = function () {
-
+TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
+	var scene = SceneManager._scene;
+	if (target) {
+		var finaldamage = amount
+		var atkType = type
+		switch (atkType) {
+			case 'normal':
+				finaldamage = 3 * amount - 2 * target.def;
+				if (source.cri && TetrisManager.randomnize(source.cri)) {
+					finaldamage = finaldamage * 2;
+					atkType = 'critical';
+				}
+				break;
+        }
+		if (target.category == "enemy") {
+			if (finaldamage >= 0) {
+				target.curHp -= finaldamage;
+			}
+			if (target.curHp < 0) {
+				target.curHp = 0;
+				target.living = false;
+				scene.changeTarget();
+			}
+			var pop = new PopNumber(new FNumber(finaldamage, 7));
+			scene._blockLayer.addChild(pop)
+			pop.move(target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 10 * target.yrange);
+			switch (atkType) {
+				case 'normal':
+					break;
+				case 'poison':
+					pop.setTint(0x009933)
+					break;
+			}
+			pop.activate();
+			//this.createXYanimationWindow(1, target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 12 * target.yrange);
+		} else {
+			if (finaldamage >= 0) {
+				scene.actor.gainHp(-finaldamage);
+			}
+			var pop = new PopNumber(new FNumber(finaldamage, 7));
+			scene._blockLayer.addChild(pop)
+			pop.move(target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height / 2)
+			switch (atkType) {
+				case 'normal':
+					break;
+				case 'poison':
+					pop.setTint(0x009933)
+					break;
+            }
+			pop.activate();
+			//this.createXYanimationWindow(1, target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height / 2);
+		}
+	}
 }
 
 //============================================================
@@ -1673,7 +1724,9 @@ stateBoard.prototype.refreshStates = function () {
 		if (this._currentStates[strid] && !this._previousStates[strid]) {
 			if (!this._statelist[strid]) {
 				this._statelist[strid] = Object.create(TetrisManager.state_List[strid])
-				this._statelist[strid].onGain(this._owner);
+				if (this._statelist[strid].onGain) {
+					this._statelist[strid].onGain(this._owner);
+                }
             }
 			var stateicon = new stateIcon(this._statelist[strid])
 			this._stateicons[strid] = stateicon;
@@ -1682,14 +1735,18 @@ stateBoard.prototype.refreshStates = function () {
 			this.iconPos += 32;
 		}
 		if (!this._currentStates[strid] && this._previousStates[strid]) {
-			this._statelist[strid].onLose();
+			if (this._statelist[strid].onLose) {
+				this._statelist[strid].onLose();
+            }
 			this._statelist[strid] = null;
 			this.removeChild(this._stateicons[strid]);
 			this.iconPos -= 32;
 		}
 
 		if (this._statelist[strid]) {
-			this._statelist[strid].update();
+			if (this._statelist[strid].update) {
+				this._statelist[strid].update();
+            }
 			if (this._statelist[strid].updated) {
 				this._stateicons[strid].shine();
 				this._statelist[strid].updated = false;
@@ -1712,10 +1769,19 @@ stateBoard.prototype.applyStates = function (strid, layers) {
 }
 
 stateBoard.prototype.clearAllStates = function () {
-	if (this._owner._states.contains(1)) {
-		this._owner._states = [1];
-	} else {
-		this._owner._states = [];
+	for (var strid in this._statelist) {
+		if (this._statelist[strid].type == 'in_battler') {
+			var numid = Number(strid);
+			this._owner._states.splice(this._owner._states.indexOf(numid), 1);
+        }
+    }
+}
+
+stateBoard.prototype.onAttack = function () {
+	for (var strid in this._statelist) {
+		if (this._statelist[strid] && this._statelist[strid].onAttack) {
+			this._statelist[strid].onAttack();
+        }
     }
 }
 
@@ -1750,6 +1816,10 @@ stateIcon.prototype.update = function () {
 	if (this._state.count > 0) {
 		this._textLayer.bitmap.clear()
 		this._textLayer.bitmap.drawText(this._state.count, 0, 0, 32, 32, 'right');
+	}
+
+	if (this._state.count == 0) {
+		this._textLayer.bitmap.clear()
     }
 
 	if (this.shining && !this.shined) {
@@ -2041,6 +2111,8 @@ FNumber.prototype.create_number = function () {
 				this.number_sprites[i].x = (i * (this.number_sprites[i].bitmap.width / 10)) - (((numbers.length - 1) * (this.number_sprites[i].bitmap.width / 10)) / 2)
 				break;
 		}
+		this.number_sprites[i].tint = this.tint;
+		console.log(this.tint);
 		//this.number_sprites[i].y = this.y;
 		this.addChild(this.number_sprites[i])
 	}
@@ -2104,6 +2176,12 @@ PopNumber.prototype.activate = function () {
 
 PopNumber.prototype.isCompleted = function () {
 	return this.completed;
+}
+
+PopNumber.prototype.setTint = function (tint) {
+	this.tint = tint;
+	this.curSprite.tint = this.tint;
+	this.curSprite.create_number();
 }
 
 //-----------------------------------------------------------------------------
