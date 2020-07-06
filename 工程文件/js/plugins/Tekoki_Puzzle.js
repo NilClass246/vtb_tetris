@@ -288,7 +288,6 @@ Scene_Puzzle.prototype.update_Actor = function () {
 	}
 	//TODO: 双人模式
 	//TODO：TouchInput卡键修复
-	//TODO: Buff系统
 	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
 	TetrisManager.curhighestKPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
 }
@@ -322,13 +321,13 @@ Scene_Puzzle.prototype.create = function () {
 }
 
 Scene_Puzzle.prototype.createPlayerWindows = function () {
-	this.holdWindow = new Tetris_Window(this.player.xposition - 132, this.player.yposition + TetrisManager.AboveLines*this.player.yrange - 5, 120, 120);
+	this.holdWindow = new Tetris_Window(this.player.xposition - 139, this.player.yposition + TetrisManager.AboveLines*this.player.yrange - 5, 120, 120);
 	this.holdWindow.drawText("HOLD", 12, -10);
 	this.player.holdWindow = this.holdWindow;
 	this.addWindow(this.player.holdWindow);
 
 	for (i = 0; i < 6; i++) {
-		this.nextWindows.push(new Tetris_Window(this.player.xposition + this.ROW * this.player.xrange + 47, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 5 + 90 * i, 120, 90));
+		this.nextWindows.push(new Tetris_Window(this.player.xposition + this.ROW * this.player.xrange + 40, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 5 + 90 * i, 120, 90));
 	}
 	this.player.nextWindows = this.nextWindows;
 	for (i = 0; i < 6; i++) {
@@ -339,7 +338,7 @@ Scene_Puzzle.prototype.createPlayerWindows = function () {
 
 Scene_Puzzle.prototype.refreshPlayerWindow = function(){
 	this.removeWindow(this.player.MainWindow);
-	this.player.MainWindow = new Tetris_Window(this.player.xposition - 15, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27, this.ROW * this.player.xrange + 65, (this.COL - TetrisManager.AboveLines) * this.player.yrange);
+	this.player.MainWindow = new Tetris_Window(this.player.xposition - 15 - 7, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27, this.ROW * this.player.xrange + 65, (this.COL - TetrisManager.AboveLines) * this.player.yrange);
 	for (i = 0; i <= this.ROW; i++) {
 		this.player.MainWindow.contents.drawLine(i * this.player.xrange + 5, 0, i * this.player.xrange + 5, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 40);
 	}
@@ -359,4 +358,122 @@ function puzzle_start() {
 
 function Scene_Trans() {
 	this.initialize.apply(this, arguments);
+}
+
+//============================================================
+// 解密数据
+//============================================================
+
+function Puzzle_Manager() {
+	this.initialize.apply(this, arguments);
+}
+
+Puzzle_Manager.prototype.initialize = function (ID) {
+	this.puzzleID = ID;
+	this.scene = SceneManager._scene;
+	this.victory = false;
+	this.startTime = Date.now();
+}
+
+Puzzle_Manager.prototype.create = function () {
+	switch (this.puzzleID) {
+		case 2:
+			this.timeLimit = $gameVariables.value(11);
+			this.targetBoard = new Target_Window("在" + this.timeLimit + "秒内获取尽量多的分数！")
+			this.scene.addChild(this.targetBoard);
+
+			this.CheckBoard = new Tetris_Window(0, 0, 300, 300);
+			this.CheckBoard.contents.fontSize = 18;
+			this.CheckBoard.removeChildAt(0)
+			this.EasyCheck = new CheckBox();
+			this.CheckBoard.addChild(this.EasyCheck);
+			this.EasyCheck.move(15, 21);
+			this.CheckBoard.drawText("Easy: " + $gameVariables.value(7) + "分", 28, 0);
+			this.NormalCheck = new CheckBox();
+			this.CheckBoard.addChild(this.NormalCheck)
+			this.NormalCheck.move(15, 49)
+			this.CheckBoard.drawText("Normal: " + $gameVariables.value(8) + "分", 28, 28);
+			this.HardCheck = new CheckBox();
+			this.CheckBoard.addChild(this.HardCheck);
+			this.HardCheck.move(15, 77)
+			this.CheckBoard.drawText("Hard: " + $gameVariables.value(9) + "分", 28, 56);
+			this.LunaticCheck = new CheckBox();
+			this.CheckBoard.addChild(this.LunaticCheck);
+			this.LunaticCheck.move(15, 105);
+			this.CheckBoard.drawText("Lunatic: " + $gameVariables.value(10) + "分", 28, 84);
+
+			this.scene.addChild(this.CheckBoard);
+
+			this.infoBoard = new Tetris_Window(278, 142, 200, 500);
+			this.infoBoard.contents.fontSize = 18;
+			this.infoBoard.removeChildAt(0)
+			this.infoBoard.drawText(
+				"Time Left ", 0, 0)
+			this.infoBoard.drawText(
+				TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
+				20, 25)
+			this.infoBoard.drawText(
+				"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
+				0, 310)
+			this.infoBoard.drawText(
+				"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+				0, 335)
+
+			this.scene.addWindow(this.infoBoard);
+			this.ProgressBar = new VerticalProgressBar(50);
+			this.ProgressBar.move(75, 80);
+			this.infoBoard.addChild(this.ProgressBar);
+			this.ProgressBar.addPhase($gameVariables.value(10), "ui\\LunaticBar")
+			this.ProgressBar.addPhase($gameVariables.value(9), "ui\\HardBar")
+			this.ProgressBar.addPhase($gameVariables.value(8), "ui\\NormalBar")
+			this.ProgressBar.addPhase($gameVariables.value(7), "ui\\EasyBar")
+			break;
+	}
+}
+
+Puzzle_Manager.prototype.update = function (score) {
+	switch (this.puzzleID) {
+		case 2:
+			if (this.victory) {
+				this.end = new Target_Window("时间到！");
+				this.scene.addChild(this.end);
+			} else {
+				this.infoBoard.refresh()
+				this.infoBoard.drawText(
+					"Time Left ", 0, 0)
+				this.infoBoard.drawText(
+					TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
+					20, 25)
+				this.infoBoard.drawText(
+					"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
+					0, 310)
+				this.infoBoard.drawText(
+					"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+					0, 335)
+				this.ProgressBar.changeNumber(score)
+				this.EasyCheck.ChEck();
+				if (score >= $gameVariables.value(8)) {
+					this.NormalCheck.ChEck();
+					if (score >= $gameVariables.value(9)) {
+						this.HardCheck.ChEck();
+						if (score >= $gameVariables.value(10)) {
+							this.LunaticCheck.ChEck();
+						}
+					}
+				}
+			}
+
+			if (this.timeLimit - TetrisManager.getElapsedTime() <= 0) {
+				this.victory = true;
+			}
+			break;
+	}
+}
+
+Puzzle_Manager.prototype.getElapsedTime = function () {
+	return Math.floor((Date.now() - this.startTime) / 10) / 100;
+}
+
+Puzzle_Manager.prototype.isEnded = function () {
+	return this.victory;
 }

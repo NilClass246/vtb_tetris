@@ -2,10 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\js",
+    "\\js\\libs",
     "\\js\\plugins",
     "\\locales",
     "\\locales\\cn"
   ],
-  "SelectedNode": "\\js\\plugins\\Tekoki_BattleList.js",
+  "SelectedNode": "\\js\\plugins\\Tekoki_Puzzle.js",
   "PreviewInSolutionExplorer": false
 }

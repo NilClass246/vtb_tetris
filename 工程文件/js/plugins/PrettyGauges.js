@@ -285,7 +285,7 @@
 	Window_Base.prototype.drawGauge = function(x, y, width, rate, color1, color2) {
 		var fillW = Math.floor(width * rate);
 		var gaugeY = y + this.lineHeight() - 2 - barHeight;
-		this.contents.fillTrap(x, gaugeY, width, width, barHeight, this.gaugeBackColor1(),  this.gaugeBackColor2());
+		this.contents.fillTrap(x, gaugeY, width, width, barHeight, this.gaugeBackColor1(), this.gaugeBackColor2());
 		this.contents.fillTrap(x, gaugeY, width, fillW, barHeight, color1, color2);
 		if (outline) { this.contents.outlineTrap(x, gaugeY, width, barHeight, outlineColor1, outlineColor2)}
 	}

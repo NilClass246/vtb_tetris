@@ -75,3 +75,513 @@ Stack: TypeError: Cannot read property 'addChild' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Thu Jul 02 2020 16:30:31 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'Damage_mag' of null
+Stack: TypeError: Cannot read property 'Damage_mag' of null
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:978:28)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:303:30)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1748:28)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:731:24)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:431:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Thu Jul 02 2020 20:40:36 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot set property '_parentID' of undefined
+Stack: TypeError: Cannot set property '_parentID' of undefined
+    at particleEmitter.addChild (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi.js:9028:39)
+    at particleEmitter.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2388:7)
+    at new particleEmitter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2376:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1472:16)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:19:26 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'standardBackOpacity' of undefined
+Stack: TypeError: Cannot read property 'standardBackOpacity' of undefined
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2411:21)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2402:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1479:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:20:32 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'standardBackOpacity' of null
+Stack: TypeError: Cannot read property 'standardBackOpacity' of null
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2411:20)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2402:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1479:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:50:37 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: this.gaugeFrame.beginHole is not a function
+Stack: TypeError: this.gaugeFrame.beginHole is not a function
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2431:18)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1479:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:53:17 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:774:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2451:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1479:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:53:51 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:774:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2451:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1479:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:57:51 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:774:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2451:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1479:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:58:12 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:774:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2451:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1480:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 13:59:58 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('16770764') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('16770764') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:773:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2451:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1480:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:00:49 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:774:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2451:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1480:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:01:18 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('ffe6cc') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('ffe6cc') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:773:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2451:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1480:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:06:28 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PrettyGauges.js:314:8)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2442:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2403:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1480:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:09:06 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:774:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2452:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2412:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1480:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:13:17 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:776:7)
+    at Gauge.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2453:27)
+    at new Gauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2414:18)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1480:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:22:07 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: height is not defined
+Stack: ReferenceError: height is not defined
+    at Gauge.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2469:61)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1482:13)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:22:38 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: color1 is not defined
+Stack: ReferenceError: color1 is not defined
+    at Gauge.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2470:81)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1482:13)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 14:23:33 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: SyntaxError
+Message: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+Stack: Error: Failed to execute 'addColorStop' on 'CanvasGradient': The value provided ('undefined') could not be parsed as a color.
+    at Bitmap.drawHorGrad (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:773:7)
+    at Gauge.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2472:27)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1482:13)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 15:49:52 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property '0' of undefined
+Stack: TypeError: Cannot read property '0' of undefined
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1100:29)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:303:30)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1839:28)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:434:27)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 15:57:42 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'gainHp' of undefined
+Stack: TypeError: Cannot read property 'gainHp' of undefined
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1096:18)
+    at Scene_Tetris.AttAck (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1385:27)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:742:10)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:437:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 16:07:52 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'hasLoaded' of undefined
+Stack: TypeError: Cannot read property 'hasLoaded' of undefined
+    at new Texture (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi.js:25630:25)
+    at fallingPart.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2525:13)
+    at new fallingPart (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2511:18)
+    at Gauge.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2493:12)
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1104:30)
+    at Scene_Tetris.AttAck (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1386:27)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:743:10)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:438:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+
+Date: Fri Jul 03 2020 16:14:22 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: target.actor.gainHp is not a function
+Stack: TypeError: target.actor.gainHp is not a function
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1096:18)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:303:30)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1843:28)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:439:27)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 16:17:48 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: target.actor.gainHp is not a function
+Stack: TypeError: target.actor.gainHp is not a function
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1096:18)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:306:30)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1843:28)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:439:27)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 16:21:29 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: target.actor.gainHp is not a function
+Stack: TypeError: target.actor.gainHp is not a function
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1096:18)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:306:30)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1840:28)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:439:27)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 16:22:47 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: target.actor.gainHp is not a function
+Stack: TypeError: target.actor.gainHp is not a function
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1096:18)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:305:30)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1840:28)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:439:27)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 16:23:34 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: target.actor.gainHp is not a function
+Stack: TypeError: target.actor.gainHp is not a function
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1096:18)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:305:30)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1840:28)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:439:27)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 03 2020 16:29:36 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'type' of null
+Stack: TypeError: Cannot read property 'type' of null
+    at stateBoard.clearAllStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1869:30)
+    at Scene_Tetris.endGame (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1591:25)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:430:12)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 11:48:48 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'length' of undefined
+Stack: TypeError: Cannot read property 'length' of undefined
+    at Position_Manager.calculatePDValue (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/TetrisAi.js:84:32)
+    at Position_Manager.findBestSolution (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/TetrisAi.js:205:25)
+    at Position_Manager.render_ActionQueue (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/TetrisAi.js:217:26)
+    at Scene_Tetris.createBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1147:48)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:754:10)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:438:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 15:11:54 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property '0' of undefined
+Stack: TypeError: Cannot read property '0' of undefined
+    at Scene_Tetris.refreshNextWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1667:27)
+    at Scene_Tetris.createBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1116:9)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1451:8)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 15:16:35 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'ScoreBoard' of undefined
+Stack: TypeError: Cannot read property 'ScoreBoard' of undefined
+    at Scene_Tetris.refreshScoreBoard (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1624:40)
+    at Scene_Tetris.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1528:7)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1444:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 15:18:07 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: operator is not defined
+Stack: ReferenceError: operator is not defined
+    at Scene_Tetris.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1528:25)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1444:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 15:19:58 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'nextWindows' of undefined
+Stack: TypeError: Cannot read property 'nextWindows' of undefined
+    at Scene_Tetris.refreshNextWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1666:15)
+    at Object.Finish (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:798:10)
+    at SkillManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1054:24)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:435:23)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 17:08:57 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Double
+Name: TypeError
+Message: Failed to execute 'createLinearGradient' on 'CanvasRenderingContext2D': The provided double value is non-finite.
+Stack: TypeError: Failed to execute 'createLinearGradient' on 'CanvasRenderingContext2D': The provided double value is non-finite.
+    at Bitmap.fillTrap (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PrettyGauges.js:144:22)
+    at Tetris_Window.Window_Base.drawVerticalGauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PrettyGauges.js:305:17)
+    at Scene_Double.Scene_Tetris.refreshPlayerWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1610:22)
+    at Scene_Double.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2131:7)
+    at Scene_Double.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2087:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 17:11:34 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Double
+Name: TypeError
+Message: Cannot read property 'parent' of undefined
+Stack: TypeError: Cannot read property 'parent' of undefined
+    at WindowLayer.addChild (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi.js:9022:23)
+    at Scene_Double.Scene_Base.addWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:176:23)
+    at Scene_Double.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2149:7)
+    at Scene_Double.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2086:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 17:12:40 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Double
+Name: TypeError
+Message: Cannot read property 'parent' of undefined
+Stack: TypeError: Cannot read property 'parent' of undefined
+    at WindowLayer.addChild (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi.js:9022:23)
+    at Scene_Double.Scene_Base.addWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:176:23)
+    at Scene_Double.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2151:7)
+    at Scene_Double.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2086:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 17:13:17 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Double
+Name: TypeError
+Message: Cannot read property 'push' of null
+Stack: TypeError: Cannot read property 'push' of null
+    at Scene_Double.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2160:31)
+    at Scene_Double.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2086:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 17:38:07 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Double
+Name: TypeError
+Message: Cannot read property 'parent' of undefined
+Stack: TypeError: Cannot read property 'parent' of undefined
+    at WindowLayer.addChild (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi.js:9022:23)
+    at Scene_Double.Scene_Base.addWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:176:23)
+    at Scene_Double.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2170:8)
+    at Scene_Double.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2086:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 17:38:35 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Double
+Name: TypeError
+Message: Cannot read property 'children' of undefined
+Stack: TypeError: Cannot read property 'children' of undefined
+    at Scene_Double.Scene_Tetris.refreshNextWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1665:32)
+    at Scene_Double.Scene_Tetris.createBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1114:9)
+    at Scene_Double.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2088:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 21:00:49 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot set property '4' of undefined
+Stack: TypeError: Cannot set property '4' of undefined
+    at Object.MakeEffect (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:904:87)
+    at SkillManager.startSkill (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1046:24)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:57:23)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:757:22)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:441:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jul 05 2020 21:17:02 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'y' of undefined
+Stack: TypeError: Cannot read property 'y' of undefined
+    at Scene_Tetris.update_Animation (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:829:15)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:441:8)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
