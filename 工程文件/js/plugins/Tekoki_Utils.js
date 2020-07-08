@@ -671,7 +671,6 @@ TetrisManager.collide = function (battler, cur) {
 		if (i + y >= 0) {
 			for (j = 0; j < box[i].length; j++) {
 				if (box[i][j] !== 0) {
-
 					if (i + y >= battler.field.length || (i + y < battler.field.length && battler.field[i + y][j + x] !== 0)) {
 						return true;
 					}

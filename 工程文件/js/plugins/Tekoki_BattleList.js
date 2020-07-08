@@ -64,7 +64,19 @@ TetrisManager.special_List = {
 TetrisManager.specialBlockData = {
 	'grass': [
 		[
-			[0, 2, 0, 0, 2]
+			[0, 0, 0, 0, 0],
+			[0, 2, 0, 2, 0],
+			[2, 2, 2, 2, 2],
+			[0, 2, 0, 2, 0],
+			[2, 2, 2, 2, 2],
+			[2, 0, 0, 0, 2],
+			[2, 2, 2, 2, 2],
+			[2, 0, 0, 0, 2],
+			[2, 2, 2, 2, 2],
+			[0, 0, 2, 0, 0],
+			[2, 2, 2, 2, 2],
+			[0, 0, 2, 0, 0],
+			[0, 0, 2, 0, 0]
 		]
 	]
 }
@@ -932,7 +944,47 @@ TetrisManager.skill_List = {
 			this.oldTime = Date.now();
 		}
 	},
+	"草": {
+		name: "草",
+		pic: "占位测试",
+		user: "enemy",
+		running: false,
+		isPrepared: true,
+		CD: 0,
+		description: "wwwwwwwww",
+		oldTime: Date.now(),
+		MakeEffect: function () {
+			this.running = true
+			var scene = SceneManager._scene
+			var player = scene.getPlayer();
+			player.next[0] = {
+				block: new Sprite(),
+				type: 'grass',
+				rotation: 0,
+				rotationTime: 0,
+				box: TetrisManager.specialBlockData['grass'][0].slice(),
+				renderPos: 2,
+				noRotate: true
+			}
 
+			player.next[0].block.bitmap = ImageManager.loadPicture('blockSkin/special/grass');
+			player.next[0].block.scale.x = player.scaleX;
+			player.next[0].block.scale.y = player.scaleY;
+			scene.refreshNextWindows(player)
+
+		},
+		isCompleted: function () {
+			return true;
+		},
+		Finish: function () {
+			this.running = false;
+		},
+		Reset: function () {
+			this.isPrepared = false;
+			this.CD = 0;
+			this.oldTime = Date.now();
+		}
+	},
 }
 
 TetrisManager.state_List = {

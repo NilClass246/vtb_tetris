@@ -190,7 +190,7 @@ Scene_Tetris.prototype.initialize_Skills = function () {
 	var weapon = $gameActors.actor(1).equips()[0]
 
 	//this.SkillButtonOne = new SkillButton(weapon.id-1)
-	this._Skill_Manager = new SkillManager(['剑','占位测试']);
+	this._Skill_Manager = new SkillManager(['剑','占位测试', '草']);
 }
 
 Scene_Tetris.prototype.initialize_Enemy = function () {
@@ -694,19 +694,23 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 	//TODO: 跳舞毯适配
 	//TODO: 180度旋转
 	if (Input.isTriggered('up')) {
-		TetrisManager.Count_Buttons += 1;
-		this.rotateBox(operator, 1);
-		this.shadow(operator);
-		operator.lastKick = true;
-		this.resetCollideDelay(operator);
+		if (!operator.cur.noRotate) {
+			TetrisManager.Count_Buttons += 1;
+			this.rotateBox(operator, 1);
+			this.shadow(operator);
+			operator.lastKick = true;
+			this.resetCollideDelay(operator);
+        }
 	}
 
 	if (Input.isTriggered('control')) {
-		TetrisManager.Count_Buttons += 1;
-		this.rotateBox(operator, -1);
-		this.shadow(operator);
-		operator.lastKick = true;
-		this.resetCollideDelay(operator);
+		if (!operator.cur.noRotate) {
+			TetrisManager.Count_Buttons += 1;
+			this.rotateBox(operator, -1);
+			this.shadow(operator);
+			operator.lastKick = true;
+			this.resetCollideDelay(operator);
+        }
 	}
 
 	if (Input.isTriggered('shift')) {
@@ -1191,12 +1195,16 @@ Scene_Tetris.prototype.createBox = function (battler) {
 }
 
 Scene_Tetris.prototype.addBox = function (battler, cur) {
-	if (cur.type == "o") {
-		cur.block.x = battler.xposition + (TetrisManager.blockInitalPos + 1) * battler.xrange
-			//+ 7;
+	if (cur.renderPos) {
+		cur.block.x = battler.xposition + cur.renderPos * battler.xrange;
 	} else {
-		cur.block.x = battler.xposition + TetrisManager.blockInitalPos * battler.xrange
+		if (cur.type == "o") {
+			cur.block.x = battler.xposition + (TetrisManager.blockInitalPos + 1) * battler.xrange
 			//+ 7;
+		} else {
+			cur.block.x = battler.xposition + TetrisManager.blockInitalPos * battler.xrange
+			//+ 7;
+		}
     }
 	cur.block.y = battler.yposition + TetrisManager.AboveLines*battler.yrange;
 
@@ -1206,7 +1214,7 @@ Scene_Tetris.prototype.addBox = function (battler, cur) {
 
 	while (this.isOverlapped(battler)) {
 		cur.block.y -= battler.yrange;
-    }
+	}
 
 	this._blockLayer.addChild(cur.block)
 }
@@ -1300,14 +1308,25 @@ Scene_Tetris.prototype.holdBox = function(operator){
 	if(!operator.hold){
 		this._blockLayer.removeChild(operator.cur.block);
 		var type = operator.cur.type;
-		operator.hold = {
-			block: new Sprite(),
-			type: operator.cur.type,
-			rotation: 0,
-			rotationTime: 0,
-			box: TetrisManager.data[operator.cur.type][0]
-		};
-		operator.hold.block.bitmap = this._minoSkin[type][0];
+		if (TetrisManager.block_pics.indexOf(type) < 0) {
+			operator.hold = {
+				block: new Sprite(),
+				type: type,
+				rotation: 0,
+				rotationTime: 0,
+				box: TetrisManager.specialBlockData[type][0]
+			};
+			operator.hold.block.bitmap = ImageManager.loadPicture('blockSkin/special/' + type);
+		} else {
+			operator.hold = {
+				block: new Sprite(),
+				type: type,
+				rotation: 0,
+				rotationTime: 0,
+				box: TetrisManager.data[type][0]
+			};
+			operator.hold.block.bitmap = this._minoSkin[type][0];
+		}
 		operator.hold.block.x = this.calPositionX(operator.hold);
 		operator.hold.block.y = 45;
 
@@ -1316,20 +1335,31 @@ Scene_Tetris.prototype.holdBox = function(operator){
 		operator.holdWindow.addChild(operator.hold.block);
 		this.createBox(operator);
 		this.refreshNextWindows(operator);
+		operator.holded = true;
 	}else{
 		this._blockLayer.removeChild(operator.cur.block);
 		operator.holdWindow.removeChild(operator.hold.block);
 		var type = operator.cur.type;
 		operator.cur = operator.hold;
-
-		operator.hold = {
-			block: new Sprite(),
-			type: type,
-			rotation: 0,
-			rotationTime: 0,
-			box: TetrisManager.data[type][0]
-		};
-		operator.hold.block.bitmap = this._minoSkin[type][0];
+		if (TetrisManager.block_pics.indexOf(type) < 0) {
+			operator.hold = {
+				block: new Sprite(),
+				type: type,
+				rotation: 0,
+				rotationTime: 0,
+				box: TetrisManager.specialBlockData[type][0]
+			};
+			operator.hold.block.bitmap = ImageManager.loadPicture('blockSkin/special/'+type);
+		} else {
+			operator.hold = {
+				block: new Sprite(),
+				type: type,
+				rotation: 0,
+				rotationTime: 0,
+				box: TetrisManager.data[type][0]
+			};
+			operator.hold.block.bitmap = this._minoSkin[type][0];
+        }
 		operator.hold.block.x = this.calPositionX(operator.hold);
 		operator.hold.block.y = 45;
 
@@ -1343,7 +1373,6 @@ Scene_Tetris.prototype.holdBox = function(operator){
 
 Scene_Tetris.prototype.calPositionX = function(cur){
 	var type = cur.type;
-	var rotation = cur.rotation;
 	
 	if(type == "o"){
 		return 33;
@@ -1365,12 +1394,16 @@ Scene_Tetris.prototype.shadow = function(battler){
 	} else {
 		var shadowSkin = this.enemyshadowSkin;
     }
-
-	if (rotation == 0) {
-		var bitmap = shadowSkin[type][0];
-	}else{
+	if (TetrisManager.block_pics.indexOf(type)<0) {
+		var bitmap = ImageManager.loadPicture('blockSkin/special/' + type + '_s');
+	} else {
 		var bitmap = shadowSkin[type][rotation];
-	}
+    }
+	//if (rotation == 0) {
+	//	var bitmap = shadowSkin[type][0];
+	//}else{
+	//	var bitmap = shadowSkin[type][rotation];
+	//	}
 	var x = battler.cur.block.x;
 	var y = battler.cur.block.y;
 	
@@ -1380,7 +1413,7 @@ Scene_Tetris.prototype.shadow = function(battler){
 	
 	battler.shadowImage = {
 		block: new Sprite(),
-		box: TetrisManager.data[type][rotation]
+		box: battler.cur.box.slice()
 	}
 	
 	battler.shadowImage.block.bitmap = bitmap;
