@@ -48,7 +48,7 @@ TetrisManager.special_List = {
 			this.picture.bitmap = ImageManager.loadPicture('enemies/Matsuri')
 			this.pictureBoard.addChild(this.picture);
 			SceneManager._scene.addWindow(this.pictureBoard);
-			this.skillManager = new SkillManager(['寸劲拳'], true);
+			this.skillManager = new SkillManager(['寸劲拳','草'], true);
 			this.skillManager._skill_board.move(1010, 550)
 			SceneManager._scene._boardLayer.addChild(this.skillManager._skill_board)
 		},
@@ -56,7 +56,10 @@ TetrisManager.special_List = {
 			this.skillManager.update();
 			if (this.skillManager._skill_list[0].isPrepared) {
 				this.skillManager.startSkill(0);
-            }
+			}
+			if (this.skillManager._skill_list[1].isPrepared) {
+				this.skillManager.startSkill(1);
+			}
 		}
 	}
 }
@@ -92,6 +95,8 @@ var TwoSlimes = [
 		assumeYpos: 84,
 		avatar: new Sprite(),
 		avatarName: "Slime_Avatar",
+		dx: 420,
+		dy: 200,
 
 		level: 1,
 		curHp: 0,
@@ -117,6 +122,8 @@ var TwoSlimes = [
 		assumeYpos: 276,
 		avatar: new Sprite(),
 		avatarName: "Slime_Avatar",
+		dx: 600,
+		dy: 300,
 
 		level: 1,
 		curHp: 0,
@@ -802,7 +809,7 @@ var TestBoss = [
 		level: 3,
 		curHp: 0,
 		displayHp: 0,
-		Mhp: 200,
+		Mhp: 1000,
 		atk: 35,
 		def: 20,
 		curEng: 0,
@@ -832,29 +839,26 @@ TetrisManager.skill_List = {
 		name: "剑",
 		pic: "剑",
 		user: "player",
-		running: false,
 		isPrepared: true,
 		oldTime: 0,
 		CD: 0,
 		description: "T旋之魂\n将接下来的方块全部替换为T块",
+		CanUse: function () {
+			return true
+		},
 		MakeEffect: function () {
-			this.running = true
 			var player = SceneManager._scene.getPlayer();
 			this.SpinBoxes = []
-			var sx = 125;
-			var sy = 500;
+			var sx = SceneManager._scene.getSkillPosition(this.index)[0];
+			var sy = SceneManager._scene.getSkillPosition(this.index)[1];
 			for (var i = 0; i < player.nextWindows.length; i++) {
 				var s = new SpinningBox(player.nextWindows[i].x - sx + 25, player.nextWindows[i].y - sy + 25);
 
 				s.move(sx, sy)
 				this.SpinBoxes.push(s);
-				SceneManager._scene._blockLayer.addChild(this.SpinBoxes[this.SpinBoxes.length-1])
-            }
-		},
-		isCompleted: function () {
-			return true;
-		},
-		Finish: function () {
+				SceneManager._scene._effectLayer.addChild(this.SpinBoxes[this.SpinBoxes.length-1])
+			}
+
 			var scene = SceneManager._scene
 			var player = scene.getPlayer();
 			for (var i = 0; i < player.next.length; i++) {
@@ -869,8 +873,8 @@ TetrisManager.skill_List = {
 				player.next[i].block.scale.x = player.scaleX;
 				player.next[i].block.scale.y = player.scaleY;
 			}
-			scene.refreshNextWindows(player);
-			this.running = false;
+			scene.refreshNextWindows(player)
+
 		},
 		Reset: function () {
 			this.isPrepared = false;
@@ -878,40 +882,40 @@ TetrisManager.skill_List = {
 			this.oldTime = Date.now();
 		}
 	},
-	"占位测试": {
-		name: "占位测试",
-		pic: "占位测试",
+	"咩毒": {
+		name: "咩毒",
+		pic: "咩毒",
 		user: "player",
-		running: false,
 		isPrepared: true,
 		CD: 0,
 		description: "测试用技能(中毒)",
+		CanUse: function () {
+			if (SceneManager._scene.getPlayer().actor.hp > 10) {
+				return true
+            }
+        },
 		MakeEffect: function () {
-			this.running = true
-			var scene = SceneManager._scene
-			scene._enemies[scene.findRNGEnemy()].StateBoard.applyStates("4", 10);
-
-		},
-		isCompleted: function () {
-			return true;
-		},
-		Finish: function () {
-			this.running = false;
+			var Venom = new MeaDoku(this.index);
+			SceneManager._scene.addChild(Venom);
 		},
 		Reset: function () {
+			//this.isPrepared = false;
+			//this.CD = 0;
+			//this.oldTime = Date.now();
         }
     },
 	"寸劲拳": {
 		name: "寸劲拳",
 		pic: "占位测试",
 		user: "enemy",
-		running: false,
 		isPrepared: false,
-		CD: 60,
+		CD: 15,
 		description: "打打打打打打打打打打！",
 		oldTime: Date.now(),
+		CanUse: function () {
+			return true
+		},
 		MakeEffect: function () {
-			this.running = true
 			var scene = SceneManager._scene
 			this.allHolePositions = [
 				[4, 38],[5, 38],
@@ -932,15 +936,9 @@ TetrisManager.skill_List = {
 				scene.getPlayer().yposition + TetrisManager.AboveLines * scene.getPlayer().yrange + 20 * scene.getPlayer().yrange
 			);
 		},
-		isCompleted: function () {
-			return true;
-		},
-		Finish: function () {
-			this.running = false;
-		},
 		Reset: function () {
 			this.isPrepared = false;
-			this.CD = 60;
+			this.CD = 15;
 			this.oldTime = Date.now();
 		}
 	},
@@ -948,13 +946,14 @@ TetrisManager.skill_List = {
 		name: "草",
 		pic: "占位测试",
 		user: "enemy",
-		running: false,
-		isPrepared: true,
-		CD: 0,
+		isPrepared: false,
+		CD: 30,
 		description: "wwwwwwwww",
 		oldTime: Date.now(),
+		CanUse: function () {
+			return true
+		},
 		MakeEffect: function () {
-			this.running = true
 			var scene = SceneManager._scene
 			var player = scene.getPlayer();
 			player.next[0] = {
@@ -973,15 +972,29 @@ TetrisManager.skill_List = {
 			scene.refreshNextWindows(player)
 
 		},
-		isCompleted: function () {
-			return true;
+		Reset: function () {
+			this.isPrepared = false;
+			this.CD = 30;
+			this.oldTime = Date.now();
+		}
+	},
+	"战术嘲讽": {
+		name: "战术嘲讽",
+		pic: "占位测试",
+		user: "player",
+		isPrepared: true,
+		oldTime: 0,
+		CD: 0,
+		description: "",
+		CanUse: function () {
+			return true
 		},
-		Finish: function () {
-			this.running = false;
+		MakeEffect: function () {
+
 		},
 		Reset: function () {
 			this.isPrepared = false;
-			this.CD = 0;
+			this.CD = 2;
 			this.oldTime = Date.now();
 		}
 	},
@@ -1001,6 +1014,7 @@ TetrisManager.state_List = {
 		}
     },
 	"4": {
+		name: '中毒',
 		id: 4,
 		count: 0,
 		type: 'in_battle',
@@ -1008,9 +1022,24 @@ TetrisManager.state_List = {
 		onGain: function (owner) {
 			this.owner = owner
 			this.oldTime = Date.now();
+			if (this.owner.category == 'enemy') {
+				if (!this.emitter) {
+					TetrisManager.pariticleSet['Bubble']["spawnRect"]["w"] = this.owner.xrange * 10 + 65;
+					this.emitter = new particleEmitter('Bubble');
+					this.emitter.x = this.owner.xposition - 15 - 7;
+					if (this.owner.windowHeight_Revision) {
+						this.emitter.y = this.owner.assumeYpos + 23 * this.owner.yrange + this.owner.windowHeight_Revision
+					} else {
+						this.emitter.y = this.owner.assumeYpos + 23 * this.owner.yrange
+					}
+					SceneManager._scene._effectLayer.addChild(this.emitter)
+				} else {
+					this.emitter._emitter.emit = true;
+				}
+				this.owner.avatar.tint = 0xff99ff;
+            }
 		},
 		update: function () {
-			console.log(this.owner)
 
 			if (((Date.now() - this.oldTime) / 1000) > 1) {
 				TetrisManager.HarmSystem.dealDamage(null, this.owner, this.count, 'poison')
@@ -1022,11 +1051,15 @@ TetrisManager.state_List = {
 				this.owner.removeState(4);
             }
 		},
-		//onLose: function () {
-			
-		//}
+		onLose: function () {
+			if (this.owner.category == 'enemy') {
+				this.emitter._emitter.emit = false;
+				this.owner.avatar.tint = 0xffffff;
+			}
+		}
 	},
 	"8": {
+		name: '眩晕',
 		id: 8,
 		count: 0,
 		type: 'in_battle',
@@ -1057,7 +1090,37 @@ TetrisManager.state_List = {
 				SceneManager._scene.getPlayer().running = true;
 			}
 		}
-	}
+	},
+	"7": {
+		name: '愤怒',
+		id: 4,
+		count: 0,
+		type: 'in_battle',
+		updated: false,
+		onGain: function (owner) {
+			this.owner = owner
+			this.oldTime = Date.now();
+			if (this.owner.category == 'enemy') {
+			}
+		},
+		update: function () {
+			console.log(this.owner)
+
+			if (((Date.now() - this.oldTime) / 1000) > 1) {
+				this.oldTime = Date.now();
+				this.count -= 1;
+				this.updated = true;
+			}
+			if (this.count <= 0) {
+				this.owner.removeState(7);
+			}
+		},
+		onLose: function () {
+			if (this.owner.category == 'enemy') {
+			}
+		}
+	},
+
 }
 
 TetrisManager.item_List = {
@@ -1070,3 +1133,189 @@ TetrisManager.item_List = {
 		SceneManager._scene._playerStateBoard.applyStates("8", 5)
 	}
 }
+
+//=============================================================================
+// ** 技能所需对象定义
+//=============================================================================
+
+function MeaDoku() {
+	this.initialize.apply(this, arguments);
+}
+
+MeaDoku.prototype = Object.create(Sprite.prototype);
+MeaDoku.prototype.constructor = MeaDoku;
+
+MeaDoku.prototype.initialize = function (index) {
+	Sprite.prototype.initialize.call(this);
+	AudioManager.playSe(TetrisManager.seSet['Wind7']);
+	var scene = SceneManager._scene
+	scene.getPlayer().actor.gainHp(-10);
+
+	this.enemy = scene._enemies[scene.getPlayer().TargetIndex];
+	var sx = scene.getSkillPosition(index)[0];
+	var sy = scene.getSkillPosition(index)[1];
+	var ex = this.enemy.StateBoard.getStatePosition('4')[0];
+	var ey = this.enemy.StateBoard.getStatePosition('4')[1];
+	this.emitter = new PoisonDot(
+		ex - sx,
+		ey - sy
+	);
+	this.emitter.move(sx, sy);
+	scene._effectLayer.addChild(this.emitter);
+}
+
+MeaDoku.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (this.emitter.isCompleted()) {
+		this.enemy.StateBoard.applyStates("4", 10);
+		this.destroy();
+    }
+}
+
+//=============================================================================
+// ** 技能特效的抽象类
+//=============================================================================
+
+function Attack_Effect() {
+	this.initialize.apply(this, arguments);
+}
+
+Attack_Effect.prototype = Object.create(Sprite.prototype);
+Attack_Effect.prototype.constructor = Attack_Effect;
+
+Attack_Effect.prototype.initialize = function () {
+	Sprite.prototype.initialize.call(this);
+	this.completed = false;
+}
+
+Attack_Effect.prototype.isCompleted = function () {
+	return this.completed;
+}
+
+Attack_Effect.prototype.Complete = function () {
+	this.completed = true;
+}
+
+//-----------------------------------------------------------------------------
+
+function DiminishingBox() {
+	this.initialize.apply(this, arguments);
+}
+
+DiminishingBox.prototype = Object.create(Attack_Effect.prototype);
+DiminishingBox.prototype.constructor = DiminishingBox;
+
+DiminishingBox.prototype.initialize = function (speed) {
+	Attack_Effect.prototype.initialize.call(this);
+	this.bitmap = ImageManager.loadPicture("theBox")
+	this.tint = 0x9900cc;
+	this.anchor.x = 0.5;
+	this.anchor.y = 0.5;
+	this.scale.x = 1;
+	this.scale.y = 1;
+	this.speed = speed
+	this._time = 1 / this.speed;
+}
+
+DiminishingBox.prototype.update = function () {
+	Attack_Effect.prototype.update.call(this);
+	this.rotation += Math.PI / 60;
+	this.scale.x -= this.speed;
+	this.scale.y -= this.speed;
+	this._time -= 1;
+	if (this._time <= 0) {
+		this.Complete();
+		this.destroy();
+	}
+}
+
+function SpinningBox() {
+	this.initialize.apply(this, arguments);
+}
+
+SpinningBox.prototype = Object.create(Attack_Effect.prototype);
+SpinningBox.prototype.constructor = SpinningBox;
+
+SpinningBox.prototype.initialize = function (Xdistance, Ydistance) {
+	Attack_Effect.prototype.initialize.call(this);
+	this.Xdistance = Xdistance;
+	this.Ydistance = Ydistance;
+	this.time = 30
+	this.interval = 1;
+	this.counter = 0;
+	this.Xstep = Xdistance / this.time;
+	this.Ystep = Ydistance / this.time;
+	this.Xcursor = 0;
+	this.Ycursor = 0;
+	this.sampleBox = new DiminishingBox(0.01);
+
+}
+
+SpinningBox.prototype.update = function () {
+	Attack_Effect.prototype.update.call(this);
+	if (this.time <= 0) {
+		this.Complete();
+	} else {
+		this.Xcursor += this.Xstep;
+		this.Ycursor += this.Ystep;
+		this.counter += 1;
+		if (this.counter >= this.interval) {
+			var box = new DiminishingBox(0.01);
+			box.move(this.Xcursor, this.Ycursor);
+			this.addChild(box);
+			this.counter = 0;
+		}
+
+	}
+
+	if ((-this.time) >= this.sampleBox._time) {
+		this.destroy();
+	}
+
+	this.time -= 1;
+}
+
+//-----------------------------------------------------------------------------
+function PoisonDot() {
+	this.initialize.apply(this, arguments);
+}
+
+PoisonDot.prototype = Object.create(Attack_Effect.prototype);
+PoisonDot.prototype.constructor = PoisonDot;
+
+PoisonDot.prototype.initialize = function (Xdistance, Ydistance) {
+	Attack_Effect.prototype.initialize.call(this);
+	this.Xdistance = Xdistance;
+	this.Ydistance = Ydistance;
+	this.time = 30
+	this.Xstep = Xdistance / this.time;
+	this.Ystep = Ydistance / this.time;
+	this.Xcursor = 0;
+	this.Ycursor = 0;
+	this.emitter = new particleEmitter('Poison');
+	this.addChild(this.emitter);
+}
+
+PoisonDot.prototype.update = function () {
+	Attack_Effect.prototype.update.call(this);
+	if (this.time > 0) {
+		this.Xcursor += this.Xstep;
+		this.Ycursor += this.Ystep;
+		this.emitter.move(this.Xcursor, this.Ycursor);
+	}
+
+	if (this.time <= 0) {
+		this.Complete();
+	}
+
+	if (this.time <= -15) {
+		this.emitter._emitter.emit = false;
+	}
+
+	if (this.time <= -30) {
+		this.destroy();
+	}
+
+	this.time -= 1;
+}
+

@@ -397,6 +397,178 @@ TetrisManager.pariticleSet['Fire'] = {
 	"spawnType": "point"
 }
 
+TetrisManager.pariticleSet['Poison'] = {
+	"alpha": {
+		"start": 1,
+		"end": 0
+	},
+	"scale": {
+		"start": 0.1,
+		"end": 0.01,
+		"minimumScaleMultiplier": 5
+	},
+	"color": {
+		"start": "#d97ed9",
+		"end": "#000000"
+	},
+	"speed": {
+		"start": 200,
+		"end": 50,
+		"minimumSpeedMultiplier": 0.01
+	},
+	"acceleration": {
+		"x": 0,
+		"y": 0
+	},
+	"maxSpeed": 0,
+	"startRotation": {
+		"min": 270,
+		"max": 270
+	},
+	"noRotation": false,
+	"rotationSpeed": {
+		"min": 0,
+		"max": 0
+	},
+	"lifetime": {
+		"min": 0.2,
+		"max": 0.8
+	},
+	"blendMode": "normal",
+	"frequency": 0.001,
+	"emitterLifetime": -1,
+	"maxParticles": 500,
+	"pos": {
+		"x": 0,
+		"y": 0
+	},
+	"addAtBack": false,
+	"spawnType": "point"
+}
+
+TetrisManager.pariticleSet['Bubble'] = {
+	"alpha": {
+		"start": 1,
+		"end": 0
+	},
+	"scale": {
+		"start": 0.1,
+		"end": 0.01,
+		"minimumScaleMultiplier": 5
+	},
+	"color": {
+		"start": "#d97ed9",
+		"end": "#000000"
+	},
+	"speed": {
+		"start": 200,
+		"end": 50,
+		"minimumSpeedMultiplier": 0.01
+	},
+	"acceleration": {
+		"x": 0,
+		"y": 0
+	},
+	"maxSpeed": 0,
+	"startRotation": {
+		"min": 270,
+		"max": 270
+	},
+	"noRotation": false,
+	"rotationSpeed": {
+		"min": 0,
+		"max": 0
+	},
+	"lifetime": {
+		"min": 0.5,
+		"max": 2
+	},
+	"blendMode": "normal",
+	"frequency": 0.001,
+	"emitterLifetime": -1,
+	"maxParticles": 50,
+	"pos": {
+		"x": 0,
+		"y": 0
+	},
+	"addAtBack": false,
+	"spawnType": "rect",
+	"spawnRect": {
+		"x": 0,
+		"y": 0,
+		"w": 0,
+		"h": 0
+	}
+}
+
+TetrisManager.pariticleSet['Angry'] = {
+	"alpha": {
+		"start": 1,
+		"end": 0
+	},
+	"scale": {
+		"start": 0.1,
+		"end": 0.1,
+		"minimumScaleMultiplier": 7
+	},
+	"color": {
+		"start": "#ff0000",
+		"end": "#ff5e00"
+	},
+	"speed": {
+		"start": 0,
+		"end": 0,
+		"minimumSpeedMultiplier": 0.01
+	},
+	"acceleration": {
+		"x": 0,
+		"y": 0
+	},
+	"maxSpeed": 0,
+	"startRotation": {
+		"min": 250,
+		"max": 290
+	},
+	"noRotation": false,
+	"rotationSpeed": {
+		"min": 1,
+		"max": 1
+	},
+	"lifetime": {
+		"min": 1,
+		"max": 1
+	},
+	"blendMode": "normal",
+	"frequency": 0.001,
+	"emitterLifetime": -1,
+	"maxParticles": 1,
+	"pos": {
+		"x": 0,
+		"y": 0
+	},
+	"addAtBack": false,
+	"spawnType": "rect",
+	"spawnRect": {
+		"x": 0,
+		"y": 0,
+		"w": 0,
+		"h": 0
+	}
+}
+
+TetrisManager.pariticleAssetNumbers = {
+	'Angry': 3
+}
+
+TetrisManager.seSet = {};
+
+TetrisManager.seSet['Wind7'] ={
+	name: "Wind7",
+	pan: 0,
+	pitch: 60,
+	volume: 125
+};
+
 //============================================================
 // 成就参数
 //============================================================
@@ -816,6 +988,40 @@ Tetris_Window.prototype.refresh = function () {
 
 //-----------------------------------------------------------------------------
 
+function Full_Window() {
+	this.initialize.apply(this, arguments);
+}
+
+Full_Window.prototype = Object.create(Sprite.prototype);
+Full_Window.prototype.constructor = Full_Window;
+
+Full_Window.prototype.initialize = function (x, y, width, height) {
+	Sprite.prototype.initialize.call(this);
+	this._background = new Tetris_Window(0, 0, width, height);
+	this.addChild(this._background);
+
+
+	this._contents = new Sprite(new Bitmap(width, height));
+	this.addChild(this._contents);
+	this.x = x;
+	this.y = y;
+	this.contents = this._contents.bitmap;
+}
+
+Full_Window.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+Full_Window.prototype.drawThinGauge = function (x, y, width, rate, height, color1, color2) {
+	var fillW = Math.floor(width * rate);
+	var gaugeY = y + this._background.lineHeight() - 2 - height;
+	this.contents.fillTrap(x, gaugeY, width, width, height, this._background.gaugeBackColor1(), this._background.gaugeBackColor2());
+	this.contents.fillTrap(x, gaugeY, width, fillW, height, color1, color2);
+	this.contents.outlineTrap(x, gaugeY, width, height, this._background.gaugeBackColor2(), this._background.gaugeBackColor2())
+}
+
+//-----------------------------------------------------------------------------
+
 function Notice_Widnow() {
 	this.initialize.apply(this, arguments);
 }
@@ -964,7 +1170,7 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 				case 'normal':
 					break;
 				case 'poison':
-					pop.setTint(0x009933)
+					pop.setTint(0xff99ff)
 					break;
 				case 'critical':
 					pop.setTint(0xffc34d)
@@ -984,7 +1190,7 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 				case 'normal':
 					break;
 				case 'poison':
-					pop.setTint(0x009933)
+					pop.setTint(0xff99ff)
 					break;
 				case 'critical':
 					pop.setTint(0xffc34d)
@@ -999,7 +1205,6 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 //============================================================
 // 技能系统
 //============================================================
-
 function SkillManager() {
 	this.initialize.apply(this, arguments);
 }
@@ -1011,6 +1216,7 @@ SkillManager.prototype.initialize = function (skillIDList, isOwnerEnemy) {
 		this._skill_list.push(
 			Object.create(TetrisManager.skill_List[skillIDList[i]])
 		);
+		this._skill_list[i].index = i;
 		this.skillButton_list.push(new SkillButton(skillIDList[i]));
 	}
 
@@ -1040,7 +1246,7 @@ SkillManager.prototype.initialize = function (skillIDList, isOwnerEnemy) {
 }
 
 SkillManager.prototype.startSkill = function (id) {
-	if (this._skill_list[id]&&this._skill_list[id].isPrepared) {
+	if (this._skill_list[id] && this._skill_list[id].isPrepared && this._skill_list[id].CanUse()) {
 		this.skillButton_list[id].shine();
 		this._skill_list[id].MakeEffect();
 		this._skill_list[id].Reset();
@@ -1050,11 +1256,6 @@ SkillManager.prototype.startSkill = function (id) {
 
 SkillManager.prototype.update = function () {
 	for (var i = 0; i < this._skill_list.length; i++) {
-		if (this._skill_list[i].running) {
-			if (this._skill_list[i].isCompleted()) {
-				this._skill_list[i].Finish();
-            }
-		}
 		if (!this._skill_list[i].isPrepared) {
 			if ((Date.now() - this._skill_list[i].oldTime) / 1000 > 1) {
 				this._skill_list[i].CD -= 1;
@@ -1375,7 +1576,6 @@ itemBoard.prototype.useItem = function (id) {
 	var item = this._data[id];
 	if (item && $gameParty.numItems(item) > 0) {
 		SoundManager.playUseItem();
-		//TODO: this.playSeForItem();
 		this.user().useItem(item);
 		this.applyItem(item);
 		//this.checkCommonEvent();
@@ -1586,8 +1786,8 @@ SkillButton.prototype.constructor = SkillButton;
 
 SkillButton.prototype.initialize = function (skillID) {
 	Sprite.prototype.initialize.call(this);
-	this._skillID = skillID;
-	this._skill = TetrisManager.skill_List[skillID];
+	//this._skillID = skillID;
+	//this._skill = TetrisManager.skill_List[skillID];
 	this.bitmap = ImageManager.loadPicture("Skills\\" + TetrisManager.skill_List[skillID].pic);
 	this.skillFrame = new Sprite();
 	this.skillFrame.bitmap = ImageManager.loadPicture("Skills\\SkillFrame");
@@ -1703,6 +1903,7 @@ stateBoard.prototype.refreshStates = function () {
             }
 			this._statelist[strid] = null;
 			this.removeChild(this._stateicons[strid]);
+			this._stateicons[strid] = null;
 			this.iconPos -= 32;
 		}
 
@@ -1741,6 +1942,14 @@ stateBoard.prototype.clearAllStates = function () {
 			var numid = Number(strid);
 			this._owner._states.splice(this._owner._states.indexOf(numid), 1);
         }
+    }
+}
+
+stateBoard.prototype.getStatePosition = function (strid) {
+	if (this._stateicons[strid]) {
+		return [this.x + this._stateicons[strid].x, this.y]
+	} else {
+		return [this.x + this.iconPos, this.y]
     }
 }
 
@@ -1809,135 +2018,6 @@ stateIcon.prototype.update = function () {
 
 stateIcon.prototype.shine = function () {
 	this.shining = true;
-}
-
-//-----------------------------------------------------------------------------
-// 技能特效的抽象类
-function Attack_Effect() {
-	this.initialize.apply(this, arguments);
-}
-
-Attack_Effect.prototype = Object.create(Sprite.prototype);
-Attack_Effect.prototype.constructor = Attack_Effect;
-
-Attack_Effect.prototype.initialize = function () {
-	Sprite.prototype.initialize.call(this);
-	this.completed = false;
-}
-
-Attack_Effect.prototype.isCompleted = function () {
-	return this.completed;
-}
-
-Attack_Effect.prototype.Complete = function () {
-	this.completed = true;
-}
-
-//-----------------------------------------------------------------------------
-
-function DiminishingBox() {
-	this.initialize.apply(this, arguments);
-}
-
-DiminishingBox.prototype = Object.create(Attack_Effect.prototype);
-DiminishingBox.prototype.constructor = DiminishingBox;
-
-DiminishingBox.prototype.initialize = function (speed) {
-	Attack_Effect.prototype.initialize.call(this);
-	this.bitmap = ImageManager.loadPicture("theBox")
-	this.tint = 0x9900cc;
-	this.anchor.x = 0.5;
-	this.anchor.y = 0.5;
-	this.scale.x = 1;
-	this.scale.y = 1;
-	this.speed = speed
-	this._time = 1 / this.speed;
-}
-
-DiminishingBox.prototype.update = function () {
-	Attack_Effect.prototype.update.call(this);
-	this.rotation += Math.PI / 60;
-	this.scale.x -= this.speed;
-	this.scale.y -= this.speed;
-	this._time -= 1;
-	if (this._time <= 0) {
-		this.Complete();
-		this.destroy();
-    }
-}
-
-function SpinningBox() {
-	this.initialize.apply(this, arguments);
-}
-
-SpinningBox.prototype = Object.create(Attack_Effect.prototype);
-SpinningBox.prototype.constructor = SpinningBox;
-
-SpinningBox.prototype.initialize = function (Xdistance, Ydistance) {
-	Attack_Effect.prototype.initialize.call(this);
-	this.Xdistance = Xdistance;
-	this.Ydistance = Ydistance;
-	this.time = 30
-	this.interval = 1;
-	this.counter = 0;
-	this.Xstep = Xdistance / this.time;
-	this.Ystep = Ydistance / this.time;
-	this.Xcursor = 0;
-	this.Ycursor = 0;
-	this.sampleBox = new DiminishingBox(0.01);
-
-}
-
-SpinningBox.prototype.update = function () {
-	Attack_Effect.prototype.update.call(this);
-	if (this.time <= 0) {
-		this.Complete();
-	} else {
-		this.Xcursor += this.Xstep;
-		this.Xdistance -= this.Xstep;
-		this.Ycursor += this.Ystep;
-		this.Ydistance -= this.Ystep;
-		this.counter += 1;
-		if (this.counter >= this.interval) {
-			var box = new DiminishingBox(0.01);
-			box.move(this.Xcursor, this.Ycursor);
-			this.addChild(box);
-			this.counter = 0;
-		}
-
-    }
-
-	if ((-this.time) >= this.sampleBox._time) {
-		this.destroy();
-	}
-
-	this.time -= 1;
-}
-
-//-----------------------------------------------------------------------------
-//TODO: 制作毒素特效
-function PoisonDot() {
-	this.initialize.apply(this, arguments);
-}
-
-PoisonDot.prototype = Object.create(Attack_Effect.prototype);
-PoisonDot.prototype.constructor = PoisonDot;
-
-PoisonDot.prototype.initialize = function (Xdistance, Ydistance) {
-	Attack_Effect.prototype.initialize.call(this);
-	this.Xdistance = Xdistance;
-	this.Ydistance = Ydistance;
-	this.time = 30
-	this.interval = 1;
-	this.counter = 0;
-	this.Xstep = Xdistance / this.time;
-	this.Ystep = Ydistance / this.time;
-	this.Xcursor = 0;
-	this.Ycursor = 0;
-}
-
-PoisonDot.prototype.update = function () {
-	Attack_Effect.prototype.update.call(this);
 }
 
 //-----------------------------------------------------------------------------
@@ -2263,17 +2343,7 @@ targetMark.prototype.initialize = function (target) {
 	this.bitmap = ImageManager.loadPicture("Target");
 	this.anchor.x = 0.5
 	this.anchor.y = 0.5
-	this.scale.x = target.scaleX;
-	this.targetScaleX = target.scaleX;
-	this.scale.y = target.scaleY;
-	this.targetScaleY = target.scaleY;
-	this.move(
-		target.xposition + (TetrisManager.ROW / 2) * target.xrange,
-		target.yposition + ((TetrisManager.COL - TetrisManager.AboveLines) / 2) * target.yrange + TetrisManager.AboveLines * target.yrange
-	)
-
-	this.targetX = this.x;
-	this.targetY = this.y;
+	this.aim(target);
 }
 
 targetMark.prototype.update = function () {
@@ -2296,10 +2366,17 @@ targetMark.prototype.update = function () {
 }
 
 targetMark.prototype.aim = function (target) {
-	this.targetScaleX = target.scaleX;
-	this.targetScaleY = target.scaleY;
-	this.targetX = target.xposition + (TetrisManager.ROW / 2) * target.xrange;
-	this.targetY = target.yposition + ((TetrisManager.COL - TetrisManager.AboveLines) / 2) * target.yrange + TetrisManager.AboveLines * target.yrange
+	if (TetrisManager.twoPMode) {
+		this.targetX = target.dx-34
+		this.targetY = target.dy
+		this.targetScaleX = 0.4
+		this.targetScaleY = 0.4
+	} else {
+		this.targetScaleX = target.scaleX;
+		this.targetScaleY = target.scaleY;
+		this.targetX = target.xposition + (TetrisManager.ROW / 2) * target.xrange;
+		this.targetY = target.yposition + ((TetrisManager.COL - TetrisManager.AboveLines) / 2) * target.yrange + TetrisManager.AboveLines * target.yrange
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -2313,20 +2390,31 @@ particleEmitter.prototype.constructor = particleEmitter;
 
 particleEmitter.prototype.initialize = function (ID) {
 	Sprite.prototype.initialize.call(this);
-	this.emitter = new PIXI.particles.Emitter(this,
-		[PIXI.Texture.fromImage('img/pictures/Effect/'+ID+'.png')],
+	if (TetrisManager.pariticleAssetNumbers[ID]) {
+		var images = []
+		for (var i = 0; i < TetrisManager.pariticleAssetNumbers[ID]; i++) {
+			images.push(PIXI.Texture.fromImage('img/pictures/Effect/' + ID + '_' + i + '.png'))
+		}
+	} else {
+		var images = [PIXI.Texture.fromImage('img/pictures/Effect/' + ID + '.png')]
+    }
+	this._emitter = new PIXI.particles.Emitter(this,
+		images,
 		TetrisManager.pariticleSet[ID]
 	)
-	this.emitter.emit = true;
+	this._emitter.emit = true;
 	this.time = Date.now();
 }
 
 particleEmitter.prototype.update = function () {
 	//Sprite.prototype.update.call(this);
 	var now = Date.now();
-	this.emitter.update((now - this.time) * 0.001);
+	this._emitter.update((now - this.time) * 0.001);
 	this.time = now;
-	this.x += 1;
+}
+
+particleEmitter.prototype.move = function (x, y) {
+	this._emitter.updateSpawnPos(x, y);
 }
 
 //-----------------------------------------------------------------------------
