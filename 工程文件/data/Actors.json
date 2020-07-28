@@ -1,5 +1,5 @@
 [
 null,
-{"id":1,"battlerName":"","characterIndex":0,"characterName":"神乐mea行走图","classId":1,"equips":[1,10,6],"faceIndex":2,"faceName":"未标题-1副本","traits":[{"code":52,"dataId":1,"value":1},{"code":52,"dataId":2,"value":1},{"code":51,"dataId":1,"value":1}],"initialLevel":1,"maxLevel":99,"name":"神乐Mea","nickname":"","note":"","profile":""},
+{"id":1,"battlerName":"","characterIndex":0,"characterName":"神乐mea行走图","classId":1,"equips":[1,10,6],"faceIndex":2,"faceName":"未标题-1副本","traits":[{"code":52,"dataId":1,"value":1},{"code":52,"dataId":2,"value":1},{"code":51,"dataId":1,"value":1},{"code":43,"dataId":3,"value":1},{"code":43,"dataId":9,"value":1},{"code":41,"dataId":1,"value":1},{"code":44,"dataId":1,"value":1},{"code":43,"dataId":11,"value":1}],"initialLevel":1,"maxLevel":99,"name":"神乐Mea","nickname":"","note":"","profile":""},
 {"id":2,"battlerName":"Actor1_1","characterIndex":0,"characterName":"神乐mea行走图","classId":1,"equips":[],"faceIndex":0,"faceName":"Actor1","traits":[],"initialLevel":1,"maxLevel":99,"name":"勇者卡古拉","nickname":"","note":"","profile":""}
 ]

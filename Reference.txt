@@ -20,6 +20,8 @@ Resources:
 	ItaHoly Window Skins	by ItaHoly
 Tilesets:
 	Cossio - Modern TileSets	by Cossio
+ 	Ayene
+	茂吉
 
 灵感参考：
 https://www.pixiv.net/artworks/80389496

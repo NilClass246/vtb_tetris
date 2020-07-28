@@ -9189,7 +9189,7 @@ JsonEx._decode = function(value, circular, registry) {
  * @return {String}
  * @private
  */
-JsonEx._getConstructorName = function(value) {
+JsonEx._getConstructorName = function (value) {
     var name = value.constructor.name;
     if (name === undefined) {
         var func = /^\s*function\s*([A-Za-z0-9_$]*)/;

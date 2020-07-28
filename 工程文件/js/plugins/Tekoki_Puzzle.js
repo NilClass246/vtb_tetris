@@ -337,15 +337,15 @@ Scene_Puzzle.prototype.createPlayerWindows = function () {
 }
 
 Scene_Puzzle.prototype.refreshPlayerWindow = function(){
-	this.removeWindow(this.player.MainWindow);
-	this.player.MainWindow = new Tetris_Window(this.player.xposition - 15 - 7, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27, this.ROW * this.player.xrange + 65, (this.COL - TetrisManager.AboveLines) * this.player.yrange);
+	this.removeWindow(this.player.mainwindow);
+	this.player.mainwindow = new Tetris_Window(this.player.xposition - 15 - 7, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27, this.ROW * this.player.xrange + 65, (this.COL - TetrisManager.AboveLines) * this.player.yrange);
 	for (i = 0; i <= this.ROW; i++) {
-		this.player.MainWindow.contents.drawLine(i * this.player.xrange + 5, 0, i * this.player.xrange + 5, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 40);
+		this.player.mainwindow.contents.drawLine(i * this.player.xrange + 5, 0, i * this.player.xrange + 5, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 40);
 	}
 	for (i = 0; i <= this.COL; i++) {
-		this.player.MainWindow.contents.drawLine(4, i * this.player.yrange - 14, this.ROW * this.player.yrange + 4, i * this.player.yrange - 14);
+		this.player.mainwindow.contents.drawLine(4, i * this.player.yrange - 14, this.ROW * this.player.yrange + 4, i * this.player.yrange - 14);
 	}
-	this.addWindow(this.player.MainWindow);
+	this.addWindow(this.player.mainwindow);
 }
 
 function puzzle_start() {

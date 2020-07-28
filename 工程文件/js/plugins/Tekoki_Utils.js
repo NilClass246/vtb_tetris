@@ -346,6 +346,20 @@ TetrisManager.AboveLines = 16;
 
 TetrisManager.AiSpeed = 0;
 
+TetrisManager.Xrevision = 23;
+
+TetrisManager.simpleCopySprite = function (s) {
+	var t = new Sprite();
+	t.bitmap = s.bitmap;
+	t.x = s.x;
+	t.y = s.y;
+	t.scale.x = s.scale.x;
+	t.scale.y = s.scale.y;
+	t.opacity = s.opacity;
+	t.rotation = s.rotation;
+	return t;
+}
+
 TetrisManager.pariticleSet = {};
 
 TetrisManager.pariticleSet['Fire'] = {
@@ -507,8 +521,8 @@ TetrisManager.pariticleSet['Angry'] = {
 		"end": 0
 	},
 	"scale": {
-		"start": 0.1,
-		"end": 0.1,
+		"start": 0.5,
+		"end": 0.5,
 		"minimumScaleMultiplier": 7
 	},
 	"color": {
@@ -541,7 +555,7 @@ TetrisManager.pariticleSet['Angry'] = {
 	"blendMode": "normal",
 	"frequency": 0.001,
 	"emitterLifetime": -1,
-	"maxParticles": 1,
+	"maxParticles": 5,
 	"pos": {
 		"x": 0,
 		"y": 0
@@ -670,10 +684,11 @@ Scene_Boot.prototype.start = function () {
 //============================================================
 
 TetrisManager.PlaceTest = function (battler, tempBlock, cur) {
-	var rotation = cur.rotation;
 	var box = cur.box;
-	var x = Math.floor((tempBlock.x - battler.xposition) / battler.xrange);
-	var y = Math.floor((tempBlock.y - battler.yposition) / battler.yrange);
+	var x = Math.floor((tempBlock.x - TetrisManager.Xrevision) / battler.xrange);
+	var y = Math.floor((tempBlock.y) / battler.yrange)
+		+ TetrisManager.AboveLines - 1
+		- Math.floor((3 + (-battler.yrange + 25)) / battler.yrange);
 
 	if (box) {
 		var len = box.length;
@@ -835,10 +850,13 @@ TetrisManager.getRotationResult = function (battler, direction) {
 }
 
 TetrisManager.collide = function (battler, cur) {
-	box = cur.box;
-	len = cur.box.length;
-	x = Math.floor((cur.block.x - battler.xposition) / battler.xrange);
-	y = Math.floor((cur.block.y - battler.yposition) / battler.yrange) + 1;
+	var box = cur.box;
+	var len = cur.box.length;
+	var x = Math.floor((cur.block.x - TetrisManager.Xrevision) / battler.xrange);
+	var y = Math.floor((cur.block.y) / battler.yrange)
+		+ TetrisManager.AboveLines - 1 + 1
+		- Math.floor((3 + (-battler.yrange + 25)) / battler.yrange);
+		//+ Math.floor(3 + (-battler.yrange + 25) / battler.yrange);
 	for (i = 0; i < len; i++) {
 		if (i + y >= 0) {
 			for (j = 0; j < box[i].length; j++) {
@@ -917,7 +935,7 @@ TetrisManager.randomnize = function (p) {
 }
 
 //============================================================
-// 内部方法继承
+// 内部方法继承与覆写
 //============================================================
 
 //TODO: Damn, why is the call method not working???
@@ -965,6 +983,12 @@ Bitmap.prototype.drawPolygon = function (pointList) {
 		context.stroke();
     }
 }
+
+TetrisManager.Temps.Game_Actor_Initialize = Game_Actor.prototype.initialize;
+Game_Actor.prototype.initialize = function (actorId) {
+	TetrisManager.Temps.Game_Actor_Initialize.call(this, actorId);
+	this._signedItems = [];
+};
 
 //=============================================================================
 // 小组件定义
@@ -1152,7 +1176,9 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 					atkType = 'critical';
 				}
 				break;
-        }
+		}
+		finaldamage = finaldamage * target.Be_Damaged_mag;
+
 		if (target.category == "enemy") {
 			if (finaldamage >= 0) {
 				target.curHp -= finaldamage;
@@ -1868,6 +1894,7 @@ stateBoard.prototype.initialize = function (owner) {
 	this._stateicons = {};
 	this._statelist = {};
 	this.iconPos = 0;
+	this.curTintId = null;
 }
 
 stateBoard.prototype.refreshStates = function () {
@@ -1938,11 +1965,15 @@ stateBoard.prototype.applyStates = function (strid, layers) {
 
 stateBoard.prototype.clearAllStates = function () {
 	for (var strid in this._statelist) {
-		if (this._statelist[strid] && this._statelist[strid].type == 'in_battler') {
+		if (this._statelist[strid] && this._statelist[strid].type == 'in_battle') {
 			var numid = Number(strid);
 			this._owner._states.splice(this._owner._states.indexOf(numid), 1);
         }
-    }
+	}
+
+	if (this._owner.category == 'enemy') {
+		this._owner.avatar.tint = 0xffffff;
+	}
 }
 
 stateBoard.prototype.getStatePosition = function (strid) {
@@ -1953,12 +1984,51 @@ stateBoard.prototype.getStatePosition = function (strid) {
     }
 }
 
+stateBoard.prototype.setAvatarTint = function (numid, tint) {
+	if (this._owner.category == 'enemy') {
+		this._owner.avatar.tint = tint;
+		this.curTintId = numid;
+    }
+}
+
+stateBoard.prototype.removeAvatarTint = function (numid) {
+	if (this._owner.category == 'enemy') {
+		if (this.curTintId === numid) {
+			this._owner.avatar.tint = 0xffffff;
+        }
+	}
+}
+
 stateBoard.prototype.onAttack = function () {
 	for (var strid in this._statelist) {
 		if (this._statelist[strid] && this._statelist[strid].onAttack) {
 			this._statelist[strid].onAttack();
         }
     }
+}
+
+stateBoard.prototype.onDown = function () {
+	for (var strid in this._statelist) {
+		if (this._statelist[strid] && this._statelist[strid].onDown) {
+			this._statelist[strid].onDown();
+		}
+	}
+}
+
+stateBoard.prototype.onBlockChanging = function () {
+	for (var strid in this._statelist) {
+		if (this._statelist[strid] && this._statelist[strid].onBlockChanging) {
+			this._statelist[strid].onBlockChanging();
+		}
+	}
+}
+
+stateBoard.prototype.onShadow = function () {
+	for (var strid in this._statelist) {
+		if (this._statelist[strid] && this._statelist[strid].onShadow) {
+			this._statelist[strid].onShadow();
+		}
+	}
 }
 
 function stateIcon() {

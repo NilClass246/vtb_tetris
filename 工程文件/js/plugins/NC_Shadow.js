@@ -42,35 +42,37 @@ NC.temps = NC.temps || {}
  * 其中，A为会产生阴影的半径，单位为像素
  * =============================================================================
  * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 果真有为钢铁鏖战的不眠之夜？
- * 果真有哈拉库图之鹰？
- * ————《哈拉库图》王昌耀
+ * I end, and the world begins.
  */
 
 NC.parameters = PluginManager.parameters("NC_Shadow")
 NC.shadowPath = String(NC.parameters['阴影素材']);
 NC.shadowStrength = Number(NC.parameters['阴影最大强度'])
 
+NC.characterShadow = new Sprite();
+NC.characterShadow.bitmap = ImageManager.loadPicture(NC.shadowPath);
+NC.characterShadow.anchor.x = 0.5;
+NC.characterShadow.anchor.y = 1;
+
 //=============================================================================
 // 事件初始化
 //=============================================================================
+
+NC.temps.Game_Event_Initialize = Game_Event.prototype.initialize;
+Game_Event.prototype.initialize = function (mapId, eventId) {
+    this._needShadow = false;
+    this._shadowRadius = 0;
+    this._characterShadow = null;
+    NC.temps.Game_Event_Initialize.call(this, mapId, eventId);
+};
 
 NC.temps.setupPageSettings = Game_Event.prototype.setupPageSettings
 Game_Event.prototype.setupPageSettings = function () {
     NC.temps.setupPageSettings.call(this)
     this.NC_S_setupShadowSettings();
-}
+};
 
 Game_Event.prototype.NC_S_setupShadowSettings = function () {
-    this._needShadow = false;
-    this._shadowRadius = 0;
-
     var page = this.page();
     if (page) {
         this.list().forEach(function (l) {
@@ -85,29 +87,18 @@ Game_Event.prototype.NC_S_setupShadowSettings = function () {
                 }
             }
         }, this)
-    }
+    };
+};
 
-    if (this._needShadow) {
-        this._characterShadow = new Sprite();
-        this._characterShadow.bitmap = ImageManager.loadPicture(NC.shadowPath);
-        this._characterShadow.anchor.x = 0.5;
-        this._characterShadow.anchor.y = 1;
-    }
-}
-
-NC.temps.Game_Event_Update = Game_Event.prototype.update;
-Game_Event.prototype.update = function () {
-    NC.temps.Game_Event_Update.call(this);
-}
 
 Game_Event.prototype.NC_S_verifyShadowDistance = function () {
-    if (!this._needShadow) { return; }
-    this._NC_S_distance = Math.sqrt(Math.pow(($gamePlayer.screenX() - this.screenX()), 2) + Math.pow(($gamePlayer.screenY() - this.screenY()), 2))
+    if (!this._needShadow) { return };
+    this._NC_S_distance = Math.sqrt(Math.pow(($gamePlayer.screenX() - this.screenX()), 2) + Math.pow(($gamePlayer.screenY() - this.screenY()), 2));
     if (this._NC_S_distance <= this._shadowRadius) {
         return true;
     } else {
         return false;
-    }
+    };
 }
 
 //=============================================================================
@@ -117,12 +108,14 @@ Game_Temp.prototype.initialize = function () {
     NC.temps.Game_Temp_Initialize.call(this);
     this._NC_S_shadowEvents = [];			//含阴影的事件
     this._NC_S_needRefresh = true;
+    this._NC_S_shadowSprites = {};
 };
 
 NC.temps.Game_Temp_setup = Game_Map.prototype.setup;
 Game_Map.prototype.setup = function (mapId) {
     $gameTemp._NC_S_shadowEvents = [];	//含阴影的事件
     $gameTemp._NC_S_needRefresh = true;
+    this._NC_S_shadowSprites = {};
     NC.temps.Game_Temp_setup.call(this, mapId);
 }
 
@@ -130,6 +123,7 @@ NC.temps.Spriteset_Map_CreateCharacters = Spriteset_Map.prototype.createCharacte
 Spriteset_Map.prototype.createCharacters = function () {
     $gameTemp._NC_S_shadowEvents = [];	//含阴影的事件
     $gameTemp._NC_S_needRefresh = true;
+    this._NC_S_shadowSprites = {};
     NC.temps.Spriteset_Map_CreateCharacters.call(this);
 }
 
@@ -144,12 +138,11 @@ Spriteset_Map.prototype.createTilemap = function () {
 NC.temps.Game_Map_Update = Game_Map.prototype.update;
 Game_Map.prototype.update = function (sceneActive) {
     NC.temps.Game_Map_Update.call(this, sceneActive);
-
     this.NC_S_refreshEventTank();
 };
 
 Game_Map.prototype.NC_S_refreshEventTank = function () {
-    if (!$gameTemp._NC_S_needRefresh) { return }
+    if (!$gameTemp._NC_S_needRefresh) { return };
     $gameTemp._NC_S_needRefresh = false;
 
     var events = this.events();
@@ -158,33 +151,35 @@ Game_Map.prototype.NC_S_refreshEventTank = function () {
         var temp_event = events[i];
         if (temp_event._needShadow == true) {
             $gameTemp._NC_S_shadowEvents.push(temp_event);
+            $gameTemp._NC_S_shadowSprites[temp_event._eventId] = Object.create(NC.characterShadow);
         }
     }
-}
+};
 
 NC.temps.Spriteset_Map_Update = Spriteset_Map.prototype.update;
 Spriteset_Map.prototype.update = function () {
     NC.temps.Spriteset_Map_Update.call(this);
     this.NC_S_updateNewEventShadow();
-}
+};
+
 Spriteset_Map.prototype.NC_S_updateNewEventShadow = function () {
     //this._tilemap.removeChild(this._NC_S_area);
     var e_tank = $gameTemp._NC_S_shadowEvents;
 
     for (var i = 0; i < e_tank.length; i++) { //添加阴影
         var e = e_tank[i];
-        this._NC_S_area.removeChild(e._characterShadow);
+        this._NC_S_area.removeChild($gameTemp._NC_S_shadowSprites[e._eventId]);
         if (e.NC_S_verifyShadowDistance()) {
             this.NC_S_createShadow(e);
         }
     }
     //this._tilemap.addChild(this._NC_S_area)
-}
+};
 Spriteset_Map.prototype.NC_S_createShadow = function (e) {
-    if (e == null) { return }
-    var shadow = e._characterShadow
-    var xLength = $gamePlayer.screenX() - e.screenX()
-    var yLength = -($gamePlayer.screenY() - e.screenY())
+    if (e === null || $gameTemp._NC_S_shadowSprites[e._eventId]===null) { return }
+    var shadow = $gameTemp._NC_S_shadowSprites[e._eventId];
+    var xLength = $gamePlayer.screenX() - e.screenX();
+    var yLength = -($gamePlayer.screenY() - e.screenY());
 
     if (xLength > 0) {
         var angle = (Math.PI / 2) - Math.atan(yLength / xLength);
@@ -199,7 +194,7 @@ Spriteset_Map.prototype.NC_S_createShadow = function (e) {
     }
 
     if (xLength < 0) {
-        var angle = (Math.PI*(3/2)) - Math.atan(yLength / xLength);
+        var angle = (Math.PI * (3 / 2)) - Math.atan(yLength / xLength);
     }
 
     shadow.rotation = angle;
@@ -207,5 +202,5 @@ Spriteset_Map.prototype.NC_S_createShadow = function (e) {
     shadow.y = $gamePlayer.screenY() - 3;
     shadow.scale.y = 1 + (e._NC_S_distance / e._shadowRadius) * (0.5);
     shadow.opacity = (1 - e._NC_S_distance / e._shadowRadius) * (NC.shadowStrength);
-    this._NC_S_area.addChild(shadow)
-}
+    this._NC_S_area.addChild(shadow);
+};

@@ -3,10 +3,8 @@
     "",
     "\\js",
     "\\js\\libs",
-    "\\js\\plugins",
-    "\\locales",
-    "\\locales\\cn"
+    "\\js\\plugins"
   ],
-  "SelectedNode": "\\js\\plugins\\Tekoki_Tetris.js",
+  "SelectedNode": "\\js\\plugins\\Tekoki_Utils.js",
   "PreviewInSolutionExplorer": false
 }

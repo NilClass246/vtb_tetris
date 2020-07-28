@@ -60,7 +60,11 @@ Scene_Tetris.prototype.initialize = function () {
 	Scene_ItemBase.prototype.initialize.call(this);
 	this.initializeData();
 	this.loadKeyMapper();
-	this._enemies = TetrisManager.enemy_List[$gameVariables.value(1)].slice();
+	this._enemies = [];
+	var enemyList = TetrisManager.enemy_List[$gameVariables.value(1)]
+	for (var i = 0; i < enemyList.length; i++) {
+		this._enemies.push(Object.create(enemyList[i]));
+    }
 	this.initialize_Actor();
 	this.initialize_Enemy();
 	this.skinID = null;
@@ -69,7 +73,6 @@ Scene_Tetris.prototype.initialize = function () {
 
 Scene_Tetris.prototype.initialize_Actor = function () {
 	this.actor = $gameActors.actor(1)
-
 
 	this.player = {
 		actor: $gameActors.actor(1),
@@ -119,6 +122,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 
 		Damage_mag: 1,
 		Critical_mag: 1,
+		Be_Damaged_mag: 1,
 
 		lastKick: false,
 		holded: false,
@@ -129,7 +133,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		MadeRightInitialMove: false,
 
 		mergeTrembleCount: 0,
-
+		rotated: false
 	}
 
 	this.player.yposition -= TetrisManager.AboveLines * this.player.yrange;
@@ -191,10 +195,15 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 }
 
 Scene_Tetris.prototype.initialize_Skills = function () {
-	var weapon = $gameActors.actor(1).equips()[0]
-
+	var skills = this.actor.skills();
+	var skillnames = [] 
+	for (var i = 0; i < skills.length-1; i++) {
+		if (skills[i].name !== '攻击') {
+			skillnames.push(skills[i].name)
+        }
+    }
 	//this.SkillButtonOne = new SkillButton(weapon.id-1)
-	this._Skill_Manager = new SkillManager(['剑','咩毒']);
+	this._Skill_Manager = new SkillManager(skillnames);
 }
 
 Scene_Tetris.prototype.initialize_Enemy = function () {
@@ -208,8 +217,13 @@ Scene_Tetris.prototype.initialize_Enemy = function () {
 		this._enemies[i].removeState = function (id) {
 			this._states.splice(this._states.indexOf(id), 1);
 		}
+
+		//数据修正
 		this._enemies[i].Damage_mag = 1
 		this._enemies[i].Critical_mag = 1;
+		this._enemies[i].Be_Damaged_mag = 1;
+
+
 		this._enemies[i].curEng = 0;
 
 		this._enemies[i].curbag = TetrisManager.block_pics.slice();
@@ -291,6 +305,8 @@ Scene_Tetris.prototype.initializeData = function () {
 	this.FirstBegin = false;
 
 	this.nextNumber = 6;
+
+	this.windowTrembling = true;
 }
 
 Scene_Tetris.prototype.loadKeyMapper = function () {
@@ -413,8 +429,8 @@ Scene_Tetris.prototype.loadBlockSkin = function () {
 	this.blockSkin['r'] = ImageManager.loadPicture(this.skinID + 'rblock');
 	this.enemyblockSkin['r'] = ImageManager.loadPicture(this.enemyID + 'rblock');
 
-	this.MergeEffect = ImageManager.loadPicture("MergeEffect");
-	this.CancelEffect = ImageManager.loadPicture("CancelEffect");
+	this._MergeEffect = ImageManager.loadPicture("MergeEffect");
+	this._CancelEffect = ImageManager.loadPicture("CancelEffect");
 }
 
 Scene_Tetris.prototype.start = function () {
@@ -457,24 +473,24 @@ Scene_Tetris.prototype.update_Placement = function () {
 	if (this.laying_count <= this.laying_speed - 10) {
 		var n = (624 + 10) / (this.laying_speed - 10)
 		this.player.holdWindow.y += n;
-		this.player.MainWindow.y += n;
+		this.player.mainwindow.y += n;
 		this.player.nextWindows.forEach(function (item) {
 			item.y += n;
 		})
 		this.player.cur.block.y += n;
 		this._enemies.forEach(function (item) {
-			item.mainWindow.x -=n
+			item.mainwindow.x -=n
 			item.cur.block.x -= n
 		})
 	} else {
 		this.player.holdWindow.y -= 1;
-		this.player.MainWindow.y -= 1;
+		this.player.mainwindow.y -= 1;
 		this.player.nextWindows.forEach(function (item) {
 			item.y -= 1;
 		})
 		this.player.cur.block.y -= 1;
 		this._enemies.forEach(function (item) {
-			item.mainWindow.x += 1
+			item.mainwindow.x += 1
 			item.cur.block.x += 1
 		})
 	}
@@ -533,17 +549,18 @@ Scene_Tetris.prototype.update_Actor = function () {
 			AudioManager.playSe(this.seTick)
 			this.mergeBox(this.player);
 			TetrisManager.Count_Blocks += 1;
-			this._blockLayer.removeChild(this.player.cur.block);
-			this.drawArea(this.player);
+			this.removeFromMainWindow(this.player, this.player.cur.block)
 			this.player.cur = null;
 			this.player.lastKick = false;
 			this.createBox(this.player);
 			this.shadow(this.player);
+			this.drawArea(this.player);
 			this.player.holded = false;
 			this.player.delay_reset_times = 15;
 		} else {
 			this.player.cur.block.y += this.player.yrange;
 			this.player.lastKick = false;
+			this._playerStateBoard.onDown();
 		}
 
 		this.player.n = 0;
@@ -562,6 +579,12 @@ Scene_Tetris.prototype.update_Actor = function () {
 
 	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
 	TetrisManager.curhighestKPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
+
+	//this.ooooo += 1;
+	//console.log('=============================')
+	//console.log(this.ooooo)
+	//console.log(this.player.mainwindow)
+	//console.log('=============================')
 }
 
 Scene_Tetris.prototype.changeTarget = function () {
@@ -628,6 +651,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			if (!operator.MadeRightInitialMove) {
 				if (this.bMove(operator, 1)) {
 					operator.cur.block.x += operator.xrange;
+					this._playerStateBoard.onBlockChanging();
 					this.resetCollideDelay(operator);
 					this.shadow(operator);
 					operator.lastKick = false;
@@ -641,6 +665,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 						if (this.arr_delay_count >= this.arr_delay) {
 							if (this.bMove(operator, 1)) {
 								operator.cur.block.x += operator.xrange;
+								this._playerStateBoard.onBlockChanging();
 								this.resetCollideDelay(operator);
 								this.shadow(operator);
 								operator.lastKick = false;
@@ -650,6 +675,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 					} else {
 						while (this.bMove(operator, 1)) {
 							operator.cur.block.x += operator.xrange;
+							this._playerStateBoard.onBlockChanging();
 							this.resetCollideDelay(operator);
 							this.shadow(operator);
 							operator.lastKick = false;
@@ -661,6 +687,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			if (!operator.MadeLeftInitialMove) {
 				if (this.bMove(operator, -1)) {
 					operator.cur.block.x -= operator.xrange;
+					this._playerStateBoard.onBlockChanging();
 					this.resetCollideDelay(operator);
 					this.shadow(operator);
 					operator.lastKick = false;
@@ -674,6 +701,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 						if (this.arr_delay_count >= this.arr_delay) {
 							if (this.bMove(operator, -1)) {
 								operator.cur.block.x -= operator.xrange;
+								this._playerStateBoard.onBlockChanging();
 								this.resetCollideDelay(operator);
 								this.shadow(operator);
 								operator.lastKick = false;
@@ -683,6 +711,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 					} else {
 						while (this.bMove(operator, -1)) {
 							operator.cur.block.x -= operator.xrange;
+							this._playerStateBoard.onBlockChanging();
 							this.resetCollideDelay(operator);
 							this.shadow(operator);
 							operator.lastKick = false;
@@ -698,6 +727,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 		if (!operator.cur.noRotate) {
 			TetrisManager.Count_Buttons += 1;
 			this.rotateBox(operator, 1);
+			this._playerStateBoard.onBlockChanging();
 			this.shadow(operator);
 			operator.lastKick = true;
 			this.resetCollideDelay(operator);
@@ -708,6 +738,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 		if (!operator.cur.noRotate) {
 			TetrisManager.Count_Buttons += 1;
 			this.rotateBox(operator, -1);
+			this._playerStateBoard.onBlockChanging();
 			this.shadow(operator);
 			operator.lastKick = true;
 			this.resetCollideDelay(operator);
@@ -716,6 +747,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 
 	if (Input.isTriggered('shift')) {
 		this.holdBox(this.player);
+		this._playerStateBoard.onBlockChanging();
 		this.shadow(operator);
 	}
 
@@ -724,6 +756,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			operator.cur.block.x = operator.shadowImage.block.x;
 			operator.cur.block.y = operator.shadowImage.block.y;
 			operator.n = operator.step;
+			this._playerStateBoard.onBlockChanging();
 		}
 	}
 
@@ -732,6 +765,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			if ((operator.cur.block.x !== operator.shadowImage.block.x) || (operator.cur.block.y !== operator.shadowImage.block.y)) {
 				operator.cur.block.x = operator.shadowImage.block.x;
 				operator.cur.block.y = operator.shadowImage.block.y;
+				this._playerStateBoard.onBlockChanging();
 				this.resetCollideDelay(operator);
 			}
 		} else {
@@ -825,21 +859,22 @@ Scene_Tetris.prototype.update_Animation = function () {
 		this._enemies[i].displayHp += (this._enemies[i].curHp - this._enemies[i].displayHp) / TetrisManager.GaugeConstant;
 		this.refreshEnemyHPGauge(i)
 	}
+	if (this.windowTrembling) {
+		if (this.player.mergeDownTrembling) {
+			this.player.mainwindow.y += 1;
+			this.player.mergeTrembleCount += 1;
+			if (this.player.mergeTrembleCount >= 5) {
+				this.player.mergeDownTrembling = false;
+				this.player.mergeUpTrembling = true;
+			}
+		}
 
-	if (this.player.mergeDownTrembling) {
-		this.player.MainWindow.y += 1;
-		this.player.mergeTrembleCount += 1;
-		if (this.player.mergeTrembleCount >=5) {
-			this.player.mergeDownTrembling = false;
-			this.player.mergeUpTrembling = true;
-        }
-	}
-
-	if (this.player.mergeUpTrembling) {
-		this.player.MainWindow.y -= 1;
-		this.player.mergeTrembleCount -= 1;
-		if (this.player.mergeTrembleCount <= 0) {
-			this.player.mergeUpTrembling = false;
+		if (this.player.mergeUpTrembling) {
+			this.player.mainwindow.y -= 1;
+			this.player.mergeTrembleCount -= 1;
+			if (this.player.mergeTrembleCount <= 0) {
+				this.player.mergeUpTrembling = false;
+			}
 		}
     }
 
@@ -855,9 +890,8 @@ Scene_Tetris.prototype.resetCollideDelay = function (operator) {
 Scene_Tetris.prototype.mergeBox = function(operator){
 	var box = operator.cur.box;
 	var len = operator.cur.box.length;
-	var y = Math.floor((operator.cur.block.y - operator.yposition) / operator.yrange)
-	var x = Math.floor((operator.cur.block.x - operator.xposition) / operator.xrange);
-	//Create Merging Effect
+	var y = this.getPosY(operator)
+	var x = this.getPosX(operator)
 
 	if (operator.category == 'player' && !operator.mergeDownTrembling && !operator.mergeUpTrembling) {
 		operator.mergeDownTrembling = true;
@@ -869,14 +903,16 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 				if (box[i][j] !== 0) {
 
 					if (i + y + 1 >= operator.field.length || (i + y + 1 < operator.field.length && operator.field[i + y + 1][j + x] !== 0)) {
-						var MergeX = (j + x) * operator.xrange + operator.xposition
+						//添加合并特效
+						var MergeX = (j + x) * operator.xrange + TetrisManager.Xrevision
 							//+ 7 * operator.scaleX;
-						var MergeY = (i + y) * operator.yrange + operator.yposition - 4*operator.yrange;
-						var Merging = new MergeEffect(this.MergeEffect);
+						var MergeY = (i + y - TetrisManager.AboveLines + 1) * operator.yrange
+							- 4 * operator.yrange + (3 + (-operator.yrange + 25));
+						var Merging = new MergeEffect(this._MergeEffect);
 						Merging.scale.x = operator.scaleX;
 						Merging.scale.y = operator.scaleY;
 						Merging.move(MergeX, MergeY);
-						this._blockLayer.addChild(Merging);
+						this.addEffect(operator, Merging);
 					}
 					if (operator.field[i + y] && operator.field[i + y][j + x] == 0) {
 						operator.field[i + y][j + x] = box[i][j];
@@ -900,7 +936,6 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 			if (arr[0]) {
 				//提升能量
 				this.player.eng += 3;
-				console.log(this.player.eng)
 				//提升Combo
 				operator.Count_Combos += 1;
 				Tspined = this.isTspin(operator)
@@ -916,14 +951,16 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 				operator.field.splice(arr[i], 1);
 				operator.field.unshift(new Array(this.ROW).fill(0));
 				TetrisManager.Count_Lines += 1;
-				var CancelX = operator.xposition
+				//添加消除特效
+				var CancelX = TetrisManager.Xrevision
 					//+ 7 * operator.scaleX;
-				var CancelY = (arr[i]-1) * operator.yrange + operator.yposition;
-				var Cancelling = new MergeEffect(this.CancelEffect);
+				var CancelY = (arr[i] - 1 - TetrisManager.AboveLines + 1) * operator.yrange
+					+ (3 + (-operator.yrange + 25));
+				var Cancelling = new MergeEffect(this._CancelEffect);
 				Cancelling.scale.x = operator.scaleX;
 				Cancelling.scale.y = operator.scaleY;
 				Cancelling.move(CancelX, CancelY);
-				this._blockLayer.addChild(Cancelling)
+				this.addEffect(operator, Cancelling)
 			}
 			//Tspin加分
 			if (Tspined) {
@@ -982,9 +1019,9 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 			for (var i = 0; i < arr.length; i++) {
 				operator.field.splice(arr[i], 1);
 				operator.field.unshift(new Array(this.ROW).fill(0));
-				var CancelX = operator.xposition + 7;
+				var CancelX = operator.xposition;
 				var CancelY = (arr[i] - 1) * operator.yrange + operator.yposition;
-				var Cancelling = new MergeEffect(this.CancelEffect);
+				var Cancelling = new MergeEffect(this._CancelEffect);
 				Cancelling.scale.x = operator.scaleX;
 				Cancelling.scale.y = operator.scaleY;
 				Cancelling.move(CancelX, CancelY);
@@ -1029,8 +1066,8 @@ Scene_Tetris.prototype.isTspin = function (operator){
 
 	var rotation = operator.cur.rotation
 	var field = operator.field;
-	var x = Math.floor((cur.block.x - operator.xposition) / operator.xrange);
-	var y = Math.floor((cur.block.y - operator.yposition) / operator.yrange);
+	var x = this.getPosX(operator);
+	var y = this.getPosY(operator);
 
 	switch (rotation) {
 		case 0:
@@ -1079,21 +1116,15 @@ Scene_Tetris.prototype.isTspin = function (operator){
 }
 
 Scene_Tetris.prototype.drawArea = function (operator) {
-
 	if (operator.category == "player") {
 		this.refreshPlayerWindow(operator);
-		var mainWindow = operator.MainWindow;
 		var blockSkin = this.blockSkin;
 	} else {
 		this.refreshEnemyWindow(operator);
-		var mainWindow = operator.mainWindow;
 		var blockSkin = this.enemyblockSkin;
-    }
+	}
 
-	var box = operator.cur.box;
-	var x = Math.floor((operator.cur.block.x - operator.xposition) / operator.xrange);
-	var y = Math.floor((operator.cur.block.y - operator.yposition) / operator.yrange)+1;
-
+	operator.mainwindow.removeChild(operator.effectLayer);
 	for(var i in operator.field){
 		for(var j in operator.field[i]){
 			if (operator.field[i][j] != 0) {
@@ -1127,16 +1158,16 @@ Scene_Tetris.prototype.drawArea = function (operator) {
 				blackBlock.bitmap = blockSkin[blocktype];
 				blackBlock.scale.x = operator.scaleX;
 				blackBlock.scale.y = operator.scaleY;
-				blackBlock.x = j * operator.xrange + 23
+				blackBlock.x = j * operator.xrange + TetrisManager.Xrevision
 					//battler.xrange + (-battler.xrange + 25) - 2;
 				//j * (816 / 33) + 8.8 + 0.2 * j + 15;
 				blackBlock.y = (i - TetrisManager.AboveLines) * operator.yrange + 3 + (-operator.yrange + 25);
 					//(i) * (624 / 25) + 5.2;
-				mainWindow.addChild(blackBlock);
+				this.addToMainWindow(operator, blackBlock);
 			}
 		}
 	}
-	
+	operator.mainwindow.addChild(operator.effectLayer);
 }
 
 Scene_Tetris.prototype.createBox = function (battler) {
@@ -1197,17 +1228,18 @@ Scene_Tetris.prototype.createBox = function (battler) {
 
 Scene_Tetris.prototype.addBox = function (battler, cur) {
 	if (cur.renderPos) {
-		cur.block.x = battler.xposition + cur.renderPos * battler.xrange;
+		cur.block.x = cur.renderPos * battler.xrange + TetrisManager.Xrevision;
 	} else {
 		if (cur.type == "o") {
-			cur.block.x = battler.xposition + (TetrisManager.blockInitalPos + 1) * battler.xrange
+			cur.block.x = (TetrisManager.blockInitalPos + 1) * battler.xrange + TetrisManager.Xrevision;
 			//+ 7;
 		} else {
-			cur.block.x = battler.xposition + TetrisManager.blockInitalPos * battler.xrange
+			cur.block.x = TetrisManager.blockInitalPos * battler.xrange + TetrisManager.Xrevision;
 			//+ 7;
 		}
     }
-	cur.block.y = battler.yposition + TetrisManager.AboveLines*battler.yrange;
+	cur.block.y = battler.yrange+3 + (-battler.yrange + 25);
+
 
 	while (TetrisManager.collide(battler, cur)) {
 		cur.block.y -= battler.yrange;
@@ -1217,14 +1249,15 @@ Scene_Tetris.prototype.addBox = function (battler, cur) {
 		cur.block.y -= battler.yrange;
 	}
 
-	this._blockLayer.addChild(cur.block)
+	//this._blockLayer.addChild(cur.block)
+	this.addToMainWindow(battler, cur.block);
 }
 
 Scene_Tetris.prototype.isOverlapped = function (battler) {
 	var box = battler.cur.box;
 	var len = battler.cur.box.length;
-	var y = Math.floor((battler.cur.block.y - battler.yposition) / battler.yrange);
-	var x = Math.floor((battler.cur.block.x - battler.xposition) / battler.xrange);
+	var y = this.getPosY(battler);
+	var x = this.getPosX(battler);
 
 	for (var i = 0; i < len; i++) {
 		if (i + y >= 0) {
@@ -1242,8 +1275,8 @@ Scene_Tetris.prototype.isOverlapped = function (battler) {
 
 Scene_Tetris.prototype.bMove = function(battler, n){
 	var cur = battler.cur;
-	var x = Math.floor((battler.cur.block.x - battler.xposition) / battler.xrange) + n;
-	var y = Math.floor((battler.cur.block.y - battler.yposition) / battler.yrange);
+	var x = this.getPosX(battler) + n;
+	var y = this.getPosY(battler) ;
 	for(var i=0; i<battler.cur.box.length; i++){
 		for(var j=0; j<battler.cur.box[i].length; j++){
 			if(cur.box[i][j]!==0){
@@ -1295,19 +1328,21 @@ Scene_Tetris.prototype.rotateBox = function (battler, direction) {
 			}
 		}
 		battler.cur.rotation = Finaltemp.rotation;
-		this._blockLayer.addChild(battler.cur.block);
+		//this._blockLayer.addChild(battler.cur.block)
+		battler.rotated = true;
+		this.addToMainWindow(battler, battler.cur.block);
 	}
 	
 
 }
-
+//TODO: 更新一下Tekoki_Puzzle
 Scene_Tetris.prototype.holdBox = function(operator){
 	if (operator.holded) {
 		return
 	}
 
-	if(!operator.hold){
-		this._blockLayer.removeChild(operator.cur.block);
+	if (!operator.hold) {
+		this.removeFromMainWindow(operator, operator.cur.block)
 		var type = operator.cur.type;
 		if (TetrisManager.block_pics.indexOf(type) < 0) {
 			operator.hold = {
@@ -1337,9 +1372,9 @@ Scene_Tetris.prototype.holdBox = function(operator){
 		this.createBox(operator);
 		this.refreshNextWindows(operator);
 		operator.holded = true;
-	}else{
-		this._blockLayer.removeChild(operator.cur.block);
-		operator.holdWindow.removeChild(operator.hold.block);
+	} else {
+		this.removeFromMainWindow(operator, operator.cur.block)
+		this.removeFromMainWindow(operator, operator.hold.block)
 		var type = operator.cur.type;
 		operator.cur = operator.hold;
 		if (TetrisManager.block_pics.indexOf(type) < 0) {
@@ -1366,8 +1401,8 @@ Scene_Tetris.prototype.holdBox = function(operator){
 
 		this.addBox(operator, operator.cur);
 
-		this._blockLayer.addChild(operator.cur.block);
-		operator.holdWindow.addChild(operator.hold.block);
+		this.addToMainWindow(operator, operator.cur.block)
+		this.addToMainWindow(operator, operator.hold.block)
 		operator.holded = true;
 	}
 }
@@ -1395,7 +1430,7 @@ Scene_Tetris.prototype.shadow = function(battler){
 	} else {
 		var shadowSkin = this.enemyshadowSkin;
     }
-	if (TetrisManager.block_pics.indexOf(type)<0) {
+	if (TetrisManager.block_pics.indexOf(type) < 0) {
 		var bitmap = ImageManager.loadPicture('blockSkin/special/' + type + '_s');
 	} else {
 		var bitmap = shadowSkin[type][rotation];
@@ -1408,8 +1443,8 @@ Scene_Tetris.prototype.shadow = function(battler){
 	var x = battler.cur.block.x;
 	var y = battler.cur.block.y;
 	
-	if (battler.shadowImage){
-		this._blockLayer.removeChild(battler.shadowImage.block);
+	if (battler.shadowImage) {
+		this.removeFromMainWindow(battler, battler.shadowImage.block)
 	}
 	
 	battler.shadowImage = {
@@ -1422,11 +1457,18 @@ Scene_Tetris.prototype.shadow = function(battler){
 	battler.shadowImage.block.scale.y = battler.scaleY;
 	battler.shadowImage.block.x = x;
 	battler.shadowImage.block.y = y;
-	
+	//console.log('x:'+battler.shadowImage.block.x);
+	//console.log('y:' +battler.shadowImage.block.y);
+	//console.log('========================================');
+
+	//var c = 0;
 	while (!TetrisManager.collide(battler, battler.shadowImage)){
 		battler.shadowImage.block.y += battler.yrange;
+		//c += 1;
 	}
-	this._blockLayer.addChild(battler.shadowImage.block);
+	//console.log(c)
+	this.addToMainWindow(battler, battler.shadowImage.block)
+	this._playerStateBoard.onShadow()
 }
 
 Scene_Tetris.prototype.AttAck = function (source, target, damage) {
@@ -1476,7 +1518,6 @@ Scene_Tetris.prototype.tryEscape = function () {
 	var enemyAvgLevel = enemyTotalLevel / this._enemies.length;
 
 	var escapeRate = 1 - (enemyAvgLevel - this.actor.level) * 0.2;
-	console.log(escapeRate);
 	if (TetrisManager.randomnize(escapeRate)) {
 		AudioManager.playSe(this.seBoom);
 		this.running = false;
@@ -1506,6 +1547,9 @@ Scene_Tetris.prototype.create = function () {
 
 	//图层分级
 
+	this._midLayer = new Sprite();
+	this.addChild(this._midLayer);
+
 	this._blockLayer = new Sprite();
 	this.addChild(this._blockLayer);
 
@@ -1526,11 +1570,12 @@ Scene_Tetris.prototype.create = function () {
 
 	this.createPlayerWindows();
 	this.createEnemyWindows();
+	this.drawArea(this.player);
 	this.createBox(this.player);
 	this.refreshNextWindows(this.player);
-	this.drawArea(this.player);
 
 	for (var i in this._enemies) {
+		this.drawArea(this._enemies[i]);
 		this.createBox(this._enemies[i])
 	}
 	this.createStartWindow();
@@ -1544,14 +1589,14 @@ Scene_Tetris.prototype.create = function () {
 	this.laying_count = 0
 
 	this.player.holdWindow.y -= 624;
-	this.player.MainWindow.y -= 624;
+	this.player.mainwindow.y -= 624;
 	this.player.nextWindows.forEach(function (item) {
 		item.y -= 624;
 	})
 	this.player.cur.block.y -= 624;
 
 	this._enemies.forEach(function (item) {
-		item.mainWindow.x += 624;
+		item.mainwindow.x += 624;
 		item.cur.block.x += 624;
 	})
 
@@ -1590,7 +1635,7 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 	this.addWindow(this.player.pictureBoard);
 	this.addWindow(this.playerGaugeBoard);
 	this.addWindow(this.player.holdWindow);
-	this.addWindow(this.player.MainWindow);
+	this.addWindow(this.player.mainwindow);
 	this._boardLayer.addChild(this._playerStateBoard)
 	this._boardLayer.addChild(this._playerItemBoard);
 
@@ -1652,7 +1697,6 @@ Scene_Tetris.prototype.startGame = function () {
 		this.FirstBegin = true;
 		TetrisManager.setTimer();
 		AudioManager.playSe(this.seTick);
-		this.refreshPlayerWindow(this.player);
 		this.drawArea(this.player);
 		this.shadow(this.player);
 		for (var i in this._enemies) {
@@ -1666,13 +1710,23 @@ Scene_Tetris.prototype.startGame = function () {
 }
 
 Scene_Tetris.prototype.endGame = function () {
+	this.onEnd();
 	this.ExItIng = true;
 	this.startFadeOut(60, false);
 	this.unloadKeyMapper();
 	this._playerStateBoard.clearAllStates();
+	for (var i = 0; i < this._enemies.length; i++) {
+		this._enemies[i].StateBoard.clearAllStates();
+	}
 	$gameVariables.setValue(6, this.player.SCORE);
 	TetrisManager.desetTimer();
 	SceneManager.pop(Scene_Tetris);
+	Scene_Tetris.prototype.onEnd = function () {
+	}
+}
+//如果你做了很过分的更改，请覆写这个方法来复元。
+Scene_Tetris.prototype.onEnd = function () {
+
 }
 
 Scene_Tetris.prototype.refreshPlayerGauge = function(){
@@ -1680,7 +1734,7 @@ Scene_Tetris.prototype.refreshPlayerGauge = function(){
 	var rate = this.player.displayHp / this.actor.mhp
 	var eng_rate = this.player.eng / this.player.meng
 	this.playerGaugeBoard.drawThinGauge(10, -12, 360, rate, 20, this.playerGaugeBoard.hpGaugeColor1(), this.playerGaugeBoard.hpGaugeColor2());
-	this.playerGaugeBoard.drawThinGauge(10, 10, 340, eng_rate, 5, this.playerGaugeBoard.mpGaugeColor1(), this.playerGaugeBoard.mpGaugeColor2())
+	this.playerGaugeBoard.drawThinGauge(10, 7, 340, eng_rate, 7, this.playerGaugeBoard.mpGaugeColor1(), this.playerGaugeBoard.mpGaugeColor2())
 	this.player.gauge_pos = [this.playerGaugeBoard.x + 360 * rate, this.playerGaugeBoard.y]
 
 	if (!this.player_hp_number) {
@@ -1694,16 +1748,42 @@ Scene_Tetris.prototype.refreshPlayerGauge = function(){
 }
 
 Scene_Tetris.prototype.refreshPlayerWindow = function (operator) {
-	this.removeWindow(operator.MainWindow);
-	operator.MainWindow = new Tetris_Window(operator.xposition - 15 - 7, operator.yposition + TetrisManager.AboveLines * operator.yrange - 27, this.ROW * operator.xrange + 65, (this.COL - TetrisManager.AboveLines) * operator.yrange);
-	operator.MainWindow.drawVerticalGauge(265, 10, 10, (this.COL - TetrisManager.AboveLines) * operator.yrange, operator.gaugeSCORE / this.player.AtkFreq, operator.MainWindow.hpGaugeColor1(), operator.MainWindow.hpGaugeColor1());
+	this.removeWindow(operator.mainwindow);
+	operator.mainwindow = new Tetris_Window(operator.xposition - 15 - 7,
+		operator.yposition + TetrisManager.AboveLines * operator.yrange - 27,
+		this.ROW * operator.xrange + 65,
+		(this.COL - TetrisManager.AboveLines) * operator.yrange);
+	operator.mainwindow.drawVerticalGauge(265, 10, 10, (this.COL - TetrisManager.AboveLines) * operator.yrange, operator.gaugeSCORE / this.player.AtkFreq, operator.mainwindow.hpGaugeColor1(), operator.mainwindow.hpGaugeColor1());
 	for (var i = 0; i <= this.ROW; i++) {
-		operator.MainWindow.contents.drawLine(i * operator.xrange + 5, 0, i * operator.xrange + 5, (this.COL - TetrisManager.AboveLines) * operator.yrange);
+		operator.mainwindow.contents.drawLine(i * operator.xrange + 5, 0, i * operator.xrange + 5, (this.COL - TetrisManager.AboveLines) * operator.yrange);
 	}
 	for (var i = 0; i <= this.COL; i++) {
-		operator.MainWindow.contents.drawLine(4, i * operator.yrange - 14, this.ROW * operator.yrange + 4, i * operator.yrange - 14);
+		operator.mainwindow.contents.drawLine(4, i * operator.yrange - 14, this.ROW * operator.yrange + 4, i * operator.yrange - 14);
 	}
-	this.addWindow(operator.MainWindow);
+	this.addWindow(operator.mainwindow);
+	if (operator.cur && operator.cur.block) {
+		this.addToMainWindow(operator, operator.cur.block);
+	}
+	if (operator.shadowImage) {
+		this.addToMainWindow(operator, operator.shadowImage.block);
+	}
+
+	if (!operator.effectLayer) {
+		operator.effectLayer = new Sprite();
+    }
+	operator.mainwindow.addChild(operator.effectLayer);
+}
+
+Scene_Tetris.prototype.addEffect = function (operator, sprite) {
+	operator.effectLayer.addChild(sprite);
+}
+
+Scene_Tetris.prototype.addToMainWindow = function (operator, sprite) {
+	operator.mainwindow.addChild(sprite)
+}
+
+Scene_Tetris.prototype.removeFromMainWindow = function (operator, sprite) {
+	operator.mainwindow.removeChild(sprite)
 }
 
 Scene_Tetris.prototype.refreshScoreBoard = function (operator) {
@@ -1715,26 +1795,30 @@ Scene_Tetris.prototype.refreshScoreBoard = function (operator) {
 }
 
 Scene_Tetris.prototype.refreshEnemyWindow = function (enemy) {
-	this.removeWindow(enemy.mainWindow);
+	this.removeWindow(enemy.mainwindow);
 	if (enemy.windowHeight_Revision) {
 		var r = enemy.windowHeight_Revision;
 	} else {
 		var r = 0;
     }
-	enemy.mainWindow = new Tetris_Window(
+	enemy.mainwindow = new Tetris_Window(
 		enemy.xposition - 15 - 7,
-		enemy.assumeYpos - 28,
+		enemy.assumeYpos - 27,
 		this.ROW * enemy.xrange + 65,
 		(this.COL - TetrisManager.AboveLines) * enemy.yrange + 24 + r)
-	enemy.mainWindow.drawVerticalGauge(this.ROW * enemy.xrange + 12, 0, 10, (this.COL - TetrisManager.AboveLines) * enemy.yrange+r, enemy.curEng / enemy.MEng, enemy.mainWindow.hpGaugeColor1(), enemy.mainWindow.hpGaugeColor1());
+	enemy.mainwindow.drawVerticalGauge(this.ROW * enemy.xrange + 12, 0, 10, (this.COL - TetrisManager.AboveLines) * enemy.yrange+r, enemy.curEng / enemy.MEng, enemy.mainwindow.hpGaugeColor1(), enemy.mainwindow.hpGaugeColor1());
 	for (var j = 0; j <= this.ROW; j++) {
-		enemy.mainWindow.contents.drawLine(j * enemy.xrange + 5, 0, j * enemy.xrange + 5, this.COL * enemy.yrange);
+		enemy.mainwindow.contents.drawLine(j * enemy.xrange + 5, 0, j * enemy.xrange + 5, this.COL * enemy.yrange);
 	}
 	for (var j = 0; j <= this.COL; j++) {
-		enemy.mainWindow.contents.drawLine(4, j * enemy.yrange - 14, this.ROW * enemy.yrange + 4, j * enemy.yrange - 14);
+		enemy.mainwindow.contents.drawLine(4, j * enemy.yrange - 14, this.ROW * enemy.yrange + 4, j * enemy.yrange - 14);
 	}
-	this.addWindow(enemy.mainWindow);
+	this.addWindow(enemy.mainwindow);
 	this.addWindow(enemy.gaugeWindow);
+	if (!enemy.effectLayer) {
+		enemy.effectLayer = new Sprite();
+    }
+	enemy.mainwindow.addChild(enemy.effectLayer);
 }
 
 Scene_Tetris.prototype.refreshEnemyHPGauge = function (enemyid) {
@@ -1849,6 +1933,18 @@ Scene_Tetris.prototype.getPlayer = function () {
 
 Scene_Tetris.prototype.getSkillPosition = function (id) {
 	return [this._Skill_Manager._skill_board.x + id * 50+25, this._Skill_Manager._skill_board.y+25]
+}
+
+Scene_Tetris.prototype.getPosX = function (operator) {
+	var x = Math.floor((operator.cur.block.x - TetrisManager.Xrevision) / operator.xrange);
+	return x
+}
+
+Scene_Tetris.prototype.getPosY = function (operator) {
+	var y = Math.floor((operator.cur.block.y) / operator.yrange)
+		+ TetrisManager.AboveLines - 1
+		- Math.floor((3 + (-operator.yrange + 25)) / operator.yrange);;
+	return y
 }
 
 function tetris_start() {
@@ -2300,14 +2396,14 @@ Scene_Double.prototype.create = function () {
 	//this.laying_count = 0
 
 	//this.holdWindow.y -= 624;
-	//this.player.MainWindow.y -= 624;
+	//this.player.mainwindow.y -= 624;
 	//this.nextWindows.forEach(function (item) {
 	//	item.y -= 624;
 	//})
 	//this.player.cur.block.y -= 624;
 
 	//this._enemies.forEach(function (item) {
-	//	item.mainWindow.x += 624;
+	//	item.mainwindow.x += 624;
 	//	item.cur.block.x += 624;
 	//})
 	//this.TargetMark.x -= 624;
@@ -2349,8 +2445,8 @@ Scene_Double.prototype.createPlayerWindows = function () {
 	this.addWindow(this.playerGaugeBoard);
 	this.addWindow(this._operator1.holdWindow);
 	this.addWindow(this._operator2.holdWindow);
-	this.addWindow(this._operator1.MainWindow);
-	this.addWindow(this._operator2.MainWindow);
+	this.addWindow(this._operator1.mainwindow);
+	this.addWindow(this._operator2.mainwindow);
 	this._boardLayer.addChild(this._playerStateBoard)
 	this._boardLayer.addChild(this._playerItemBoard);
 
@@ -2366,7 +2462,6 @@ Scene_Double.prototype.createPlayerWindows = function () {
 			new Tetris_Window(this._operator2.xposition + this.ROW * this._operator2.xrange + 40,
 				this._operator1.yposition + TetrisManager.AboveLines * this._operator1.yrange - 5 + 120 + 90 * i,
 				120, 90));
-		console.log(this._operator1.yposition + TetrisManager.AboveLines * this._operator1.yrange - 5 + 90 * i)
 	}
 	for (var i = 0; i < this.nextNumber; i++) {
 		this.addWindow(this._operator1.nextWindows[i]);
@@ -2404,24 +2499,24 @@ Scene_Double.prototype.update_Placement = function () {
 	//if (this.laying_count <= this.laying_speed - 10) {
 	//	var n = (624 + 10) / (this.laying_speed - 10)
 	//	this.player.holdWindow.y += n;
-	//	this.player.MainWindow.y += n;
+	//	this.player.mainwindow.y += n;
 	//	this.nextWindows.forEach(function (item) {
 	//		item.y += n;
 	//	})
 	//	this.player.cur.block.y += n;
 	//	this._enemies.forEach(function (item) {
-	//		item.mainWindow.x -= n
+	//		item.mainwindow.x -= n
 	//		item.cur.block.x -= n
 	//	})
 	//} else {
 	//	this.player.holdWindow.y -= 1;
-	//	this.player.MainWindow.y -= 1;
+	//	this.player.mainwindow.y -= 1;
 	//	this.nextWindows.forEach(function (item) {
 	//		item.y -= 1;
 	//	})
 	//	this.player.cur.block.y -= 1;
 	//	this._enemies.forEach(function (item) {
-	//		item.mainWindow.x += 1
+	//		item.mainwindow.x += 1
 	//		item.cur.block.x += 1
 	//	})
 	//}
