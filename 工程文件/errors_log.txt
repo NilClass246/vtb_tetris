@@ -1587,3 +1587,61 @@ Stack: TypeError: Cannot read property 'addChild' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Tue Jul 28 2020 14:44:37 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Item
+Name: TypeError
+Message: Cannot read property 'apply' of undefined
+Stack: TypeError: Cannot read property 'apply' of undefined
+    at new Window_ItemHelp (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1311:21)
+    at Scene_Item.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1242:24)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Tue Jul 28 2020 14:46:36 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Item
+Name: TypeError
+Message: Cannot read property 'apply' of undefined
+Stack: TypeError: Cannot read property 'apply' of undefined
+    at new Window_ItemHelp (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1311:21)
+    at Scene_Item.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1242:24)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Tue Jul 28 2020 15:01:19 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Item
+Name: TypeError
+Message: this.refresh is not a function
+Stack: TypeError: this.refresh is not a function
+    at Window_BottomTips.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:6062:10)
+    at new Window_BottomTips (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:6050:21)
+    at Scene_Item.createTipsWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1271:24)
+    at Scene_Item.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1245:10)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Tue Jul 28 2020 15:34:53 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'name' of undefined
+Stack: TypeError: Cannot read property 'name' of undefined
+    at Function.Game_Actor.setup (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:3435:24)
+    at Game_Actor.setup (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:136:42)
+    at Game_Actor.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:3408:10)
+    at Game_Actor.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:989:44)
+    at new Game_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:3393:21)
+    at Game_Actors.actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:4587:35)
+    at Game_Party.<anonymous> (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:4871:25)
+    at Array.forEach (<anonymous>)
+    at Game_Party.setupStartingMembers (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:4870:30)
+    at Function.DataManager.setupNewGame (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:219:16)
+
+Date: Tue Jul 28 2020 19:11:57 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: undefined
+Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Items.json. Description: Unexpected token C in JSON at position 45
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
+Stack: undefined
+

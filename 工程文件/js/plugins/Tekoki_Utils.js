@@ -1471,9 +1471,11 @@ itemBoard.prototype.constructor = itemBoard;
 
 itemBoard.prototype.initialize = function () {
 	Sprite.prototype.initialize.call(this);
-	this._data = $gameParty.allItems().filter(function (item) {
-		return DataManager.isItem(item) && item.itypeId === 1;
-	}, this);
+	this._data = $gameActors.actor(1)._signedItems
+
+	//$gameParty.allItems().filter(function (item) {
+	//	return DataManager.isItem(item) && item.itypeId === 1;
+	//}, this);
 	this.boardIndex = 0;
 	this.setIndex = 0;
 	this.lastSet = -1;
@@ -1630,34 +1632,41 @@ itemIcon.prototype.constructor = itemIcon;
 
 itemIcon.prototype.initialize = function (item) {
 	Sprite.prototype.initialize.call(this);
-	var iconIndex = item.iconIndex
-	this.icon = new Sprite(ImageManager.loadSystem('IconSet'))
-	var pw = 32;
-	var ph = 32;
-	var sx = iconIndex % 16 * pw;
-	var sy = Math.floor(iconIndex / 16) * ph;
-	this.icon.setFrame(sx, sy, pw, ph);
-	this.icon.move(3, 3);
-	this.addChild(this.icon);
-	this.iconFrame = new Sprite(ImageManager.loadPicture('ui\\ItemFrame'));
-	this.iconCover = new Sprite(ImageManager.loadPicture('ui\\ItemCover'));
-	this.iconCover.opacity = 0;
-	this.addChild(this.iconFrame);
-	this.addChild(this.iconCover);
-	this.hotKeyTxt = new Sprite(new Bitmap(32, 32));
-	this.hotKeyTxt.bitmap.fontSize = 14;
-	this.hotKeyTxt.anchor.y = 0.5;
-	this.addChild(this.hotKeyTxt);
-	this.numTxt = new Sprite(new Bitmap(32, 32));
-	this.numTxt.bitmap.fontSize = 18;
-	this.numTxt.move(0, 16);
-	this.addChild(this.numTxt);
-	this.writeNum($gameParty.numItems(item))
-	this.anchor.x = 0.5;
-	this.anchor.y = 0.5;
+	if (item) {
+		var iconIndex = item.iconIndex
+		this.icon = new Sprite(ImageManager.loadSystem('IconSet'))
+		var pw = 32;
+		var ph = 32;
+		var sx = iconIndex % 16 * pw;
+		var sy = Math.floor(iconIndex / 16) * ph;
+		this.icon.setFrame(sx, sy, pw, ph);
+		this.icon.move(3, 3);
+		this.addChild(this.icon);
+		this.iconFrame = new Sprite(ImageManager.loadPicture('ui\\ItemFrame'));
+		this.iconCover = new Sprite(ImageManager.loadPicture('ui\\ItemCover'));
+		this.iconCover.opacity = 0;
+		this.addChild(this.iconFrame);
+		this.addChild(this.iconCover);
+		this.hotKeyTxt = new Sprite(new Bitmap(32, 32));
+		this.hotKeyTxt.bitmap.fontSize = 14;
+		this.hotKeyTxt.anchor.y = 0.5;
+		this.addChild(this.hotKeyTxt);
+		this.numTxt = new Sprite(new Bitmap(32, 32));
+		this.numTxt.bitmap.fontSize = 18;
+		this.numTxt.move(0, 16);
+		this.addChild(this.numTxt);
+		this.writeNum($gameParty.numItems(item))
+		this.anchor.x = 0.5;
+		this.anchor.y = 0.5;
 
-	this.shining = false;
-	this.shined = false;
+		this.shining = false;
+		this.shined = false;
+	} else {
+		this.iconFrame = new Sprite(ImageManager.loadPicture('ui\\ItemFrame'));
+		this.addChild(this.iconFrame);
+		this.anchor.x = 0.5;
+		this.anchor.y = 0.5;
+    }
 }
 
 itemIcon.prototype.update = function () {

@@ -1473,7 +1473,7 @@ TetrisManager.state_List = {
         }
 	},
 	"14": {
-		name: '中毒',
+		name: '绿茶回血（大）',
 		id: 4,
 		count: 0,
 		type: 'in_battle',
@@ -1481,22 +1481,6 @@ TetrisManager.state_List = {
 		onGain: function (owner) {
 			this.owner = owner
 			this.oldTime = Date.now();
-			if (this.owner.category == 'enemy') {
-				if (!this.emitter) {
-					TetrisManager.pariticleSet['Bubble']["spawnRect"]["w"] = this.owner.xrange * 10 + 65;
-					this.emitter = new particleEmitter('Bubble');
-					this.emitter.x = this.owner.xposition - 15 - 7;
-					if (this.owner.windowHeight_Revision) {
-						this.emitter.y = this.owner.assumeYpos + 23 * this.owner.yrange + this.owner.windowHeight_Revision
-					} else {
-						this.emitter.y = this.owner.assumeYpos + 23 * this.owner.yrange
-					}
-					SceneManager._scene._effectLayer.addChild(this.emitter)
-				} else {
-					this.emitter._emitter.emit = true;
-				}
-				this.owner.StateBoard.setAvatarTint(this.id, 0xff99ff);
-			}
 		},
 		update: function () {
 
@@ -1507,14 +1491,10 @@ TetrisManager.state_List = {
 				this.updated = true;
 			}
 			if (this.count <= 0) {
-				this.owner.removeState(4);
+				this.owner.removeState(14);
 			}
 		},
 		onLose: function () {
-			if (this.owner.category == 'enemy') {
-				this.emitter._emitter.emit = false;
-				this.owner.StateBoard.removeAvatarTint(this.id);
-			}
 		}
 	},
 }
