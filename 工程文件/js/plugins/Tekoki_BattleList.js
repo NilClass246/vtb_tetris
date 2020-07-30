@@ -1474,18 +1474,20 @@ TetrisManager.state_List = {
 	},
 	"14": {
 		name: '绿茶回血（大）',
-		id: 4,
+		id: 14,
 		count: 0,
 		type: 'in_battle',
 		updated: false,
 		onGain: function (owner) {
 			this.owner = owner
 			this.oldTime = Date.now();
+			TetrisManager.HarmSystem.dealDamage(null, this.owner, -this.owner.actor.mhp*0.1, 'healing')
+
 		},
 		update: function () {
 
 			if (((Date.now() - this.oldTime) / 1000) > 1) {
-				TetrisManager.HarmSystem.dealDamage(null, this.owner, this.count, 'poison')
+				TetrisManager.HarmSystem.dealDamage(null, this.owner, -this.owner.actor.mhp * 0.03, 'healing')
 				this.oldTime = Date.now();
 				this.count -= 1;
 				this.updated = true;
@@ -1496,6 +1498,45 @@ TetrisManager.state_List = {
 		},
 		onLose: function () {
 		}
+	},
+	"15": {
+		name: '猫猫狂暴',
+		id: 15,
+		count: 0,
+		type: 'in_battle',
+		updated: false,
+		onGain: function (owner) {
+			this.owner = owner
+			this.oldTime = Date.now();
+			var actor = $gameActors.actor(1)
+			this.atk_amount = Math.floor(actor.atk*0.25)
+			actor.addParam(2, this.atk_amount);
+			this.owner.Gauge_Score_mag = this.owner.Gauge_Score_mag *1.25
+			this.emitter = new particleEmitter('Rage');
+			this.emitter.y = Graphics.boxHeight;
+			SceneManager._scene.addChild(this.emitter);
+		},
+		update: function () {
+
+			if (((Date.now() - this.oldTime) / 1000) > 1) {
+				this.oldTime = Date.now();
+				this.count -= 1;
+				this.updated = true;
+			}
+			if (this.count <= 0) {
+				this.owner.removeState(15);
+			}
+		},
+		onLose: function () {
+			$gameActors.actor(1).addParam(2, -this.atk_amount);
+			this.owner.Gauge_Score_mag = this.owner.Gauge_Score_mag / 1.25
+			this.emitter.stop();
+		},
+		onEnd: function () {
+			$gameActors.actor(1).addParam(2, -this.atk_amount);
+			this.owner.Gauge_Score_mag = this.owner.Gauge_Score_mag / 1.25
+			this.emitter.stop();
+        }
 	},
 }
 //TODO:改进颜色设置
@@ -1509,9 +1550,167 @@ TetrisManager.item_List = {
 	"2": function () {
 		SceneManager._scene._playerStateBoard.applyStates("8", 5)
 	},
-	"3": function () {
+	"8": function () {
 		SceneManager._scene._playerStateBoard.applyStates("14", 10)
+	},
+	"11": function () {
+		SceneManager._scene._playerStateBoard.applyStates("15", 10)
+	},
+	"13": function () {
+		var scene = SceneManager._scene
+		var player = SceneManager._scene.getPlayer();
+
+		if (player.hold && player.hold.changed) {
+			return
+		}
+		if (player.hold) {
+			player.holdWindow.removeChild(player.hold.block)
+        }
+		player.hold = {
+			block: new Sprite(scene._minoSkin['5'][0]),
+			type: '5',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['5'][0].slice(),
+			changed: true
+
+		}
+		player.hold.block.move(scene.calPositionX(player.hold), 45)
+		player.holdWindow.addChild(player.hold.block);
+	},
+	"14": function () {
+		var scene = SceneManager._scene
+		var player = SceneManager._scene.getPlayer();
+
+		if (player.hold && player.hold.changed) {
+			return
+		}
+		if (player.hold) {
+			player.holdWindow.removeChild(player.hold.block)
+		}
+		player.hold = {
+			block: new Sprite(scene._minoSkin['s'][0]),
+			type: 's',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['s'][0].slice(),
+			changed: true
+
+		}
+		player.hold.block.move(scene.calPositionX(player.hold), 45)
+		player.holdWindow.addChild(player.hold.block);
+	},
+	"15": function () {
+		var scene = SceneManager._scene
+		var player = SceneManager._scene.getPlayer();
+
+		if (player.hold && player.hold.changed) {
+			return
+		}
+		if (player.hold) {
+			player.holdWindow.removeChild(player.hold.block)
+		}
+		player.hold = {
+			block: new Sprite(scene._minoSkin['j'][0]),
+			type: 'j',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['j'][0].slice(),
+			changed: true
+
+		}
+		player.hold.block.move(scene.calPositionX(player.hold), 45)
+		player.holdWindow.addChild(player.hold.block);
+	},
+	"16": function () {
+		var scene = SceneManager._scene
+		var player = SceneManager._scene.getPlayer();
+
+		if (player.hold && player.hold.changed) {
+			return
+		}
+		if (player.hold) {
+			player.holdWindow.removeChild(player.hold.block)
+		}
+		player.hold = {
+			block: new Sprite(scene._minoSkin['l'][0]),
+			type: 'l',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['l'][0].slice(),
+			changed: true
+
+		}
+		player.hold.block.move(scene.calPositionX(player.hold), 45)
+		player.holdWindow.addChild(player.hold.block);
+	},
+	"17": function () {
+		var scene = SceneManager._scene
+		var player = SceneManager._scene.getPlayer();
+
+		if (player.hold && player.hold.changed) {
+			return
+		}
+		if (player.hold) {
+			player.holdWindow.removeChild(player.hold.block)
+		}
+		player.hold = {
+			block: new Sprite(scene._minoSkin['t'][0]),
+			type: 't',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['t'][0].slice(),
+			changed: true
+
+		}
+		player.hold.block.move(scene.calPositionX(player.hold), 45)
+		player.holdWindow.addChild(player.hold.block);
+	},
+	"18": function () {
+		var scene = SceneManager._scene
+		var player = SceneManager._scene.getPlayer();
+
+		if (player.hold && player.hold.changed) {
+			return
+		}
+		if (player.hold) {
+			player.holdWindow.removeChild(player.hold.block)
+		}
+		player.hold = {
+			block: new Sprite(scene._minoSkin['1'][0]),
+			type: '1',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['1'][0].slice(),
+			changed: true
+
+		}
+		player.hold.block.move(scene.calPositionX(player.hold), 45)
+		player.holdWindow.addChild(player.hold.block);
+	},
+	"19": function () {
+		var scene = SceneManager._scene
+		var player = SceneManager._scene.getPlayer();
+
+		if (player.hold && player.hold.changed) {
+			return
+		}
+		if (player.hold) {
+			player.holdWindow.removeChild(player.hold.block)
+		}
+		player.hold = {
+			block: new Sprite(scene._minoSkin['o'][0]),
+			type: 'o',
+			rotation: 0,
+			rotationTime: 0,
+			box: TetrisManager.data['o'][0].slice(),
+			changed: true
+
+		}
+		player.hold.block.move(scene.calPositionX(player.hold), 45)
+		player.holdWindow.addChild(player.hold.block);
 	}
+
 }
 
 //=============================================================================
@@ -1551,6 +1750,7 @@ MeaDoku.prototype.update = function () {
 		this.destroy();
     }
 }
+
 
 //=============================================================================
 // ** 技能特效的抽象类

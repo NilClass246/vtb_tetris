@@ -49,6 +49,10 @@
 //=============================================================================
 
 //TODO: 成就系统本地化
+
+//TODO: 滤镜兼容
+
+//TODO: 胶囊系统
 function Scene_Tetris() {
 	this.initialize.apply(this, arguments);
 }
@@ -123,6 +127,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		Damage_mag: 1,
 		Critical_mag: 1,
 		Be_Damaged_mag: 1,
+		Gauge_Score_mag: 1,
 
 		lastKick: false,
 		holded: false,
@@ -519,7 +524,6 @@ Scene_Tetris.prototype.isGameOver = function () {
 }
 
 Scene_Tetris.prototype.update_Actor = function () {
-
 	if (Input.isTriggered('cancel') || Input.isTriggered('menu')) {
 		this.openPauseWindow()
 	}
@@ -802,7 +806,6 @@ Scene_Tetris.prototype.update_Enemy = function () {
 			if (CurEnemy.curEng >= CurEnemy.MEng) {
 				this.AttAck(CurEnemy, this.player, CurEnemy.atk);
 				CurEnemy.curEng = 0;
-				this.refreshEnemyWindow(CurEnemy);
 				this.drawArea(CurEnemy);
 			}
 
@@ -1000,7 +1003,7 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 			}
 			//加入分数
 			operator.SCORE += tempScore;
-			operator.gaugeSCORE += tempScore;
+			operator.gaugeSCORE += tempScore* operator.Gauge_Score_mag;
 			this.refreshScoreBoard(operator);
 			var tempPopScore = new FNumber(tempScore, 12);
 			tempPopScore.changeDirection('left');
@@ -1374,7 +1377,7 @@ Scene_Tetris.prototype.holdBox = function(operator){
 		operator.holded = true;
 	} else {
 		this.removeFromMainWindow(operator, operator.cur.block)
-		this.removeFromMainWindow(operator, operator.hold.block)
+		operator.holdWindow.removeChild(operator.hold.block)
 		var type = operator.cur.type;
 		operator.cur = operator.hold;
 		if (TetrisManager.block_pics.indexOf(type) < 0) {
@@ -1402,7 +1405,7 @@ Scene_Tetris.prototype.holdBox = function(operator){
 		this.addBox(operator, operator.cur);
 
 		this.addToMainWindow(operator, operator.cur.block)
-		this.addToMainWindow(operator, operator.hold.block)
+		operator.holdWindow.addChild(operator.hold.block)
 		operator.holded = true;
 	}
 }
@@ -1714,8 +1717,10 @@ Scene_Tetris.prototype.endGame = function () {
 	this.ExItIng = true;
 	this.startFadeOut(60, false);
 	this.unloadKeyMapper();
+	this._playerStateBoard.onEnd();
 	this._playerStateBoard.clearAllStates();
 	for (var i = 0; i < this._enemies.length; i++) {
+		this._enemies[i].StateBoard.onEnd();
 		this._enemies[i].StateBoard.clearAllStates();
 	}
 	$gameVariables.setValue(6, this.player.SCORE);

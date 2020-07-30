@@ -1,10 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\data",
     "\\js",
-    "\\js\\libs",
     "\\js\\plugins"
   ],
-  "SelectedNode": "\\js\\plugins\\Tekoki_Utils.js",
+  "SelectedNode": "\\data\\Items.json",
   "PreviewInSolutionExplorer": false
 }

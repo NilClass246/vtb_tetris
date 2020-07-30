@@ -23,6 +23,9 @@ Tilesets:
  	Ayene
 	茂吉
 
+Icons:
+	Iconmonstr
+
 灵感参考：
 https://www.pixiv.net/artworks/80389496
 pixiv.net/artworks/80212090

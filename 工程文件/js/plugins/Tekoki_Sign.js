@@ -213,6 +213,7 @@ Window_Sign.prototype.initialize = function () {
     var height = this.fittingHeight(2);
     Window_Base.prototype.initialize.call(this, x, y, width, height);
     this._icons = [];
+    this.exchangeSign = new Sprite(ImageManager.loadPicture('ui/Exchange'));
     this.refresh();
     TetrisManager.requestUpdateSign = false;
 }
@@ -239,6 +240,9 @@ Window_Sign.prototype.refresh = function () {
             y+=38
         }
     }
+
+    this.exchangeSign.move(42 + 4 * 35, 20);
+    this.addChild(this.exchangeSign)
 }
 
 Window_Sign.prototype.update = function () {
@@ -260,12 +264,16 @@ Window_Sign.prototype.update = function () {
 Window_ItemList.prototype.update = function () {
     Window_Selectable.prototype.update.call(this);
     if (Input.isTriggered('shift')) {
+        SoundManager.playOk();
         $gameActors.actor(1).signItem(this.item())
         TetrisManager.requestUpdateSign = true;
+        this.refresh();
     }
 
     if (Input.isTriggered('control')) {
+        SoundManager.playOk();
         $gameActors.actor(1).unsignItem(this.item())
         TetrisManager.requestUpdateSign = true;
+        this.refresh();
     }
 }

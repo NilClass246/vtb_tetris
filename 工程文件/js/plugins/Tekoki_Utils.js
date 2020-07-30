@@ -570,8 +570,64 @@ TetrisManager.pariticleSet['Angry'] = {
 	}
 }
 
+TetrisManager.pariticleSet['Rage'] = {
+	"alpha": {
+		"start": 1,
+		"end": 0
+	},
+	"scale": {
+		"start": 0.2,
+		"end": 0.01,
+		"minimumScaleMultiplier": 5
+	},
+	"color": {
+		"start": "#ff6600",
+		"end": "#000000"
+	},
+	"speed": {
+		"start": 200,
+		"end": 50,
+		"minimumSpeedMultiplier": 0.01
+	},
+	"acceleration": {
+		"x": 0,
+		"y": 0
+	},
+	"maxSpeed": 0,
+	"startRotation": {
+		"min": 270,
+		"max": 270
+	},
+	"noRotation": false,
+	"rotationSpeed": {
+		"min": 0,
+		"max": 0
+	},
+	"lifetime": {
+		"min": 0.5,
+		"max": 5
+	},
+	"blendMode": "normal",
+	"frequency": 0.001,
+	"emitterLifetime": -1,
+	"maxParticles": 500,
+	"pos": {
+		"x": 0,
+		"y": 0
+	},
+	"addAtBack": false,
+	"spawnType": "rect",
+	"spawnRect": {
+		"x": 0,
+		"y": 0,
+		"w": 1200,
+		"h": 0
+	}
+}
+
 TetrisManager.pariticleAssetNumbers = {
-	'Angry': 3
+	'Angry': 3,
+	'Rage': 3
 }
 
 TetrisManager.seSet = {};
@@ -582,6 +638,8 @@ TetrisManager.seSet['Wind7'] ={
 	pitch: 60,
 	volume: 125
 };
+
+TetrisManager.starPic = ImageManager.loadPicture('ui/signStar');
 
 //============================================================
 // 成就参数
@@ -1167,6 +1225,7 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 	if (target) {
 		var finaldamage = amount
 		var atkType = type
+		//公式调整
 		switch (atkType) {
 			case 'normal':
 				finaldamage = 3 * amount - 2 * target.def;
@@ -1177,18 +1236,19 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 				}
 				break;
 		}
-		finaldamage = finaldamage * target.Be_Damaged_mag;
-
+		//伤害调整
+		if (finaldamage > 0) {
+			finaldamage = finaldamage * target.Be_Damaged_mag;
+		}
+		//敌人的场合
 		if (target.category == "enemy") {
-			if (finaldamage >= 0) {
-				target.curHp -= finaldamage;
-			}
+			target.curHp -= finaldamage;
 			if (target.curHp < 0) {
 				target.curHp = 0;
 				target.living = false;
 				scene.changeTarget();
 			}
-			var pop = new PopNumber(new FNumber(finaldamage, 7));
+			var pop = new PopNumber(new FNumber(Math.abs(finaldamage), 7));
 			scene._blockLayer.addChild(pop)
 			pop.move(target.gauge_pos[0], target.gauge_pos[1]);
 			//pop.move(target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 10 * target.yrange);
@@ -1201,14 +1261,16 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 				case 'critical':
 					pop.setTint(0xffc34d)
 					break;
+				case 'healing':
+					pop.setTint(0x00ff00)
+					break;
 			}
 			pop.activate();
 			//this.createXYanimationWindow(1, target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 12 * target.yrange);
+		//玩家的场合
 		} else {
-			if (finaldamage >= 0) {
-				target.actor.gainHp(-finaldamage);
-			}
-			var pop = new PopNumber(new FNumber(finaldamage, 7));
+			target.actor.gainHp(-finaldamage);
+			var pop = new PopNumber(new FNumber(Math.abs(finaldamage), 7));
 			scene._blockLayer.addChild(pop)
 			pop.move(target.gauge_pos[0], target.gauge_pos[1])
 			//pop.move(target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height / 2)
@@ -1220,6 +1282,9 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 					break;
 				case 'critical':
 					pop.setTint(0xffc34d)
+					break;
+				case 'healing':
+					pop.setTint(0x00ff00)
 					break;
             }
 			pop.activate();
@@ -2040,6 +2105,14 @@ stateBoard.prototype.onShadow = function () {
 	}
 }
 
+stateBoard.prototype.onEnd = function () {
+	for (var strid in this._statelist) {
+		if (this._statelist[strid] && this._statelist[strid].onEnd) {
+			this._statelist[strid].onEnd();
+		}
+	}
+}
+
 function stateIcon() {
 	this.initialize.apply(this, arguments);
 }
@@ -2469,6 +2542,7 @@ particleEmitter.prototype.constructor = particleEmitter;
 
 particleEmitter.prototype.initialize = function (ID) {
 	Sprite.prototype.initialize.call(this);
+	this.ID = ID;
 	if (TetrisManager.pariticleAssetNumbers[ID]) {
 		var images = []
 		for (var i = 0; i < TetrisManager.pariticleAssetNumbers[ID]; i++) {
@@ -2490,10 +2564,23 @@ particleEmitter.prototype.update = function () {
 	var now = Date.now();
 	this._emitter.update((now - this.time) * 0.001);
 	this.time = now;
+
+	if (this.stopping) {
+		if ((now - this.startStop) * 0.001>= this.stopTime) {
+			this.destroy();
+        }
+    }
 }
 
 particleEmitter.prototype.move = function (x, y) {
 	this._emitter.updateSpawnPos(x, y);
+}
+
+particleEmitter.prototype.stop = function () {
+	this._emitter.emit = false;
+	this.startStop = Date.now();
+	this.stopTime = TetrisManager.pariticleSet[this.ID]['lifetime']['max'];
+	this.stopping = true;
 }
 
 //-----------------------------------------------------------------------------
