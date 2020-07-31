@@ -263,17 +263,19 @@ Window_Sign.prototype.update = function () {
 
 Window_ItemList.prototype.update = function () {
     Window_Selectable.prototype.update.call(this);
-    if (Input.isTriggered('shift')) {
-        SoundManager.playOk();
-        $gameActors.actor(1).signItem(this.item())
-        TetrisManager.requestUpdateSign = true;
-        this.refresh();
-    }
+    if (SceneManager._scene instanceof Scene_Item) {
+        if (Input.isTriggered('shift')) {
+            SoundManager.playOk();
+            $gameActors.actor(1).signItem(this.item())
+            TetrisManager.requestUpdateSign = true;
+            this.refresh();
+        }
 
-    if (Input.isTriggered('control')) {
-        SoundManager.playOk();
-        $gameActors.actor(1).unsignItem(this.item())
-        TetrisManager.requestUpdateSign = true;
-        this.refresh();
+        if (Input.isTriggered('control')) {
+            SoundManager.playOk();
+            $gameActors.actor(1).unsignItem(this.item())
+            TetrisManager.requestUpdateSign = true;
+            this.refresh();
+        }
     }
 }

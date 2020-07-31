@@ -3,7 +3,7 @@
 //=============================================================================
 
 /*:
- * @plugindesc [v0.3] 俄罗斯方块战斗界面
+ * @plugindesc [v0.3] 俄罗斯方块配置界面
  * @author 手艺人工坊 （程序： NilClass）
  *
  * @help
@@ -29,7 +29,7 @@
  * +++ TekokiWorkshop - Tetris.js (v0.3) +++
  * https://virtual98.com/
  * =============================================================================
- * 实现俄罗斯战斗界面的插件。
+ * 实现俄罗斯配置界面的插件。
  * 目前还在测试阶段。
  * meameasuki！
  */
@@ -52,6 +52,7 @@ ConfigManager.ARRDelay = 3;
 ConfigManager.DASDelay = 10;
 ConfigManager.SoftSpeed = 20;
 ConfigManager.isDancePad = false;
+ConfigManager.Trembling = true;
 
 Input.defaultDancePadInput = {
     0: 'up',
@@ -71,6 +72,7 @@ ConfigManager.makeData = function () {
     config.DASDelay = this.DASDelay;
     config.SoftSpeed = this.SoftSpeed;
     config.isDancePad = this.isDancePad;
+    config.Trembling = this.Trembling;
     return config;
 };
 
@@ -81,6 +83,7 @@ ConfigManager.applyData = function (config) {
     this.DASDelay = this.readDAS(config, 'DASDelay');
     this.SoftSpeed = this.readSoft(config, 'SoftSpeed');
     this.isDancePad = this.readFlag(config, 'isDancePad');
+    this.Trembling = this.readFlag(config, 'Trembling');
 };
 
 ConfigManager.readARR = function (config, name) {
@@ -119,6 +122,7 @@ Window_Options.prototype.addGeneralOptions = function () {
     this.addCommand('方块灵敏度(DAS)设置', 'DASParams', true);
     this.addCommand('软降倍率设置', 'SoftParams', true);
     this.addCommand('是否使用跳舞毯配置', 'isDancePad');
+    this.addCommand('是否应用下落抖动', 'Trembling');
 }
 
 TetrisManager.Temps.Window_Options_drawItem = Window_Options.prototype.drawItem;

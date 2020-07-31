@@ -641,6 +641,8 @@ TetrisManager.seSet['Wind7'] ={
 
 TetrisManager.starPic = ImageManager.loadPicture('ui/signStar');
 
+TetrisManager.autoStart = false;
+
 //============================================================
 // 成就参数
 //============================================================
@@ -1220,6 +1222,15 @@ AfterMath_Window.prototype.isLayed = function () {
 
 TetrisManager.HarmSystem = {};
 
+/**
+ * 造成伤害和治疗的主方法.
+ *
+ * @method TetrisManager.HarmSystem.dealDamage
+ * @param {Any} source 伤害来源
+ * @param {Any} target 伤害目标
+ * @param {Number} amount 伤害量
+ * @param {String} type 伤害类型
+ */
 TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 	var scene = SceneManager._scene;
 	if (target) {
@@ -1242,7 +1253,13 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 		}
 		//敌人的场合
 		if (target.category == "enemy") {
-			target.curHp -= finaldamage;
+			if (atkType == 'healing') {
+				target.curHp -= finaldamage;
+			} else {
+				if (finaldamage >= 0) {
+					target.curHp -= finaldamage;
+                }
+            }
 			if (target.curHp < 0) {
 				target.curHp = 0;
 				target.living = false;
@@ -1269,7 +1286,13 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 			//this.createXYanimationWindow(1, target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 12 * target.yrange);
 		//玩家的场合
 		} else {
-			target.actor.gainHp(-finaldamage);
+			if (atkType == 'healing') {
+				target.actor.gainHp(-finaldamage);
+			} else {
+				if (finaldamage >= 0) {
+					target.actor.gainHp(-finaldamage);
+				}
+			}
 			var pop = new PopNumber(new FNumber(Math.abs(finaldamage), 7));
 			scene._blockLayer.addChild(pop)
 			pop.move(target.gauge_pos[0], target.gauge_pos[1])
@@ -2722,6 +2745,13 @@ risingPart.prototype.update = function () {
 }
 
 //-----------------------------------------------------------------------------
+
+function infoBoard() {
+	this.initialize.apply(this, arguments);
+}
+
+infoBoard.prototype = Object.create(Sprite.prototype);
+infoBoard.prototype.constructor = infoBoard
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄

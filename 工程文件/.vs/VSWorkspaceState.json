@@ -1,10 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\data",
     "\\js",
-    "\\js\\plugins"
+    "\\js\\plugins",
+    "\\locales",
+    "\\locales\\cn",
+    "\\locales\\jp"
   ],
-  "SelectedNode": "\\data\\Items.json",
+  "SelectedNode": "\\js\\plugins\\Tekoki_BattleList.js",
   "PreviewInSolutionExplorer": false
 }

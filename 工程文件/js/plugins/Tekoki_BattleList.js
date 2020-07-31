@@ -36,6 +36,8 @@
 
 TetrisManager = TetrisManager || {};
 
+TetrisManager.splitStatus = 0;
+
 TetrisManager.special_List = {
 	'matsuri': {
 		initialize: function () {
@@ -53,6 +55,40 @@ TetrisManager.special_List = {
 			SceneManager._scene._boardLayer.addChild(this.skillManager._skill_board)
 		},
 		update: function () {
+			this.skillManager.update();
+			if (this.skillManager._skill_list[0].isPrepared) {
+				this.skillManager.startSkill(0);
+			}
+			if (this.skillManager._skill_list[1].isPrepared) {
+				this.skillManager.startSkill(1);
+			}
+		}
+	},
+	'vampire': {
+		initialize: function () {
+			this.bossID = 1;
+			this.beginFlag = true;
+		},
+		create: function () {
+			this.pictureBoard = new Tetris_Window(824, 0, 350, 624);
+			this.pictureBoard.removeChildAt(0)
+			this.picture = new Sprite();
+			this.picture.bitmap = ImageManager.loadPicture('enemies/Matsuri')
+			this.pictureBoard.addChild(this.picture);
+			SceneManager._scene.addWindow(this.pictureBoard);
+			this.skillManager = new SkillManager(['痛苦分裂', '鲜血之触'], true);
+			this.skillManager._skill_board.move(1010, 550)
+			SceneManager._scene._boardLayer.addChild(this.skillManager._skill_board)
+		},
+		update: function () {
+			var scene = SceneManager._scene
+			if (this.beginFlag) {
+				scene._playerStateBoard.applyStates("13", 0);
+				//this.bloodF = new BloodFilter()
+				//scene.addChild(this.bloodF)
+				this.beginFlag = false;
+			}
+
 			this.skillManager.update();
 			if (this.skillManager._skill_list[0].isPrepared) {
 				this.skillManager.startSkill(0);
@@ -826,12 +862,43 @@ var TestBoss = [
 	},
 ]
 
+var Vampire = [
+	{
+		name: "Vampire",
+		category: "enemy",
+		xposition: 824,
+		yposition: 394,
+		assumeYpos: 394,
+		avatar: new Sprite(),
+		avatarName: "Blank_Avatar",
+
+		level: 3,
+		curHp: 0,
+		displayHp: 0,
+		Mhp: 1000,
+		atk: 0,
+		def: 20,
+		curEng: 0,
+		MEng: 30,
+		EngSpd: 2,
+
+		Gold: 20,
+		Exp: 20,
+
+		xrange: 9,
+		yrange: 9,
+
+		manager: Object.create(TetrisManager.special_List["vampire"])
+	},
+]
+
 TetrisManager.enemy_List = [
 	EmptySlot,
 	TwoSlimes,
 	FourKnights,
 	Enemy99,
-	TestBoss
+	TestBoss,
+	Vampire
 ]
 
 TetrisManager.skill_List = {
@@ -1017,6 +1084,53 @@ TetrisManager.skill_List = {
 		Reset: function () {
 		}
 	},
+	"痛苦分裂": {
+		name: "痛苦分裂",
+		pic: "占位测试",
+		user: "enemy",
+		isPrepared: true,
+		oldTime: 0,
+		CD: 0,
+		description: "",
+		CanUse: function () {
+			return true
+		},
+		MakeEffect: function () {
+			var scene = SceneManager._scene
+			var s = new Split();
+			scene.addChild(s)
+
+		},
+		Reset: function () {
+			this.isPrepared = false;
+			this.CD = 12;
+			this.oldTime = Date.now();
+		}
+	},
+	"鲜血之触": {
+		name: "鲜血之触",
+		pic: "占位测试",
+		user: "enemy",
+		isPrepared: false,
+		oldTime: 0,
+		CD: 10,
+		description: "",
+		CanUse: function () {
+			return true
+		},
+		MakeEffect: function () {
+			var scene = SceneManager._scene
+			var player = scene.getPlayer();
+
+			TetrisManager.HarmSystem.dealDamage(null, player, player.actor.hp / 2, 'real');
+
+		},
+		Reset: function () {
+			this.isPrepared = false;
+			this.CD = 12;
+			this.oldTime = Date.now();
+		}
+	},
 }
 
 TetrisManager.state_List = {
@@ -1172,7 +1286,6 @@ TetrisManager.state_List = {
 		onGain: function (owner) {
 			this.owner = owner
 			this.oldTime = Date.now();
-			this.distance = 10;
 			//===================================================================================
 			// 覆写的方法：
 			// refreshPlayerWindow
@@ -1185,30 +1298,42 @@ TetrisManager.state_List = {
 			var player = scene.getPlayer();
 			scene._splite1 = {};
 			scene._splite2 = {};
-			var protoX = player.xposition - 15 - 7;
-			var protoY = player.yposition + TetrisManager.AboveLines * player.yrange - 27;
-			var protoWidth = (TetrisManager.ROW * player.xrange + 65) / 2;
+
+
+			this.protoX = player.xposition - 15 - 7;
+			this.protoY = 0
+				//player.yposition + TetrisManager.AboveLines * player.yrange - 27;
+			this.protoWidth = (TetrisManager.ROW * player.xrange + 65) / 2;
+
+			scene._splite1.pack = new Sprite();
+			scene._splite1.pack.move(this.protoX, this.protoY);
+			scene._midLayer.addChild(scene._splite1.pack)
+
 			scene._splite1.mask = new PIXI.Graphics();
 			scene._splite1.mask.beginFill(0x000000);
 			scene._splite1.mask.drawRect(
-				protoX,
-				protoY,
-				protoWidth,
+				0,
+				0,
+				this.protoWidth,
 				624
 			);
 			scene._splite1.mask.endFill();
-			scene._blockLayer.addChild(scene._splite1.mask)
+			scene._splite1.pack.addChild(scene._splite1.mask)
+
+			scene._splite2.pack = new Sprite();
+			scene._splite2.pack.move(this.protoX, this.protoY);
+			scene._midLayer.addChild(scene._splite2.pack)
 
 			scene._splite2.mask = new PIXI.Graphics();
 			scene._splite2.mask.beginFill(0x000000);
 			scene._splite2.mask.drawRect(
-				protoX + protoWidth,
-				protoY,
-				protoWidth,
+				this.protoWidth,
+				0,
+				this.protoWidth,
 				624
 			);
 			scene._splite2.mask.endFill();
-			scene._blockLayer.addChild(scene._splite2.mask)
+			scene._splite2.pack.addChild(scene._splite2.mask)
 
 			scene.removeWindow(scene.getPlayer().mainwindow);
 			//===================================================================================
@@ -1217,13 +1342,15 @@ TetrisManager.state_List = {
 				if (this._playermainwindow1) {
 					var tempY1 = this._playermainwindow1.y;
 					var tempX1 = this._playermainwindow1.x;
-					this.removeWindow(this._playermainwindow1);
+					var tempRot1 = this._playermainwindow1.rotation;
+					scene._splite1.pack.removeChild(this._playermainwindow1);
 				}
 
 				if (this._playermainwindow2) {
 					var tempY2 = this._playermainwindow2.y;
 					var tempX2 = this._playermainwindow2.x;
-					this._midLayer.removeChild(this._playermainwindow2);
+					var tempRot2 = this._playermainwindow2.rotation;
+					scene._splite2.pack.removeChild(this._playermainwindow2);
 				}
 				//===================================================================================
 				operator.mainwindow = new Tetris_Window(
@@ -1258,7 +1385,8 @@ TetrisManager.state_List = {
 				}
 				//===================================================================================
 				this._playermainwindow1 = new Tetris_Window(
-					tempX1 || operator.xposition - 15 - 7,
+					tempX1 || 0,
+					//operator.xposition - 15 - 7,
 					tempY1 || (operator.yposition + TetrisManager.AboveLines * operator.yrange - 27),
 					this.ROW * operator.xrange + 65,
 					(this.COL - TetrisManager.AboveLines) * operator.yrange
@@ -1296,9 +1424,13 @@ TetrisManager.state_List = {
 					this._splite1.shadow = TetrisManager.simpleCopySprite(operator.shadowImage.block);
 					this._playermainwindow1.addChild(this._splite1.shadow)
 				}
+				if (tempRot1) {
+					this._playermainwindow1.rotation = tempRot1
+                }
 				//===================================================================================
 				this._playermainwindow2 = new Tetris_Window(
-					tempX2 || operator.xposition - 15 - 7,
+					tempX2 || 0,
+					//operator.xposition - 15 - 7,
 					tempY2 || (operator.yposition + TetrisManager.AboveLines * operator.yrange - 27),
 					this.ROW * operator.xrange + 65,
 					(this.COL - TetrisManager.AboveLines) * operator.yrange
@@ -1335,6 +1467,9 @@ TetrisManager.state_List = {
 					this._splite2.shadow = TetrisManager.simpleCopySprite(operator.shadowImage.block);
 					this._playermainwindow2.addChild(this._splite2.shadow)
 				}
+				if (tempRot2) {
+					this._playermainwindow2.rotation = tempRot2
+				}
 				//===================================================================================
 
 				this._playermainwindow1.mask = this._splite1.mask;
@@ -1343,8 +1478,8 @@ TetrisManager.state_List = {
 				//this._playermainwindow2.y += 10;
 
 
-				this.addWindow(this._playermainwindow1);
-				this._midLayer.addChild(this._playermainwindow2);
+				scene._splite1.pack.addChild(this._playermainwindow1);
+				scene._splite2.pack.addChild(this._playermainwindow2);
 
 				if (!operator.effectLayer_1) {
 					operator.effectLayer_1 = new Sprite();
@@ -1355,7 +1490,11 @@ TetrisManager.state_List = {
 					operator.effectLayer_2 = new Sprite();
 				}
 				this._playermainwindow2.addChild(operator.effectLayer_2);
+
+				console.log(scene._splite1.pack);
+				console.log(scene._splite2.pack);
 			}
+
 			//===================================================================================
 			scene.refreshPlayerWindow(scene.getPlayer())
 			//===================================================================================
@@ -1430,16 +1569,60 @@ TetrisManager.state_List = {
 		},
 		update: function () {
 			var scene = SceneManager._scene
-			if (this.distance > 0) {
-				scene._playermainwindow1.y -= 1
-				scene._playermainwindow1.mask.x -= 0.5;
-				scene._playermainwindow1.x -=0.5
+			var player = scene.getPlayer()
+			if (TetrisManager.splitStatus == 1) {
+				var Light = new ConcentratedLight();
+				Light.move(player.xposition - 15 - 7+(TetrisManager.ROW * player.xrange + 65) / 2, 0);
+				scene._boardLayer.addChild(Light)
+				this.distance = 50
+				//this.distance = 25
+				TetrisManager.splitStatus = 0;
+			}
 
-				scene._playermainwindow2.y += 1
-				scene._playermainwindow2.mask.x += 0.5;
-				scene._playermainwindow2.x += 0.5
-				this.distance -= 1;
+			if (TetrisManager.splitStatus == 2) {
+				this.distance = -25;
+				TetrisManager.splitStatus = 0;
             }
+
+			if (this.distance > 25) {
+				scene._splite1.pack.x -= 1;
+				scene._splite1.pack.y -= 3;
+				scene._splite1.pack.rotation += 0.1/25
+
+				scene._splite2.pack.x += 1;
+				scene._splite2.pack.y += 5;
+				scene._splite2.pack.rotation -= 0.1 / 25
+				console.log(1);
+				this.distance -= 1;
+			}
+
+			if (this.distance <= 25 && this.distance > 0) {
+				scene._splite1.pack.rotation -= 0.1 / 25
+				scene._splite2.pack.rotation += 0.1 / 25
+				console.log(2);
+				this.distance -= 1;
+			}
+
+			//if (this.distance > 0) {
+			//	scene._splite1.pack.x -= 1;
+			//	scene._splite1.pack.y -= 3;
+			//	scene._splite1.pack.rotation += 2 * Math.PI / 25;
+
+			//	scene._splite2.pack.x += 1;
+			//	scene._splite2.pack.y += 5;
+			//	scene._splite2.pack.rotation -= 2 * Math.PI / 25;
+			//	this.distance -= 1;
+			//}
+
+			if (this.distance < 0) {
+				scene._splite1.pack.x += 1
+					//+ 1 / 25;
+				scene._splite1.pack.y += 3;
+				scene._splite2.pack.x -= 1;
+				scene._splite2.pack.y -= 5
+					//- 0.5 / 25;
+				this.distance += 1
+			}
 
 		},
 		onLose: function () {
@@ -1751,6 +1934,92 @@ MeaDoku.prototype.update = function () {
     }
 }
 
+//=============================================================================
+
+function Split() {
+	this.initialize.apply(this, arguments);
+}
+
+Split.prototype = Object.create(Sprite.prototype);
+Split.prototype.constructor = Split;
+
+Split.prototype.initialize = function () {
+	Sprite.prototype.initialize.call(this);
+	this.time = 5;
+	this.oldTime = Date.now();
+	TetrisManager.splitStatus = 1;
+}
+
+Split.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if ((Date.now() - this.oldTime)* 0.001 >= this.time) {
+		TetrisManager.splitStatus = 2;
+		this.destroy();
+    }
+}
+
+//=============================================================================
+
+function BloodFilter() {
+	this.initialize.apply(this, arguments);
+}
+
+BloodFilter.prototype = Object.create(Sprite.prototype);
+BloodFilter.prototype.constructor = BloodFilter;
+
+BloodFilter.prototype.initialize = function () {
+	Sprite.prototype.initialize.call(this);
+	this.bitmap = ImageManager.loadPicture('filter/Blood');
+	this.opacity = 0;
+	this.phaseFlag = 'increasing'
+	this.timeCount = 0;
+	this._frequency = 60;
+}
+
+BloodFilter.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+
+	switch (this.phaseFlag) {
+		case 'increasing':
+			this.opacity += 127 / this._frequency;
+			break;
+		case 'decreasing':
+			this.opacity -= 127 / this._frequency;
+			break;
+		case 'ending':
+			this.opacity -= 127 / this._frequency;
+			if (this.opacity <= 0) {
+				this.destroy();
+			}
+			break;
+	}
+
+	if (this.timeCount > this._frequency) {
+		if (this.phaseFlag != 'ending') {
+			if (this.phaseFlag == 'increasing') {
+				this.phaseFlag = 'decreasing'
+			} else {
+				this.phaseFlag = 'increasing'
+			}
+        }
+
+		this.timeCount = 0;
+	}
+
+
+	this.timeCount += 1;
+}
+
+BloodFilter.prototype.stop = function () {
+	this.phaseFlag = 'ending'
+} 
+
+//=============================================================================
+
+function Counting() {
+
+}
+
 
 //=============================================================================
 // ** 技能特效的抽象类
@@ -1897,5 +2166,91 @@ PoisonDot.prototype.update = function () {
 	}
 
 	this.time -= 1;
+}
+
+//-----------------------------------------------------------------------------
+
+function SingleLight() {
+	this.initialize.apply(this, arguments);
+}
+
+SingleLight.prototype = Object.create(Attack_Effect.prototype);
+SingleLight.prototype.constructor = SingleLight;
+
+SingleLight.prototype.initialize = function () {
+	Attack_Effect.prototype.initialize.call(this);
+	this.timeCount = 0;
+	this.timeFlag = 0;
+	this.bitmap = ImageManager.loadPicture('Effect/Light');
+
+	this.anchor.x = 0.5;
+	this.scale.x = 0.1;
+	this.scale.y = 0;
+	this.opacity = 128;
+	this.markers = [5, 3, 7, 5]
+}
+
+SingleLight.prototype.update = function () {
+	Attack_Effect.prototype.update.call(this);
+	if (this.timeFlag == 0) {
+		this.scale.y+=0.2
+	}
+
+	if (this.timeFlag == 1) {
+		this.scale.x += 0.3
+	}
+
+	if (this.timeFlag == 3) {
+		this.scale.x -= 0.2
+    }
+
+	this.timeCount += 1;
+	switch (this.timeCount) {
+		case this.markers[0]:
+			this.timeFlag = 1;
+			break;
+		case this.markers[0] + this.markers[1]:
+			this.timeFlag = 2;
+			break;
+		case this.markers[0] + this.markers[1] + this.markers[2]:
+			this.timeFlag = 3;
+			break;
+		case this.markers[0] + this.markers[1] + this.markers[2] + this.markers[3]:
+			this.timeFlag = 4;
+			this.completed = true;
+			break;
+    }
+
+}
+
+//-----------------------------------------------------------------------------
+
+function ConcentratedLight() {
+	this.initialize.apply(this, arguments);
+}
+
+ConcentratedLight.prototype = Object.create(Attack_Effect.prototype);
+ConcentratedLight.prototype.constructor = ConcentratedLight;
+
+ConcentratedLight.prototype.initialize = function () {
+	Attack_Effect.prototype.initialize.call(this);
+	this.timeCount = 5;
+	this.numCount = 3;
+}
+
+ConcentratedLight.prototype.update = function () {
+	Attack_Effect.prototype.update.call(this);
+	if (this.timeCount >= 5 && this.numCount>=0) {
+		this.numCount -= 1;
+		var light = new SingleLight();
+		this.addChild(light);
+		this.timeCount = 0;
+	}
+
+	if (this.numCount <= 0 && this.children[this.children.length - 1].isCompleted()) {
+		this.destroy();
+    }
+
+	this.timeCount += 1;
 }
 

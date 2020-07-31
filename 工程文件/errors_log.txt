@@ -1710,3 +1710,121 @@ Stack: TypeError: Cannot read property 'move' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Thu Jul 30 2020 14:24:01 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:1509:29)
+    at stateBoard.refreshStates (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2013:28)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:467:27)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Thu Jul 30 2020 15:45:20 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'isPrepared' of undefined
+Stack: TypeError: Cannot read property 'isPrepared' of undefined
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:90:41)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:803:22)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:466:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Thu Jul 30 2020 15:45:45 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'isPrepared' of undefined
+Stack: TypeError: Cannot read property 'isPrepared' of undefined
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:93:41)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:803:22)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:466:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 31 2020 15:37:01 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Failed to execute 'createLinearGradient' on 'CanvasRenderingContext2D': The provided double value is non-finite.
+Stack: TypeError: Failed to execute 'createLinearGradient' on 'CanvasRenderingContext2D': The provided double value is non-finite.
+    at Bitmap.fillTrap (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PrettyGauges.js:144:22)
+    at Tetris_Window.Window_Base.drawVerticalGauge (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PrettyGauges.js:305:17)
+    at Scene_Puzzle.refreshPlayerWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:383:22)
+    at Scene_Puzzle.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:361:7)
+    at Scene_Puzzle.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:339:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 31 2020 15:38:34 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'onShadow' of undefined
+Stack: TypeError: Cannot read property 'onShadow' of undefined
+    at Scene_Puzzle.Scene_Tetris.shadow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1472:25)
+    at Scene_Puzzle.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:349:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 31 2020 15:39:06 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'onShadow' of undefined
+Stack: TypeError: Cannot read property 'onShadow' of undefined
+    at Scene_Puzzle.Scene_Tetris.shadow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1472:25)
+    at Scene_Puzzle.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:349:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 31 2020 15:41:59 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'ScoreBoard' of undefined
+Stack: TypeError: Cannot read property 'ScoreBoard' of undefined
+    at Scene_Puzzle.Scene_Tetris.refreshScoreBoard (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1800:40)
+    at Scene_Puzzle.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:350:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 31 2020 15:43:12 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'ScoreBoard' of undefined
+Stack: TypeError: Cannot read property 'ScoreBoard' of undefined
+    at Scene_Puzzle.Scene_Tetris.refreshScoreBoard (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1800:40)
+    at Scene_Puzzle.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:350:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 31 2020 15:44:12 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'onBlockChanging' of undefined
+Stack: TypeError: Cannot read property 'onBlockChanging' of undefined
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:692:29)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:288:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:237:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Jul 31 2020 15:51:45 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'onBlockChanging' of undefined
+Stack: TypeError: Cannot read property 'onBlockChanging' of undefined
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:777:27)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:288:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:237:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+

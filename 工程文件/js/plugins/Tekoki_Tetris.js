@@ -311,7 +311,7 @@ Scene_Tetris.prototype.initializeData = function () {
 
 	this.nextNumber = 6;
 
-	this.windowTrembling = true;
+	this.windowTrembling = ConfigManager.Trembling;
 }
 
 Scene_Tetris.prototype.loadKeyMapper = function () {
@@ -454,9 +454,7 @@ Scene_Tetris.prototype.update = function () {
 				if (!this.AfterMathWindow) {
 					this.createAfterMath();
 				} else {
-					if (this.AfterMathWindow.isLayed() && !this.ExItIng) {
-						this.endGame();
-					}
+					this.endGame();
 				}
 			}
 		}
@@ -655,7 +653,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			if (!operator.MadeRightInitialMove) {
 				if (this.bMove(operator, 1)) {
 					operator.cur.block.x += operator.xrange;
-					this._playerStateBoard.onBlockChanging();
+					if (this._playerStateBoard) {
+						this._playerStateBoard.onBlockChanging();
+                    }
 					this.resetCollideDelay(operator);
 					this.shadow(operator);
 					operator.lastKick = false;
@@ -669,7 +669,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 						if (this.arr_delay_count >= this.arr_delay) {
 							if (this.bMove(operator, 1)) {
 								operator.cur.block.x += operator.xrange;
-								this._playerStateBoard.onBlockChanging();
+								if (this._playerStateBoard) {
+									this._playerStateBoard.onBlockChanging();
+								}
 								this.resetCollideDelay(operator);
 								this.shadow(operator);
 								operator.lastKick = false;
@@ -679,7 +681,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 					} else {
 						while (this.bMove(operator, 1)) {
 							operator.cur.block.x += operator.xrange;
-							this._playerStateBoard.onBlockChanging();
+							if (this._playerStateBoard) {
+								this._playerStateBoard.onBlockChanging();
+							}
 							this.resetCollideDelay(operator);
 							this.shadow(operator);
 							operator.lastKick = false;
@@ -691,7 +695,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			if (!operator.MadeLeftInitialMove) {
 				if (this.bMove(operator, -1)) {
 					operator.cur.block.x -= operator.xrange;
-					this._playerStateBoard.onBlockChanging();
+					if (this._playerStateBoard) {
+						this._playerStateBoard.onBlockChanging();
+					}
 					this.resetCollideDelay(operator);
 					this.shadow(operator);
 					operator.lastKick = false;
@@ -705,7 +711,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 						if (this.arr_delay_count >= this.arr_delay) {
 							if (this.bMove(operator, -1)) {
 								operator.cur.block.x -= operator.xrange;
-								this._playerStateBoard.onBlockChanging();
+								if (this._playerStateBoard) {
+									this._playerStateBoard.onBlockChanging();
+								}
 								this.resetCollideDelay(operator);
 								this.shadow(operator);
 								operator.lastKick = false;
@@ -715,7 +723,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 					} else {
 						while (this.bMove(operator, -1)) {
 							operator.cur.block.x -= operator.xrange;
-							this._playerStateBoard.onBlockChanging();
+							if (this._playerStateBoard) {
+								this._playerStateBoard.onBlockChanging();
+							}
 							this.resetCollideDelay(operator);
 							this.shadow(operator);
 							operator.lastKick = false;
@@ -731,7 +741,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 		if (!operator.cur.noRotate) {
 			TetrisManager.Count_Buttons += 1;
 			this.rotateBox(operator, 1);
-			this._playerStateBoard.onBlockChanging();
+			if (this._playerStateBoard) {
+				this._playerStateBoard.onBlockChanging();
+			}
 			this.shadow(operator);
 			operator.lastKick = true;
 			this.resetCollideDelay(operator);
@@ -742,7 +754,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 		if (!operator.cur.noRotate) {
 			TetrisManager.Count_Buttons += 1;
 			this.rotateBox(operator, -1);
-			this._playerStateBoard.onBlockChanging();
+			if (this._playerStateBoard) {
+				this._playerStateBoard.onBlockChanging();
+			}
 			this.shadow(operator);
 			operator.lastKick = true;
 			this.resetCollideDelay(operator);
@@ -751,7 +765,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 
 	if (Input.isTriggered('shift')) {
 		this.holdBox(this.player);
-		this._playerStateBoard.onBlockChanging();
+		if (this._playerStateBoard) {
+			this._playerStateBoard.onBlockChanging();
+		}
 		this.shadow(operator);
 	}
 
@@ -760,7 +776,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			operator.cur.block.x = operator.shadowImage.block.x;
 			operator.cur.block.y = operator.shadowImage.block.y;
 			operator.n = operator.step;
-			this._playerStateBoard.onBlockChanging();
+			if (this._playerStateBoard) {
+				this._playerStateBoard.onBlockChanging();
+			}
 		}
 	}
 
@@ -854,7 +872,6 @@ Scene_Tetris.prototype.update_Enemy = function () {
 }
 
 Scene_Tetris.prototype.update_Animation = function () {
-
 	this.player.displayHp += (this.actor.hp - this.player.displayHp) / TetrisManager.GaugeConstant;
 	this.refreshPlayerGauge();
 
@@ -1471,7 +1488,9 @@ Scene_Tetris.prototype.shadow = function(battler){
 	}
 	//console.log(c)
 	this.addToMainWindow(battler, battler.shadowImage.block)
-	this._playerStateBoard.onShadow()
+	if (this._playerStateBoard) {
+		this._playerStateBoard.onShadow()
+    }
 }
 
 Scene_Tetris.prototype.AttAck = function (source, target, damage) {
@@ -1581,7 +1600,10 @@ Scene_Tetris.prototype.create = function () {
 		this.drawArea(this._enemies[i]);
 		this.createBox(this._enemies[i])
 	}
-	this.createStartWindow();
+
+	if (!TetrisManager.autoStart) {
+		this.createStartWindow();
+    }
 	this.createPauseWindow();
 
 	this.TargetMark = new targetMark(this._enemies[this.player.TargetIndex]);
@@ -1713,20 +1735,22 @@ Scene_Tetris.prototype.startGame = function () {
 }
 
 Scene_Tetris.prototype.endGame = function () {
-	this.onEnd();
-	this.ExItIng = true;
-	this.startFadeOut(60, false);
-	this.unloadKeyMapper();
-	this._playerStateBoard.onEnd();
-	this._playerStateBoard.clearAllStates();
-	for (var i = 0; i < this._enemies.length; i++) {
-		this._enemies[i].StateBoard.onEnd();
-		this._enemies[i].StateBoard.clearAllStates();
-	}
-	$gameVariables.setValue(6, this.player.SCORE);
-	TetrisManager.desetTimer();
-	SceneManager.pop(Scene_Tetris);
-	Scene_Tetris.prototype.onEnd = function () {
+	if (this.AfterMathWindow.isLayed() && !this.ExItIng) {
+		this.onEnd();
+		this.ExItIng = true;
+		this.startFadeOut(60, false);
+		this.unloadKeyMapper();
+		this._playerStateBoard.onEnd();
+		this._playerStateBoard.clearAllStates();
+		for (var i = 0; i < this._enemies.length; i++) {
+			this._enemies[i].StateBoard.onEnd();
+			this._enemies[i].StateBoard.clearAllStates();
+		}
+		$gameVariables.setValue(6, this.player.SCORE);
+		TetrisManager.desetTimer();
+		SceneManager.pop(Scene_Tetris);
+		Scene_Tetris.prototype.onEnd = function () {
+		}
 	}
 }
 //如果你做了很过分的更改，请覆写这个方法来复元。
@@ -1738,7 +1762,7 @@ Scene_Tetris.prototype.refreshPlayerGauge = function(){
 	this.playerGaugeBoard.contents.clear();
 	var rate = this.player.displayHp / this.actor.mhp
 	var eng_rate = this.player.eng / this.player.meng
-	this.playerGaugeBoard.drawThinGauge(10, -12, 360, rate, 20, this.playerGaugeBoard.hpGaugeColor1(), this.playerGaugeBoard.hpGaugeColor2());
+	this.playerGaugeBoard.drawThinGauge(10, -12, 350, rate, 20, this.playerGaugeBoard.hpGaugeColor1(), this.playerGaugeBoard.hpGaugeColor2());
 	this.playerGaugeBoard.drawThinGauge(10, 7, 340, eng_rate, 7, this.playerGaugeBoard.mpGaugeColor1(), this.playerGaugeBoard.mpGaugeColor2())
 	this.player.gauge_pos = [this.playerGaugeBoard.x + 360 * rate, this.playerGaugeBoard.y]
 
@@ -1830,15 +1854,15 @@ Scene_Tetris.prototype.refreshEnemyHPGauge = function (enemyid) {
 	var CurEnemy = this._enemies[enemyid]
 	CurEnemy.gaugeWindow.refresh();
 	rate = CurEnemy.displayHp / CurEnemy.Mhp;
-	CurEnemy.gaugeWindow.drawThinGauge(50, -12, this.ROW * CurEnemy.xrange, rate, 12, CurEnemy.gaugeWindow._background.hpGaugeColor1(), CurEnemy.gaugeWindow._background.hpGaugeColor1());
-	CurEnemy.gauge_pos = [CurEnemy.gaugeWindow.x + 36 + this.ROW * CurEnemy.xrange * rate, CurEnemy.gaugeWindow.y]
+	CurEnemy.gaugeWindow.drawThinGauge(50, -5, this.ROW * CurEnemy.xrange, rate, 12, CurEnemy.gaugeWindow._background.hpGaugeColor1(), CurEnemy.gaugeWindow._background.hpGaugeColor1());
+	CurEnemy.gauge_pos = [CurEnemy.gaugeWindow.x + 36 + this.ROW * CurEnemy.xrange * rate, CurEnemy.gaugeWindow.y+20]
 
 
 	CurEnemy.gaugeWindow.removeChild(CurEnemy.hp_number);
 	CurEnemy.hp_number = new FNumber(CurEnemy.displayHp, 7);
 	CurEnemy.hp_number.changeDirection("left");
 	CurEnemy.gaugeWindow.addChild(CurEnemy.hp_number);
-	CurEnemy.hp_number.move(this.ROW * CurEnemy.xrange + 54, 5);
+	CurEnemy.hp_number.move(this.ROW * CurEnemy.xrange + 54, 20);
 }
 
 Scene_Tetris.prototype.refreshNextWindows = function (operator) {

@@ -58,20 +58,24 @@ Scene_Puzzle.prototype.constructor = Scene_Puzzle;
 Scene_Puzzle.prototype.initialize = function () {
 	Scene_ItemBase.prototype.initialize.call(this);
 	this.initializeData();
-	this.initializeActor();
 	this.loadKeyMapper();
+	this.initializeActor();
 	this.loadBlockSkin();
 }
 
 Scene_Puzzle.prototype.initializeActor = function () {
+	this.actor = $gameActors.actor(1)
+
 	this.player = {
+		actor: $gameActors.actor(1),
+		running: true,
 		category: "player",
 		xposition: 425,
 		yposition: 27,
 		xrange: 25,
 		yrange: 25,
 
-		step: 50,
+		step: this.step,
 		field: new Array(this.COL - 1),
 		cur: null,
 		next: [],
@@ -82,14 +86,28 @@ Scene_Puzzle.prototype.initializeActor = function () {
 		gaugeSCORE: 0,
 		curbag: TetrisManager.block_pics.slice(),
 
-		nextWindows: null,
+		nextWindows: [],
 		holdWindow: null,
 
 		delay_reset_times: 15,
 
 		scaleX: 1,
 		scaleY: 1,
-		Count_Combos: -1
+		Count_Combos: -1,
+
+		lastBack: false,
+		gauge_pos: [],
+
+		lastKick: false,
+		holded: false,
+		merged: false,
+
+		MovingToRight: null,
+		MadeLeftInitialMove: false,
+		MadeRightInitialMove: false,
+
+		mergeTrembleCount: 0,
+		rotated: false
 	}
 	this.player.yposition -= TetrisManager.AboveLines * this.player.yrange;
 
@@ -168,9 +186,9 @@ Scene_Puzzle.prototype.initializeData = function () {
 	//this.soft_drop_speed = $gameVariables.value(4);
 	this.soft_drop_speed = Math.round(this.step / ConfigManager.SoftSpeed);
 	this.das_delay_count_right = 0;
-	this.arr_delay_count_right = 0;
 	this.das_delay_count_left = 0;
-	this.arr_delay_count_left = 0;
+
+	this.arr_delay_count = 0;
 
 	this.nextWindows = [];
 
@@ -190,6 +208,10 @@ Scene_Puzzle.prototype.initializeData = function () {
 
 	this.BeginClock = 150;
 	this.FirstBegin = false;
+
+	this.nextNumber = 6;
+
+	this.windowTrembling = ConfigManager.Trembling;
 }
 
 Scene_Puzzle.prototype.update = function () {
@@ -200,32 +222,19 @@ Scene_Puzzle.prototype.update = function () {
 		if (this.BeginClock > 0) {
 			this.BeginClock -= 1;
 		} else {
-			if (!this.running && !this.gameover && !this.FirstBegin) {
-				this.FirstBegin = true;
-				TetrisManager.setTimer();
-				AudioManager.playSe(this.seTick);
-				this.refreshPlayerWindow();
-				this.drawArea(this.player);
-				this.shadow(this.player);
-				this.running = true;
-			}
+			this.startGame();
         }
 		if (Input.isTriggered('ok') || TouchInput.isPressed()) {
 			if (this.gameover) {
 				if (!this.AfterMathWindow) {
 					this.createAfterMath();
 				} else {
-					if (this.AfterMathWindow.isLayed() && !this.ExItIng) {
-						this.ExItIng = true;
-						this.startFadeOut(60, false);
-						this.unloadKeyMapper();
-						$gameVariables.setValue(6, this.player.SCORE);
-						TetrisManager.desetTimer();
-						SceneManager.pop(Scene_Tetris);
-					}
+					this.endGame();
 				}
 			}
 		}
+
+		this.update_Animation();
 		if (this.running) {
 			this.update_Actor();
 			this.isGameOver();
@@ -234,8 +243,55 @@ Scene_Puzzle.prototype.update = function () {
     }
 }
 
+Scene_Puzzle.prototype.update_Animation = function () {
+	if (this.windowTrembling) {
+		if (this.player.mergeDownTrembling) {
+			this.player.mainwindow.y += 1;
+			this.player.mergeTrembleCount += 1;
+			if (this.player.mergeTrembleCount >= 5) {
+				this.player.mergeDownTrembling = false;
+				this.player.mergeUpTrembling = true;
+			}
+		}
+
+		if (this.player.mergeUpTrembling) {
+			this.player.mainwindow.y -= 1;
+			this.player.mergeTrembleCount -= 1;
+			if (this.player.mergeTrembleCount <= 0) {
+				this.player.mergeUpTrembling = false;
+			}
+		}
+	}
+}
+
+Scene_Puzzle.prototype.startGame = function () {
+	if (!this.running && !this.gameover && !this.FirstBegin && this.layed) {
+		this.FirstBegin = true;
+		TetrisManager.setTimer();
+		AudioManager.playSe(this.seTick);
+		this.drawArea(this.player);
+		this.shadow(this.player);
+		this.running = true;
+		this.eliminateBUGs(this.player);
+	}
+}
+
+Scene_Puzzle.prototype.endGame = function () {
+	if (this.AfterMathWindow.isLayed() && !this.ExItIng) {
+		this.onEnd();
+		this.ExItIng = true;
+		this.startFadeOut(60, false);
+		this.unloadKeyMapper();
+		$gameVariables.setValue(6, this.player.SCORE);
+		TetrisManager.desetTimer();
+		SceneManager.pop(Scene_Puzzle);
+		Scene_Puzzle.prototype.onEnd = function () {
+		}
+	}
+}
+
 Scene_Puzzle.prototype.isGameOver = function () {
-	if (this.player.Hp <= 0 || this.player.exceeded) {
+	if (this.player.exceeded) {
 		AudioManager.playSe(this.seBoom);
 		this.running = false;
 		this.gameover = true;
@@ -256,13 +312,6 @@ Scene_Puzzle.prototype.update_Actor = function () {
 
 	this.update_Movement(this.player);
 
-	if (this.player.cur.block.y < this.yposition) {
-		AudioManager.playSe(this.seBoom);
-		this.running = false;
-		this.gameover = true;
-		$gameSwitches.setValue(20, false);
-	}
-
 	this.player.n += 1
 	if (this.player.n >= this.player.step) {
 
@@ -270,14 +319,14 @@ Scene_Puzzle.prototype.update_Actor = function () {
 			AudioManager.playSe(this.seTick)
 			this.mergeBox(this.player);
 			TetrisManager.Count_Blocks += 1;
-			this.refreshScoreBoard();
-			this._blockLayer.removeChild(this.player.cur.block);
-			this.drawArea(this.player);
+			this.refreshScoreBoard(this.player);
+			this.removeFromMainWindow(this.player, this.player.cur.block)
 			this.player.cur = null;
 			this.lastKick = false;
 			this.createBox(this.player);
 			this.shadow(this.player);
-			this.holded = false;
+			this.drawArea(this.player);
+			this.player.holded = false;
 			this.player.delay_reset_times = 15;
 		} else {
 			this.player.cur.block.y += this.player.yrange;
@@ -295,8 +344,17 @@ Scene_Puzzle.prototype.update_Actor = function () {
 Scene_Puzzle.prototype.create = function () {
 	Scene_ItemBase.prototype.create.call(this);
 	//图层分级
+	this._midLayer = new Sprite();
+	this.addChild(this._midLayer);
+
 	this._blockLayer = new Sprite();
 	this.addChild(this._blockLayer);
+
+	this._boardLayer = new Sprite();
+	this.addChild(this._boardLayer);
+
+	this._effectLayer = new Sprite();
+	this.addChild(this._effectLayer);
 
 	this._upperLayer = new Sprite();
 	this.addChild(this._upperLayer);
@@ -314,16 +372,19 @@ Scene_Puzzle.prototype.create = function () {
 
 	this.createBox(this.player);
 	this.shadow(this.player);
-	this.refreshScoreBoard();
+	this.refreshScoreBoard(this.player);
 	this.drawArea(this.player);
+	this.refreshNextWindows(this.player);
 
-	this.eliminateBUGs();
+	this.eliminateBUGs(this.player);
 }
 
 Scene_Puzzle.prototype.createPlayerWindows = function () {
-	this.holdWindow = new Tetris_Window(this.player.xposition - 139, this.player.yposition + TetrisManager.AboveLines*this.player.yrange - 5, 120, 120);
-	this.holdWindow.drawText("HOLD", 12, -10);
-	this.player.holdWindow = this.holdWindow;
+	this.player.holdWindow = new Tetris_Window(this.player.xposition - 140, this.player.yposition + TetrisManager.AboveLines*this.player.yrange - 5, 120, 120);
+	this.player.holdWindow.drawText("HOLD", 12, -10);
+
+	this.refreshPlayerWindow(this.player);
+
 	this.addWindow(this.player.holdWindow);
 
 	for (i = 0; i < 6; i++) {
@@ -333,19 +394,36 @@ Scene_Puzzle.prototype.createPlayerWindows = function () {
 	for (i = 0; i < 6; i++) {
 		this.addWindow(this.player.nextWindows[i]);
 	}
-	this.refreshPlayerWindow();
+
+	this.refreshScoreBoard(this.player);
 }
 
-Scene_Puzzle.prototype.refreshPlayerWindow = function(){
-	this.removeWindow(this.player.mainwindow);
-	this.player.mainwindow = new Tetris_Window(this.player.xposition - 15 - 7, this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27, this.ROW * this.player.xrange + 65, (this.COL - TetrisManager.AboveLines) * this.player.yrange);
-	for (i = 0; i <= this.ROW; i++) {
-		this.player.mainwindow.contents.drawLine(i * this.player.xrange + 5, 0, i * this.player.xrange + 5, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 40);
+Scene_Puzzle.prototype.refreshPlayerWindow = function (operator) {
+
+	this.removeWindow(operator.mainwindow);
+	operator.mainwindow = new Tetris_Window(operator.xposition - 15 - 7,
+		operator.yposition + TetrisManager.AboveLines * operator.yrange - 27,
+		this.ROW * operator.xrange + 65,
+		(this.COL - TetrisManager.AboveLines) * operator.yrange);
+	for (var i = 0; i <= this.ROW; i++) {
+		operator.mainwindow.contents.drawLine(i * operator.xrange + 5, 0, i * operator.xrange + 5, (this.COL - TetrisManager.AboveLines) * operator.yrange);
 	}
-	for (i = 0; i <= this.COL; i++) {
-		this.player.mainwindow.contents.drawLine(4, i * this.player.yrange - 14, this.ROW * this.player.yrange + 4, i * this.player.yrange - 14);
+	for (var i = 0; i <= this.COL; i++) {
+		operator.mainwindow.contents.drawLine(4, i * operator.yrange - 14, this.ROW * operator.yrange + 4, i * operator.yrange - 14);
 	}
-	this.addWindow(this.player.mainwindow);
+	this.addWindow(operator.mainwindow);
+	if (operator.cur && operator.cur.block) {
+		this.addToMainWindow(operator, operator.cur.block);
+	}
+	if (operator.shadowImage) {
+		this.addToMainWindow(operator, operator.shadowImage.block);
+	}
+
+	if (!operator.effectLayer) {
+		operator.effectLayer = new Sprite();
+	}
+	operator.mainwindow.addChild(operator.effectLayer);
+
 }
 
 function puzzle_start() {
