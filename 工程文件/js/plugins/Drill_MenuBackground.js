@@ -960,7 +960,7 @@ Scene_MenuBase.prototype.drill_createBackgrounds = function() {
 		this._drill_sprite_backgrounds_data.push(temp_sprite_data);
 		this._backgroundSprite.addChild(temp_sprite);
 	}
-	this.drill_sortByZIndex();
+    this.drill_sortByZIndex();
 };
 
 //==============================

@@ -309,6 +309,7 @@ ConfigManager.applyData = function(config) {
 
 ConfigManager.applyGamepadConfig = function() {
 	Input.TetrisgamepadInput = this.TetrisgamepadInput;
+	//Input.gamepadMapper = Input.defaultgamepadInput;
 	Input.update();
 	Input.clear();
 };

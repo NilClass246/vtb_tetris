@@ -240,7 +240,10 @@ Window_Sign.prototype.refresh = function () {
             y+=38
         }
     }
-
+    //TODO: 防作弊
+    //TODO: 登记界面加入快捷键
+    //TODO: 立绘系统
+    //TODO: 写教程
     this.exchangeSign.move(42 + 4 * 35, 20);
     this.addChild(this.exchangeSign)
 }

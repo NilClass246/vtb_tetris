@@ -406,6 +406,13 @@ Scene_Boot.prototype.start = function() {
         DataManager.setupNewGame();
         SceneManager.goto(Scene_Title);
         Window_TitleCommand.initCommandPosition();
+
+        ConfigManager.load();
+        ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap))
+        ConfigManager.applyKeyConfig();
+        ConfigManager.save();
+        ConfigManager.load();
+        Input.gamepadMapper = Input.defaultgamepadInput;
     }
     this.updateDocumentTitle();
 };

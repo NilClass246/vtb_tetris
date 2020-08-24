@@ -739,8 +739,9 @@ ConfigManager.makeData = function() {
 Yanfly.KeyConfig.ConfigManager_applyData = ConfigManager.applyData;
 ConfigManager.applyData = function(config) {
   Yanfly.KeyConfig.ConfigManager_applyData.call(this, config);
-    this.keyMapper = this.readKeyConfig(config, 'keyMapper');
+    //this.keyMapper = this.readKeyConfig(config, 'keyMapper');
     this.TetrisKeyMapper = this.readKeyConfig(config, 'TetrisKeyMapper');
+    //this.keyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap))
 	this.applyKeyConfig();
 };
 
