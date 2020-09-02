@@ -735,6 +735,55 @@ TetrisManager.pariticleSet['semi-fire-right'] = {
 	}
 }
 
+TetrisManager.pariticleSet['trail'] ={
+	"alpha": {
+		"start": 0.8,
+		"end": 0.1
+	},
+	"scale": {
+		"start": 0.5,
+		"end": 0.3,
+		"minimumScaleMultiplier": 1
+	},
+	"color": {
+		"start": "#03ff25",
+		"end": "#ffffff"
+	},
+	"speed": {
+		"start": 0,
+		"end": 0,
+		"minimumSpeedMultiplier": 1
+	},
+	"acceleration": {
+		"x": 0,
+		"y": 0
+	},
+	"maxSpeed": 0,
+	"startRotation": {
+		"min": 0,
+		"max": 0
+	},
+	"noRotation": false,
+	"rotationSpeed": {
+		"min": 0,
+		"max": 0
+	},
+	"lifetime": {
+		"min": 0.2,
+		"max": 0.2
+	},
+	"blendMode": "normal",
+	"frequency": 0.008,
+	"emitterLifetime": -1,
+	"maxParticles": 1000,
+	"pos": {
+		"x": 0,
+		"y": 0
+	},
+	"addAtBack": false,
+	"spawnType": "point"
+}
+
 TetrisManager.seSet = {};
 
 TetrisManager.seSet['Wind7'] ={
@@ -1380,7 +1429,8 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 					pop.setTint(0x00ff00);
 					pop.activate();
                 }
-
+				var e = new LifeStealEffect(target);
+				scene._effectLayer.addChild(e);
 				break;
 		}
 		//伤害调整

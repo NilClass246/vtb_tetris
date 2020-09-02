@@ -860,7 +860,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 			if ((operator.cur.block.x !== operator.shadowImage.block.x) || (operator.cur.block.y !== operator.shadowImage.block.y)) {
 				operator.cur.block.x = operator.shadowImage.block.x;
 				operator.cur.block.y = operator.shadowImage.block.y;
-				this._playerStateBoard.onBlockChanging();
+				if (this._playerStateBoard) {
+					this._playerStateBoard.onBlockChanging();
+                }
 				this.resetCollideDelay(operator);
 			}
 		} else {
