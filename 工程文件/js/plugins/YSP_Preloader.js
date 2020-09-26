@@ -23,6 +23,7 @@ ysp.Preloader.GLOBAL = {
     IMAGES: [
         'system/Window',
         'characters/Actor1',
+        'pictures/bars/testFrame3'
     ],
 
     VIDEOS: [

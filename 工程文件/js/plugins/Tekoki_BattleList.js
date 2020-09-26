@@ -40,6 +40,10 @@ TetrisManager.hitFlag = {};
 
 TetrisManager.splitStatus = 0;
 
+TetrisManager.frameCaching = {
+	'testFrame4': ImageManager.loadPicture('bars/testFrame4')
+}
+
 TetrisManager.special_List = {
 	'matsuri': {
 		initialize: function () {
@@ -70,7 +74,7 @@ TetrisManager.special_List = {
 		initialize: function () {
 			this.bossID = 1;
 			TetrisManager.hitcount = 0;
-			this.timeLine = [0, 12, 13.85, 27, 28, 30, 33, 39, 41, 45, 48, 64, 71, 74, 76, 86, 94, 101, 105, 112, 115, 120]
+			this.timeLine = [0, 12, 13.85, 27, 28, 30, 33, 39, 41, 45, 48, 64, 71, 73, 75, 86, 94, 101, 105, 112, 115, 120]
 		},
 		create: function () {
 			var scene = SceneManager._scene;
@@ -112,6 +116,7 @@ TetrisManager.special_List = {
 			scene._enemies[0].running = false;
 
 			this.revision = 0;
+			this._placeSpecial = false;
 		},
 		onFirstUpdate: function () {
 			scene = SceneManager._scene;
@@ -124,6 +129,8 @@ TetrisManager.special_List = {
 			scene._playerStateBoard.applyStates("13", 0);
 			scene._enemies[0].StateBoard.applyStates("17", 0);
 			//scene._playerStateBoard.applyStates("17", 0);
+			this.bf = new BloodFilter();
+			scene.addChild(this.bf);
         },
 		update: function () {
 			var time = Number(TetrisManager.getElapsedTime());
@@ -596,9 +603,8 @@ TetrisManager.special_List = {
 			if (this.curflag == 19 && time >= this.timeLine[19] + this.revision) {
 				this.curflag = 20;
 				this._qteBoard = new QTEBoard(['up', 'right', 'down', 'left']);
-				this._qteBoard.move(10, 455);
-				scene._boardLayer.removeChild(scene._playerItemBoard);
-				scene._boardLayer.addChild(this._qteBoard);
+				this._qteBoard.move(500, 312);
+				scene._upperLayer.addChild(this._qteBoard);
 				this._qteM = new QTEManager(
 					[{ type: 'up', duration: 1 }, { type: 'right', duration: 1 }],
 					function () {
@@ -607,8 +613,8 @@ TetrisManager.special_List = {
 					this._qteBoard
 				);
 				scene.addChild(this._qteM)
-				this._qteM._progressBar.move(300, 200)
-				scene._boardLayer.addChild(this._qteM._progressBar);
+				this._qteM._progressBar.move(500, 295);
+				scene._upperLayer.addChild(this._qteM._progressBar);
 			}
 
 			if (this.curflag == 20 && time >= this.timeLine[20] + this.revision) {
@@ -625,12 +631,16 @@ TetrisManager.special_List = {
 				AudioManager.fadeOutBgm(1);
 				player.running = false;
 				this.s = -10;
+				TetrisManager.splitStatus = 2;
 			}
 
 			if (this.curflag == 22) {
 				this.s += 0.1;
 				this.pictureBoard.y += this.s
 				this.pictureBoard.x += 0.5;
+				scene.removeChild(this._qteM)
+				scene._upperLayer.removeChild(this._qteM._progressBar);
+				scene._upperLayer.removeChild(this._qteBoard);
             }
 
 			// 流程
@@ -1608,7 +1618,10 @@ var Vampire = [
 
 		manager: Object.create(TetrisManager.special_List["vampire"]),
 		NoAi: true,
-		updateAfterDeath: true
+		updateAfterDeath: true,
+		pic_pos: [1000, 300],
+		gaugeWidth: 300,
+		AtkAnim: null
 	},
 ]
 
@@ -2359,9 +2372,9 @@ TetrisManager.state_List = {
 				this.distance = 50
 				//this.distance = 25
 				TetrisManager.splitStatus = 0;
-				this.fireLeft = new particleEmitter('semi-fire-left', ['Fire']);
+				this.fireLeft = new SlicingFireEffect('left');
 				scene._effectLayer.addChild(this.fireLeft);
-				this.fireRight = new particleEmitter('semi-fire-right', ['Fire']);
+				this.fireRight = new SlicingFireEffect('right');
 				scene._effectLayer.addChild(this.fireRight);
 			}
 
@@ -2375,26 +2388,26 @@ TetrisManager.state_List = {
 			if (this.distance > 25) {
 				scene._splite1.pack.x -= 1;
 				scene._splite1.pack.y -= 3;
-				scene._splite1.pack.rotation += 0.1/25
+				scene._splite1.pack.rotation += 0.1 / 25;
 
 				scene._splite2.pack.x += 1;
 				scene._splite2.pack.y += 5;
-				scene._splite2.pack.rotation -= 0.1 / 25
+				scene._splite2.pack.rotation -= 0.1 / 25;
 				this.distance -= 1;
 			}
 
 			if (this.distance <= 25 && this.distance > 0) {
-				scene._splite1.pack.rotation -= 0.1 / 25
-				scene._splite2.pack.rotation += 0.1 / 25
+				scene._splite1.pack.rotation -= 0.1 / 25;
+				scene._splite2.pack.rotation += 0.1 / 25;
 				this.distance -= 1;
 			}
 
-			if (this.fireLeft) {
-				this.fireLeft.move(scene._splite1.pack.x + this.protoWidth-5, scene._splite1.pack.y)
+			if (this.fireLeft && (this.fireLeft._flag!=='stopping')) {
+				this.fireLeft.move(scene._splite1.pack.x + this.protoWidth - 5, scene._splite1.pack.y + 3);
 			}
 
-			if (this.fireRight) {
-				this.fireRight.move(scene._splite2.pack.x + this.protoWidth+5, scene._splite2.pack.y);
+			if (this.fireRight && (this.fireRight._flag !== 'stopping')) {
+				this.fireRight.move(scene._splite2.pack.x + this.protoWidth + 5, scene._splite2.pack.y + 3);
             }
 
 			//if (this.distance > 0) {
@@ -2413,9 +2426,10 @@ TetrisManager.state_List = {
 					//+ 1 / 25;
 				scene._splite1.pack.y += 3;
 				scene._splite2.pack.x -= 1;
-				scene._splite2.pack.y -= 5
+				scene._splite2.pack.y -= 5;
 					//- 0.5 / 25;
-				this.distance += 1
+				this.distance += 1;
+				console.log(this.distance);
 			}
 
 		},
@@ -2815,7 +2829,8 @@ BloodFilter.prototype.initialize = function () {
 	this.opacity = 0;
 	this.phaseFlag = 'increasing'
 	this.timeCount = 0;
-	this._frequency = 60;
+	this._frequency = 180;
+	this._maxOpacity = 127
 }
 
 BloodFilter.prototype.update = function () {
@@ -2823,13 +2838,13 @@ BloodFilter.prototype.update = function () {
 
 	switch (this.phaseFlag) {
 		case 'increasing':
-			this.opacity += 127 / this._frequency;
+			this.opacity += this._maxOpacity / this._frequency;
 			break;
 		case 'decreasing':
-			this.opacity -= 127 / this._frequency;
+			this.opacity -= this._maxOpacity / this._frequency;
 			break;
 		case 'ending':
-			this.opacity -= 127 / this._frequency;
+			this.opacity -= this._maxOpacity / this._frequency;
 			if (this.opacity <= 0) {
 				this.destroy();
 			}
@@ -2839,9 +2854,13 @@ BloodFilter.prototype.update = function () {
 	if (this.timeCount > this._frequency) {
 		if (this.phaseFlag != 'ending') {
 			if (this.phaseFlag == 'increasing') {
-				this.phaseFlag = 'decreasing'
+				if (this.opacity >= this._maxOpacity) {
+					this.phaseFlag = 'decreasing'
+                }
 			} else {
-				this.phaseFlag = 'increasing'
+				if (this.opacity <= 0) {
+					this.phaseFlag = 'increasing'
+                }
 			}
         }
 
@@ -2911,21 +2930,6 @@ Counting.prototype.update = function () {
 
 	this.time -= 1;
 
-}
-
-//=============================================================================
-
-function c4wFormula() {
-	this.initialize.apply(this, arguments);
-}
-
-c4wFormula.prototype = Object.create(Sprite.prototype);
-c4wFormula.prototype.constructor = c4wFormula;
-
-c4wFormula.prototype.initialize = function () {
-	Sprite.prototype.initialize.call(this);
-	scene = SceneManager._scene;
-	player = scene.getPlayer();
 }
 
 //=============================================================================
@@ -3066,7 +3070,19 @@ QTEManager.prototype.initialize = function (qteData, failFunction, qteBoard) {
 	this.iconID = -1;
 	this.waitingTime = 0
 	this._qteBoard = qteBoard;
-	this._progressBar = new VerticalProgressBar(1);
+	this._progressBar = new Gauge_base(
+		{
+			type: 'Horz',
+			frameSource: TetrisManager.frameCaching['testFrame4'],
+			barSource: ImageManager.loadPicture('bars/barGrad2'),
+			backSource: ImageManager.loadPicture('bars/barBack2'),
+			x: 0,
+			y: 0,
+			width: 100,
+			height: 15,
+			maxAmount: 20
+		}
+	);
 	this.barTime = 0;
 	this.activateNext();
 	this.fail = failFunction;
@@ -3123,11 +3139,15 @@ QTEManager.prototype.activateNext = function () {
 	} else {
 		this._progressBar.changeNumber(0);
 		this._running = false;
+		this._qteBoard.opacity = 100;
+		this._progressBar.opacity = 100;
 	}
 
 }
 
 QTEManager.prototype.reset = function (qteData, failFunction) {
+	this._qteBoard.opacity = 255;
+	this._progressBar.opacity = 255;
 	this._data = qteData
 	this.startTime = Number(TetrisManager.getElapsedTime());
 	this.flag = -1;
@@ -3167,22 +3187,22 @@ QTEBoard.prototype.initialize = function () {
 			switch (this._sequence[i]) {
 				case 'up':
 					var s = new QTEIcon(ImageManager.loadPicture('Others/ArrowUp'));
-					s.visible = false;
+					s.cover();
 					this.Icons.push(s);
 					break;
 				case 'right':
 					var s = new QTEIcon(ImageManager.loadPicture('Others/ArrowRight'));
-					s.visible = false;
+					s.cover();
 					this.Icons.push(s);
 					break;
 				case 'down':
 					var s = new QTEIcon(ImageManager.loadPicture('Others/ArrowRight'));
-					s.visible = false;
+					s.cover();
 					this.Icons.push(s);
 					break;
 				case 'left':
 					var s = new QTEIcon(ImageManager.loadPicture('Others/ArrowLeft'));
-					s.visible = false;
+					s.cover();
 					this.Icons.push(s);
 					break;
             }
@@ -3301,12 +3321,12 @@ QTEBoard.prototype.useItem = function (id) {
 }
 
 QTEBoard.prototype.glowItem = function (id) {
-	this.Icons[id].visible = true;
+	this.Icons[id].uncover();
 	this.Icons[id].glow();
 }
 
 QTEBoard.prototype.unglowItem = function (id) {
-	this.Icons[id].visible = false;
+	this.Icons[id].cover();
 	this.Icons[id].unglow();
 }
 
@@ -3398,6 +3418,14 @@ QTEIcon.prototype.unglow = function () {
 	if (this.Glow) {
 		this.removeChild(this.Glow)
     }
+}
+
+QTEIcon.prototype.cover = function () {
+	this.iconCover.opacity = 200;
+}
+
+QTEIcon.prototype.uncover = function () {
+	this.iconCover.opacity = 0;
 }
 
 
@@ -3656,11 +3684,16 @@ LifeStealEffect.prototype.initialize = function (enemy) {
 	var particle1 = new particleEmitter('trail', ['Particle']);
 	var particle2 = new particleEmitter('trail', ['Particle']);
 	var particle3 = new particleEmitter('trail', ['Particle']);
-	var TMP1 = new TwistingMovingPart(particle1, enemy.gauge_pos, player.gauge_pos, 60,
+	if (enemy.pic_pos) {
+		var epos = enemy.pic_pos;
+	} else {
+		var epos = enemy.gauge_pos;
+    }
+	var TMP1 = new TwistingMovingPart(particle1, epos, player.gauge_pos, 60,
 		function () { this.s.stop(); }, 60);
-	var TMP2 = new TwistingMovingPart(particle2, enemy.gauge_pos, player.gauge_pos, 60,
+	var TMP2 = new TwistingMovingPart(particle2, epos, player.gauge_pos, 60,
 		function () { this.s.stop(); }, 60);
-	var TMP3 = new TwistingMovingPart(particle3, enemy.gauge_pos, player.gauge_pos, 60,
+	var TMP3 = new TwistingMovingPart(particle3, epos, player.gauge_pos, 60,
 		function () { this.s.stop(); }, 60);
 
 	this.addChild(TMP1);
@@ -3758,8 +3791,8 @@ RotatingEnlargeningPart.prototype.constructor = RotatingEnlargeningPart;
 RotatingEnlargeningPart.prototype.initialize = function (sprite, start, end, time, stopFunction, stopTime) {
 	Attack_Effect.prototype.initialize.call(this);
 	this.s = sprite;
-	end[0] += 39;
-	end[1] += 62; //之后要改
+	end[0] += 75;
+	end[1] += 75; //之后要改
 	this.start = start;
 	this.end = end;
 	this.stopTime = stopTime;
@@ -3810,6 +3843,64 @@ RotatingEnlargeningPart.prototype.update = function () {
 		}
 		this.stopCount += 1;
     }
+}
+
+//-----------------------------------------------------------------------------
+
+function SlicingFireEffect() {
+	this.initialize.apply(this, arguments);
+}
+
+SlicingFireEffect.prototype = Object.create(Attack_Effect.prototype);
+SlicingFireEffect.prototype.constructor = SlicingFireEffect;
+
+SlicingFireEffect.prototype.initialize = function (direction) {
+	Attack_Effect.prototype.initialize.call(this);
+	this.dir = direction;
+	this.cover = new Sprite();
+	if (this.dir == 'left') {
+		this.emitter = new particleEmitter('semi-fire-left', ['Particle']);
+		this.cover.bitmap = ImageManager.loadPicture('ui/SliceFireEffect_Left');
+		this.emitter.x += 3;
+	} else {
+		this.emitter = new particleEmitter('semi-fire-right', ['Particle']);
+		this.cover.bitmap = ImageManager.loadPicture('ui/SliceFireEffect_Right');
+		this.cover.anchor.x = 1;
+	}
+	this.addChild(this.emitter);
+	this.addChild(this.cover);
+	this.cover.opacity = 0;
+	this._flag = 'increasing';
+}
+
+SlicingFireEffect.prototype.update = function () {
+	Attack_Effect.prototype.update.call(this);
+	switch (this._flag) {
+		case 'increasing':
+			this.cover.opacity += 1;
+			if (this.cover.opacity >= 255) {
+				this._flag = 'decreasing'
+            }
+			break;
+		case 'decreasing':
+			this.cover.opacity -= 1;
+			if (this.cover.opacity <= 0) {
+				this._flag = 'increasing'
+			}
+			break;
+		case 'stopping':
+			this.cover.opacity -= 1;
+			if (this.cover.opacity <= 0) {
+				this.destroy();
+			}
+			break;
+    }
+
+}
+
+SlicingFireEffect.prototype.stop = function () {
+	this._flag = 'stopping'
+	this.emitter.stop();
 }
 
 

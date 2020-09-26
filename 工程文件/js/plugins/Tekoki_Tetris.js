@@ -142,7 +142,8 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		MadeRightInitialMove: false,
 
 		mergeTrembleCount: 0,
-		rotated: false
+		rotated: false,
+		pic_pos: [200, 300]
 	}
 
 	this.player.yposition -= TetrisManager.AboveLines * this.player.yrange;
@@ -323,6 +324,8 @@ Scene_Tetris.prototype.initializeData = function () {
 
 	this._placeActor = true;
 	this._placeEnemy = true;
+	this._isPaused = false;
+	this.isPausedThisTurn = false;
 }
 
 Scene_Tetris.prototype.loadKeyMapper = function () {
@@ -500,6 +503,7 @@ Scene_Tetris.prototype.update = function () {
 		}
 
 		this.update_Animation();
+
 		if (this.running) {
 			this._Skill_Manager.update();
 			this.update_Enemy();
@@ -509,6 +513,12 @@ Scene_Tetris.prototype.update = function () {
             }
 			this.isGameOver();
 		}
+		if (Input.isTriggered('cancel') || Input.isTriggered('menu')) {
+			if (this._isPaused && !this.isPausedThisTurn) {
+				this.Continue();
+			}
+		} 
+		this.isPausedThisTurn = false;
     }
 }
 
@@ -596,7 +606,9 @@ Scene_Tetris.prototype.isGameOver = function () {
 
 Scene_Tetris.prototype.update_Actor = function () {
 	if (Input.isTriggered('cancel') || Input.isTriggered('menu')) {
-		this.openPauseWindow()
+		if (!this._isPaused && !this.isPausedThisTurn) {
+			this.Pause();
+		}
 	}
 
 	this.update_Movement(this.player);
@@ -688,7 +700,6 @@ Scene_Tetris.prototype.changeTarget = function () {
 }
 
 Scene_Tetris.prototype.update_Movement = function (operator) {
-	Input.stop();
 	if (!Input.isPressed('left') && !Input.isPressed('right')) {
 		operator.MovingToRight = null;
 		this.arr_delay_count = 0;
@@ -871,8 +882,6 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 	} else {
 		operator.step = this.step;
 	}
-
-	Input.begin();
 }
 
 Scene_Tetris.prototype.findRNGEnemy = function () {
@@ -1708,7 +1717,6 @@ Scene_Tetris.prototype.create = function () {
 	if (!TetrisManager.autoStart) {
 		this.createStartWindow();
 	}
-	this.createPauseWindow();
 
 	this.TargetMark = new targetMark(this._enemies[this.player.TargetIndex]);
 	this._blockLayer.addChild(this.TargetMark);
@@ -1747,6 +1755,24 @@ Scene_Tetris.prototype.create = function () {
 	if (this.battleInfo.music) {
 		AudioManager.playBgm(this.battleInfo.music);
 	}
+	//this.bbbb = ImageManager.loadPicture('bars/testFrame3');
+	//this.cccc = ImageManager.loadPicture('bars/BarGrad2');
+	//this.dddd = ImageManager.loadPicture('bars/BarBack2');
+	//this.aaaa = new Gauge_base(
+	//	{
+	//		type: 'Horz',
+	//		frameSource: this.bbbb,
+	//		barSource: this.cccc,
+	//		backSource: this.dddd,
+	//		x: 0,
+	//		y: 0,
+	//		width: 500,
+	//		height: 20,
+	//		maxAmount: 20
+	//	}
+	//);
+	//this.addChild(this.aaaa);
+	//this.aaaa.changeNumber(10);
 
 }
 
@@ -1805,10 +1831,13 @@ Scene_Tetris.prototype.createEnemyWindows = function () {
 		if (CurEnemy.manager) {
 			CurEnemy.manager.create();
 		}
+		if (!CurEnemy.gaugeWidth) {
+			CurEnemy.gaugeWidth = this.ROW * CurEnemy.xrange + 80;
+		}
 		CurEnemy.gaugeWindow = new Full_Window(
 			CurEnemy.xposition - 30,
 			CurEnemy.yposition + TetrisManager.AboveLines * CurEnemy.yrange - 68,
-			this.ROW * CurEnemy.xrange + 80,
+			CurEnemy.gaugeWidth,
 			48);
 		CurEnemy.avatar = new Sprite();
 		CurEnemy.avatar.bitmap = ImageManager.loadPicture("enemies\\" + CurEnemy.avatarName);
@@ -1832,12 +1861,6 @@ Scene_Tetris.prototype.createStartWindow = function () {
 	this._upperLayer.addChild(this.StartWindow);
 	this.StartWindow.deactivate();
 	this.StartWindow.close();
-}
-
-Scene_Tetris.prototype.createPauseWindow = function () {
-	this.PauseWindow = new Window_Pause();
-	//this.PauseWindow.setHandler('item', this.openItemWindow.bind(this));
-	this._upperLayer.addChild(this.PauseWindow);
 }
 
 Scene_Tetris.prototype.startGame = function () {
@@ -1988,15 +2011,15 @@ Scene_Tetris.prototype.refreshEnemyHPGauge = function (enemyid) {
 	var CurEnemy = this._enemies[enemyid]
 	CurEnemy.gaugeWindow.refresh();
 	rate = CurEnemy.displayHp / CurEnemy.Mhp;
-	CurEnemy.gaugeWindow.drawThinGauge(50, -5, this.ROW * CurEnemy.xrange, rate, 12, CurEnemy.gaugeWindow._background.hpGaugeColor1(), CurEnemy.gaugeWindow._background.hpGaugeColor1());
-	CurEnemy.gauge_pos = [CurEnemy.gaugeWindow.x + 36 + this.ROW * CurEnemy.xrange * rate, CurEnemy.gaugeWindow.y+20]
+	CurEnemy.gaugeWindow.drawThinGauge(50, -5, CurEnemy.gaugeWidth-80, rate, 12, CurEnemy.gaugeWindow._background.hpGaugeColor1(), CurEnemy.gaugeWindow._background.hpGaugeColor1());
+	CurEnemy.gauge_pos = [CurEnemy.gaugeWindow.x + 36 + (CurEnemy.gaugeWidth - 80) * rate, CurEnemy.gaugeWindow.y+20]
 
 
 	CurEnemy.gaugeWindow.removeChild(CurEnemy.hp_number);
 	CurEnemy.hp_number = new FNumber(CurEnemy.displayHp, 7);
 	CurEnemy.hp_number.changeDirection("left");
 	CurEnemy.gaugeWindow.addChild(CurEnemy.hp_number);
-	CurEnemy.hp_number.move(this.ROW * CurEnemy.xrange + 54, 20);
+	CurEnemy.hp_number.move((CurEnemy.gaugeWidth - 80) + 54, 20);
 }
 
 Scene_Tetris.prototype.refreshNextWindows = function (operator) {
@@ -2029,12 +2052,23 @@ Scene_Tetris.prototype.refreshCombo = function (battler) {
     }
 }
 
-Scene_Tetris.prototype.openPauseWindow = function () {
-	if (this.PauseWindow.getOpenness() == 0) {
-		this.running = false;
-		this.PauseWindow.start();
-		this.openPauseScreen();
-    }
+Scene_Tetris.prototype.Pause = function () {
+	this.running = false;
+	$gameSystem.saveBgm();
+	AudioManager.fadeOutBgm(1);
+	TetrisManager.pauseTimer();
+	this.openPauseScreen();
+	this._isPaused = true;
+	this.isPausedThisTurn = true;
+}
+
+Scene_Tetris.prototype.Continue = function () {
+	this.running = true;
+	$gameSystem.replayBgm();
+	TetrisManager.continueTimer();
+	this.closePauseScreen();
+	this._isPaused = false;
+	this.isPausedThisTurn = true;
 }
 
 Scene_Tetris.prototype.openPauseScreen = function () {
@@ -2473,7 +2507,11 @@ Scene_Double.prototype.update_Actor = function () {
 Scene_Double.prototype.update_Operator1 = function () {
 
 	if (Input.isTriggered('cancel') || Input.isTriggered('menu')) {
-		this.openPauseWindow()
+		if (!this._isPaused) {
+			this.Pause();
+		} else {
+			this.Continue();
+        }
 	}
 
 	this.update_Movement(this.player);
@@ -2564,7 +2602,6 @@ Scene_Double.prototype.create = function () {
 	this.drawArea(this._operator2);
 
 	this.createStartWindow();
-	this.createPauseWindow();
 
 	this.TargetMark = new targetMark(this._enemies[this.player.TargetIndex]);
 	this._blockLayer.addChild(this.TargetMark);

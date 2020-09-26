@@ -13,7 +13,8 @@ Scripts:
 	SumRndmDde http://sumrndm.site/
 	OcRam
 	DKTools
-	
+	McKathlin
+	マンカインド
 
 Resources:
 	SkottyTV Window Skins	by Skotty TV
@@ -22,6 +23,7 @@ Tilesets:
 	Cossio - Modern TileSets	by Cossio
  	Ayene
 	茂吉
+	ぴぽや
 
 Icons:
 	Iconmonstr
