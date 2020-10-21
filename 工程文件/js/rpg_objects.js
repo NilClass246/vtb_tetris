@@ -88,6 +88,7 @@ Game_System.prototype.initialize = function() {
     this._defeatMe = null;
     this._savedBgm = null;
     this._walkingBgm = null;
+    this._antiCheat = {};
 };
 
 Game_System.prototype.isJapanese = function() {
@@ -3198,6 +3199,7 @@ Game_Battler.prototype.gainHp = function(value) {
     this._result.hpDamage = -value;
     this._result.hpAffected = true;
     this.setHp(this.hp + value);
+    $gameSystem._antiCheat.reservedHp = this.hp;
 };
 
 Game_Battler.prototype.gainMp = function(value) {

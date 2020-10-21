@@ -56,6 +56,7 @@ TetrisManager.battleLabel = 'Test1'
 //TODO: 滤镜兼容
 
 //TODO: 胶囊系统
+
 function Scene_Tetris() {
 	this.initialize.apply(this, arguments);
 }
@@ -105,7 +106,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		nextWindows: [],
 		holdWindow: null,
 		pictureBoard: new Tetris_Window(),
-		picture: new Sprite(),
+		picture: new Tachi('redDumpling'),
 
 		delay_reset_times: 15,
 
@@ -194,7 +195,6 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 	//	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	//]
 
-	this.player.picture.bitmap = ImageManager.loadPicture("redDumpling");
 	this.player.exceeded = false;
 
 	this.player.removeState = function (id) {

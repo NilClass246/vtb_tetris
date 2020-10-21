@@ -4,6 +4,8 @@
 
 var TetrisManager = TetrisManager || {};
 
+PIXI.autoDetectRenderer.antialias = true;
+
 TetrisManager.Temps = {};
 
 TetrisManager.Records = {};
@@ -1170,6 +1172,15 @@ TetrisManager.randomnize = function (p) {
     }
 }
 
+TetrisManager.componentToHex = function (c) {
+	var hex = c.toString(16);
+	return hex.length == 1 ? "0" + hex : hex;
+}
+
+TetrisManager.rgbToHex = function (r, g, b) {
+	return Number("0x" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b));
+}
+
 //============================================================
 // 内部方法继承与覆写
 //============================================================
@@ -1225,6 +1236,32 @@ Game_Actor.prototype.initialize = function (actorId) {
 	TetrisManager.Temps.Game_Actor_Initialize.call(this, actorId);
 	this._signedItems = [];
 };
+
+//============================================================
+// 反作弊系统
+//============================================================
+
+TetrisManager.isCheating = false;
+
+TetrisManager.Temps.DataManager_setupNewGame = DataManager.setupNewGame;
+DataManager.setupNewGame = function () {
+	TetrisManager.Temps.DataManager_setupNewGame.call(this);
+	var actor = $gameActors.actor(1);
+	$gameSystem._antiCheat.reservedHp = actor.hp;
+}
+
+Game_System.prototype.checkForCheats = function () {
+	var actor = $gameActors.actor(1);
+	if ($gameSystem._antiCheat.reservedHp != actor.hp) {
+		TetrisManager.isCheating = true;
+	}
+}
+
+TetrisManager.Temps.Scene_Map_prototype_update = Scene_Map.prototype.update;
+Scene_Map.prototype.update = function () {
+	TetrisManager.Temps.Scene_Map_prototype_update.call(this);
+	$gameSystem.checkForCheats();
+}
 
 //=============================================================================
 // 小组件定义
@@ -1502,6 +1539,8 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 			//pop.move(target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height / 2)
 			switch (atkType) {
 				case 'normal':
+					target.picture.shake(10);
+					target.picture.blink(0xff0000);
 					break;
 				case 'poison':
 					pop.setTint(0xff99ff)
@@ -3210,7 +3249,63 @@ Tachi.prototype.constructor = Tachi;
 
 Tachi.prototype.initialize = function (name) {
 	Sprite.prototype.initialize.call(this);
-	this.bitmap = ImageManager.loadPicture()
+	this.bitmap = ImageManager.loadPicture("Tachi/" + name);
+	this.blink_sprite = new Sprite(ImageManager.loadPicture("Tachi/" + name));
+}
+
+Tachi.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+
+	if (this.shakeFlag) {
+		if (this.shakeCount % 4 == 0) {
+			if (this.shaked) {
+				this.x -= 10;
+				this.shaked = false;
+			} else {
+				this.x += 10;
+				this.shaked = true;
+            }
+        }
+		this.shakeCount += 1;
+		if (this.shakeCount >= this.shakeTime) {
+			this.shakeFlag = false;
+			if (this.shaked) {
+				this.x -= 10;
+				this.shaked = false;
+            }
+        }
+	}
+
+	if (this.blinkFlag) {
+		this.blink_sprite.opacity += this.blink_speed;
+		if (this.blink_sprite.opacity >= 255) {
+			this.blink_speed = -this.blink_speed;
+		}
+		if (this.blink_sprite.opacity <= 0) {
+			this.removeChild(this.blink_sprite);
+			this.blinkFlag = false;
+        }
+	}
+}
+
+Tachi.prototype.shake = function (time) {
+	if (!this.shakeFlag) {
+		this.shakeFlag = true;
+		this.shakeCount = 0;
+		this.shakeTime = time;
+		this.shaked = false;
+	}
+}
+
+Tachi.prototype.blink = function (color) {
+	if (!this.blinkFlag) {
+		this.blink_sprite.tint = color;
+		this.blink_sprite.opacity = 0;
+		this.blink_speed = 50;
+		this.blinkFlag = true;
+		this.addChild(this.blink_sprite);
+		console.log(this);
+	}
 }
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀
