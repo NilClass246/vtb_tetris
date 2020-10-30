@@ -1237,32 +1237,6 @@ Game_Actor.prototype.initialize = function (actorId) {
 	this._signedItems = [];
 };
 
-//============================================================
-// 反作弊系统
-//============================================================
-
-TetrisManager.isCheating = false;
-
-TetrisManager.Temps.DataManager_setupNewGame = DataManager.setupNewGame;
-DataManager.setupNewGame = function () {
-	TetrisManager.Temps.DataManager_setupNewGame.call(this);
-	var actor = $gameActors.actor(1);
-	$gameSystem._antiCheat.reservedHp = actor.hp;
-}
-
-Game_System.prototype.checkForCheats = function () {
-	var actor = $gameActors.actor(1);
-	if ($gameSystem._antiCheat.reservedHp != actor.hp) {
-		TetrisManager.isCheating = true;
-	}
-}
-
-TetrisManager.Temps.Scene_Map_prototype_update = Scene_Map.prototype.update;
-Scene_Map.prototype.update = function () {
-	TetrisManager.Temps.Scene_Map_prototype_update.call(this);
-	$gameSystem.checkForCheats();
-}
-
 //=============================================================================
 // 小组件定义
 //=============================================================================
@@ -1540,7 +1514,7 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 			switch (atkType) {
 				case 'normal':
 					target.picture.shake(10);
-					target.picture.blink(0xff0000);
+					target.picture.blink(0xff6666);
 					break;
 				case 'poison':
 					pop.setTint(0xff99ff)
@@ -1550,6 +1524,10 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 					break;
 				case 'healing':
 					pop.setTint(0x00ff00)
+					break;
+				case 'real':
+					target.picture.shake(10);
+					target.picture.blink(0xff6666);
 					break;
             }
 			pop.activate();
@@ -3301,7 +3279,7 @@ Tachi.prototype.blink = function (color) {
 	if (!this.blinkFlag) {
 		this.blink_sprite.tint = color;
 		this.blink_sprite.opacity = 0;
-		this.blink_speed = 50;
+		this.blink_speed = 25;
 		this.blinkFlag = true;
 		this.addChild(this.blink_sprite);
 		console.log(this);

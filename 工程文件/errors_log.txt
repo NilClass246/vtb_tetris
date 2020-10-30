@@ -2564,3 +2564,25 @@ Stack: ReferenceError: actor is not defined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Fri Oct 23 2020 19:03:27 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: ReferenceError
+Message: CheatMenu is not defined
+Stack: ReferenceError: CheatMenu is not defined
+    at Game_System.checkForCheats (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:40:6)
+    at Scene_Boot.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:51:15)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Oct 23 2020 19:04:55 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: ReferenceError
+Message: CheatMenu is not defined
+Stack: ReferenceError: CheatMenu is not defined
+    at Game_System.checkForCheats (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:43:2)
+    at Scene_Boot.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:55:15)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+

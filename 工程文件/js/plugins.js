@@ -4,7 +4,7 @@ var $plugins =
 [
 {"name":"YSP_VideoPlayer","status":true,"description":"v1.0.0 Plugin used for playing video.","parameters":{}},
 {"name":"YSP_Preloader","status":true,"description":"v1.0.1 Plugin used to preload assets.","parameters":{}},
-{"name":"NC_Shadow","status":false,"description":"[地图角色光源阴影插件]","parameters":{"阴影素材":"CharacterShadow","阴影最大强度":"200"}},
+{"name":"NC_Shadow","status":true,"description":"[地图角色光源阴影插件]","parameters":{"阴影素材":"CharacterShadow","阴影最大强度":"200"}},
 {"name":"Drill_LayerCamera","status":true,"description":"[v1.6]        地图 - 活动地图镜头","parameters":{"缩小镜头时是否加强刷新量":"true","镜头移动模式":"默认移动","弹性模式移动速度":"14","弹性模式镜头速度上限":"24"}},
 {"name":"FilterController","status":true,"description":"FilterController","parameters":{"Use Decimal in Variables":"true","displacementImage":"DisplacementMap","enabledAll-Settings":"","enabledAll-ShowInOptionMenu":"false","enabledAll-Text":"Filter Effects","enabledAll-DefaultValue":"true"}},
 {"name":"TerraxLighting","status":true,"description":"(v1.51)[v1.1] 地图 - 多光源特效","parameters":{"玩家光源半径":"0","是否添加选项设置":"true","选项名称":"Terrax光源","进新地图是否重置光源":"false","保存时间变量（时）":"0","保存时间变量（分）":"0","保存时间变量（秒）":"0","平移-手电筒 X":"0","平移-手电筒 Y":"0","光源覆盖宽度":"1205","光源覆盖高度":"630","独立开关控制":"无"}},
@@ -80,5 +80,6 @@ var $plugins =
 {"name":"--------------------","status":false,"description":"------------------------------------------------------------","parameters":{}},
 {"name":"MKR_PlayerSensor","status":true,"description":"(v2.5.1) プレイヤー探索プラグイン","parameters":{"探索設定":"====================================","Sensor_Switch":"D","Lost_Sensor_Switch":"","Both_Sensor":"ON","Terrain_Decision":"ON","Auto_Sensor":"false","Event_Decision":"OFF","Region_Decision":"[]","Real_Range_X":"0.000","Real_Range_Y":"0.000","視界設定":"====================================","Range_Visible":"ON","Range_Color":"white","Range_Opacity":"80","Range_Position":"1","Player_Found":"{\"Ballon\":\"1\",\"Se\":\"{\\\"Name\\\":\\\"Buzzer2\\\",\\\"Volume\\\":\\\"50\\\",\\\"Pitch\\\":\\\"100\\\",\\\"Pan\\\":\\\"0\\\"}\",\"Common_Event\":\"0\",\"Delay\":\"0\"}","Player_Lost":"{\"Ballon\":\"6\",\"Se\":\"{\\\"Name\\\":\\\"\\\",\\\"Volume\\\":\\\"90\\\",\\\"Pitch\\\":\\\"100\\\",\\\"Pan\\\":\\\"0\\\"}\",\"Common_Event\":\"0\",\"Delay\":\"0\"}","マップ設定":"====================================","Tracking_Priority":"false","Follower_Through":"false","Location_Reset":"false"}},
 {"name":"Kath_GameOver","status":true,"description":"Change what happens when the party dies or Game Over is called.","parameters":{"Party Death Common Event ID":"","Show Game Over Scene":"true","Reload Last Save":"false","After Game Over Common Event ID":"6"}},
-{"name":"MOG_CharacterMotion","status":false,"description":"(v1.3)[v1.2]  行走图 - 呼吸效果 + 动作效果","parameters":{}}
+{"name":"MOG_CharacterMotion","status":false,"description":"(v1.3)[v1.2]  行走图 - 呼吸效果 + 动作效果","parameters":{}},
+{"name":"NC_AntiCheat","status":true,"description":"[v1.0] 反作弊插件","parameters":{}}
 ];
