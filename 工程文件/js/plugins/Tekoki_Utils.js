@@ -2124,6 +2124,86 @@ MergeEffect.prototype.update = function () {
 
 //-----------------------------------------------------------------------------
 
+function Text_Base() {
+	this.initialize.apply(this, arguments);
+}
+
+Text_Base.prototype = Object.create(Sprite.prototype);
+Text_Base.prototype.constructor = Text_Base;
+
+Text_Base.prototype.initialize = function (text, width, height, size, align) {
+	Sprite.prototype.initialize.call(this);
+	this.bitmap = new Bitmap(width, height);
+	this.bitmap.fontSize = size;
+	this.bitmap.drawText(text, 0, 0, width, height, align);
+}
+
+//-----------------------------------------------------------------------------
+
+function ShiningText() {
+	this.initialize.apply(this, arguments);
+}
+
+ShiningText.prototype = Object.create(Text_Base.prototype);
+ShiningText.prototype.constructor = ShiningText;
+
+ShiningText.prototype.initialize = function (text, width, height, size) {
+	Text_Base.prototype.initialize.call(this, text, width, height, size, 'center');
+	this.layed = false;
+	this.opacity = 0;
+	this.anchor.x = 0.5;
+	this.anchor.y = 0.5;
+}
+
+ShiningText.prototype.update = function () {
+	Text_Base.prototype.update.call(this);
+	if (!this.layed) {
+		this.opacity += 5;
+		if (this.opacity >= 255) {
+			this.layed = true;
+		}
+	} else {
+		this.opacity -= 5;
+		if (this.opacity <= 0) {
+			this.layed = false;
+		}
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+function FloatingText(){
+	this.initialize.apply(this, arguments);
+}
+
+FloatingText.prototype = Object.create(Text_Base.prototype);
+FloatingText.prototype.constructor = FloatingText;
+
+FloatingText.prototype.initialize = function (text, width, height, size) {
+	Text_Base.prototype.initialize.call(this, text, width, height, size, 'left');
+	this.layed = false;
+	this.count = 0;
+}
+
+FloatingText.prototype.update = function () {
+	Text_Base.prototype.update.call(this);
+	if (!this.layed) {
+		this.y -= 1;
+		this.count += 1;
+		if (this.count >= 25) {
+			this.layed = true;
+		}
+	} else {
+		this.y += 1;
+		this.count -= 1;
+		if (this.count <= 0) {
+			this.layed = false;
+		}
+	}
+}
+
+//-----------------------------------------------------------------------------
+
 function ShiningPiece() {
 	this.initialize.apply(this, arguments);
 }
@@ -3284,6 +3364,28 @@ Tachi.prototype.blink = function (color) {
 		this.addChild(this.blink_sprite);
 		console.log(this);
 	}
+}
+
+//-----------------------------------------------------------------------------
+
+function Emphasizer() {
+	this.initialize.apply(this, arguments);
+}
+
+Emphasizer.prototype = Object.create(Sprite.prototype);
+Emphasizer.prototype.constructor = Emphasizer;
+
+Emphasizer.prototype.initialize = function (x, y, width, height) {
+	Sprite.prototype.initialize.call(this);
+	this.blackCover = new PIXI.Graphics();
+	this.blackCover.beginFill(0x000000);
+	this.blackCover.drawRect(0, 0, Graphics.boxWidth, Graphics.boxHeight);
+	this.blackCover.endFill();
+	this.blackCover.mask = new PIXI.Graphics();
+	this.blackCover.mask.beginFill(0x000000);
+	this.blackCover.mask.drawRect(x, y, width, height);
+	this.blackCover.mask.endFill();
+	this.addChild(this.blackCover);
 }
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀

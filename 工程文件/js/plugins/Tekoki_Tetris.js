@@ -153,6 +153,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 
 	this.player.yposition -= TetrisManager.AboveLines * this.player.yrange;
 
+
 	for (var i = 0; i < this.player.field.length; i++) {
 		this.player.field[i] = new Array(this.ROW).fill(0);
 	}
@@ -203,9 +204,18 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 
 	this.player.removeState = function (id) {
 		this.actor.removeState(id);
-    }
+	}
+
+	this.player.money_got = 0;
+	this.player.exp_got = 0;
 
 	this.initialize_Skills();
+
+	if ($gameVariables.value(18) == 1) {
+		this.player.auto = true;
+		this.player.pathGenerator = new Position_Manager();
+		this.player.actionQueue = [];
+	}
 }
 
 Scene_Tetris.prototype.initialize_Skills = function () {
@@ -513,7 +523,11 @@ Scene_Tetris.prototype.update = function () {
 			this.update_Enemy();
 			this._playerStateBoard.refreshStates();
 			if (this.player.running) {
-				this.update_Actor();
+				if (this.player.auto) {
+					this.update_auto();
+				} else {
+					this.update_Actor();
+                }
             }
 			this.isGameOver();
 		}
@@ -676,6 +690,88 @@ Scene_Tetris.prototype.update_Actor = function () {
 	//console.log(this.ooooo)
 	//console.log(this.player.mainwindow)
 	//console.log('=============================')
+}
+
+Scene_Tetris.prototype.update_auto = function () {
+	if (Input.isTriggered('cancel') || Input.isTriggered('menu')) {
+		if (!this._isPaused && !this.isPausedThisTurn) {
+			this.Pause();
+		}
+	}
+
+	if (Input.isTriggered('tab')) {
+		this.changeTarget();
+	}
+
+	if (Input.isTriggered('skillone')) {
+		this._Skill_Manager.startSkill(0);
+	}
+
+	if (Input.isTriggered('skilltwo')) {
+		this._Skill_Manager.startSkill(1);
+	}
+
+	if (Input.isTriggered('skillthree')) {
+		this._Skill_Manager.startSkill(2);
+	}
+
+	this.player.n += 1
+	if (this.player.n >= TetrisManager.AiSpeed) {
+		this.player.n = 0;
+		if (TetrisManager.collide(this.player, this.player.cur)) {
+			AudioManager.playSe(this.seTick)
+			this.mergeBox(this.player);
+			TetrisManager.Count_Blocks += 1;
+			this.removeFromMainWindow(this.player, this.player.cur.block)
+			this.player.cur = null;
+			this.player.lastKick = false;
+			this.createBox(this.player);
+			this.shadow(this.player);
+			this.drawArea(this.player);
+			this.player.holded = false;
+			this.player.delay_reset_times = 15;
+		} else {
+			var nextStep = this.player.actionQueue.shift();
+			switch (nextStep) {
+				case 'Rotate':
+					this.rotateBox(this.player, 1)
+					break;
+				case 'MoveLeft':
+					if (this.bMove(this.player, -1)) {
+						this.player.cur.block.x -= this.player.xrange;
+					}
+					break;
+				case 'MoveRight':
+					if (this.bMove(this.player, 1)) {
+						this.player.cur.block.x += this.player.xrange;
+					}
+					break;
+				case 'Drop':
+					if (this.player.shadowImage) {
+						this.player.cur.block.x = this.player.shadowImage.block.x;
+						this.player.cur.block.y = this.player.shadowImage.block.y;
+						this.player.n = this.player.step;
+					}
+					break;
+			}
+			this.shadow(this.player);
+			this.player.lastKick = false;
+			this._playerStateBoard.onDown();
+		}
+	}
+
+	if (this.player.gaugeSCORE >= this.player.AtkFreq) {
+		var overkill = this.player.gaugeSCORE - this.player.AtkFreq
+		var damage = this.player.atk + overkill;
+		if (this._enemies[this.player.TargetIndex]) {
+			this.AttAck(this.player, this._enemies[this.player.TargetIndex], damage);
+		}
+		this.player.gaugeSCORE = 0;
+		this.drawArea(this.player);
+	}
+
+	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
+	TetrisManager.curhighestKPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
 }
 
 Scene_Tetris.prototype.changeTarget = function () {
@@ -1328,7 +1424,7 @@ Scene_Tetris.prototype.createBox = function (battler) {
 
 		
 		this.addBox(battler, battler.cur);
-		if (battler.category == 'enemy') {
+		if (battler.category == 'enemy'|| battler.auto) {
 			battler.pathGenerator.inputData(battler.field, battler.cur);
 			battler.actionQueue = battler.pathGenerator.render_ActionQueue();
 		}
@@ -1745,38 +1841,11 @@ Scene_Tetris.prototype.create = function () {
 		item.gaugeWindow.x += 624;
 	})
 
-	//var emitter = new particleEmitter('Fire');
-	//emitter.move(100, 100);
-	//this.addChild(emitter);
-	//this.player.gaugeBoard = new Tetris_Window(100, 300, 400, 300);
-	//this.player.gaugeBoard.removeChildAt(0);
-	//this.addChild(this.player.gaugeBoard);
-	//this.gauge = new Gauge(300, 12, this.player.gaugeBoard.hpGaugeColor1(), this.player.gaugeBoard.hpGaugeColor2())
-	//this.player.gaugeBoard.addChild(this.gauge);
-	//this.gauge.refresh(1);
 
 	//放音乐
 	if (this.battleInfo.music) {
 		AudioManager.playBgm(this.battleInfo.music);
 	}
-	//this.bbbb = ImageManager.loadPicture('bars/testFrame3');
-	//this.cccc = ImageManager.loadPicture('bars/BarGrad2');
-	//this.dddd = ImageManager.loadPicture('bars/BarBack2');
-	//this.aaaa = new Gauge_base(
-	//	{
-	//		type: 'Horz',
-	//		frameSource: this.bbbb,
-	//		barSource: this.cccc,
-	//		backSource: this.dddd,
-	//		x: 0,
-	//		y: 0,
-	//		width: 500,
-	//		height: 20,
-	//		maxAmount: 20
-	//	}
-	//);
-	//this.addChild(this.aaaa);
-	//this.aaaa.changeNumber(10);
 
 }
 
@@ -1825,6 +1894,12 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 	}
 	this.refreshPlayerGauge();
 
+	if (this.player.auto) {
+		this.autoSprite = new ShiningText("AUTO", 100, 100, 32);
+		this._effectLayer.addChild(this.autoSprite);
+		this.autoSprite.move(this.player.xposition - 15 - 7 + (this.ROW * this.player.xrange + 65) / 2,
+			this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27 + ((this.COL - TetrisManager.AboveLines) * this.player.yrange) / 2);
+    }
 
 	this.refreshScoreBoard(this.player);
 }

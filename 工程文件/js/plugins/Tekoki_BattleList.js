@@ -3080,8 +3080,8 @@ QTEManager.prototype.initialize = function (qteData, failFunction, qteBoard) {
 		{
 			type: 'Horz',
 			frameSource: TetrisManager.frameCaching['testFrame4'],
-			barSource: ImageManager.loadPicture('bars/barGrad2'),
-			backSource: ImageManager.loadPicture('bars/barBack2'),
+			barSource: ImageManager.loadPicture('bars/BarGrad2'),
+			backSource: ImageManager.loadPicture('bars/BarBack2'),
 			x: 0,
 			y: 0,
 			width: 100,
