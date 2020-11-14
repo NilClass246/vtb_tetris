@@ -206,7 +206,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		this.actor.removeState(id);
 	}
 
-	this.player.money_got = 0;
+	this.player.gold_got = 0;
 	this.player.exp_got = 0;
 
 	this.initialize_Skills();
@@ -804,6 +804,7 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 		operator.MovingToRight = null;
 		this.arr_delay_count = 0;
 	}
+
 	if (!Input.isPressed('left')) {
 		operator.MadeLeftInitialMove = false;
 		this.das_delay_count_left = 0;
@@ -1052,6 +1053,8 @@ Scene_Tetris.prototype.update_Enemy = function () {
 
 			if (CurEnemy.curHp <= 0) {
 				CurEnemy.living = false;
+				this.player.gold_got += CurEnemy.Gold;
+				this.player.exp_got += CurEnemy.Exp;
 			}
         }
 	}
@@ -2171,6 +2174,8 @@ Scene_Tetris.prototype.createAfterMath = function () {
 	info.combo = TetrisManager.curhighestCombo;
 	info.LPM = TetrisManager.curhighestLPM;
 	info.APM = TetrisManager.curhighestKPM;
+	info.gold = this.player.gold_got;
+	info.exp = this.player.exp_got;
 
 	this.AfterMathWindow = new AfterMath_Window(info);
 	this._upperLayer.addChild(this.AfterMathWindow);
@@ -2186,6 +2191,9 @@ Scene_Tetris.prototype.createAfterMath = function () {
 	if ($gameVariables.value(24) > TetrisManager.Records.highestKPM) {
 		TetrisManager.Records.highestKPM = $gameVariables.value(24);
 	}
+
+	$gameParty.gainGold(this.player.gold_got);
+	$gameActors.actor(1).gainExp(this.player.exp_got);
 }
 
 Scene_Tetris.prototype.eliminateBUGs = function (operator) {

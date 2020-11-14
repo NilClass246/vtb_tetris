@@ -1354,12 +1354,16 @@ AfterMath_Window.prototype.initialize = function (info) {
 	this.combo = info.combo;
 	this.LPM = info.LPM;
 	this.APM = info.APM;
+	this.gold = info.gold;
+	this.exp = info.exp;
 	this.layed = false;
 	this.refresh();
 	this.drawText("本局分数：" + this.score, 0, 0);
 	this.drawText("本局最大连击：" + this.combo, 0, 28);
 	this.drawText("本局LPM：" + TetrisManager.keepTwoDigits(this.LPM), 0, 56);
 	this.drawText("本局KPM：" + TetrisManager.keepTwoDigits(this.APM), 0, 84);
+	this.drawText("获得金币：" + TetrisManager.keepTwoDigits(this.gold), 0, 140);
+	this.drawText("获得经验：" + TetrisManager.keepTwoDigits(this.exp), 0, 168);
 
 	this.contents.drawLine(500, 0, 500, 424, 5, "black");
 
@@ -2190,7 +2194,7 @@ FloatingText.prototype.update = function () {
 	if (!this.layed) {
 		this.y -= 1;
 		this.count += 1;
-		if (this.count >= 25) {
+		if (this.count >= 10) {
 			this.layed = true;
 		}
 	} else {
@@ -3375,8 +3379,9 @@ function Emphasizer() {
 Emphasizer.prototype = Object.create(Sprite.prototype);
 Emphasizer.prototype.constructor = Emphasizer;
 
-Emphasizer.prototype.initialize = function (x, y, width, height) {
+Emphasizer.prototype.initialize = function (text, x, y, width, height) {
 	Sprite.prototype.initialize.call(this);
+	this.Ftext = new FloatingText(text, width, 56, 14);
 	this.blackCover = new PIXI.Graphics();
 	this.blackCover.beginFill(0x000000);
 	this.blackCover.drawRect(0, 0, Graphics.boxWidth, Graphics.boxHeight);
@@ -3386,6 +3391,9 @@ Emphasizer.prototype.initialize = function (x, y, width, height) {
 	this.blackCover.mask.drawRect(x, y, width, height);
 	this.blackCover.mask.endFill();
 	this.addChild(this.blackCover);
+	this.blackCover.alpha = 125 / 255;
+	this.addChild(this.Ftext);
+	this.Ftext.move(x, y - 56);
 }
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀
