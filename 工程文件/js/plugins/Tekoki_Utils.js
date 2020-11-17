@@ -8,8 +8,6 @@ PIXI.autoDetectRenderer.antialias = true;
 
 TetrisManager.Temps = {};
 
-TetrisManager.Records = {};
-
 TetrisManager.data = {
 	'o': [
 		[
@@ -803,6 +801,8 @@ TetrisManager.autoStart = false;
 // 成就参数
 //============================================================
 
+TetrisManager.Records = {};
+
 TetrisManager.Records.Count_Tspin = 0;
 
 TetrisManager.Records.Count_Blocks = 0;
@@ -817,6 +817,8 @@ TetrisManager.Records.highestKPM = 0;
 
 TetrisManager.Records.Total_Score = 0;
 
+TetrisManager.Records.isTitleScreenChanged = false;
+
 TetrisManager.localFileId = 4545;
 
 TetrisManager.webStorageKey = "Tekoki-Tetris";
@@ -824,6 +826,7 @@ TetrisManager.webStorageKey = "Tekoki-Tetris";
 TetrisManager.makeData = function () {
 	var tet = TetrisManager.Records;
 	tet.AiSpeed = TetrisManager.AiSpeed;
+	tet.isTitleScreenChanged = TetrisManager.Records.isTitleScreenChanged;
 	return tet
 }
 
@@ -845,29 +848,11 @@ TetrisManager.load = function () {
 
 	for (name in tet) {
 		switch (name) {
-			case "Count_Tspin":
-				TetrisManager.Records.Count_Tspin = tet[name];
-				break;
-			case "Count_Blocks":
-				TetrisManager.Records.Count_Blocks = tet[name];
-				break;
-			case "Count_Buttons":
-				TetrisManager.Records.Count_Buttons = tet[name];
-				break;
-			case "Count_Lines":
-				TetrisManager.Records.Count_Lines = tet[name];
-				break;
-			case "highestLPM":
-				TetrisManager.Records.highestLPM = tet[name];
-				break;
-			case "highestKPM":
-				TetrisManager.Records.highestKPM = tet[name];
-				break;
-			case "Total_Score":
-				TetrisManager.Records.Total_Score = tet[name];
-				break;
 			case "AiSpeed":
 				TetrisManager.AiSpeed = tet[name];
+				break;
+			case "isTitleScreenChanged":
+				TetrisManager.Records.isTitleScreenChanged = tet[name];
 				break;
         }
 	}
@@ -893,6 +878,22 @@ TetrisManager.Temps.Scene_Boot_Start = Scene_Boot.prototype.start;
 Scene_Boot.prototype.start = function () {
 	TetrisManager.Temps.Scene_Boot_Start.call(this);
 	TetrisManager.load();
+}
+
+TetrisManager.Temps.Scene_Title_prototype_initialize = Scene_Title.prototype.initialize;
+Scene_Title.prototype.initialize = function () {
+	TetrisManager.Temps.Scene_Title_prototype_initialize.call(this);
+	TetrisManager.load();
+}
+
+TetrisManager.Temps.Scene_Title_prototype_create = Scene_Title.prototype.create;
+Scene_Title.prototype.create = function () {
+	TetrisManager.Temps.Scene_Title_prototype_create.call(this);
+	if (!TetrisManager.Records.isTitleScreenChanged) {
+		var titletext = new Text_Base("No Tetris No Life", 400, 200, 55, 'left');
+		titletext.move(400, 100);
+		this.addChild(titletext);
+	}
 }
 
 //============================================================
@@ -2192,14 +2193,14 @@ FloatingText.prototype.initialize = function (text, width, height, size) {
 FloatingText.prototype.update = function () {
 	Text_Base.prototype.update.call(this);
 	if (!this.layed) {
-		this.y -= 1;
-		this.count += 1;
-		if (this.count >= 10) {
+		this.y -= 0.1;
+		this.count += 0.1;
+		if (this.count >= 5) {
 			this.layed = true;
 		}
 	} else {
-		this.y += 1;
-		this.count -= 1;
+		this.y += 0.1;
+		this.count -= 0.1;
 		if (this.count <= 0) {
 			this.layed = false;
 		}
@@ -3394,6 +3395,41 @@ Emphasizer.prototype.initialize = function (text, x, y, width, height) {
 	this.blackCover.alpha = 125 / 255;
 	this.addChild(this.Ftext);
 	this.Ftext.move(x, y - 56);
+}
+
+//-----------------------------------------------------------------------------
+
+function SpriteSlider() {
+	this.initialize.apply(this, arguments);
+}
+
+SpriteSlider.prototype = Object.create(Sprite.prototype);
+SpriteSlider.prototype.constructor = SpriteSlider;
+
+SpriteSlider.prototype.initialize = function (Sparent, StartX, StartY, EndX, EndY, time) {
+	Sprite.prototype.initialize.call(this);
+	this.Sparent = Sparent
+	this.Sparent.x = StartX;
+	this.Sparent.y = StartY;
+	this.laying_count = 0;
+	this.laying_time = time;
+	this.bounce_constant = 10;
+	this.nX = (EndX - StartX + bounce_constant) / (time - this.bounce_constant);
+	this.nY = (EndY - StartY + bounce_constant) / (time - this.bounce_constant);
+}
+
+SpriteSlider.prototype.update = function () {
+	this.laying_count += 1;
+	if (this.laying_count <= this.laying_time - this.bounce_constant) {
+		this.Sparent.x += this.nX;
+		this.Sparent.y += this.nY;
+	} else {
+		this.Sparent.x -= 1;
+		this.Sparent.y -= 1;
+	}
+	if (this.player_laying_count >= this.laying_speed) {
+		this.destroy();
+	}
 }
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀

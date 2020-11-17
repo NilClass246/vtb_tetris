@@ -1,10 +1,10 @@
 [
 null,
 {"id":1,"expanded":false,"name":"初始地图","order":3,"parentId":11,"scrollX":819,"scrollY":452},
-null,
+{"id":2,"expanded":false,"name":"熔岩洞","order":28,"parentId":29,"scrollX":816,"scrollY":1760},
 {"id":3,"expanded":false,"name":"MEA房间","order":4,"parentId":11,"scrollX":819,"scrollY":452},
 {"id":4,"expanded":false,"name":"NobuHime","order":10,"parentId":19,"scrollX":819,"scrollY":452},
-{"id":5,"expanded":false,"name":"勇者开场","order":25,"parentId":0,"scrollX":819,"scrollY":452},
+{"id":5,"expanded":true,"name":"勇者开场","order":25,"parentId":0,"scrollX":819,"scrollY":452},
 {"id":6,"expanded":false,"name":"王座","order":26,"parentId":5,"scrollX":811,"scrollY":516},
 {"id":7,"expanded":true,"name":"白雪事件","order":18,"parentId":19,"scrollX":811,"scrollY":628},
 {"id":8,"expanded":false,"name":"推箱子","order":22,"parentId":23,"scrollX":819,"scrollY":452},
@@ -28,6 +28,6 @@ null,
 {"id":26,"expanded":false,"name":"台阶","order":20,"parentId":7,"scrollX":819,"scrollY":452},
 {"id":27,"expanded":false,"name":"垃圾场","order":8,"parentId":23,"scrollX":811,"scrollY":2310},
 {"id":28,"expanded":false,"name":"一楼","order":19,"parentId":7,"scrollX":811,"scrollY":452},
-{"id":29,"expanded":false,"name":"序章","order":27,"parentId":0,"scrollX":819,"scrollY":452},
-{"id":30,"expanded":false,"name":"开场","order":28,"parentId":0,"scrollX":832,"scrollY":640}
+{"id":29,"expanded":true,"name":"序章","order":27,"parentId":0,"scrollX":832,"scrollY":640},
+{"id":30,"expanded":false,"name":"开场","order":29,"parentId":0,"scrollX":819,"scrollY":452}
 ]

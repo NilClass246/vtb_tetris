@@ -2608,3 +2608,10 @@ Stack: ReferenceError: operator is not defined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Mon Nov 16 2020 20:19:39 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: undefined
+Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Prologue.json. Description: Unexpected token  in JSON at position 193
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
+Stack: undefined
+
