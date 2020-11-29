@@ -518,6 +518,13 @@ Scene_Tetris.prototype.update = function () {
 
 		this.update_Animation();
 
+		for (var i = 0; i < this._enemies.length; i++) {
+			var CurEnemy = this._enemies[i]
+			if (CurEnemy.manager && CurEnemy.manager.updateOutOfSync) {
+				CurEnemy.manager.updateOutOfSync();
+			}
+		}
+
 		if (this.running) {
 			this._Skill_Manager.update();
 			this.update_Enemy();
@@ -563,9 +570,6 @@ Scene_Tetris.prototype.update_Player_Placement = function () {
 			if (!TetrisManager.autoStart) {
 				this.StartWindow.activate();
 				this.StartWindow.open();
-			} else {
-				this.Counter = new Counting();
-				this._upperLayer.addChild(this.Counter);
 			}
 		}
     }

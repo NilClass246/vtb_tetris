@@ -2615,3 +2615,183 @@ Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Prologue.j
 Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
 Stack: undefined
 
+Date: Sat Nov 21 2020 10:14:19 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 2
+Event ID: 22
+Event Page: 1
+Last Event Command: 413
+Name: TypeError
+Message: Cannot read property 'forEach' of undefined
+Stack: TypeError: Cannot read property 'forEach' of undefined
+    at Window.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:6589:19)
+    at Window_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:110:29)
+    at Window_Instructions.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1290:31)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:60:39)
+    at Scene_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:607:33)
+    at Scene_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:922:22)
+
+Date: Sat Nov 21 2020 12:53:36 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: undefined
+Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Prologue.json. Description: Unexpected token | in JSON at position 898
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
+Stack: undefined
+
+Date: Sat Nov 21 2020 12:55:57 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: undefined
+Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Prologue.json. Description: Unexpected token | in JSON at position 898
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
+Stack: undefined
+
+Date: Sat Nov 28 2020 17:11:06 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: undefined
+Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Prologue.json. Description: Unexpected token } in JSON at position 1665
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
+Stack: undefined
+
+Date: Sat Nov 28 2020 17:33:29 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'addChild' of undefined
+Stack: TypeError: Cannot read property 'addChild' of undefined
+    at Object.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:758:27)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:745:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1911:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1806:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 17:46:49 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'addHole' of undefined
+Stack: TypeError: Cannot read property 'addHole' of undefined
+    at Graphics.addHole (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi.js:11840:26)
+    at Emphasizer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3426:4)
+    at new Emphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3409:18)
+    at Object.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:756:21)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:745:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1911:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1806:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 17:48:03 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'addHole' of undefined
+Stack: TypeError: Cannot read property 'addHole' of undefined
+    at Graphics.addHole (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi.js:11840:26)
+    at Emphasizer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3425:4)
+    at new Emphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3409:18)
+    at Object.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:756:21)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:745:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1911:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1806:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 17:49:58 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot set property 'alpha' of undefined
+Stack: TypeError: Cannot set property 'alpha' of undefined
+    at Emphasizer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3424:24)
+    at new Emphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3409:18)
+    at Object.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:756:21)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:745:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1911:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1806:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 18:38:25 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'anchorX' of undefined
+Stack: TypeError: Cannot read property 'anchorX' of undefined
+    at Emphasizer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3433:28)
+    at new Emphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3409:18)
+    at Object.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:758:21)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:745:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1911:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1806:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 18:41:21 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'anchorX' of undefined
+Stack: TypeError: Cannot read property 'anchorX' of undefined
+    at Emphasizer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3433:28)
+    at new Emphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3409:18)
+    at Object.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:758:21)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:745:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1911:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1806:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 19:03:50 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: scene is not defined
+Stack: ReferenceError: scene is not defined
+    at Object.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:773:5)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:747:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1911:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1806:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 19:21:05 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property '_playerItemBoard' of undefined
+Stack: TypeError: Cannot read property '_playerItemBoard' of undefined
+    at Object.updateOutOfSync (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:762:16)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:524:22)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 19:24:18 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: scene is not defined
+Stack: ReferenceError: scene is not defined
+    at Object.clearEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:799:5)
+    at Object.nextEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:792:10)
+    at Object.updateOutOfSync (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:768:11)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:524:22)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Nov 28 2020 20:12:06 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'hp' of undefined
+Stack: TypeError: Cannot read property 'hp' of undefined
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:759:40)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1006:21)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:530:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+

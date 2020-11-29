@@ -117,6 +117,9 @@ TetrisManager.special_List = {
 
 			this.revision = 0;
 			this._placeSpecial = false;
+
+			this.Counter = new Counting();
+			scene._upperLayer.addChild(this.Counter);
 		},
 		onFirstUpdate: function () {
 			scene = SceneManager._scene;
@@ -731,28 +734,91 @@ TetrisManager.special_List = {
 
 		}
 	},
-	'tutorial': {
+	'tutorial1': {
 		initialize: function () {
 			this.bossID = 2;
-			this.scene = SceneManager._scene;
-			this.emphasizer_flag = false;
+			this.emphasizer_array = [];
+			this.emphasizer_pointer = 0;
+			this.emphasizer_added = false;
+			this.firstTime = true;
+			this.isCounted = false;
+			this.isAttacked = false;
+			this.isAttacking = false;
 		},
 		create: function () {
-			
+			SceneManager._scene._playerItemBoard.ban();
+			this.addEmphasizer(
+				"{Prologue_inbattle_1_1}"
+				, 100, 312, 0, 0);
+			this.addEmphasizer(
+				"{Prologue_inbattle_1_2}"
+				, 100, 312, 0, 0);
+			this.addEmphasizer(
+				"{Prologue_inbattle_1_3}"
+				, 100, 312, 0, 0);
 		},
 		update: function () {
-			if (this.emphasizer_flag) {
-				if (Input.isTriggered('ok')) {
-					this.emphasizer_flag = false;
-                }
+			var scene = SceneManager._scene;
+			if (!this.isAttacked && (scene.actor.hp - scene.player.displayHp)) {
+				this.addEmphasizer(
+					"{Prologue_inbattle_1_onAttack_1}"
+					, 0, 475, 360, 75);
+				this.addEmphasizer(
+					"{Prologue_inbattle_1_onAttack_2}"
+					, 0, 475, 360, 75);
+				this.isAttacked = true;
+			}
+
+			if (!this.isAttacking && scene.player.gaugeSCORE >= scene.player.AtkFreq - 1) {
+				this.addEmphasizer(
+					"{Prologue_inbattle_1_onAttacking}"
+					, scene.player.xposition - 15 - 7 + 265, 20, 10, (this.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
+				this.isAttacking = true;
+            }
+
+		},
+		updateOutOfSync: function () {
+			if (this.firstTime) {
+				this.firstTime = false;
+			}
+
+			if (this.emphasizer_added) {
+				if (Input.isTriggered('ok') || TouchInput.isPressed()) {
+					this.nextEmphasizer();
+				}
+			}
+        },
+		addEmphasizer: function (text, x, y, width, height, options) {
+			var emphasizer = new Emphasizer(text, x, y, width, height, options);
+			this.emphasizer_array.push(emphasizer);
+			if (!this.emphasizer_added) {
+				SceneManager._scene.running = false;
+				console.log(1);
+				SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
+				this.emphasizer_added = true;
             }
 		},
-		addEmphasizer: function (text, x, y, width, height) {
-			this.emphasizer = new Emphasizer(text, x, y, width, height);
-			this.scene.addChild(this.emphasizer);
-		},
-		delEmphasizer: function () {
-			this.scene.removeChild(this.emphasizer);
+		nextEmphasizer: function () {
+			this.emphasizer_pointer++;
+			if (this.emphasizer_array[this.emphasizer_pointer]) {
+				SceneManager._scene.removeChild(this.emphasizer_array[this.emphasizer_pointer - 1]);
+				SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
+			} else {
+				this.clearEmphasizer();
+				this.emphasizer_pointer = 0;
+				this.emphasizer_array = [];
+				this.emphasizer_added = false;
+            }
+        },
+		clearEmphasizer: function () {
+			SceneManager._scene.removeChild(this.emphasizer_array[this.emphasizer_pointer-1]);
+			if (!this.isCounted) {
+				this.Counter = new Counting();
+				this.isCounted = true;
+				SceneManager._scene._upperLayer.addChild(this.Counter);
+			} else {
+				SceneManager._scene.running = true;
+            }
         }
 	},
 }
@@ -1649,7 +1715,7 @@ var Vampire = [
 	},
 ]
 
-var Tutorial = [
+var Tutorial1 = [
 	{
 		name: "Slime",
 		category: "enemy",
@@ -1663,7 +1729,7 @@ var Tutorial = [
 		level: 1,
 		curHp: 0,
 		displayHp: 0,
-		Mhp: 200,
+		Mhp: 100,
 		atk: 35,
 		def: 20,
 		curEng: 0,
@@ -1675,7 +1741,7 @@ var Tutorial = [
 
 		xrange: 12,
 		yrange: 12,
-		manager: Object.create(TetrisManager.special_List["tutorial"]),
+		manager: Object.create(TetrisManager.special_List["tutorial1"]),
 	}
 ]
 
@@ -1685,7 +1751,8 @@ TetrisManager.enemy_List = [
 	FourKnights,
 	Enemy99,
 	TestBoss,
-	Vampire
+	Vampire,
+	Tutorial1
 ]
 
 TetrisManager.skill_List = {
@@ -2801,7 +2868,16 @@ TetrisManager.battle_List = {
 			pan: 0
 		},
 		enemyList: TetrisManager.enemy_List[1],
-	}
+	},
+	"Tutorial1": {
+		music: {
+			name: "Tetris",
+			volume: 50,
+			pitch: 100,
+			pan: 0
+		},
+		enemyList: TetrisManager.enemy_List[6],
+    }
 }
 
 //=============================================================================

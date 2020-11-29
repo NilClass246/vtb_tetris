@@ -1,4 +1,5 @@
 [
 null,
-{"id":1,"animationId":0,"description":"沉默之沙，阴郁的梦境，命中注定的死亡。","etypeId":1,"traits":[{"code":43,"dataId":1,"value":1}],"iconIndex":115,"name":"Sandman","note":"","params":[0,0,0,0,0,0,0,0],"price":0,"wtypeId":1}
+{"id":1,"animationId":0,"description":"沉默之沙，阴郁的梦境，命中注定的死亡。","etypeId":1,"traits":[{"code":43,"dataId":1,"value":1}],"iconIndex":115,"name":"Sandman","note":"","params":[0,0,0,0,0,0,0,0],"price":0,"wtypeId":1},
+{"id":2,"animationId":6,"description":"总而言之就是闪闪发光","etypeId":1,"traits":[],"iconIndex":97,"name":"圣剑","note":"","params":[0,0,10,0,0,0,0,0],"price":0,"wtypeId":2}
 ]

@@ -344,7 +344,7 @@ TetrisManager.GaugeConstant = 10;
 
 TetrisManager.AboveLines = 16;
 
-TetrisManager.AiSpeed = 0;
+TetrisManager.AiSpeed = 20;
 
 TetrisManager.Xrevision = 23;
 
@@ -1259,6 +1259,40 @@ Tetris_Window.prototype.refresh = function () {
 }
 
 //-----------------------------------------------------------------------------
+TetrisManager.showInstructions = function () {
+	this.instructions = new Window_Instructions();
+	SceneManager._scene.addChild(this.instructions);
+}
+
+TetrisManager.hideInstructions = function () {
+	var s = new SpriteSlider(this.instructions, 288, 100, 288, 734, 60);
+	SceneManager._scene.addChild(s);
+}
+
+function Window_Instructions() {
+	this.initialize.apply(this, arguments);
+}
+
+Window_Instructions.prototype = Object.create(Window_Base.prototype);
+Window_Instructions.prototype.constructor = Window_Instructions;
+
+Window_Instructions.prototype.initialize = function () {
+	Window_Base.prototype.initialize.call(this, 288, 0, 624, 524);
+	this.window_title = new Tetris_Window(0, -100, 624, 100);
+	this.addChild(this.window_title)
+	this.window_title.drawText("{instructions_title}", 0, 0);
+	this.drawText("{instructions_Line1}", 0, 0);
+	this.drawText("{instructions_Line2}", 0, 28);
+	this.drawText("{instructions_Line3}", 0, 56);
+	this.silder = new SpriteSlider(this, 288, -524, 288, 100, 60);
+	this.addChild(this.silder);
+}
+
+Window_Instructions.prototype.refresh = function () {
+	this.contents.clear();
+}
+
+//-----------------------------------------------------------------------------
 // icon 的超类
 
 //-----------------------------------------------------------------------------
@@ -1798,7 +1832,7 @@ itemBoard.prototype.initialize = function () {
 	this.lastSet = -1;
 	this.iconSets = [];
 	this.changingIcon = false;
-	this.background = new Tetris_Window(-5, -5, 5 * 38 + 10, 48);
+	this.background = new Tetris_Window(-5, -5, 200, 48);
 	this.addChild(this.background);
 
 	this.Icons = [];
@@ -1857,6 +1891,8 @@ itemBoard.prototype.initialize = function () {
 	this.itemArrow.move(4 * 38 + 10, 0)
 	this.addChild(this.itemArrow)
 	this.addChild(this.iconSets[this.setIndex]);
+
+	this.running = true;
 }
 
 itemBoard.prototype.update = function () {
@@ -1938,6 +1974,16 @@ itemBoard.prototype.applyItem = function (item) {
 	if (TetrisManager.item_List[id]) {
 		TetrisManager.item_List[id]();
     }
+}
+
+itemBoard.prototype.ban = function () {
+	this.running = false;
+	this.x -= 200;
+}
+
+itemBoard.prototype.unban = function () {
+	this.running = true;
+	var s = new SpriteSlider(this, this.x, this.y, this.x += 200, this.y, 60);
 }
 
 function itemIcon() {
@@ -2138,9 +2184,15 @@ Text_Base.prototype.constructor = Text_Base;
 
 Text_Base.prototype.initialize = function (text, width, height, size, align) {
 	Sprite.prototype.initialize.call(this);
-	this.bitmap = new Bitmap(width, height);
+	text = DKTools.Localization.getText(text);
+	var texts = text.split("\n");
+	console.log(texts);
+	this._height = (texts.length) * (size*(4/3)*2);
+	this.bitmap = new Bitmap(width, this._height);
 	this.bitmap.fontSize = size;
-	this.bitmap.drawText(text, 0, 0, width, height, align);
+	for (var i = 0; i < texts.length; i++) {
+		this.bitmap.drawText(texts[i], 0, i * size, width, this._height, align);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -3303,6 +3355,8 @@ WindowGlow.prototype.stop = function () {
 
 //-----------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------
+
 function Tachi() {
 	this.initialize.apply(this, arguments);
 }
@@ -3380,25 +3434,40 @@ function Emphasizer() {
 Emphasizer.prototype = Object.create(Sprite.prototype);
 Emphasizer.prototype.constructor = Emphasizer;
 
-Emphasizer.prototype.initialize = function (text, x, y, width, height) {
+Emphasizer.prototype.initialize = function (text, x, y, width, height, options) {
 	Sprite.prototype.initialize.call(this);
-	this.Ftext = new FloatingText(text, width, 56, 14);
-	this.blackCover = new PIXI.Graphics();
-	this.blackCover.beginFill(0x000000);
-	this.blackCover.drawRect(0, 0, Graphics.boxWidth, Graphics.boxHeight);
-	this.blackCover.endFill();
-	this.blackCover.mask = new PIXI.Graphics();
-	this.blackCover.mask.beginFill(0x000000);
-	this.blackCover.mask.drawRect(x, y, width, height);
-	this.blackCover.mask.endFill();
-	this.addChild(this.blackCover);
-	this.blackCover.alpha = 125 / 255;
-	this.addChild(this.Ftext);
-	this.Ftext.move(x, y - 56);
+	this.blackHole = new PIXI.Graphics()
+		.beginFill(0x000000)
+		.moveTo(0, 0)
+		.lineTo(Graphics.boxWidth, 0)
+		.lineTo(Graphics.boxWidth, Graphics.boxHeight)
+		.lineTo(0, Graphics.boxHeight)
+		.moveTo(x, y)
+		.lineTo(x + width, y)
+		.lineTo(x + width, y + height)
+		.lineTo(x, y + height)
+		.addHole()
+		.endFill();
+	this.addChild(this.blackHole);
+	this.blackHole.alpha = 125 / 255;
+	var Ftext = new FloatingText(text, 1200, 28, (options ? (options.fontSize ? options.fontSize : 24) : 24));
+	Ftext.move((options ? (options.textX ? options.textX : x) : x),
+		(options ? (options.textY ? options.textY : y - Ftext._height) : y - Ftext._height));
+	this.addChild(Ftext);
 }
 
 //-----------------------------------------------------------------------------
-
+/**
+ * 制作移动特效的类.
+ *
+ * @method SpriteSlider
+ * @param {Any} Sparent 需要转移的对象
+ * @param {Any} StartX 起始X
+ * @param {Any} StartY 起始Y
+ * @param {Any} EndX 最终X
+ * @param {Any} EndY 最终Y
+ * @param {Any} time 转移时间（帧）
+ */
 function SpriteSlider() {
 	this.initialize.apply(this, arguments);
 }
@@ -3414,8 +3483,17 @@ SpriteSlider.prototype.initialize = function (Sparent, StartX, StartY, EndX, End
 	this.laying_count = 0;
 	this.laying_time = time;
 	this.bounce_constant = 10;
-	this.nX = (EndX - StartX + bounce_constant) / (time - this.bounce_constant);
-	this.nY = (EndY - StartY + bounce_constant) / (time - this.bounce_constant);
+	if (EndX - StartX) {
+		this.nX = (EndX - StartX + this.bounce_constant) / (time - this.bounce_constant);
+	} else {
+		this.nX = 0;
+	}
+	if (EndY - StartY) {
+		this.nY = (EndY - StartY + this.bounce_constant) / (time - this.bounce_constant);
+	} else {
+		this.nY = 0;
+    }
+	this._completed = false;
 }
 
 SpriteSlider.prototype.update = function () {
@@ -3424,13 +3502,15 @@ SpriteSlider.prototype.update = function () {
 		this.Sparent.x += this.nX;
 		this.Sparent.y += this.nY;
 	} else {
-		this.Sparent.x -= 1;
-		this.Sparent.y -= 1;
+		this.Sparent.x -= this.nX ? 1 : 0;
+		this.Sparent.y -= this.nY ? 1 :0;
 	}
-	if (this.player_laying_count >= this.laying_speed) {
+	if (this.laying_count >= this.laying_time) {
 		this.destroy();
 	}
 }
+
+//-----------------------------------------------------------------------------
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄
