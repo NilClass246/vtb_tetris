@@ -797,6 +797,8 @@ TetrisManager.starPic = ImageManager.loadPicture('ui/signStar');
 
 TetrisManager.autoStart = false;
 
+TetrisManager.TachiCode = "redDumpling";
+
 //============================================================
 // 成就参数
 //============================================================
@@ -1588,6 +1590,7 @@ function SkillManager() {
 }
 
 SkillManager.prototype.initialize = function (skillIDList, isOwnerEnemy) {
+	this.running = true;
 	this._skill_list = [];
 	this.skillButton_list = [];
 	for (var i = 0; i < skillIDList.length; i++) {
@@ -1597,6 +1600,8 @@ SkillManager.prototype.initialize = function (skillIDList, isOwnerEnemy) {
 		this._skill_list[i].index = i;
 		this.skillButton_list.push(new SkillButton(skillIDList[i]));
 	}
+
+	this.isOwnerEnemy = isOwnerEnemy;
 
 	if (!isOwnerEnemy) {
 		for (name in Input.keyMapper) {
@@ -1633,158 +1638,44 @@ SkillManager.prototype.startSkill = function (id) {
 }
 
 SkillManager.prototype.update = function () {
-	for (var i = 0; i < this._skill_list.length; i++) {
-		if (!this._skill_list[i].isPrepared) {
-			if ((Date.now() - this._skill_list[i].oldTime) / 1000 > 1) {
-				this._skill_list[i].CD -= 1;
-				this.skillButton_list[i].writeCDTxt(this._skill_list[i].CD);
-				this._skill_list[i].oldTime = Date.now();
-				if (this._skill_list[i].CD <= 0) {
-					this._skill_list[i].isPrepared = true;
-                }
-            }
-        }
-	}
-}
+	if (this.running) {
+		for (var i = 0; i < this._skill_list.length; i++) {
+			if (!this._skill_list[i].isPrepared) {
+				if ((Date.now() - this._skill_list[i].oldTime) / 1000 > 1) {
+					this._skill_list[i].CD -= 1;
+					this.skillButton_list[i].writeCDTxt(this._skill_list[i].CD);
+					this._skill_list[i].oldTime = Date.now();
+					if (this._skill_list[i].CD <= 0) {
+						this._skill_list[i].isPrepared = true;
+					}
+				}
+			}
+		}
+		if (!this.isOwnerEnemy) {
+			if (Input.isTriggered('skillone')) {
+				this.startSkill(0);
+			}
 
-//-----------------------------------------------------------------------------
+			if (Input.isTriggered('skilltwo')) {
+				this.startSkill(1);
+			}
 
-function SkillWindow() {
-	this.initialize.apply(this, arguments);
-}
-
-SkillWindow.prototype = Object.create(Window_Selectable.prototype);
-SkillWindow.prototype.constructor = SkillWindow;
-
-SkillWindow.prototype.initialize = function (skillButtonList, helpWindow) {
-	Window_Selectable.prototype.initialize.call(this);
-	this.skillButton_list = skillButtonList;
-
-	this.setHelpWindow(helpWindow);
-	this._itemNum = 3;
-	this.openness = 0;
-	this.deactivate();
-}
-
-SkillWindow.prototype.start = function () {
-	for (var i = 0; i < this.skillButton_list.length; i++) {
-		this.skillButton_list[i].move(this.padding+this.spacing()+i*this.itemWidth(), this.padding)
-		this.addChild(this.skillButton_list[i]);
-    }
-	this.updatePlacement();
-	this.createContents();
-	this.refresh();
-	this.open();
-	this.activate();
-	this.select(0);
-}
-
-SkillWindow.prototype.updatePlacement = function () {
-	this.width = this.windowWidth();
-	this.height = this.windowHeight();
-	this.x = 0
-	this.y = 545;
-};
-
-SkillWindow.prototype.itemWidth = function () {
-	return 50;
-};
-
-SkillWindow.prototype.itemHeight = function () {
-	return 50;
-};
-
-SkillWindow.prototype.windowWidth = function () {
-	return this.maxCols() * this.itemWidth() + this.padding * 2;
-};
-
-SkillWindow.prototype.windowHeight = function () {
-	return this.itemWidth() + this.padding * 2;
-};
-
-SkillWindow.prototype.maxCols = function () {
-	return this._itemNum;
-}
-
-SkillWindow.prototype.maxItems = function () {
-	return this._itemNum;
-};
-
-SkillWindow.prototype.spacing = function () {
-	return 1;
-};
-
-SkillWindow.prototype.update = function () {
-	Window_Selectable.prototype.update.call(this);
-}
-
-SkillWindow.prototype.drawItem = function (index) {
-	this.drawItemRect(index)
-}
-
-SkillWindow.prototype.drawItemRect = function (index) {
-	var rect = this.itemRect(index);
-	var color = this.gaugeBackColor();
-	this.drawRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2, color);
-}
-
-SkillWindow.prototype.getRectColor = function (index) {
-	return this.gaugeBackColor();
-};
-
-SkillWindow.prototype.drawRect = function (dx, dy, dw, dh, color) {
-	this.changePaintOpacity(false);
-	this.contents.fillRect(dx, dy, dw, dh, color);
-	this.changePaintOpacity(true);
-};
-
-SkillWindow.prototype.updateHelp = function () {
-	if (!this._helpWindow) return;
-	if (this.skillButton_list[this.index()] && this.skillButton_list[this.index()]._skill.description ) {
-		this._helpWindow.setText(this.skillButton_list[this.index()]._skill.description);
-	} else {
-		this._helpWindow.setText("No Description")
+			if (Input.isTriggered('skillthree')) {
+				this.startSkill(2);
+			}
+		}
     }
 }
 
-SkillWindow.prototype.isTouchOkEnabled = function () {
-	return true;
-};
-
-SkillWindow.prototype.isOkEnabled = function () {
-	return true;
-};
-
-SkillWindow.prototype.isCancelEnabled = function () {
-	return true;
-};
-
-SkillWindow.prototype.isOkTriggered = function () {
-	return Input.isTriggered('ok');
-};
-
-SkillWindow.prototype.processOk = function () {
-	SoundManager.playOk();
-	for (var i = 0; i < this.skillButton_list.length; i++) {
-		this.removeChild(this.skillButton_list[i]);
-	}
-	this.deactivate();
-	this.close();
-	this._helpWindow.deactivate();
-	this._helpWindow.close();
-	SceneManager._scene._Skill_Manager.startSkill(this.index());
+SkillManager.prototype.ban = function () {
+	this.running = false;
+	this._skill_board.x -= 160;
 }
 
-SkillWindow.prototype.processCancel = function(){
-	SoundManager.playCancel();
-	for (var i = 0; i < this.skillButton_list.length; i++) {
-		this.removeChild(this.skillButton_list[i]);
-	}
-	SceneManager._scene.openPauseWindow();
-	this.deactivate();
-	this.close();
-	this._helpWindow.deactivate();
-	this._helpWindow.close();
+SkillManager.prototype.unban = function () {
+	this.running = true;
+	var s = new SpriteSlider(this._skill_board, this._skill_board.x, this._skill_board.y, this._skill_board.x + 160, this._skill_board.y, 60);
+	this.addChild(s);
 }
 
 //-----------------------------------------------------------------------------
@@ -3013,7 +2904,7 @@ CheckBox.prototype.initialize  = function() {
 	this.bitmap = ImageManager.loadPicture("ui\\CheckBox");
 	this.Check = new Sprite();
 	this.Check.bitmap = ImageManager.loadPicture("ui\\Check");
-	this.added = false;
+	this.d = false;
 }
 
 CheckBox.prototype.ChEck = function () {
@@ -3421,7 +3312,6 @@ Tachi.prototype.blink = function (color) {
 		this.blink_speed = 25;
 		this.blinkFlag = true;
 		this.addChild(this.blink_sprite);
-		console.log(this);
 	}
 }
 
@@ -3511,6 +3401,30 @@ SpriteSlider.prototype.update = function () {
 }
 
 //-----------------------------------------------------------------------------
+
+function ScreenMosaicEffect() {
+	this.initialize.apply(this, arguments);
+}
+
+ScreenMosaicEffect.prototype = Object.create(Sprite.prototype);
+ScreenMosaicEffect.prototype.constructor = ScreenMosaicEffect;
+
+ScreenMosaicEffect.prototype.initialize = function () {
+	Sprite.prototype.initialize.call(this);
+	this.constant = 100;
+	this.data = new Array(this.constant).fill(new Array(this.constant).fill(0));
+	this.width = Graphics.boxWidth / this.constant;
+	this.height = Graphics.boxHeight / this.constant;
+}
+
+ScreenMosaicEffect.prototype.update = function () {
+	if (this.data.length >= 1) {
+		var rndi = Math.floor(Math.random() * this.data.length);
+		var rndj = Math.floor(Math.random() * this.data[rndi].length);
+		var m = new PIXI.Graphics()
+			.beginFill(0x000000);
+    }
+}
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄

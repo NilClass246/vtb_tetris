@@ -17,15 +17,22 @@
 	"Prologue_inbattle_1_onAttack_1": "你刚收到了一次来自敌人的攻击！",
 	"Prologue_inbattle_1_onAttack_2": "这里是你的生命值条，当你受到伤害时便会减少\n而当你的生命值减到零时，你就输掉了这场战斗。",
 	"Prologue_inbattle_1_onAttacking": "你即将积累满你的能量值条！\n当积累满时，将对当前锁定的敌人\n发动一次攻击！",
-
 	"Prologue_firstbattle_3": "很好，你的实力我已经基本了解了。",
-	"Prologue_firstbattle_4": "要是你能够战胜被封印在这里的，过于曾一度将世界逼入毁灭边缘的凶恶魔物的话，\n我就认可你有持有地屦天冠的资格！",
+	"Prologue_firstbattle_4": "要是你能够战胜被封印在这里的，\n过于曾一度将世界逼入毁灭边缘的凶恶魔物的话，\n我就认可你有持有地屦天冠的资格！",
+
 	"Prologue_secondbattle_1": "这是？",
 	"Prologue_secondbattle_2": "好重的杀气和邪恶气息！",
 	"Prologue_secondbattle_3": "嗷嗷嗷嗷嗷嗷嗷！",
-	"Prologue_secondbattle_4": "这就是过去曾经一度将世界逼入毁灭边缘的魔物！",
+	"Prologue_secondbattle_4": "【画外音】\n这就是过去曾经一度将世界逼入毁灭边缘的魔物！",
+	"Prologue_inbattle_2_1": "【画外音】\n在战斗中，去尝试你新领悟的那些东西\n，然后最终战胜它，获取那踏入王座之间的资格吧！",
+	"Prologue_inbattle_2_2": "【画外音】\n活用你从之前的战斗之中领悟的，那些特别的技巧！",
+
 	"Prologue_thirdbattle_1": "那是……什么怪物……",
 	"Prologue_thirdbattle_2": "那就是被封印在这里的上古魔王！上一任地屦天冠的主人拼上一条性命封印了他！",
 	"Prologue_thirdbattle_3": "而到了现在，经过了这么多年，他已经被削弱到极限了！现在就是宿命终结之时！战胜他，完成这最终的试炼，你就能成为新世界的神！",
-	"Prologue_ending_defeat_1": "……"
+	"Prologue_death_1": "……",
+	"Prologue_death_2": "…………",
+	"Prologue_death_3": "………………看来你并不是我所等待的人。",
+
+	"Time_up": "时间到！"
 }

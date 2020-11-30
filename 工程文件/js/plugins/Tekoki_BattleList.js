@@ -737,90 +737,102 @@ TetrisManager.special_List = {
 	'tutorial1': {
 		initialize: function () {
 			this.bossID = 2;
-			this.emphasizer_array = [];
-			this.emphasizer_pointer = 0;
-			this.emphasizer_added = false;
 			this.firstTime = true;
 			this.isCounted = false;
 			this.isAttacked = false;
 			this.isAttacking = false;
 		},
 		create: function () {
-			SceneManager._scene._playerItemBoard.ban();
-			this.addEmphasizer(
+			var scene = SceneManager._scene;
+			scene._playerItemBoard.ban();
+			//scene._Skill_Manager.ban();
+			scene.addEmphasizer(
 				"{Prologue_inbattle_1_1}"
 				, 100, 312, 0, 0);
-			this.addEmphasizer(
+			scene.addEmphasizer(
 				"{Prologue_inbattle_1_2}"
 				, 100, 312, 0, 0);
-			this.addEmphasizer(
+			scene.addEmphasizer(
 				"{Prologue_inbattle_1_3}"
 				, 100, 312, 0, 0);
 		},
 		update: function () {
 			var scene = SceneManager._scene;
 			if (!this.isAttacked && (scene.actor.hp - scene.player.displayHp)) {
-				this.addEmphasizer(
+				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttack_1}"
 					, 0, 475, 360, 75);
-				this.addEmphasizer(
+				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttack_2}"
 					, 0, 475, 360, 75);
 				this.isAttacked = true;
 			}
 
 			if (!this.isAttacking && scene.player.gaugeSCORE >= scene.player.AtkFreq - 1) {
-				this.addEmphasizer(
+				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttacking}"
-					, scene.player.xposition - 15 - 7 + 265, 20, 10, (this.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
+					, scene.player.xposition - 15 - 7 + 265, 20, 10, (scene.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
 				this.isAttacking = true;
-            }
-
-		},
-		updateOutOfSync: function () {
-			if (this.firstTime) {
-				this.firstTime = false;
 			}
-
-			if (this.emphasizer_added) {
-				if (Input.isTriggered('ok') || TouchInput.isPressed()) {
-					this.nextEmphasizer();
-				}
-			}
-        },
-		addEmphasizer: function (text, x, y, width, height, options) {
-			var emphasizer = new Emphasizer(text, x, y, width, height, options);
-			this.emphasizer_array.push(emphasizer);
-			if (!this.emphasizer_added) {
-				SceneManager._scene.running = false;
-				console.log(1);
-				SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
-				this.emphasizer_added = true;
-            }
-		},
-		nextEmphasizer: function () {
-			this.emphasizer_pointer++;
-			if (this.emphasizer_array[this.emphasizer_pointer]) {
-				SceneManager._scene.removeChild(this.emphasizer_array[this.emphasizer_pointer - 1]);
-				SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
-			} else {
-				this.clearEmphasizer();
-				this.emphasizer_pointer = 0;
-				this.emphasizer_array = [];
-				this.emphasizer_added = false;
-            }
-        },
-		clearEmphasizer: function () {
-			SceneManager._scene.removeChild(this.emphasizer_array[this.emphasizer_pointer-1]);
-			if (!this.isCounted) {
-				this.Counter = new Counting();
-				this.isCounted = true;
-				SceneManager._scene._upperLayer.addChild(this.Counter);
-			} else {
-				SceneManager._scene.running = true;
-            }
-        }
+		}
 	},
+	'tutorial2': {
+		initialize: function () {
+			this.bossID = 3;
+		},
+		create: function () {
+			var scene = SceneManager._scene;
+			scene._playerItemBoard.ban();
+			scene._Skill_Manager.ban();
+			scene.addEmphasizer(
+				"{Prologue_inbattle_2_1}"
+				, 100, 312, 0, 0);
+			scene.addEmphasizer(
+				"{Prologue_inbattle_2_2}"
+				, 100, 312, 0, 0);
+
+			this.pictureBoard = new Tetris_Window(824, 0, 350, 624);
+			this.pictureBoard.removeChildAt(0)
+			this.picture = new Sprite();
+			this.picture.bitmap = ImageManager.loadPicture('enemies/Behemoth')
+			this.pictureBoard.addChild(this.picture);
+			scene.addWindow(this.pictureBoard);
+
+			this.time = 60.00;
+			this.easyLevel = $gameVariables.value(7);
+			this.normalLevel = $gameVariables.value(8);
+			this.hardLevel = $gameVariables.value(9);
+			this.lunaticLevel = $gameVariables.value(10);
+
+			var options = {
+				frame: ImageManager.loadPicture('ui/QTEPB'),
+				maxLength: 400,
+				maxWidth: 20
+			}
+			this._timeProgress = new VerticalProgressBar(this.time, options);
+			this._timeProgress.move(1424, 50);
+			scene._boardLayer.addChild(this._timeProgress);
+		},
+		update: function () {
+			var time = Number(TetrisManager.getElapsedTime());
+			var scene = SceneManager._scene;
+			this._timeProgress.changeNumber(time);
+			if (time >= 60) {
+				var result = scene._enemies[0].Mhp - scene._enemies[0].curHp;
+				if (result >= this.lunaticLevel) {
+					$gameVariables.setValue(10, 3);
+				} else if (result >= this.hardLevel) {
+					$gameVariables.setValue(10, 2);
+				} else if (result >= this.normalLevel) {
+					$gameVariables.setValue(10, 1);
+				} else if (result >= this.easyLevel) {
+					$gameVariables.setValue(10, 0);
+				}
+				TetrisManager.HarmSystem.dealDamage(null, scene._enemies[0], scene._enemies[0].Mhp, 'real');
+			}
+		},
+	},
+
 }
 
 //特殊方块系统
@@ -939,63 +951,6 @@ TetrisManager.specialKick = {
 }
 
 var EmptySlot = [];
-
-var TwoSlimes = [
-	{
-		name: "Slime",
-		category: "enemy",
-		xposition: 825,
-		yposition: 84,
-		assumeYpos: 84,
-		//avatar: new Sprite(),
-		avatarName: "Slime_Avatar",
-		dx: 420,
-		dy: 200,
-
-		level: 1,
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		atk: 35,
-		def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 12,
-		yrange: 12,
-	},
-	{
-		name: "Slime",
-		category: "enemy",
-		xposition: 1020,
-		yposition: 276,
-		assumeYpos: 276,
-		//avatar: new Sprite(),
-		avatarName: "Slime_Avatar",
-		dx: 600,
-		dy: 300,
-
-		level: 1,
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 200,
-		atk: 35,
-		def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
-
-		Gold: 20,
-		Exp: 20,
-
-		xrange: 12,
-		yrange: 12,
-	}
-]
 
 var FourKnights = [
 	{
@@ -1680,80 +1635,163 @@ var TestBoss = [
 	},
 ]
 
-var Vampire = [
-	{
-		name: "Vampire",
-		category: "enemy",
-		xposition: 824,
-		yposition: 580,
-		assumeYpos: 580,
-		avatar: new Sprite(),
-		avatarName: "Blank_Avatar",
+TetrisManager.enemy_List = {
+	"TwoSlimes": [
+		{
+			name: "Slime",
+			category: "enemy",
+			xposition: 825,
+			yposition: 84,
+			assumeYpos: 84,
+			//avatar: new Sprite(),
+			avatarName: "Slime_Avatar",
+			dx: 420,
+			dy: 200,
 
-		level: 3,
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 1000,
-		atk: 0,
-		def: 0,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
+			level: 1,
+			curHp: 0,
+			displayHp: 0,
+			Mhp: 200,
+			atk: 35,
+			def: 20,
+			curEng: 0,
+			MEng: 30,
+			EngSpd: 2,
 
-		Gold: 20,
-		Exp: 20,
+			Gold: 20,
+			Exp: 20,
 
-		xrange: 9,
-		yrange: 9,
+			xrange: 12,
+			yrange: 12,
+		},
+		{
+			name: "Slime",
+			category: "enemy",
+			xposition: 1020,
+			yposition: 276,
+			assumeYpos: 276,
+			//avatar: new Sprite(),
+			avatarName: "Slime_Avatar",
+			dx: 600,
+			dy: 300,
 
-		manager: Object.create(TetrisManager.special_List["vampire"]),
-		NoAi: true,
-		updateAfterDeath: true,
-		pic_pos: [1000, 300],
-		gaugeWidth: 300,
-		AtkAnim: null
-	},
-]
+			level: 1,
+			curHp: 0,
+			displayHp: 0,
+			Mhp: 200,
+			atk: 35,
+			def: 20,
+			curEng: 0,
+			MEng: 30,
+			EngSpd: 2,
 
-var Tutorial1 = [
-	{
-		name: "Slime",
-		category: "enemy",
-		xposition: 825,
-		yposition: 84,
-		assumeYpos: 84,
-		avatarName: "Slime_Avatar",
-		dx: 420,
-		dy: 200,
+			Gold: 20,
+			Exp: 20,
 
-		level: 1,
-		curHp: 0,
-		displayHp: 0,
-		Mhp: 100,
-		atk: 35,
-		def: 20,
-		curEng: 0,
-		MEng: 30,
-		EngSpd: 2,
+			xrange: 12,
+			yrange: 12,
+		}
+	],
+	"Vampire": [
+		{
+			name: "Vampire",
+			category: "enemy",
+			xposition: 824,
+			yposition: 580,
+			assumeYpos: 580,
+			avatar: new Sprite(),
+			avatarName: "Blank_Avatar",
 
-		Gold: 20,
-		Exp: 20,
+			level: 3,
+			curHp: 0,
+			displayHp: 0,
+			Mhp: 1000,
+			atk: 0,
+			def: 0,
+			curEng: 0,
+			MEng: 30,
+			EngSpd: 2,
 
-		xrange: 12,
-		yrange: 12,
-		manager: Object.create(TetrisManager.special_List["tutorial1"]),
-	}
-]
+			Gold: 20,
+			Exp: 20,
 
-TetrisManager.enemy_List = [
-	EmptySlot,
-	TwoSlimes,
-	FourKnights,
-	Enemy99,
-	TestBoss,
-	Vampire,
-	Tutorial1
-]
+			xrange: 9,
+			yrange: 9,
+
+			manager: Object.create(TetrisManager.special_List["vampire"]),
+			NoAi: true,
+			updateAfterDeath: true,
+			pic_pos: [1000, 300],
+			gaugeWidth: 300,
+			AtkAnim: null
+		},
+	],
+	"Tutorial1": [
+		{
+			name: "Slime",
+			category: "enemy",
+			xposition: 825,
+			yposition: 84,
+			assumeYpos: 84,
+			avatarName: "Slime_Avatar",
+			dx: 420,
+			dy: 200,
+
+			level: 1,
+			curHp: 0,
+			displayHp: 0,
+			Mhp: 100,
+			atk: 35,
+			def: 20,
+			curEng: 0,
+			MEng: 30,
+			EngSpd: 2,
+
+			Gold: 20,
+			Exp: 20,
+
+			xrange: 12,
+			yrange: 12,
+			manager: Object.create(TetrisManager.special_List["tutorial1"]),
+			updateAfterDeath: true,
+		}
+	],
+	"Tutorial2": [
+		{
+			name: "Orc",
+			category: "enemy",
+			xposition: 825,
+			yposition: 84,
+			assumeYpos: 84,
+			avatarName: "Orc_Avatar",
+			dx: 420,
+			dy: 200,
+
+			level: 1,
+			curHp: 0,
+			displayHp: 0,
+			Mhp: 9999999,
+			atk: 35,
+			def: 20,
+			curEng: 0,
+			MEng: 30,
+			EngSpd: 2,
+
+			Gold: 20,
+			Exp: 20,
+
+			xrange: 12,
+			yrange: 12,
+
+
+			manager: Object.create(TetrisManager.special_List["tutorial2"]),
+			NoAi: true,
+			pic_pos: [1000, 300],
+			gaugeWidth: 300,
+			AtkAnim: null
+		}
+	],
+}
 
 TetrisManager.skill_List = {
 	"T旋之魂": {
@@ -2850,13 +2888,7 @@ TetrisManager.item_List = {
 
 TetrisManager.battle_List = {
 	"Test1": {
-		//music: {
-		//	name: "666",
-		//	volume: 50,
-		//	pitch: 100,
-		//	pan: 0
-		//},
-		enemyList: TetrisManager.enemy_List[5],
+		enemyList: TetrisManager.enemy_List["Vampire"],
 		defaultBackground: false,
 		delayFinish: 300
 	},
@@ -2867,7 +2899,7 @@ TetrisManager.battle_List = {
 			pitch: 100,
 			pan: 0
 		},
-		enemyList: TetrisManager.enemy_List[1],
+		enemyList: TetrisManager.enemy_List["TwoSlimes"],
 	},
 	"Tutorial1": {
 		music: {
@@ -2876,8 +2908,17 @@ TetrisManager.battle_List = {
 			pitch: 100,
 			pan: 0
 		},
-		enemyList: TetrisManager.enemy_List[6],
-    }
+		enemyList: TetrisManager.enemy_List["Tutorial1"],
+	},
+	"Tutorial2": {
+		music: {
+			name: "Tetris",
+			volume: 50,
+			pitch: 100,
+			pan: 0
+		},
+		enemyList: TetrisManager.enemy_List["Tutorial2"],
+	}
 }
 
 //=============================================================================

@@ -2795,3 +2795,137 @@ Stack: TypeError: Cannot read property 'hp' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Sun Nov 29 2020 19:10:16 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: undefined
+Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Items.json. Description: Unexpected token } in JSON at position 378
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 19:11:59 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: undefined
+Message: Uncaught TypeError: this.openPauseScreen is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 19:19:23 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 2
+Event ID: 26
+Event Page: 1
+Last Event Command: 205
+Params: ["未标题-1副本",4,0,2]
+Name: undefined
+Message: Uncaught TypeError: this.openPauseScreen is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 19:23:21 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 24
+Last Event Command: 401
+Params: ["",0,0,2]
+Name: undefined
+Message: Uncaught TypeError: this.openPauseScreen is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 19:28:27 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: undefined
+Message: Uncaught TypeError: this.openPauseScreen is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 19:28:31 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: undefined
+Message: Uncaught TypeError: this.openPauseScreen is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 19:29:01 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: undefined
+Message: Uncaught TypeError: this.openPauseScreen is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 19:30:46 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 24
+Last Event Command: 117
+Params: ["",0,2,1]
+Name: undefined
+Message: Uncaught TypeError: SceneManager._scene.Pause is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 20:53:32 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: isOwnerEnemy is not defined
+Stack: ReferenceError: isOwnerEnemy is not defined
+    at SkillManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1652:3)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:569:24)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Nov 29 2020 20:55:13 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Name: undefined
+Message: Uncaught TypeError: SceneManager._scene.Pause is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 20:57:24 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Name: undefined
+Message: Uncaught TypeError: SceneManager._scene.Pause is not a function
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Nov 29 2020 21:03:21 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 31
+Event ID: 4
+Event Page: 1
+Last Event Command: 356
+Params: [45]
+Name: TypeError
+Message: Object prototype may only be an Object or null: undefined
+Stack: TypeError: Object prototype may only be an Object or null: undefined
+    at Function.create (<anonymous>)
+    at Scene_Tetris.initializeData (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:373:27)
+    at Scene_Tetris.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:102:7)
+    at new Scene_Tetris (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:65:18)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2071:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38428:31)
+    at Function.SceneManager.push (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2080:10)
+    at tetrisStarter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2341:16)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sun Nov 29 2020 21:07:31 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 31
+Event ID: 4
+Event Page: 1
+Last Event Command: 356
+Params: [45]
+Name: TypeError
+Message: Object prototype may only be an Object or null: undefined
+Stack: TypeError: Object prototype may only be an Object or null: undefined
+    at Function.create (<anonymous>)
+    at Scene_Tetris.initializeData (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:372:27)
+    at Scene_Tetris.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:101:7)
+    at new Scene_Tetris (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:65:18)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2071:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38428:31)
+    at Function.SceneManager.push (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2080:10)
+    at tetrisStarter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2342:16)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+

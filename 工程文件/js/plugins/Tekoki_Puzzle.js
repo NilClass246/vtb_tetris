@@ -3,7 +3,7 @@
 //=============================================================================
 
 /*:
- * @plugindesc [v0.3] 俄罗斯方块战斗界面
+ * @plugindesc [v0.3] 俄罗斯方块解密界面
  * @author 手艺人工坊 （程序： NilClass）
  * 
  * @help
@@ -43,6 +43,8 @@
 // ** CODE
 //=============================================================================
 
+TetrisManager = TetrisManager || {};
+TetrisManager.puzzleID = 2;
 
 //=============================================================================
 // ** 教程场景定义
@@ -455,6 +457,14 @@ Puzzle_Manager.prototype.initialize = function (ID) {
 
 Puzzle_Manager.prototype.create = function () {
 	switch (this.puzzleID) {
+		case 1:
+			this.scene.addEmphasizer(
+				"{Prologue_inbattle_2_1}"
+				, 100, 312, 0, 0);
+			this.scene.addEmphasizer(
+				"{Prologue_inbattle_2_2}"
+				, 100, 312, 0, 0);
+			break;
 		case 2:
 			this.timeLimit = $gameVariables.value(11);
 			this.targetBoard = new Target_Window("在" + this.timeLimit + "秒内获取尽量多的分数！")
@@ -511,9 +521,10 @@ Puzzle_Manager.prototype.create = function () {
 
 Puzzle_Manager.prototype.update = function (score) {
 	switch (this.puzzleID) {
+		case 1:
 		case 2:
 			if (this.victory) {
-				this.end = new Target_Window("时间到！");
+				this.end = new Target_Window("{Time_up}");
 				this.scene.addChild(this.end);
 			} else {
 				this.infoBoard.refresh()
