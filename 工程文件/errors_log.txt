@@ -2929,3 +2929,176 @@ Stack: TypeError: Object prototype may only be an Object or null: undefined
     at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
     at Array.forEach (<anonymous>)
 
+Date: Thu Dec 03 2020 21:49:21 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: this.addChild is not a function
+Stack: TypeError: this.addChild is not a function
+    at SkillManager.unban (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1678:7)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:858:25)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1951:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1845:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Thu Dec 03 2020 23:43:36 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 2
+Event ID: 26
+Event Page: 1
+Last Event Command: 230
+Params: [45]
+Name: TypeError
+Message: $gameParty._actors[0].skills is not a function
+Stack: TypeError: $gameParty._actors[0].skills is not a function
+    at Scene_Tetris.initialize_Skills (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:267:37)
+    at Scene_Tetris.initialize_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:257:7)
+    at Scene_Tetris.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:117:7)
+    at new Scene_Tetris (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:65:18)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2071:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38428:31)
+    at Function.SceneManager.push (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2080:10)
+    at tetrisStarter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2350:16)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Thu Dec 03 2020 23:47:23 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'AtkAnim' of null
+Stack: TypeError: Cannot read property 'AtkAnim' of null
+    at Object.TetrisManager.HarmSystem.dealDamage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1578:15)
+    at Object.26 (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:2959:28)
+    at itemBoard.applyItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1869:30)
+    at itemBoard.useItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1855:8)
+    at itemBoard.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1796:8)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4146:19
+    at Array.forEach (<anonymous>)
+    at Sprite.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4144:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Fri Dec 04 2020 00:16:16 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: this.addChild is not a function
+Stack: TypeError: this.addChild is not a function
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:823:9)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1959:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1853:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Dec 04 2020 20:47:01 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: size is not defined
+Stack: ReferenceError: size is not defined
+    at Text_Base.rewrite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2108:25)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:829:18)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1052:21)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:587:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Fri Dec 04 2020 20:50:21 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: this.picture.startBreathing is not a function
+Stack: TypeError: this.picture.startBreathing is not a function
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:863:17)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1965:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1859:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Dec 05 2020 16:15:15 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: this.picture.startBreathing is not a function
+Stack: TypeError: this.picture.startBreathing is not a function
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:863:17)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1965:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1859:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Dec 05 2020 16:55:50 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: undefined
+Message: Uncaught Error: Cannot parse JSON data from file: locales\cn\Prologue.json. Description: Unexpected token # in JSON at position 3408
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js
+Stack: undefined
+
+Date: Sat Dec 05 2020 20:13:10 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: time is not defined
+Stack: ReferenceError: time is not defined
+    at Tachi.startDying (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3407:19)
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:845:18)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1054:21)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:589:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Dec 05 2020 20:44:50 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 2
+Event ID: 27
+Event Page: 1
+Last Event Command: 117
+Params: [6]
+Name: TypeError
+Message: Cannot read property 'NaN' of undefined
+Stack: TypeError: Cannot read property 'NaN' of undefined
+    at Window_ScrollText.Window_Base.processNewLine (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:341:90)
+    at Window_ScrollText.Window_Base.processNewLine (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/aligncenter.js:110:31)
+    at Window_ScrollText.Window_Base.processCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/aligncenter.js:85:9)
+    at Window_ScrollText.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:2300:12)
+    at Window_ScrollText.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools_Localization.js:2100:48)
+    at Window_ScrollText.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4649:10)
+    at Window_ScrollText.startMessage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4638:10)
+    at Window_ScrollText.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4631:18)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7113:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Dec 05 2020 20:48:20 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 2
+Event ID: 27
+Event Page: 1
+Last Event Command: 117
+Params: [6]
+Name: RangeError
+Message: Invalid string length
+Stack: RangeError: Invalid string length
+    at Window_ScrollText.Window_Base.getTextAlignPadding (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:365:56)
+    at Window_ScrollText.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:2315:42)
+    at Window_ScrollText.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools_Localization.js:2100:48)
+    at Window_ScrollText.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4649:10)
+    at Window_ScrollText.startMessage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4638:10)
+    at Window_ScrollText.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4631:18)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7113:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7111:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+
+Date: Sat Dec 05 2020 22:46:47 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property '_enemies' of undefined
+Stack: TypeError: Cannot read property '_enemies' of undefined
+    at Object.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:829:24)
+    at Scene_Tetris.update_Enemy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1053:21)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:588:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+

@@ -225,7 +225,6 @@ Window_Sign.prototype.refresh = function () {
 
     this._icons = [];
     var items = $gameActors.actor(1)._signedItems;
-    console.log(items)
     var x = 32;
     var y = 16;
 

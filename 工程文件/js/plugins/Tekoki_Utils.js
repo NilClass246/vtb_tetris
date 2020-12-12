@@ -1142,6 +1142,12 @@ TetrisManager.setTimer = function () {
 	this.TimerActivated = true;
 }
 
+TetrisManager.resetTimer = function () {
+	this.lastTime = 0;
+	this.oldTime = Date.now();
+	this.TimerActivated = true;
+}
+
 TetrisManager.getElapsedTime = function () {
 	if (this.TimerActivated) {
 		var time = (Math.floor((Date.now() - this.oldTime + this.lastTime) / 10) / 100)
@@ -1157,6 +1163,9 @@ TetrisManager.pauseTimer = function () {
 }
 
 TetrisManager.continueTimer = function () {
+	if (!this.lastTime) {
+		this.lastTime = 0;
+    }
 	this.oldTime = Date.now();
 	this.TimerActivated = true;
 }
@@ -1240,6 +1249,8 @@ Game_Actor.prototype.initialize = function (actorId) {
 	this._signedItems = [];
 };
 
+TetrisManager.isScrollCenterAlligned = false;
+
 //=============================================================================
 // 小组件定义
 //=============================================================================
@@ -1267,8 +1278,11 @@ TetrisManager.showInstructions = function () {
 }
 
 TetrisManager.hideInstructions = function () {
-	var s = new SpriteSlider(this.instructions, 288, 100, 288, 734, 60);
-	SceneManager._scene.addChild(s);
+	if (!this.hiding) {
+		var s = new SpriteSlider(this.instructions, 288, 100, 288, 734, 60);
+		SceneManager._scene.addChild(s);
+		this.hiding = true;
+    }
 }
 
 function Window_Instructions() {
@@ -1286,6 +1300,7 @@ Window_Instructions.prototype.initialize = function () {
 	this.drawText("{instructions_Line1}", 0, 0);
 	this.drawText("{instructions_Line2}", 0, 28);
 	this.drawText("{instructions_Line3}", 0, 56);
+	this.drawText("{instructions_Line4}", 0, 84);
 	this.silder = new SpriteSlider(this, 288, -524, 288, 100, 60);
 	this.addChild(this.silder);
 }
@@ -1523,6 +1538,8 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 
 			switch (atkType) {
 				case 'normal':
+					target.avatar.shake(10);
+					target.avatar.blink(0xff6666);
 					break;
 				case 'poison':
 					pop.setTint(0xff99ff)
@@ -1535,6 +1552,9 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 					break;
 			}
 			pop.activate();
+			if (target.manager && target.manager.onAttacked) {
+				target.manager.onAttacked();
+            }
 
 			//this.createXYanimationWindow(1, target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 12 * target.yrange);
 		//玩家的场合
@@ -1572,7 +1592,7 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 					break;
             }
 			pop.activate();
-			if (source.AtkAnim) {
+			if (source && source.AtkAnim) {
 				scene.createXYanimationWindow(source.AtkAnim,
 					target.pic_pos[0] + (150 * Math.random() - 75),
 					target.pic_pos[1] + (150 * Math.random() - 75));
@@ -1675,7 +1695,7 @@ SkillManager.prototype.ban = function () {
 SkillManager.prototype.unban = function () {
 	this.running = true;
 	var s = new SpriteSlider(this._skill_board, this._skill_board.x, this._skill_board.y, this._skill_board.x + 160, this._skill_board.y, 60);
-	this.addChild(s);
+	SceneManager._scene.addChild(s);
 }
 
 //-----------------------------------------------------------------------------
@@ -1788,60 +1808,62 @@ itemBoard.prototype.initialize = function () {
 
 itemBoard.prototype.update = function () {
 	Sprite.prototype.update.call(this);
-	if (Input.isTriggered('itemone')) {
-		var id = this.boardIndex + 0
-		this.useItem(id);
-	}
-	if (Input.isTriggered('itemtwo')) {
-		var id = this.boardIndex + 1
-		this.useItem(id);
-	}
-	if (Input.isTriggered('itemthree')) {
-		var id = this.boardIndex + 2
-		this.useItem(id);
-	}
-	if (Input.isTriggered('itemfour')) {
-		var id = this.boardIndex + 3
-		this.useItem(id);
-	}
+	if (this.running) {
+		if (Input.isTriggered('itemone')) {
+			var id = this.boardIndex + 0
+			this.useItem(id);
+		}
+		if (Input.isTriggered('itemtwo')) {
+			var id = this.boardIndex + 1
+			this.useItem(id);
+		}
+		if (Input.isTriggered('itemthree')) {
+			var id = this.boardIndex + 2
+			this.useItem(id);
+		}
+		if (Input.isTriggered('itemfour')) {
+			var id = this.boardIndex + 3
+			this.useItem(id);
+		}
 
-	if (Input.isTriggered('itemshift')) {
-		if (!this.changingIcon) {
-			if (this._data[this.boardIndex + 4]) {
-				this.boardIndex += 4;
-				this.setIndex += 1;
-				this.lastSet = this.setIndex - 1;
+		if (Input.isTriggered('itemshift')) {
+			if (!this.changingIcon) {
+				if (this._data[this.boardIndex + 4]) {
+					this.boardIndex += 4;
+					this.setIndex += 1;
+					this.lastSet = this.setIndex - 1;
+				} else {
+					this.boardIndex = 0;
+					this.setIndex = 0;
+					this.lastSet = this.iconSets.length - 1;
+				}
+				this.removeChild(this.iconSets[this.setIndex]);
+				this.iconSets[this.setIndex].move(4 * 38, 0);
+				this.iconSets[this.setIndex].opacity = 0;
+				this.addChild(this.iconSets[this.setIndex]);
+				this.changingIcon = true;
+			}
+		}
+
+		if (this.changingIcon) {
+			if (this.iconSets.length > 1) {
+				this.iconSets[this.lastSet].x -= 4 * 38 / 10;
+				this.iconSets[this.setIndex].x -= 4 * 38 / 10;
+				this.iconSets[this.lastSet].opacity -= 255 / 10;
+				this.iconSets[this.setIndex].opacity += 255 / 10;
+				if (this.iconSets[this.lastSet].opacity <= 0) {
+					this.changingIcon = false;
+				}
 			} else {
-				this.boardIndex = 0;
-				this.setIndex = 0;
-				this.lastSet = this.iconSets.length - 1;
+				this.iconSets[this.setIndex].x -= 4 * 38 / 10;
+				this.iconSets[this.setIndex].opacity += 255 / 10;
+				if (this.iconSets[this.setIndex].opacity >= 255) {
+					this.changingIcon = false;
+				}
 			}
-			this.removeChild(this.iconSets[this.setIndex]);
-			this.iconSets[this.setIndex].move(4 * 38, 0);
-			this.iconSets[this.setIndex].opacity = 0;
-			this.addChild(this.iconSets[this.setIndex]);
-			console.log(this.setIndex);
-			this.changingIcon = true;
-        }
-	}
-
-	if (this.changingIcon) {
-		if (this.iconSets.length > 1) {
-			this.iconSets[this.lastSet].x -= 4 * 38 / 10;
-			this.iconSets[this.setIndex].x -= 4 * 38 / 10;
-			this.iconSets[this.lastSet].opacity -= 255 / 10;
-			this.iconSets[this.setIndex].opacity += 255 / 10;
-			if (this.iconSets[this.lastSet].opacity <= 0) {
-				this.changingIcon = false;
-			}
-		} else {
-			this.iconSets[this.setIndex].x -= 4 * 38 / 10;
-			this.iconSets[this.setIndex].opacity += 255 / 10;
-			if (this.iconSets[this.setIndex].opacity >= 255) {
-				this.changingIcon = false;
-			}
-        }
+		}
     }
+
 }
 
 itemBoard.prototype.useItem = function (id) {
@@ -1875,6 +1897,7 @@ itemBoard.prototype.ban = function () {
 itemBoard.prototype.unban = function () {
 	this.running = true;
 	var s = new SpriteSlider(this, this.x, this.y, this.x += 200, this.y, 60);
+	this.addChild(s);
 }
 
 function itemIcon() {
@@ -1910,6 +1933,7 @@ itemIcon.prototype.initialize = function (item) {
 		this.numTxt.move(0, 16);
 		this.addChild(this.numTxt);
 		this.writeNum($gameParty.numItems(item))
+		console.log($gameParty.numItems(item));
 		this.anchor.x = 0.5;
 		this.anchor.y = 0.5;
 
@@ -2005,7 +2029,7 @@ Target_Window.prototype.constructor = Target_Window;
 Target_Window.prototype.initialize = function (txt) {
 	Window_Base.prototype.initialize.call(this, 0, 275, 1200, 75);
 	var txtList = txt.split("");
-	this.drawText(txt, 600-(txtList.length*28)/2, 0);
+	this.drawText(txt, 0, 0, 1200, "center");
 	this.opacity = 0;
 	this.layed = false;
 	this.lastTime = 100;
@@ -2075,14 +2099,27 @@ Text_Base.prototype.constructor = Text_Base;
 
 Text_Base.prototype.initialize = function (text, width, height, size, align) {
 	Sprite.prototype.initialize.call(this);
-	text = DKTools.Localization.getText(text);
+	this.w = width;
+	this.a = align;
+	this.s = size;
+
+	var text = DKTools.Localization.getText(text);
 	var texts = text.split("\n");
-	console.log(texts);
 	this._height = (texts.length) * (size*(4/3)*2);
 	this.bitmap = new Bitmap(width, this._height);
 	this.bitmap.fontSize = size;
 	for (var i = 0; i < texts.length; i++) {
 		this.bitmap.drawText(texts[i], 0, i * size, width, this._height, align);
+	}
+}
+
+Text_Base.prototype.rewrite = function (text) {
+	this.bitmap.clear();
+	text = DKTools.Localization.getText(text);
+	var texts = text.split("\n");
+	this._height = (texts.length) * (this.s * (4 / 3) * 2);
+	for (var i = 0; i < texts.length; i++) {
+		this.bitmap.drawText(texts[i], 0, i * this.s, this.w, this._height, this.a);
 	}
 }
 
@@ -2602,8 +2639,8 @@ VerticalProgressBar.prototype.constructor = VerticalProgressBar;
 VerticalProgressBar.prototype.initialize = function (maxAmount, options) {
 	Sprite.prototype.initialize.call(this);
 	this.changeTime = TetrisManager.GaugeConstant;
-	this.curAmount = 0;
-	this.displayAmount = 0;
+	this.curAmount = maxAmount;
+	this.displayAmount = maxAmount;
 	this.maxAmount = maxAmount;
 	this.displayMax = maxAmount;
 	this.BarContent = new Sprite();
@@ -2645,7 +2682,6 @@ VerticalProgressBar.prototype.update = function () {
 	if (this.displayAmount != this.curAmount) {
 		this.displayAmount += (this.curAmount - this.displayAmount) / this.changeTime;
 	}
-
 	if (this.displayMax != this.maxAmount) {
 		this.displayMax += (this.maxAmount - this.displayMax) / this.changeTime;
     }
@@ -2680,7 +2716,7 @@ VerticalProgressBar.prototype.update = function () {
 
 VerticalProgressBar.prototype.changeNumber = function (num) {
 	this.curAmount = num;
-	while (num >= this.maxAmount) {
+	while (num > this.maxAmount) {
 		this.maxAmount = this.maxAmount * 1.5
     }
 }
@@ -3294,6 +3330,41 @@ Tachi.prototype.update = function () {
 			this.blinkFlag = false;
         }
 	}
+
+	if (this.breathingFlag) {
+		if (this.inhaling) {
+			this.scale.y += 0.0001;
+			this.blink_sprite.scale.y += 0.0001;
+			if (this.scale.y >= 1.01) {
+				this.inhaling = false;
+			}
+		} else {
+			this.scale.y -= 0.0001;
+			this.blink_sprite.scale.y -= 0.0001;
+			if (this.scale.y <= 1) {
+				this.inhaling = true;
+			}
+		}
+	} else {
+		if (this.scale.y > 1) {
+			this.scale.y -= 0.0001;
+			this.blink_sprite.scale.y -= 0.0001;
+        }
+	}
+
+	if (this.dyingFlag) {
+		this.y += 1;
+		if (this.shakeCount % 4 == 0) {
+			if (this.shaked) {
+				this.x -= 5;
+				this.shaked = false;
+			} else {
+				this.x += 5;
+				this.shaked = true;
+			}
+		}
+		this.shakeCount += 1;
+    }
 }
 
 Tachi.prototype.shake = function (time) {
@@ -3313,6 +3384,23 @@ Tachi.prototype.blink = function (color) {
 		this.blinkFlag = true;
 		this.addChild(this.blink_sprite);
 	}
+}
+
+Tachi.prototype.startBreathing = function () {
+	this.breathingFlag = true;
+	this.inhaling = true;
+}
+
+Tachi.prototype.stopBreathing = function () {
+	this.breathingFlag = false;
+}
+
+Tachi.prototype.startDying = function () {
+	this.dyingFlag = true;
+	this.stopBreathing();
+	this.shakeFlag = true;
+	this.shakeCount = 0;
+	this.shaked = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -3402,6 +3490,8 @@ SpriteSlider.prototype.update = function () {
 
 //-----------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------
+
 function ScreenMosaicEffect() {
 	this.initialize.apply(this, arguments);
 }
@@ -3411,19 +3501,38 @@ ScreenMosaicEffect.prototype.constructor = ScreenMosaicEffect;
 
 ScreenMosaicEffect.prototype.initialize = function () {
 	Sprite.prototype.initialize.call(this);
-	this.constant = 100;
-	this.data = new Array(this.constant).fill(new Array(this.constant).fill(0));
-	this.width = Graphics.boxWidth / this.constant;
-	this.height = Graphics.boxHeight / this.constant;
+	this.constant = 10;
+	this.data = new Array(this.constant);
+	for (var i = 0; i < this.data.length; i++) {
+		this.data[i] = new Array(this.constant).fill(0);
+	}
+	this.w = Graphics.boxWidth / this.constant;
+	this.h = Graphics.boxHeight / this.constant;
 }
 
 ScreenMosaicEffect.prototype.update = function () {
-	if (this.data.length >= 1) {
-		var rndi = Math.floor(Math.random() * this.data.length);
-		var rndj = Math.floor(Math.random() * this.data[rndi].length);
-		var m = new PIXI.Graphics()
-			.beginFill(0x000000);
-    }
+	this.constant -= 1;
+	var rndi = Math.floor(Math.random() * this.data.length);
+	var rndj = Math.floor(Math.random() * this.data[rndi].length);
+	while (this.data[rndi][rndj]==1) {
+		if (rndj < this.data[rndi].length-1) {
+			rndj ++;
+		} else {
+			if (rndi < this.data.length-1) {
+				rndi++;
+				rndj = 0;
+			} else {
+				rndi = 0;
+				rndj = 0;
+            }
+        }
+	}
+	this.data[rndi][rndj] = 1;
+	var m = new PIXI.Graphics()
+		.beginFill(0x000000)
+		.drawRect(rndj * this.w, rndi * this.h, this.w, this.h)
+		.endFill();
+	this.addChild(m);
 }
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀

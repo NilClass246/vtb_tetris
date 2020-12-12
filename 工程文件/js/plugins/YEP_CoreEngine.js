@@ -2290,19 +2290,40 @@ Window_Base.prototype.lineHeight = function() {
   return Yanfly.Param.LineHeight;
 };
 
-Window_Base.prototype.drawTextEx = function(text, x, y) {
-  if (text) {
-    this.resetFontSettings();
-    var textState = { index: 0, x: x, y: y, left: x };
-    textState.text = this.convertEscapeCharacters(text);
-    textState.height = this.calcTextHeight(textState, false);
-    while (textState.index < textState.text.length) {
-      this.processCharacter(textState);
+//Window_Base.prototype.drawTextEx = function(text, x, y) {
+//  if (text) {
+//    this.resetFontSettings();
+//    var textState = { index: 0, x: x, y: y, left: x };
+//    textState.text = this.convertEscapeCharacters(text);
+//    textState.height = this.calcTextHeight(textState, false);
+//    while (textState.index < textState.text.length) {
+//      this.processCharacter(textState);
+//    }
+//    return textState.x - x;
+//  } else {
+//    return 0;
+//  }
+//};
+Window_Base.prototype.drawTextEx = function (text, x, y) {
+    if (text) {
+        var textState = { index: 0, x: x, y: y, left: x };
+        textState.text = this.convertEscapeCharacters(text);
+        textState.height = this.calcTextHeight(textState, false);
+        this.resetFontSettings();
+        //===todo: changed
+        if (TetrisManager.isScrollCenterAlligned) {
+            textState.paddingData = this.getTextAlignPadding(textState);
+            textState.dataPointer = 0;
+            textState.x = textState.left + (this.width - this.textWidth(textState.paddingData[textState.dataPointer])) / 2;
+        }
+        //===
+        while (textState.index < textState.text.length) {
+            this.processCharacter(textState);
+        }
+        return textState.x - x;
+    } else {
+        return 0;
     }
-    return textState.x - x;
-  } else {
-    return 0;
-  }
 };
 
 Window_Base.prototype.textWidthEx = function(text) {

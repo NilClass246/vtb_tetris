@@ -266,6 +266,13 @@ Window_Base.prototype.drawTextEx = function(text, x, y) {
         textState.text = this.convertEscapeCharacters(text);
         textState.height = this.calcTextHeight(textState, false);
         this.resetFontSettings();
+        //===todo: changed
+        if (TetrisManager.isScrollCenterAlligned) {
+            textState.paddingData = this.getTextAlignPadding(textState);
+            textState.dataPointer = 0;
+            textState.x = textState.left + (this.width - this.textWidth(textState.paddingData[textState.dataPointer]) / 2);
+        }
+        //===
         while (textState.index < textState.text.length) {
             this.processCharacter(textState);
         }
@@ -328,12 +335,40 @@ Window_Base.prototype.processNormalCharacter = function(textState) {
     textState.x += w;
 };
 
-Window_Base.prototype.processNewLine = function(textState) {
-    textState.x = textState.left;
+Window_Base.prototype.processNewLine = function (textState) {
+    if (TetrisManager.isScrollCenterAlligned) {
+        textState.dataPointer++;
+        textState.x = textState.left + (this.width - this.textWidth(textState.paddingData[textState.dataPointer])) / 2;
+    } else {
+        textState.x = textState.left;
+    }
     textState.y += textState.height;
     textState.height = this.calcTextHeight(textState, false);
     textState.index++;
 };
+//==todo: changed
+Window_Base.prototype.getTextAlignPadding = function (textState) {
+    var data = [""];
+    var tempTextState = Object.create(textState)
+    while (tempTextState.index < tempTextState.text.length) {
+        switch (tempTextState.text[tempTextState.index]) {
+            case '\n':
+                data.push("");
+                tempTextState.index++;
+                break;
+            case '\f':
+                tempTextState.index++;
+                break;
+            case '\x1b':
+                break;
+            default:
+                data[data.length - 1] += tempTextState.text[tempTextState.index++];
+                break;
+        }
+    }
+    console.log(data);
+    return data;
+}
 
 Window_Base.prototype.processNewPage = function(textState) {
     textState.index++;

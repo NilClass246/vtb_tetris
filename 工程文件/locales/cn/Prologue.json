@@ -5,6 +5,7 @@
 	"instructions_Line1": "Z键···········确定",
 	"instructions_Line2": "X键/ESC键···········取消",
 	"instructions_Line3": "方向键··········移动人物",
+	"instructions_Line4": "Shift··········加快移动速度",
 
 	"Prologue_exiting1": "外面实在太危险了。",
 	"Prologue_exiting2": "而且，既然已经突入了这里，就没有再回头的道理。\n不成功，便成仁。",
@@ -17,8 +18,8 @@
 	"Prologue_inbattle_1_onAttack_1": "你刚收到了一次来自敌人的攻击！",
 	"Prologue_inbattle_1_onAttack_2": "这里是你的生命值条，当你受到伤害时便会减少\n而当你的生命值减到零时，你就输掉了这场战斗。",
 	"Prologue_inbattle_1_onAttacking": "你即将积累满你的能量值条！\n当积累满时，将对当前锁定的敌人\n发动一次攻击！",
-	"Prologue_firstbattle_3": "很好，你的实力我已经基本了解了。",
-	"Prologue_firstbattle_4": "要是你能够战胜被封印在这里的，\n过于曾一度将世界逼入毁灭边缘的凶恶魔物的话，\n我就认可你有持有地屦天冠的资格！",
+	"Prologue_firstbattle_3": "【画外音】\n很好，你的实力我已经基本了解了。",
+	"Prologue_firstbattle_4": "要是你能够战胜被封印在这里的，\n过去曾一度将世界逼入毁灭边缘的凶恶魔物的话，\n我就认可你有持有地屦天冠的资格！",
 
 	"Prologue_secondbattle_1": "这是？",
 	"Prologue_secondbattle_2": "好重的杀气和邪恶气息！",
@@ -26,13 +27,32 @@
 	"Prologue_secondbattle_4": "【画外音】\n这就是过去曾经一度将世界逼入毁灭边缘的魔物！",
 	"Prologue_inbattle_2_1": "【画外音】\n在战斗中，去尝试你新领悟的那些东西\n，然后最终战胜它，获取那踏入王座之间的资格吧！",
 	"Prologue_inbattle_2_2": "【画外音】\n活用你从之前的战斗之中领悟的，那些特别的技巧！",
+	"Prologue_inbattle_2_3": "在限定的时间内，尽量对敌人造成伤害！",
 
 	"Prologue_thirdbattle_1": "那是……什么怪物……",
-	"Prologue_thirdbattle_2": "那就是被封印在这里的上古魔王！上一任地屦天冠的主人拼上一条性命封印了他！",
-	"Prologue_thirdbattle_3": "而到了现在，经过了这么多年，他已经被削弱到极限了！现在就是宿命终结之时！战胜他，完成这最终的试炼，你就能成为新世界的神！",
+	"Prologue_thirdbattle_2": "那就是被封印在这里的上古魔王！\n上一任地屦天冠的主人拼上一条性命封印了他！",
+	"Prologue_thirdbattle_3": "而到了现在，经过了这么多年，他已经被削弱到极限了！\n现在就是宿命终结之时！\n战胜他，完成这最终的试炼，你就能成为新世界的神！",
+	"Prologue_inbattle_3_1": "除了通过俄罗斯方块进行战斗，\n你还可以使用技能来扩大优势或直接造成伤害。",
+	"Prologue_inbattle_3_2": "例如现在，按下Q键使用一技能\n将所有的next方块变为T方块！",
+	"Prologue_inbattle_3_3": "你受伤了！",
+	"Prologue_inbattle_3_4": "道具可以帮助你恢复体力或者增强实力\n按下对应的快捷键就能进行使用！",
+	"Prologue_inbattle_3_5": "例如现在，按下1键使用药水\n回复100点生命值！",
+
 	"Prologue_death_1": "……",
 	"Prologue_death_2": "…………",
 	"Prologue_death_3": "………………看来你并不是我所等待的人。",
+	"Prologue_death_4": "啊啊又失误了，这个游戏好难啊。",
+	"Prologue_death_5": "成就没办法达成了……",
+	"Prologue_death_6": "算了，都这个点了，该睡觉了。",
+	"Prologue_death_7": "唉，感觉明天起来的时候脑袋又要痛了。",
 
-	"Time_up": "时间到！"
+	"Time_up": "时间到！",
+
+	"Prologue_victory_1": "【画外音】\n我没有看错你，你就是能配得上这顶冠冕的人！\n来吧，走上这座圣坛，接下这份神之力吧！",
+	"Prologue_victory_2": "就这样，这位勇者获得了神之力，并修改了世界的规则。\n从此，一切的争斗都被禁止了，\n唯一允许的，便是基于俄罗斯方块规则的决斗。\n在那以后，再也没有人见到过这位勇者，\n有传闻说他因为不想被各式各样的人所烦扰，\n而选择隐居在这个世间，所有认出他的人的记忆都被他抹去了；\n还有人说他已经舍弃了自己的身体，化作了这个世界的执法者，\n用他的力量消灭所有违反规则的人。\n真相究竟是怎么样的，除了戴上冠冕的那个人以外，没有人知晓。\n唯一留存下来的，就只有世界重新恢复了和平这样的事实……",
+	"Prologue_victory_3": "耶，世纪末救世主传说全制霸达成！",
+	"Prologue_victory_4": "之前的抽选也中了，今天真是我的幸运日啊。",
+	"Prologue_victory_5": "啊呀，不知不觉都这个时候了，\n睡了睡了，不然明天起来又要头疼了。",
+
+	"Credits": "手艺人工坊制作\n\n【策划】\n...\n【美工】\n...\n【程序】\n...\n【配音】\n...\n\nThank you for playing!"
 }

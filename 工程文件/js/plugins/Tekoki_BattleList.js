@@ -745,7 +745,7 @@ TetrisManager.special_List = {
 		create: function () {
 			var scene = SceneManager._scene;
 			scene._playerItemBoard.ban();
-			//scene._Skill_Manager.ban();
+			scene._Skill_Manager.ban();
 			scene.addEmphasizer(
 				"{Prologue_inbattle_1_1}"
 				, 100, 312, 0, 0);
@@ -768,10 +768,10 @@ TetrisManager.special_List = {
 				this.isAttacked = true;
 			}
 
-			if (!this.isAttacking && scene.player.gaugeSCORE >= scene.player.AtkFreq - 1) {
+			if (!this.isAttacking && (scene.player.gaugeSCORE >= scene.player.AtkFreq - 1)) {
 				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttacking}"
-					, scene.player.xposition - 15 - 7 + 265, 20, 10, (scene.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
+					, scene.player.xposition+ 265, 20, 10, (scene.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
 				this.isAttacking = true;
 			}
 		}
@@ -784,21 +784,15 @@ TetrisManager.special_List = {
 			var scene = SceneManager._scene;
 			scene._playerItemBoard.ban();
 			scene._Skill_Manager.ban();
-			scene.addEmphasizer(
-				"{Prologue_inbattle_2_1}"
-				, 100, 312, 0, 0);
-			scene.addEmphasizer(
-				"{Prologue_inbattle_2_2}"
-				, 100, 312, 0, 0);
 
-			this.pictureBoard = new Tetris_Window(824, 0, 350, 624);
+			this.pictureBoard = new Tetris_Window(824, 100, 350, 624);
 			this.pictureBoard.removeChildAt(0)
-			this.picture = new Sprite();
-			this.picture.bitmap = ImageManager.loadPicture('enemies/Behemoth')
+			this.picture = new Tachi("Behemoth");
 			this.pictureBoard.addChild(this.picture);
 			scene.addWindow(this.pictureBoard);
+			this.picture.startBreathing();
 
-			this.time = 60.00;
+			this.record_time = 60;
 			this.easyLevel = $gameVariables.value(7);
 			this.normalLevel = $gameVariables.value(8);
 			this.hardLevel = $gameVariables.value(9);
@@ -809,15 +803,29 @@ TetrisManager.special_List = {
 				maxLength: 400,
 				maxWidth: 20
 			}
-			this._timeProgress = new VerticalProgressBar(this.time, options);
-			this._timeProgress.move(1424, 50);
+			this._timeProgress = new VerticalProgressBar(this.record_time, options);
+			this._timeProgress.move(800, 100);
 			scene._boardLayer.addChild(this._timeProgress);
+
+			this.timeMark = new Text_Base(String(this.record_time), 50, 50, 24, "left");
+			scene._boardLayer.addChild(this.timeMark);
+			this.timeMark.move(800, 485);
+
+			scene.addEmphasizer(
+				"{Prologue_inbattle_2_1}"
+				, 100, 312, 0, 0);
+			scene.addEmphasizer(
+				"{Prologue_inbattle_2_2}"
+				, 100, 312, 0, 0);
+			scene.setEmphasizerBehaviour(function () {
+				var t = new Target_Window("{Prologue_inbattle_2_3}")
+				SceneManager._scene.addChild(t);
+			});
 		},
 		update: function () {
-			var time = Number(TetrisManager.getElapsedTime());
 			var scene = SceneManager._scene;
-			this._timeProgress.changeNumber(time);
-			if (time >= 60) {
+			var time = TetrisManager.getElapsedTime();
+			if (time >= this.record_time) {
 				var result = scene._enemies[0].Mhp - scene._enemies[0].curHp;
 				if (result >= this.lunaticLevel) {
 					$gameVariables.setValue(10, 3);
@@ -829,8 +837,71 @@ TetrisManager.special_List = {
 					$gameVariables.setValue(10, 0);
 				}
 				TetrisManager.HarmSystem.dealDamage(null, scene._enemies[0], scene._enemies[0].Mhp, 'real');
+				this.picture.startDying();
 			}
+
+			this.timeMark.rewrite(TetrisManager.keepTwoDigits(this.record_time-time));
+			this._timeProgress.changeNumber(this.record_time-time);
+
 		},
+		onAttacked: function () {
+			this.picture.shake(10);
+			this.picture.blink(0xff6666);
+        }
+	},
+	'tutorial3': {
+		initialize: function () {
+			this.bossID = 4;
+			this.usedItem = false;
+			//this.usedSkill = false;
+		},
+		create: function () {
+			var scene = SceneManager._scene;
+			scene._playerItemBoard.ban();
+			scene._Skill_Manager.ban();
+			this.pictureBoard = new Tetris_Window(800, 100, 350, 624);
+			this.pictureBoard.removeChildAt(0)
+			this.picture = new Tachi('EvilGod');
+			this.pictureBoard.addChild(this.picture);
+			scene.addWindow(this.pictureBoard);
+			this.picture.startBreathing();
+
+			scene.addEmphasizer(
+				"{Prologue_inbattle_3_1}"
+				, 10, 390, 160, 60);
+			scene.addEmphasizer(
+				"{Prologue_inbattle_3_2}"
+				, 10, 390, 160, 60);
+			scene._Skill_Manager.unban();
+		},
+		update: function () {
+			var scene = SceneManager._scene;
+
+			//if (!this.usedSkill && Input.isTriggered('skillone')) {
+
+			//}
+
+			if (!this.usedItem && (scene.actor.hp < scene.actor.mhp)) {
+				scene.addEmphasizer(
+					"{Prologue_inbattle_3_3}"
+					, 0, 475, 360, 75);
+				scene._playerItemBoard.unban();
+				scene.addEmphasizer(
+					"{Prologue_inbattle_3_4}"
+					, 10, 455, 200, 48);
+				scene.addEmphasizer(
+					"{Prologue_inbattle_3_5}"
+					, 10, 455, 200, 48);
+				this.usedItem = true;
+            }
+		},
+		onAttacked: function () {
+			this.picture.shake(10);
+			this.picture.blink(0xff6666);
+		},
+		onDying: function () {
+			this.picture.startDying();
+        }
 	},
 
 }
@@ -1754,6 +1825,7 @@ TetrisManager.enemy_List = {
 			yrange: 12,
 			manager: Object.create(TetrisManager.special_List["tutorial1"]),
 			updateAfterDeath: true,
+			AiSpeed: 20
 		}
 	],
 	"Tutorial2": [
@@ -1788,7 +1860,41 @@ TetrisManager.enemy_List = {
 			NoAi: true,
 			pic_pos: [1000, 300],
 			gaugeWidth: 300,
-			AtkAnim: null
+			AtkAnim: null,
+			AiSpeed: 20
+		}
+	],
+	"Tutorial3": [
+		{
+			name: "EvilGod",
+			category: "enemy",
+			xposition: 825,
+			yposition: 84,
+			assumeYpos: 84,
+			avatarName: "EvilGod_Avatar",
+			dx: 420,
+			dy: 200,
+
+			level: 1,
+			curHp: 0,
+			displayHp: 0,
+			Mhp: 2000,
+			atk: 85,
+			def: 20,
+			curEng: 0,
+			MEng: 30,
+			EngSpd: 2,
+
+			Gold: 20,
+			Exp: 20,
+
+			xrange: 12,
+			yrange: 12,
+
+
+			manager: Object.create(TetrisManager.special_List["tutorial3"]),
+			pic_pos: [1000, 300],
+			AiSpeed: 15,
 		}
 	],
 }
@@ -2882,8 +2988,12 @@ TetrisManager.item_List = {
 		}
 		player.hold.block.move(scene.calPositionX(player.hold), 45)
 		player.holdWindow.addChild(player.hold.block);
-	}
+	},
 
+	"26": function () {
+		var player = SceneManager._scene.getPlayer();
+		TetrisManager.HarmSystem.dealDamage(null, player, -100, 'healing');
+	},
 }
 
 TetrisManager.battle_List = {
@@ -2918,6 +3028,15 @@ TetrisManager.battle_List = {
 			pan: 0
 		},
 		enemyList: TetrisManager.enemy_List["Tutorial2"],
+	},
+	"Tutorial3": {
+		music: {
+			name: "Tetris",
+			volume: 50,
+			pitch: 100,
+			pan: 0
+		},
+		enemyList: TetrisManager.enemy_List["Tutorial3"],
 	}
 }
 
