@@ -1,4 +1,18 @@
 {
     "interface_language": "选择语言",
-    "Tips_Item": "Z键使用道具，Shift键登记道具，Ctrl键取消登记"
+    "Tips_Item": "Z键使用道具，Shift键登记道具，Ctrl键取消登记",
+    "yes": "是",
+    "no": "否",
+    "back": "返回",
+    "sec": "秒",
+
+    "easy_difficulty": "当前的战斗难度为简单（50%属性）\n要更改难度吗？",
+    "normal_difficulty": "当前的战斗难度为普通（100%属性）\n要更改难度吗？",
+    "hard_difficulty": "当前的战斗难度为困难（150%属性）\n要更改难度吗？",
+    "lunatic_difficulty": "当前的战斗难度为地狱（200%属性）\n要更改难度吗？",
+    "selecting_difficulty": "请选择难度",
+    "easy_option": "简单难度（50%属性）",
+    "normal_option": "普通难度（100%属性）",
+    "hard_option": "困难难度（150%属性）",
+    "lunatic_option": "地狱难度（200%属性）"
 }

@@ -821,6 +821,8 @@ TetrisManager.Records.Total_Score = 0;
 
 TetrisManager.Records.isTitleScreenChanged = false;
 
+TetrisManager.Records.difficulty = 1;
+
 TetrisManager.localFileId = 4545;
 
 TetrisManager.webStorageKey = "Tekoki-Tetris";
@@ -829,6 +831,7 @@ TetrisManager.makeData = function () {
 	var tet = TetrisManager.Records;
 	tet.AiSpeed = TetrisManager.AiSpeed;
 	tet.isTitleScreenChanged = TetrisManager.Records.isTitleScreenChanged;
+	tet.difficulty = TetrisManager.Records.difficulty;
 	return tet
 }
 
@@ -855,6 +858,9 @@ TetrisManager.load = function () {
 				break;
 			case "isTitleScreenChanged":
 				TetrisManager.Records.isTitleScreenChanged = tet[name];
+				break;
+			case "difficulty":
+				TetrisManager.Records.difficulty = tet[name];
 				break;
         }
 	}
@@ -1279,7 +1285,7 @@ TetrisManager.showInstructions = function () {
 
 TetrisManager.hideInstructions = function () {
 	if (!this.hiding) {
-		var s = new SpriteSlider(this.instructions, 288, 100, 288, 734, 60);
+		var s = new SpriteSlider(this.instructions, 268, 100, 268, 734, 60);
 		SceneManager._scene.addChild(s);
 		this.hiding = true;
     }
@@ -1293,16 +1299,19 @@ Window_Instructions.prototype = Object.create(Window_Base.prototype);
 Window_Instructions.prototype.constructor = Window_Instructions;
 
 Window_Instructions.prototype.initialize = function () {
-	Window_Base.prototype.initialize.call(this, 288, 0, 624, 524);
-	this.window_title = new Tetris_Window(0, -100, 624, 100);
+	Window_Base.prototype.initialize.call(this, 268, 0, 644, 524);
+	this.window_title = new Tetris_Window(0, -100, 644, 100);
 	this.addChild(this.window_title)
-	this.window_title.drawText("{instructions_title}", 0, 0);
-	this.drawText("{instructions_Line1}", 0, 0);
-	this.drawText("{instructions_Line2}", 0, 28);
-	this.drawText("{instructions_Line3}", 0, 56);
-	this.drawText("{instructions_Line4}", 0, 84);
-	this.silder = new SpriteSlider(this, 288, -524, 288, 100, 60);
+	this.window_title.drawText("{instructions_title}", 10, 0);
+	this.drawText("{instructions_Line1}", 10, 0);
+	this.drawText("{instructions_Line2}", 10, 28);
+	this.drawText("{instructions_Line3}", 10, 56);
+	this.drawText("{instructions_Line4}", 10, 84);
+	this.silder = new SpriteSlider(this, 268, -524, 268, 100, 60);
 	this.addChild(this.silder);
+	this.a = new SequenceAnimation({ name: "地图按键\\未标题-3", FinalNumber: 21, framedigits: 2, initialNumber: 0, delay: 2 });
+	this.a.move(10, 200);
+	this.addChild(this.a);
 }
 
 Window_Instructions.prototype.refresh = function () {
@@ -1414,8 +1423,8 @@ AfterMath_Window.prototype.initialize = function (info) {
 	this.drawText("本局最大连击：" + this.combo, 0, 28);
 	this.drawText("本局LPM：" + TetrisManager.keepTwoDigits(this.LPM), 0, 56);
 	this.drawText("本局KPM：" + TetrisManager.keepTwoDigits(this.APM), 0, 84);
-	this.drawText("获得金币：" + TetrisManager.keepTwoDigits(this.gold), 0, 140);
-	this.drawText("获得经验：" + TetrisManager.keepTwoDigits(this.exp), 0, 168);
+	this.drawText("获得金币：" + this.gold, 0, 140);
+	this.drawText("获得经验：" + this.exp, 0, 168);
 
 	this.contents.drawLine(500, 0, 500, 424, 5, "black");
 
@@ -1529,7 +1538,6 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
             }
 			if (target.curHp < 0) {
 				target.curHp = 0;
-				target.living = false;
 				scene.changeTarget();
 			}
 			var pop = new PopNumber(new FNumber(Math.abs(finaldamage), 7));
@@ -1743,7 +1751,7 @@ itemBoard.prototype.initialize = function () {
 	this.lastSet = -1;
 	this.iconSets = [];
 	this.changingIcon = false;
-	this.background = new Tetris_Window(-5, -5, 200, 48);
+	this.background = new Tetris_Window(-5, -5, 155, 48);
 	this.addChild(this.background);
 
 	this.Icons = [];
@@ -1808,7 +1816,7 @@ itemBoard.prototype.initialize = function () {
 
 itemBoard.prototype.update = function () {
 	Sprite.prototype.update.call(this);
-	if (this.running) {
+	if (this.running && SceneManager._scene.running) {
 		if (Input.isTriggered('itemone')) {
 			var id = this.boardIndex + 0
 			this.useItem(id);
@@ -2166,26 +2174,28 @@ FloatingText.prototype.constructor = FloatingText;
 
 FloatingText.prototype.initialize = function (text, width, height, size) {
 	Text_Base.prototype.initialize.call(this, text, width, height, size, 'left');
-	this.layed = false;
-	this.count = 0;
+	this.f = new SpriteFloater(this, 5, 0.1);
+	this.addChild(this.f);
+	//this.layed = false;
+	//this.count = 0;
 }
 
-FloatingText.prototype.update = function () {
-	Text_Base.prototype.update.call(this);
-	if (!this.layed) {
-		this.y -= 0.1;
-		this.count += 0.1;
-		if (this.count >= 5) {
-			this.layed = true;
-		}
-	} else {
-		this.y += 0.1;
-		this.count -= 0.1;
-		if (this.count <= 0) {
-			this.layed = false;
-		}
-	}
-}
+//FloatingText.prototype.update = function () {
+//	Text_Base.prototype.update.call(this);
+//	if (!this.layed) {
+//		this.y -= 0.1;
+//		this.count += 0.1;
+//		if (this.count >= 5) {
+//			this.layed = true;
+//		}
+//	} else {
+//		this.y += 0.1;
+//		this.count -= 0.1;
+//		if (this.count <= 0) {
+//			this.layed = false;
+//		}
+//	}
+//}
 
 //-----------------------------------------------------------------------------
 
@@ -3432,6 +3442,9 @@ Emphasizer.prototype.initialize = function (text, x, y, width, height, options) 
 	Ftext.move((options ? (options.textX ? options.textX : x) : x),
 		(options ? (options.textY ? options.textY : y - Ftext._height) : y - Ftext._height));
 	this.addChild(Ftext);
+	if (options && options.behaviour) {
+		options.behaviour.call(this);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -3475,6 +3488,7 @@ SpriteSlider.prototype.initialize = function (Sparent, StartX, StartY, EndX, End
 }
 
 SpriteSlider.prototype.update = function () {
+	Sprite.prototype.update.call(this);
 	this.laying_count += 1;
 	if (this.laying_count <= this.laying_time - this.bounce_constant) {
 		this.Sparent.x += this.nX;
@@ -3485,6 +3499,41 @@ SpriteSlider.prototype.update = function () {
 	}
 	if (this.laying_count >= this.laying_time) {
 		this.destroy();
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+function SpriteFloater() {
+	this.initialize.apply(this, arguments);
+}
+
+SpriteFloater.prototype = Object.create(Sprite.prototype);
+SpriteFloater.prototype.constructor = SpriteFloater;
+
+SpriteFloater.prototype.initialize = function (Sparent, floatingDistance, floatingSpeed) {
+	Sprite.prototype.initialize.call(this);
+	this.Sparent = Sparent;
+	this.floatingDistance = floatingDistance;
+	this.floatingSpeed = floatingSpeed;
+	this.layerd = false;
+	this.count = 0
+}
+
+SpriteFloater.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	if (!this.layed) {
+		this.Sparent.y -= this.floatingSpeed;
+		this.count += this.floatingSpeed;
+		if (this.count >= this.floatingDistance) {
+			this.layed = true;
+		}
+	} else {
+		this.Sparent.y += this.floatingSpeed;
+		this.count -= this.floatingSpeed;
+		if (this.count <= 0) {
+			this.layed = false;
+		}
 	}
 }
 

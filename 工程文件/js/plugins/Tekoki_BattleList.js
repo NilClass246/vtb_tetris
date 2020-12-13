@@ -751,7 +751,15 @@ TetrisManager.special_List = {
 				, 100, 312, 0, 0);
 			scene.addEmphasizer(
 				"{Prologue_inbattle_1_2}"
-				, 100, 312, 0, 0);
+				, 100, 312, 0, 0, {
+					behaviour: function () {
+						this.a = new SequenceAnimation({ name: "战斗界面\\image", FinalNumber: 19, framedigits: 2, initialNumber: 0, delay: 3 });
+						var f = new SpriteFloater(this.a, 5, 0.1);
+						this.a.addChild(f);
+						this.a.move(100, 312);
+						this.addChild(this.a);
+				}
+			});
 			scene.addEmphasizer(
 				"{Prologue_inbattle_1_3}"
 				, 100, 312, 0, 0);
@@ -771,7 +779,7 @@ TetrisManager.special_List = {
 			if (!this.isAttacking && (scene.player.gaugeSCORE >= scene.player.AtkFreq - 1)) {
 				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttacking}"
-					, scene.player.xposition+ 265, 20, 10, (scene.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
+					, scene.player.xposition+ 260, 20, 10, (scene.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
 				this.isAttacking = true;
 			}
 		}
@@ -785,7 +793,7 @@ TetrisManager.special_List = {
 			scene._playerItemBoard.ban();
 			scene._Skill_Manager.ban();
 
-			this.pictureBoard = new Tetris_Window(824, 100, 350, 624);
+			this.pictureBoard = new Tetris_Window(scene._enemies[0].xposition+24, 100, 350, 624);
 			this.pictureBoard.removeChildAt(0)
 			this.picture = new Tachi("Behemoth");
 			this.pictureBoard.addChild(this.picture);
@@ -804,12 +812,12 @@ TetrisManager.special_List = {
 				maxWidth: 20
 			}
 			this._timeProgress = new VerticalProgressBar(this.record_time, options);
-			this._timeProgress.move(800, 100);
+			this._timeProgress.move(scene._enemies[0].xposition-24, 100);
 			scene._boardLayer.addChild(this._timeProgress);
 
-			this.timeMark = new Text_Base(String(this.record_time), 50, 50, 24, "left");
+			this.timeMark = new Text_Base(String(this.record_time) + "{sec}", 200, 50, 18, "left");
 			scene._boardLayer.addChild(this.timeMark);
-			this.timeMark.move(800, 485);
+			this.timeMark.move(scene._enemies[0].xposition-24, 485);
 
 			scene.addEmphasizer(
 				"{Prologue_inbattle_2_1}"
@@ -826,21 +834,22 @@ TetrisManager.special_List = {
 			var scene = SceneManager._scene;
 			var time = TetrisManager.getElapsedTime();
 			if (time >= this.record_time) {
-				var result = scene._enemies[0].Mhp - scene._enemies[0].curHp;
+				var result = scene.player.SCORE;
 				if (result >= this.lunaticLevel) {
-					$gameVariables.setValue(10, 3);
+					TetrisManager.Records.difficulty = 3;
 				} else if (result >= this.hardLevel) {
-					$gameVariables.setValue(10, 2);
+					TetrisManager.Records.difficulty = 2;
 				} else if (result >= this.normalLevel) {
-					$gameVariables.setValue(10, 1);
+					TetrisManager.Records.difficulty = 1;
 				} else if (result >= this.easyLevel) {
-					$gameVariables.setValue(10, 0);
+					TetrisManager.Records.difficulty = 0;
 				}
+				TetrisManager.save();
 				TetrisManager.HarmSystem.dealDamage(null, scene._enemies[0], scene._enemies[0].Mhp, 'real');
 				this.picture.startDying();
 			}
 
-			this.timeMark.rewrite(TetrisManager.keepTwoDigits(this.record_time-time));
+			this.timeMark.rewrite(TetrisManager.keepTwoDigits(this.record_time-time)+"{sec}");
 			this._timeProgress.changeNumber(this.record_time-time);
 
 		},
@@ -859,7 +868,7 @@ TetrisManager.special_List = {
 			var scene = SceneManager._scene;
 			scene._playerItemBoard.ban();
 			scene._Skill_Manager.ban();
-			this.pictureBoard = new Tetris_Window(800, 100, 350, 624);
+			this.pictureBoard = new Tetris_Window(scene._enemies[0].xposition + 24, 100, 350, 624);
 			this.pictureBoard.removeChildAt(0)
 			this.picture = new Tachi('EvilGod');
 			this.pictureBoard.addChild(this.picture);
@@ -868,10 +877,18 @@ TetrisManager.special_List = {
 
 			scene.addEmphasizer(
 				"{Prologue_inbattle_3_1}"
-				, 10, 390, 160, 60);
+				, 10, 390, 160, 60, );
 			scene.addEmphasizer(
 				"{Prologue_inbattle_3_2}"
-				, 10, 390, 160, 60);
+				, 10, 390, 160, 60, {
+				behaviour: function () {
+						this.a = new SequenceAnimation({ name: "技能\\qwe", FinalNumber: 21, framedigits: 2, initialNumber: 0, delay: 3 });
+						var f = new SpriteFloater(this.a, 5, 0.1);
+						this.a.addChild(f);
+					this.a.move(10, 78);
+					this.addChild(this.a);
+				}
+			});
 			scene._Skill_Manager.unban();
 		},
 		update: function () {
@@ -891,7 +908,15 @@ TetrisManager.special_List = {
 					, 10, 455, 200, 48);
 				scene.addEmphasizer(
 					"{Prologue_inbattle_3_5}"
-					, 10, 455, 200, 48);
+					, 10, 455, 200, 48, {
+					behaviour: function () {
+							this.a = new SequenceAnimation({ name: "道具\\123", FinalNumber: 21, framedigits: 2, initialNumber: 0, delay: 3 });
+							var f = new SpriteFloater(this.a, 5, 0.1);
+							this.a.addChild(f);
+							this.a.move(10, 143);
+						this.addChild(this.a);
+					}
+				});
 				this.usedItem = true;
             }
 		},
@@ -1801,7 +1826,7 @@ TetrisManager.enemy_List = {
 		{
 			name: "Slime",
 			category: "enemy",
-			xposition: 825,
+			xposition: 883,
 			yposition: 84,
 			assumeYpos: 84,
 			avatarName: "Slime_Avatar",
@@ -1832,7 +1857,7 @@ TetrisManager.enemy_List = {
 		{
 			name: "Orc",
 			category: "enemy",
-			xposition: 825,
+			xposition: 883,
 			yposition: 84,
 			assumeYpos: 84,
 			avatarName: "Orc_Avatar",
@@ -1868,7 +1893,7 @@ TetrisManager.enemy_List = {
 		{
 			name: "EvilGod",
 			category: "enemy",
-			xposition: 825,
+			xposition: 883,
 			yposition: 84,
 			assumeYpos: 84,
 			avatarName: "EvilGod_Avatar",
@@ -1878,7 +1903,7 @@ TetrisManager.enemy_List = {
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
-			Mhp: 2000,
+			Mhp: 750,
 			atk: 85,
 			def: 20,
 			curEng: 0,
@@ -1895,12 +1920,13 @@ TetrisManager.enemy_List = {
 			manager: Object.create(TetrisManager.special_List["tutorial3"]),
 			pic_pos: [1000, 300],
 			AiSpeed: 15,
+			isDifficultyVarianted: true
 		}
 	],
 }
 
 TetrisManager.skill_List = {
-	"T旋之魂": {
+	"3": {
 		name: "T旋之魂",
 		pic: "剑",
 		user: "player",
@@ -1947,12 +1973,12 @@ TetrisManager.skill_List = {
 			this.oldTime = Date.now();
 		}
 	},
-	"咩毒": {
+	"9": {
 		name: "咩毒",
 		pic: "咩毒",
 		user: "player",
 		isPrepared: true,
-		CD: 0,
+		CD: 10,
 		description: "测试用技能(中毒)",
 		CanUse: function () {
 			if (SceneManager._scene.getPlayer().actor.hp > 10) {
@@ -1964,9 +1990,9 @@ TetrisManager.skill_List = {
 			SceneManager._scene.addChild(Venom);
 		},
 		Reset: function () {
-			//this.isPrepared = false;
-			//this.CD = 0;
-			//this.oldTime = Date.now();
+			this.isPrepared = false;
+			this.CD = 10;
+			this.oldTime = Date.now();
         }
     },
 	"寸劲拳": {
@@ -2043,13 +2069,13 @@ TetrisManager.skill_List = {
 			this.oldTime = Date.now();
 		}
 	},
-	"战术嘲讽": {
+	"10": {
 		name: "战术嘲讽",
-		pic: "占位测试",
+		pic: "Shield",
 		user: "player",
 		isPrepared: true,
 		oldTime: 0,
-		CD: 0,
+		CD: 20,
 		description: "",
 		CanUse: function () {
 			return true
@@ -2057,13 +2083,16 @@ TetrisManager.skill_List = {
 		MakeEffect: function () {
 			var scene = SceneManager._scene
 			var player = scene.getPlayer();
-			scene._enemies[scene.getPlayer().TargetIndex].StateBoard.applyStates("7", 10);
+			scene._enemies[player.TargetIndex].StateBoard.applyStates("7", 10);
 			
 		},
 		Reset: function () {
+			this.isPrepared = false;
+			this.CD = 20;
+			this.oldTime = Date.now();
 		}
 	},
-	"测试技能": {
+	"11": {
 		name: "测试技能",
 		pic: "占位测试",
 		user: "player",
@@ -2822,8 +2851,8 @@ TetrisManager.state_List = {
 
 TetrisManager.item_List = {
 	"1": function () {
-		var actor = $gameActors.actor(1)
-		actor.gainHp(500);
+		var player = SceneManager._scene.getPlayer();
+		TetrisManager.HarmSystem.dealDamage(null, player, -500, 'healing');
 		SceneManager._scene._playerStateBoard.applyStates("4", 10)
 	},
 	"2": function () {
@@ -3013,7 +3042,7 @@ TetrisManager.battle_List = {
 	},
 	"Tutorial1": {
 		music: {
-			name: "Tetris",
+			name: "无端械斗（电吉他solo）",
 			volume: 50,
 			pitch: 100,
 			pan: 0
@@ -3022,7 +3051,7 @@ TetrisManager.battle_List = {
 	},
 	"Tutorial2": {
 		music: {
-			name: "Tetris",
+			name: "tetris epic",
 			volume: 50,
 			pitch: 100,
 			pan: 0
@@ -3031,7 +3060,7 @@ TetrisManager.battle_List = {
 	},
 	"Tutorial3": {
 		music: {
-			name: "Tetris",
+			name: "tetris metal",
 			volume: 50,
 			pitch: 100,
 			pan: 0
@@ -3055,9 +3084,9 @@ MeaDoku.prototype.initialize = function (index) {
 	Sprite.prototype.initialize.call(this);
 	AudioManager.playSe(TetrisManager.seSet['Wind7']);
 	var scene = SceneManager._scene
-	scene.getPlayer().actor.gainHp(-10);
 
 	this.enemy = scene._enemies[scene.getPlayer().TargetIndex];
+	TetrisManager.HarmSystem.dealDamage(scene.player, scene.player, 10, "real");
 	var sx = scene.getSkillPosition(index)[0];
 	var sy = scene.getSkillPosition(index)[1];
 	var ex = this.enemy.StateBoard.getStatePosition('4')[0];

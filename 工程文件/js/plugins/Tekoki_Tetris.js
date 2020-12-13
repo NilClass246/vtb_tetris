@@ -137,8 +137,9 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		actor: $gameActors.actor(1),
 		running: true,
 		category: "player",
-		xposition: 382,
-		yposition: 27,
+		xposition: 440,
+			//382,
+		yposition: 39,
 		xrange: 25,
 		yrange: 25,
 
@@ -266,20 +267,37 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 
 Scene_Tetris.prototype.initialize_Skills = function () {
 	var skills = $gameParty.members()[0].skills();
-	var skillnames = [] 
+	var skillIDs = [] 
 	for (var i = 0; i < skills.length; i++) {
-		if (skills[i].name !== '攻击') {
-			skillnames.push(skills[i].name)
+		if (skills[i].id !== 1) {
+			skillIDs.push(String(skills[i].id));
         }
     }
 	//this.SkillButtonOne = new SkillButton(weapon.id-1)
-	this._Skill_Manager = new SkillManager(skillnames);
+	this._Skill_Manager = new SkillManager(skillIDs);
 }
 
 Scene_Tetris.prototype.initialize_Enemy = function () {
 	for (var i in this._enemies) {
 		this._enemies[i].running = true;
-
+		switch (TetrisManager.Records.difficulty) {
+			case 0:
+				var difficultyConstant = 0.5;
+				break;
+			case 1:
+				var difficultyConstant = 1;
+				break;
+			case 2:
+				var difficultyConstant = 1.5;
+				break;
+			case 3:
+				var difficultyConstant = 2;
+				break;
+		}
+		if (this._enemies[i].isDifficultyVarianted) {
+			this._enemies[i].Mhp = this._enemies[i].Mhp * difficultyConstant;
+			this._enemies[i].MEng = this._enemies[i].MEng / difficultyConstant;
+        }
 		this._enemies[i].curHp = this._enemies[i].Mhp;
 		this._enemies[i].displayHp = this._enemies[i].curHp;
 		this._enemies[i]._states = [];
@@ -1269,7 +1287,7 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 			tempPopScore.changeDirection('left');
 			var popScore = new PopNumber(tempPopScore);
 			this._blockLayer.addChild(popScore);
-			popScore.move(operator.xposition + this.ROW * operator.xrange, (this.COL - TetrisManager.AboveLines) * operator.yrange - 15);
+			popScore.move(operator.ScoreBoard.x, operator.ScoreBoard.y);
 			popScore.activate();
 			operator.merged = false;
 		} else {
@@ -2074,7 +2092,7 @@ Scene_Tetris.prototype.refreshPlayerGauge = function(){
 		this.player_hp_number = new FNumber(this.player.displayHp, 7);
 		this.player_hp_number.changeDirection("left");
 		this.playerGaugeBoard.addChild(this.player_hp_number);
-		this.player_hp_number.move(320, -14);
+		this.player_hp_number.move(320, 0);
 	} else {
 		this.player_hp_number.change(this.player.displayHp)
 	}
@@ -2122,8 +2140,8 @@ Scene_Tetris.prototype.removeFromMainWindow = function (operator, sprite) {
 Scene_Tetris.prototype.refreshScoreBoard = function (operator) {
 	this._blockLayer.removeChild(operator.ScoreBoard);
 	operator.ScoreBoard = new FNumber(operator.SCORE, 12);
-	operator.ScoreBoard.changeDirection("left")
-	operator.ScoreBoard.move(operator.xposition + this.ROW * operator.xrange, (this.COL - TetrisManager.AboveLines) * operator.yrange - 15);
+	operator.ScoreBoard.changeDirection("left");
+	operator.ScoreBoard.move(operator.xposition + this.ROW * operator.xrange+140, (this.COL - TetrisManager.AboveLines) * operator.yrange - 15);
 	this._blockLayer.addChild(operator.ScoreBoard)
 }
 
@@ -2190,7 +2208,7 @@ Scene_Tetris.prototype.refreshCombo = function (battler) {
 		battler.comboX = new ComboSprite(battler.Count_Combos);
 		battler.comboX.scale.x = battler.scaleX;
 		battler.comboX.scale.y = battler.scaleY;
-		battler.comboX.move(battler.xposition - 100 * battler.scaleX, battler.yposition+ TetrisManager.AboveLines*battler.yrange + 100 * battler.scaleY);
+		battler.comboX.move(battler.xposition + 25 * battler.scaleX, battler.yposition+ TetrisManager.AboveLines*battler.yrange + 100 * battler.scaleY);
 		this._blockLayer.addChild(battler.comboX)
 	} else {
 		if (battler.comboX) {
@@ -2262,6 +2280,7 @@ Scene_Tetris.prototype.createAfterMath = function () {
 	$gameParty.gainGold(this.player.gold_got);
 	$gameActors.actor(1).gainExp(this.player.exp_got);
 }
+
 Scene_Tetris.prototype.eliminateBUGs = function (operator) {
 	operator.Count_Combos = 1;
 	this.refreshCombo(operator);

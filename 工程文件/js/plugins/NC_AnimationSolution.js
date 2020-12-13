@@ -43,25 +43,26 @@ function SequenceAnimation() {
 SequenceAnimation.prototype = Object.create(Sprite.prototype);
 SequenceAnimation.prototype.constructor = SequenceAnimation;
 
-SequenceAnimation.prototype.initialize = function (name, FinalNumber, framedigits, initialNumber, delay) {
+SequenceAnimation.prototype.initialize = function (options) {
+    //name, FinalNumber, framedigits, initialNumber, delay
     Sprite.prototype.initialize.call(this);
-    this.delay = delay||0
+    this.delay = options.delay||0
     this.delay_count = 0;
-    this.frameNumber = FinalNumber
+    this.frameNumber = options.FinalNumber
     this.frames = [];
-    if (!initialNumber) {
-        initialNumber = 0;
+    if (!options.initialNumber) {
+        options.initialNumber = 0;
     }
-    for (i = initialNumber; i <= FinalNumber; i++) {
-        curdigits = i.toString().split("");
+    for (i = options.initialNumber; i <= this.frameNumber; i++) {
+        var curdigits = i.toString().split("");
         suffix = ''
-        if (framedigits - curdigits.length > 0) {
-            for (j = 0; j < (framedigits - curdigits.length); j++) {
+        if (options.framedigits - curdigits.length > 0) {
+            for (j = 0; j < (options.framedigits - curdigits.length); j++) {
                 suffix += "0";
             }
         }
         suffix += i;
-        this.frames.push(ImageManager.loadPicture("sequenceAnimation\\" + name + suffix));
+        this.frames.push(ImageManager.loadPicture("sequenceAnimation\\" + options.name + suffix));
     }
     this.curSprite = new Sprite();
     this.addChild(this.curSprite)
