@@ -898,7 +898,7 @@ TetrisManager.Temps.Scene_Title_prototype_create = Scene_Title.prototype.create;
 Scene_Title.prototype.create = function () {
 	TetrisManager.Temps.Scene_Title_prototype_create.call(this);
 	if (!TetrisManager.Records.isTitleScreenChanged) {
-		var titletext = new Text_Base("No Tetris No Life", 400, 200, 55, 'left');
+		var titletext = new Text_Base("No Tetris No Life", 500, 200, 55, 'left');
 		titletext.move(400, 100);
 		this.addChild(titletext);
 	}
@@ -1285,7 +1285,7 @@ TetrisManager.showInstructions = function () {
 
 TetrisManager.hideInstructions = function () {
 	if (!this.hiding) {
-		var s = new SpriteSlider(this.instructions, 268, 100, 268, 734, 60);
+		var s = new SpriteSlider(this.instructions, 268, 137, 268, 737, 60);
 		SceneManager._scene.addChild(s);
 		this.hiding = true;
     }
@@ -1299,15 +1299,16 @@ Window_Instructions.prototype = Object.create(Window_Base.prototype);
 Window_Instructions.prototype.constructor = Window_Instructions;
 
 Window_Instructions.prototype.initialize = function () {
-	Window_Base.prototype.initialize.call(this, 268, 0, 644, 524);
-	this.window_title = new Tetris_Window(0, -100, 644, 100);
+	Window_Base.prototype.initialize.call(this, 268, 0, 644, 425);
+	this.window_title = new Tetris_Window(0, -75, 644, 75);
 	this.addChild(this.window_title)
 	this.window_title.drawText("{instructions_title}", 10, 0);
 	this.drawText("{instructions_Line1}", 10, 0);
 	this.drawText("{instructions_Line2}", 10, 28);
 	this.drawText("{instructions_Line3}", 10, 56);
 	this.drawText("{instructions_Line4}", 10, 84);
-	this.silder = new SpriteSlider(this, 268, -524, 268, 100, 60);
+	this.drawText("{instructions_Line5}", 475, 112);
+	this.silder = new SpriteSlider(this, 268, -500, 268, 137, 60);
 	this.addChild(this.silder);
 	this.a = new SequenceAnimation({ name: "地图按键\\未标题-3", FinalNumber: 21, framedigits: 2, initialNumber: 0, delay: 2 });
 	this.a.move(10, 200);
@@ -1805,8 +1806,10 @@ itemBoard.prototype.initialize = function () {
 		this.iconSets[tempSet].addChild(this.Icons[i]);
 		count += 1;
 	}
-
-	this.itemArrow = new Sprite(ImageManager.loadPicture('ui\\ItemArrow'));
+	this.itemSetPosition = 1;
+	this.itemBitmap1 = ImageManager.loadPicture('ui\\Item1');
+	this.itemBitmap2 = ImageManager.loadPicture('ui\\Item2');
+	this.itemArrow = new Sprite(this.itemBitmap1);
 	this.itemArrow.move(4 * 38 + 10, 0)
 	this.addChild(this.itemArrow)
 	this.addChild(this.iconSets[this.setIndex]);
@@ -1816,7 +1819,7 @@ itemBoard.prototype.initialize = function () {
 
 itemBoard.prototype.update = function () {
 	Sprite.prototype.update.call(this);
-	if (this.running && SceneManager._scene.running) {
+	if (this.running && (SceneManager._scene.running || SceneManager._scene.emphasizer_added)) {
 		if (Input.isTriggered('itemone')) {
 			var id = this.boardIndex + 0
 			this.useItem(id);
@@ -1850,6 +1853,14 @@ itemBoard.prototype.update = function () {
 				this.iconSets[this.setIndex].opacity = 0;
 				this.addChild(this.iconSets[this.setIndex]);
 				this.changingIcon = true;
+
+				if (this.itemSetPosition == 1) {
+					this.itemArrow.bitmap = this.itemBitmap2;
+					this.itemSetPosition = 2;
+				} else {
+					this.itemArrow.bitmap = this.itemBitmap1;
+					this.itemSetPosition = 1;
+				}
 			}
 		}
 
@@ -1899,12 +1910,12 @@ itemBoard.prototype.applyItem = function (item) {
 
 itemBoard.prototype.ban = function () {
 	this.running = false;
-	this.x -= 200;
+	this.x -= 250;
 }
 
 itemBoard.prototype.unban = function () {
 	this.running = true;
-	var s = new SpriteSlider(this, this.x, this.y, this.x += 200, this.y, 60);
+	var s = new SpriteSlider(this, this.x, this.y, this.x + 250, this.y, 60);
 	this.addChild(s);
 }
 
@@ -2110,25 +2121,38 @@ Text_Base.prototype.initialize = function (text, width, height, size, align) {
 	this.w = width;
 	this.a = align;
 	this.s = size;
-
 	var text = DKTools.Localization.getText(text);
 	var texts = text.split("\n");
-	this._height = (texts.length) * (size*(4/3)*2);
-	this.bitmap = new Bitmap(width, this._height);
-	this.bitmap.fontSize = size;
-	for (var i = 0; i < texts.length; i++) {
-		this.bitmap.drawText(texts[i], 0, i * size, width, this._height, align);
-	}
+	this._height = (texts.length) * (size * (4 / 3) * 2);
+
+	this.window = new Window_Base(0, 0, this.w+2*18, this._height+2*18);
+	this.window.contents.fontSize = this.s;
+	Yanfly.Param.FontSize = this.s;
+	this.window.contents.align = this.a;
+	this.window.drawTextEx(text, 0, 0);
+	Yanfly.Param.FontSize = 22;
+	this.bitmap = this.window.contents;
+	this.bitmap.fontSize = this.s;
+	//for (var i = 0; i < texts.length; i++) {
+	//	this.bitmap.drawText(texts[i], 0, i * size, width, this._height, align);
+	//}
 }
 
 Text_Base.prototype.rewrite = function (text) {
-	this.bitmap.clear();
 	text = DKTools.Localization.getText(text);
 	var texts = text.split("\n");
 	this._height = (texts.length) * (this.s * (4 / 3) * 2);
-	for (var i = 0; i < texts.length; i++) {
-		this.bitmap.drawText(texts[i], 0, i * this.s, this.w, this._height, this.a);
-	}
+	this.window = new Window_Base(0, 0, this.w + 2 * 18, this._height + 2 * 18);
+	this.window.contents.fontSize = this.s;
+	Yanfly.Param.FontSize = this.s;
+	this.window.contents.align = this.a;
+	this.window.drawTextEx(text, 0, 0);
+	Yanfly.Param.FontSize = 22;
+	this.bitmap = this.window.contents;
+}
+
+Text_Base.prototype.processLine = function (textState) {
+
 }
 
 //-----------------------------------------------------------------------------
@@ -2908,7 +2932,7 @@ ComboSprite.prototype.initialize = function (combo) {
 	this.ComboPic = new Sprite();
 	this.ComboPic.bitmap = ImageManager.loadPicture("ui\\ComboX");
 	this.ComboNum = new FNumber(combo, 9, "BigNumbers")
-	this.ComboNum.x = 200;
+	this.ComboNum.x = 245;
 	this.opacity = 0;
 	this.addChild(this.ComboNum);
 	this.addChild(this.ComboPic);
@@ -2973,19 +2997,19 @@ function targetMark() {
 	this.initialize.apply(this, arguments);
 }
 
-targetMark.prototype = Object.create(Sprite.prototype);
+targetMark.prototype = Object.create(SequenceAnimation.prototype);
 targetMark.prototype.constructor = targetMark;
 
 targetMark.prototype.initialize = function (target) {
-	Sprite.prototype.initialize.call(this);
-	this.bitmap = ImageManager.loadPicture("Target");
+	SequenceAnimation.prototype.initialize.call(this,
+		{ name: "带字符//", FinalNumber: 7, framedigits: 1, initialNumber: 1, delay: 5});
 	this.anchor.x = 0.5
 	this.anchor.y = 0.5
 	this.aim(target);
 }
 
 targetMark.prototype.update = function () {
-	Sprite.prototype.update.call(this);
+	SequenceAnimation.prototype.update.call(this);
 	if (this.scale.x != this.targetScaleX) {
 		this.scale.x += (this.targetScaleX - this.scale.x) / TetrisManager.GaugeConstant;
 	}
@@ -3013,8 +3037,8 @@ targetMark.prototype.aim = function (target) {
 		this.targetScaleX = target.scaleX;
 		this.targetScaleY = target.scaleY;
 		if (!target.NoAi) {
-			this.targetX = target.xposition + (TetrisManager.ROW / 2) * target.xrange;
-			this.targetY = target.yposition + ((TetrisManager.COL - TetrisManager.AboveLines) / 2) * target.yrange + TetrisManager.AboveLines * target.yrange;
+			this.targetX = target.mainwindow.x + (target.mainwindow.width - 200 * target.scaleX)/2;
+			this.targetY = target.mainwindow.y + (target.mainwindow.height - 240 * target.scaleX) / 2;
 		} else {
 			this.targetX = target.xposition -5;
 			this.targetY = target.assumeYpos-40;

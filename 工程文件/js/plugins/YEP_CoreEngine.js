@@ -2340,7 +2340,8 @@ Window_Base.prototype.standardFontFace = function() {
     }
 };
 
-Window_Base.prototype.standardFontSize = function() {
+Window_Base.prototype.standardFontSize = function () {
+    //return this.font_Size;
     return Yanfly.Param.FontSize;
 };
 

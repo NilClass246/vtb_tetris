@@ -748,15 +748,15 @@ TetrisManager.special_List = {
 			scene._Skill_Manager.ban();
 			scene.addEmphasizer(
 				"{Prologue_inbattle_1_1}"
-				, 100, 312, 0, 0);
+				, 100, 352, 0, 0);
 			scene.addEmphasizer(
 				"{Prologue_inbattle_1_2}"
-				, 100, 312, 0, 0, {
+				, 100, 352, 0, 0, {
 					behaviour: function () {
 						this.a = new SequenceAnimation({ name: "战斗界面\\image", FinalNumber: 19, framedigits: 2, initialNumber: 0, delay: 3 });
 						var f = new SpriteFloater(this.a, 5, 0.1);
 						this.a.addChild(f);
-						this.a.move(100, 312);
+						this.a.move(100, 292);
 						this.addChild(this.a);
 				}
 			});
@@ -766,20 +766,21 @@ TetrisManager.special_List = {
 		},
 		update: function () {
 			var scene = SceneManager._scene;
-			if (!this.isAttacked && (scene.actor.hp - scene.player.displayHp)) {
+			if (!this.isAttacked && ((scene.actor.hp - scene.player.displayHp)<0)) {
 				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttack_1}"
-					, 0, 475, 360, 75);
+					, 10, 500, 360, 25);
 				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttack_2}"
-					, 0, 475, 360, 75);
+					, 10, 500, 360, 25);
 				this.isAttacked = true;
 			}
 
 			if (!this.isAttacking && (scene.player.gaugeSCORE >= scene.player.AtkFreq - 1)) {
+				var e = scene._enemies[scene.player.TargetIndex];
 				scene.addEmphasizer(
 					"{Prologue_inbattle_1_onAttacking}"
-					, scene.player.xposition+ 260, 20, 10, (scene.COL - TetrisManager.AboveLines) * scene.player.yrange, { textX: scene.player.xposition, textY: 312 });
+					, e.mainwindow.x, e.mainwindow.y, e.mainwindow.width, e.mainwindow.height, { textX: scene.player.xposition, textY: 312 });
 				this.isAttacking = true;
 			}
 		}
@@ -817,7 +818,7 @@ TetrisManager.special_List = {
 
 			this.timeMark = new Text_Base(String(this.record_time) + "{sec}", 200, 50, 18, "left");
 			scene._boardLayer.addChild(this.timeMark);
-			this.timeMark.move(scene._enemies[0].xposition-24, 485);
+			this.timeMark.move(scene._enemies[0].xposition-24, 490);
 
 			scene.addEmphasizer(
 				"{Prologue_inbattle_2_1}"
@@ -853,6 +854,10 @@ TetrisManager.special_List = {
 			this._timeProgress.changeNumber(this.record_time-time);
 
 		},
+		onFirstUpdate: function () {
+			var scene = SceneManager._scene;
+			scene.TargetMark.visible = false;
+        },
 		onAttacked: function () {
 			this.picture.shake(10);
 			this.picture.blink(0xff6666);
@@ -862,7 +867,7 @@ TetrisManager.special_List = {
 		initialize: function () {
 			this.bossID = 4;
 			this.usedItem = false;
-			//this.usedSkill = false;
+			this.usedSkill = false;
 		},
 		create: function () {
 			var scene = SceneManager._scene;
@@ -894,11 +899,14 @@ TetrisManager.special_List = {
 		update: function () {
 			var scene = SceneManager._scene;
 
-			//if (!this.usedSkill && Input.isTriggered('skillone')) {
+			if (!this.usedSkill && (Input.isTriggered('skillone') || Input.isTriggered('skilltwo') || Input.isTriggered('skillthree'))) {
+				scene.addEmphasizer(
+					"{Prologue_inbattle_3_7}"
+					, 10, 390, 160, 60);
+				this.usedSkill = true;
+			}
 
-			//}
-
-			if (!this.usedItem && (scene.actor.hp < scene.actor.mhp)) {
+			if (!this.usedItem && ((scene.actor.hp - scene.player.displayHp) < 0)) {
 				scene.addEmphasizer(
 					"{Prologue_inbattle_3_3}"
 					, 0, 475, 360, 75);
@@ -914,6 +922,17 @@ TetrisManager.special_List = {
 							var f = new SpriteFloater(this.a, 5, 0.1);
 							this.a.addChild(f);
 							this.a.move(10, 143);
+						this.addChild(this.a);
+					}
+				});
+				scene.addEmphasizer(
+					"{Prologue_inbattle_3_6}"
+					, 172, 455, 38, 40, {
+					behaviour: function () {
+						this.a = new SequenceAnimation({ name: "道具\\123", FinalNumber: 21, framedigits: 2, initialNumber: 0, delay: 3 });
+						var f = new SpriteFloater(this.a, 5, 0.1);
+						this.a.addChild(f);
+						this.a.move(10, 143);
 						this.addChild(this.a);
 					}
 				});
@@ -1826,7 +1845,7 @@ TetrisManager.enemy_List = {
 		{
 			name: "Slime",
 			category: "enemy",
-			xposition: 883,
+			xposition: 888,
 			yposition: 84,
 			assumeYpos: 84,
 			avatarName: "Slime_Avatar",
@@ -1836,7 +1855,7 @@ TetrisManager.enemy_List = {
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
-			Mhp: 100,
+			Mhp: 50,
 			atk: 35,
 			def: 20,
 			curEng: 0,
@@ -1846,9 +1865,37 @@ TetrisManager.enemy_List = {
 			Gold: 20,
 			Exp: 20,
 
-			xrange: 12,
-			yrange: 12,
+			xrange: 9,
+			yrange: 9,
 			manager: Object.create(TetrisManager.special_List["tutorial1"]),
+			updateAfterDeath: true,
+			AiSpeed: 20
+		},
+		{
+			name: "Slime",
+			category: "enemy",
+			xposition: 888,
+			yposition: 384,
+			assumeYpos: 384,
+			avatarName: "Slime_Avatar",
+			dx: 420,
+			dy: 200,
+
+			level: 1,
+			curHp: 0,
+			displayHp: 0,
+			Mhp: 50,
+			atk: 35,
+			def: 20,
+			curEng: 0,
+			MEng: 30,
+			EngSpd: 2,
+
+			Gold: 20,
+			Exp: 20,
+
+			xrange: 9,
+			yrange: 9,
 			updateAfterDeath: true,
 			AiSpeed: 20
 		}
@@ -1932,7 +1979,7 @@ TetrisManager.skill_List = {
 		user: "player",
 		isPrepared: true,
 		oldTime: 0,
-		CD: 0,
+		CD: 60,
 		description: "将接下来的方块全部替换为T块",
 		CanUse: function () {
 			return true
@@ -1969,7 +2016,7 @@ TetrisManager.skill_List = {
 		},
 		Reset: function () {
 			this.isPrepared = false;
-			this.CD = 2;
+			this.CD = 60;
 			this.oldTime = Date.now();
 		}
 	},
@@ -2868,9 +2915,6 @@ TetrisManager.item_List = {
 		var scene = SceneManager._scene
 		var player = SceneManager._scene.getPlayer();
 
-		if (player.hold && player.hold.changed) {
-			return
-		}
 		if (player.hold) {
 			player.holdWindow.removeChild(player.hold.block)
         }
@@ -2890,9 +2934,6 @@ TetrisManager.item_List = {
 		var scene = SceneManager._scene
 		var player = SceneManager._scene.getPlayer();
 
-		if (player.hold && player.hold.changed) {
-			return
-		}
 		if (player.hold) {
 			player.holdWindow.removeChild(player.hold.block)
 		}
@@ -2912,9 +2953,6 @@ TetrisManager.item_List = {
 		var scene = SceneManager._scene
 		var player = SceneManager._scene.getPlayer();
 
-		if (player.hold && player.hold.changed) {
-			return
-		}
 		if (player.hold) {
 			player.holdWindow.removeChild(player.hold.block)
 		}
@@ -2934,9 +2972,6 @@ TetrisManager.item_List = {
 		var scene = SceneManager._scene
 		var player = SceneManager._scene.getPlayer();
 
-		if (player.hold && player.hold.changed) {
-			return
-		}
 		if (player.hold) {
 			player.holdWindow.removeChild(player.hold.block)
 		}
@@ -2956,9 +2991,6 @@ TetrisManager.item_List = {
 		var scene = SceneManager._scene
 		var player = SceneManager._scene.getPlayer();
 
-		if (player.hold && player.hold.changed) {
-			return
-		}
 		if (player.hold) {
 			player.holdWindow.removeChild(player.hold.block)
 		}
@@ -2978,9 +3010,6 @@ TetrisManager.item_List = {
 		var scene = SceneManager._scene
 		var player = SceneManager._scene.getPlayer();
 
-		if (player.hold && player.hold.changed) {
-			return
-		}
 		if (player.hold) {
 			player.holdWindow.removeChild(player.hold.block)
 		}
@@ -3000,9 +3029,6 @@ TetrisManager.item_List = {
 		var scene = SceneManager._scene
 		var player = SceneManager._scene.getPlayer();
 
-		if (player.hold && player.hold.changed) {
-			return
-		}
 		if (player.hold) {
 			player.holdWindow.removeChild(player.hold.block)
 		}

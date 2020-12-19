@@ -125,7 +125,9 @@ Scene_Tetris.prototype.initialize = function () {
 	this.emphasizer_added = false;
 
 	window.onblur = function () {
-		SceneManager._scene.Pause();
+		if (SceneManager._scene.Pause) {
+			SceneManager._scene.Pause();
+        }
 	};
 }
 
@@ -601,8 +603,11 @@ Scene_Tetris.prototype.update = function () {
 			}
 		}
 
-		if (this.running) {
+		if (this.running || this.emphasizer_added) {
 			this._Skill_Manager.update();
+        }
+
+		if (this.running) {
 			this.update_Enemy();
 			this._playerStateBoard.refreshStates();
 			if (this.player.running) {
@@ -1976,8 +1981,10 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 		this._effectLayer.addChild(this.autoSprite);
 		this.autoSprite.move(this.player.xposition - 15 - 7 + (this.ROW * this.player.xrange + 65) / 2,
 			this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27 + ((this.COL - TetrisManager.AboveLines) * this.player.yrange) / 2);
-    }
-
+	}
+	this.scoreText = new Sprite(ImageManager.loadPicture("ui//score"));
+	this.scoreText.move(this.player.xposition + this.ROW * this.player.xrange + 45, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 15)
+	this._blockLayer.addChild(this.scoreText);
 	this.refreshScoreBoard(this.player);
 }
 
@@ -2045,7 +2052,7 @@ Scene_Tetris.prototype.startGame = function () {
 
 Scene_Tetris.prototype.endGame = function () {
 	if (this.AfterMathWindow.isLayed() && !this.ExItIng) {
-		window.onblur = function () { };
+		//window.onblur = function () { };
 		this.onEnd();
 		this.ExItIng = true;
 		this.startFadeOut(60, false);
@@ -2083,16 +2090,16 @@ Scene_Tetris.prototype.onEnd = function () {
 Scene_Tetris.prototype.refreshPlayerGauge = function(){
 	this.playerGaugeBoard.contents.clear();
 	var rate = this.player.displayHp / this.actor.mhp
-	var eng_rate = this.player.eng / this.player.meng
+	//var eng_rate = this.player.eng / this.player.meng
 	this.playerGaugeBoard.drawThinGauge(10, -12, 350, rate, 20, this.playerGaugeBoard.hpGaugeColor1(), this.playerGaugeBoard.hpGaugeColor2());
-	this.playerGaugeBoard.drawThinGauge(10, 7, 340, eng_rate, 7, this.playerGaugeBoard.mpGaugeColor1(), this.playerGaugeBoard.mpGaugeColor2())
+	//this.playerGaugeBoard.drawThinGauge(10, 7, 340, eng_rate, 7, this.playerGaugeBoard.mpGaugeColor1(), this.playerGaugeBoard.mpGaugeColor2())
 	this.player.gauge_pos = [this.playerGaugeBoard.x + 360 * rate, this.playerGaugeBoard.y]
 
 	if (!this.player_hp_number) {
 		this.player_hp_number = new FNumber(this.player.displayHp, 7);
 		this.player_hp_number.changeDirection("left");
 		this.playerGaugeBoard.addChild(this.player_hp_number);
-		this.player_hp_number.move(320, 0);
+		this.player_hp_number.move(325, 4);
 	} else {
 		this.player_hp_number.change(this.player.displayHp)
 	}
@@ -2140,8 +2147,8 @@ Scene_Tetris.prototype.removeFromMainWindow = function (operator, sprite) {
 Scene_Tetris.prototype.refreshScoreBoard = function (operator) {
 	this._blockLayer.removeChild(operator.ScoreBoard);
 	operator.ScoreBoard = new FNumber(operator.SCORE, 12);
-	operator.ScoreBoard.changeDirection("left");
-	operator.ScoreBoard.move(operator.xposition + this.ROW * operator.xrange+140, (this.COL - TetrisManager.AboveLines) * operator.yrange - 15);
+	//operator.ScoreBoard.changeDirection("left");
+	operator.ScoreBoard.move(operator.xposition + this.ROW * operator.xrange+100, (this.COL - TetrisManager.AboveLines) * operator.yrange - 15);
 	this._blockLayer.addChild(operator.ScoreBoard)
 }
 
@@ -2208,7 +2215,7 @@ Scene_Tetris.prototype.refreshCombo = function (battler) {
 		battler.comboX = new ComboSprite(battler.Count_Combos);
 		battler.comboX.scale.x = battler.scaleX;
 		battler.comboX.scale.y = battler.scaleY;
-		battler.comboX.move(battler.xposition + 25 * battler.scaleX, battler.yposition+ TetrisManager.AboveLines*battler.yrange + 100 * battler.scaleY);
+		battler.comboX.move(battler.xposition + (battler.mainwindow.width - 255 * battler.scaleX) / 2-25, battler.mainwindow.y + 100 * battler.scaleY);
 		this._blockLayer.addChild(battler.comboX)
 	} else {
 		if (battler.comboX) {

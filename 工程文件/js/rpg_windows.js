@@ -25,6 +25,8 @@ Window_Base.prototype.initialize = function(x, y, width, height) {
     this._opening = false;
     this._closing = false;
     this._dimmerSprite = null;
+
+    this.font_Size = 28
 };
 
 Window_Base._iconWidth  = 32;
@@ -47,7 +49,7 @@ Window_Base.prototype.standardFontFace = function() {
 };
 
 Window_Base.prototype.standardFontSize = function() {
-    return 28;
+    return this.font_Size;
 };
 
 Window_Base.prototype.standardPadding = function() {
