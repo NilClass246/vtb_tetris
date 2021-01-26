@@ -570,13 +570,13 @@ Scene_Tetris.prototype.update = function () {
 		this.update_Player_Placement();
 		this.update_Enemy_Placement();
 	} else {
+		if (this.gameover && this.NoticeBox && this.NoticeBox.completed && !this.AfterMathWindow) {
+			this.createAfterMath();
+		}
+
 		if (Input.isTriggered('ok') || TouchInput.isPressed()) {
-			if (this.gameover) {
-				if (!this.AfterMathWindow) {
-					this.createAfterMath();
-				} else {
-					this.endGame();
-				}
+			if (this.gameover && this.AfterMathWindow) {
+				this.endGame();
 			}
 		}
 
@@ -692,7 +692,7 @@ Scene_Tetris.prototype.isGameOver = function () {
 		this.running=false;
 		this.gameover=true;
 		$gameSwitches.setValue(20, false);
-		this.say('战败！确认以退出..', 200)
+		this.say('战败！正在结算分数...', 120)
 	}
 	if (this.alldead) {
 		if (this.battleInfo.delayFinish) {
@@ -702,7 +702,7 @@ Scene_Tetris.prototype.isGameOver = function () {
 			this.running = false;
 			this.gameover = true;
 			$gameSwitches.setValue(20, true);
-			this.say('胜利！确认以退出..', 200)
+			this.say('胜利！正在结算分数...', 120)
         }
 	}
 }
@@ -994,8 +994,6 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
             }
         }
     }
-	//TODO: 跳舞毯适配
-	//TODO: 180度旋转
 	if (Input.isTriggered('up')) {
 		if (!operator.cur.noRotate) {
 			TetrisManager.Count_Buttons += 1;
@@ -1032,6 +1030,9 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 
 	if (Input.isTriggered('space')) {
 		if (operator.shadowImage) {
+			if (operator.cur.block.y != operator.shadowImage.block.y) {
+				operator.lastKick = false;
+            }
 			operator.cur.block.x = operator.shadowImage.block.x;
 			operator.cur.block.y = operator.shadowImage.block.y;
 			operator.n = operator.step;
@@ -1058,13 +1059,22 @@ Scene_Tetris.prototype.update_Movement = function (operator) {
 		operator.step = this.step;
 	}
 }
-//TODO: 改写寻找敌人方法
+
 Scene_Tetris.prototype.findRNGEnemy = function () {
 	var rnd = Math.floor(Math.random() * (this._enemies.length));
-	if (this._enemies[rnd].living) {
-		return rnd
+	while (!this._enemies[rnd].living && rnd < this._enemies.length) {
+		rnd++;
+	}
+	if (!this._enemies[rnd].living) {
+		rnd = 0;
+		while (!this._enemies[rnd].living && rnd < this._enemies.length) {
+			rnd++;
+		}
+	}
+	if (!this._enemies[rnd].living) {
+		return null;
 	} else {
-		return this.findRNGEnemy();
+		return rnd;
     }
 }
 
@@ -1881,7 +1891,12 @@ Scene_Tetris.prototype.create = function () {
 	this._upperLayer = new Sprite();
 	this.addChild(this._upperLayer);
 	//图层分级
-
+	for (var i = 0; i < this._enemies.length; i++) {
+		var CurEnemy = this._enemies[i];
+		if (CurEnemy.manager && CurEnemy.manager.createBeforePlayer) {
+			CurEnemy.manager.createBeforePlayer();
+		}
+	}
 	this.createPlayerWindows();
 	this.createEnemyWindows();
 	this.drawArea(this.player);
@@ -2099,7 +2114,7 @@ Scene_Tetris.prototype.refreshPlayerGauge = function(){
 		this.player_hp_number = new FNumber(this.player.displayHp, 7);
 		this.player_hp_number.changeDirection("left");
 		this.playerGaugeBoard.addChild(this.player_hp_number);
-		this.player_hp_number.move(325, 4);
+		this.player_hp_number.move(325, 3);
 	} else {
 		this.player_hp_number.change(this.player.displayHp)
 	}
@@ -2215,7 +2230,7 @@ Scene_Tetris.prototype.refreshCombo = function (battler) {
 		battler.comboX = new ComboSprite(battler.Count_Combos);
 		battler.comboX.scale.x = battler.scaleX;
 		battler.comboX.scale.y = battler.scaleY;
-		battler.comboX.move(battler.xposition + (battler.mainwindow.width - 255 * battler.scaleX) / 2-25, battler.mainwindow.y + 100 * battler.scaleY);
+		battler.comboX.move(battler.xposition + (this.ROW * battler.xrange - 240 * battler.scaleX) / 2+18-25, battler.mainwindow.y + 100 * battler.scaleY);
 		this._blockLayer.addChild(battler.comboX)
 	} else {
 		if (battler.comboX) {

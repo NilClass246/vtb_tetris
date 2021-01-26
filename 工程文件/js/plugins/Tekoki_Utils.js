@@ -898,8 +898,9 @@ TetrisManager.Temps.Scene_Title_prototype_create = Scene_Title.prototype.create;
 Scene_Title.prototype.create = function () {
 	TetrisManager.Temps.Scene_Title_prototype_create.call(this);
 	if (!TetrisManager.Records.isTitleScreenChanged) {
-		var titletext = new Text_Base("No Tetris No Life", 500, 200, 55, 'left');
-		titletext.move(400, 100);
+		var titletext = new Sprite(ImageManager.loadPicture("PrologueTitle"));
+		//var titletext = new Text_Base("No Tetris No Life", 500, 200, 55, 'left');
+		titletext.move(200, 100);
 		this.addChild(titletext);
 	}
 }
@@ -1449,6 +1450,8 @@ AfterMath_Window.prototype.initialize = function (info) {
 	}
 	this.drawText("历史最高KPM：" + $gameVariables.value(24), 525, 84);
 
+	this.drawText("...按确认键继续", 775, 328);
+
 	this.opacity = 0;
 	this.backOpacity = 255;
 }
@@ -1619,6 +1622,7 @@ function SkillManager() {
 }
 
 SkillManager.prototype.initialize = function (skillIDList, isOwnerEnemy) {
+	this.usedFirstSkill = false;
 	this.running = true;
 	this._skill_list = [];
 	this.skillButton_list = [];
@@ -1682,14 +1686,23 @@ SkillManager.prototype.update = function () {
 		}
 		if (!this.isOwnerEnemy) {
 			if (Input.isTriggered('skillone')) {
+				if (!this.usedFirstSkill) {
+					this.usedFirstSkill = true;
+                }
 				this.startSkill(0);
 			}
 
 			if (Input.isTriggered('skilltwo')) {
+				if (!this.usedFirstSkill) {
+					this.usedFirstSkill = true;
+				}
 				this.startSkill(1);
 			}
 
 			if (Input.isTriggered('skillthree')) {
+				if (!this.usedFirstSkill) {
+					this.usedFirstSkill = true;
+				}
 				this.startSkill(2);
 			}
 		}
@@ -2834,16 +2847,16 @@ FNumber.prototype.create_number = function () {
 		this.number_sprites.push(new Sprite());
 		this.number_sprites[i].bitmap = this.number_img;
 		var n = Number(numbers[i]);
-		this.number_sprites[i].setFrame(n * (this.number_sprites[i].bitmap.width / 10), 0, (this.number_sprites[i].bitmap.width / 10), this.number_sprites[i].bitmap.height)
+		this.number_sprites[i].setFrame(Math.round(n * (this.number_sprites[i].bitmap.width / 10)), 0, Math.round((this.number_sprites[i].bitmap.width / 10)), this.number_sprites[i].bitmap.height)
 		switch (this.ExtendDir) {
 			case "left":
-				this.number_sprites[i].x = (i * (this.number_sprites[i].bitmap.width / 10)) - ((numbers.length - 1) * (this.number_sprites[i].bitmap.width / 10))
+				this.number_sprites[i].x = Math.round((i * (this.number_sprites[i].bitmap.width / 10)) - ((numbers.length - 1) * (this.number_sprites[i].bitmap.width / 10)));
 				break;
 			case "right":
-				this.number_sprites[i].x = i * (this.number_sprites[i].bitmap.width / 10);
+				this.number_sprites[i].x = Math.round(i * (this.number_sprites[i].bitmap.width / 10));
 				break;
 			case "mid":
-				this.number_sprites[i].x = (i * (this.number_sprites[i].bitmap.width / 10)) - (((numbers.length - 1) * (this.number_sprites[i].bitmap.width / 10)) / 2)
+				this.number_sprites[i].x = Math.round((i * (this.number_sprites[i].bitmap.width / 10)) - (((numbers.length - 1) * (this.number_sprites[i].bitmap.width / 10)) / 2));
 				break;
 		}
 		this.number_sprites[i].tint = this.tint;
@@ -2932,7 +2945,7 @@ ComboSprite.prototype.initialize = function (combo) {
 	this.ComboPic = new Sprite();
 	this.ComboPic.bitmap = ImageManager.loadPicture("ui\\ComboX");
 	this.ComboNum = new FNumber(combo, 9, "BigNumbers")
-	this.ComboNum.x = 245;
+	this.ComboNum.x = 230;
 	this.opacity = 0;
 	this.addChild(this.ComboNum);
 	this.addChild(this.ComboPic);
@@ -3241,20 +3254,83 @@ function infoBoard() {
 infoBoard.prototype = Object.create(Sprite.prototype);
 infoBoard.prototype.constructor = infoBoard
 
-infoBoard.prototype.initialize = function () {
+infoBoard.prototype.initialize = function (width, height) {
 	Sprite.prototype.initialize.call(this);
 	this._infoList = [];
+	this._activatedInfo = [];
+	this.curUpdatingInfo = null;
+	this.isUpdatingInfo = false;
+	this.w = width;
+	this.h = height;
+	this.stayTime = 180;
+	this.count = 0;
 }
 
-function info() {
+infoBoard.prototype.update = function () {
+	Sprite.prototype.initialize.call(this);
+	if (!this.isUpdatingInfo && this._infoList[0]) {
+		this.curUpdatingInfo = this._infoList.splice(0, 1);
+	}
+	if (this.isUpdatingInfo) {
+		this.curUpdatingInfo.y -= 1;
+		this._activatedInfo[this._activatedInfo.length-1].y -= 1;
+		this.count += 1;
+		if (this.count >= this.h) {
+			this.count = 0;
+			this.isUpdatingInfo = false;
+			this._activatedInfo.push(this.curUpdatingInfo);
+			this.curUpdatingInfo = null;
+        }
+	}
+
+	for (var i = this._activatedInfo.length-1; i >= 0; i--) {
+		if (this._activatedInfo[i - 1]) {
+			this._activatedInfo[i - 1].y = this._activatedInfo[i].y - this._activatedInfo[i].height;
+        }
+    }
+}
+
+infoBoard.prototype.addInfo = function (text) {
+	var info = new Info(text, this.w, this.h, this.stayTime);
+	this.addChild(info);
+	this._infoList.push(info);
+}
+
+function Info() {
 	this.initialize.apply(this, arguments);
 }
 
-info.prototype = Object.create(Sprite.prototype);
-info.prototype.constructor = info;
+Info.prototype = Object.create(Sprite.prototype);
+Info.prototype.constructor = Info;
 
-info.prototype.initialize = function () {
+Info.prototype.initialize = function (text, width, height, stayTime) {
 	Sprite.prototype.initialize.call(this);
+	this.back = new PIXI.Graphics()
+		.beginFill(0x000000)
+		.drawRect(0, 0, width, height)
+		.endFill();
+	this.addChild(this.back);
+
+	this.text = new Text_Base(text, width, height, 24, "left");
+	this.addChild(this.text);
+	this.anchor.y = 1;
+	this.count = 0;
+	this.stayTime = stayTime;
+}
+
+Info.prototype.update = function () {
+	Sprite.prototype.update.call(this);
+	this.count
+	if (this.closing) {
+		this.scale.y -= 0.001;
+		if (this.scale.y <= 0) {
+			this.destroy();
+        }
+    }
+}
+
+Info.prototype.close = function () {
+	this.closing = true;
 }
 
 //-----------------------------------------------------------------------------

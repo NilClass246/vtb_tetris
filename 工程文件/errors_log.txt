@@ -3180,3 +3180,15 @@ Message: Uncaught TypeError: SceneManager._scene.Pause is not a function
 Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
 Stack: undefined
 
+Date: Sat Dec 19 2020 16:16:34 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'ban' of undefined
+Stack: TypeError: Cannot read property 'ban' of undefined
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:747:27)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1995:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1885:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38384:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+

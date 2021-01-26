@@ -716,10 +716,10 @@ Window_Base.prototype.setWordWrap = function(text) {
       this._wordWrap = true;
       text = text.replace(/<(?:WordWrap)>/gi, '');
     }
-    if (this._wordWrap) {
-      var replace = Yanfly.Param.MSGWrapSpace ? ' ' : '';
-      text = text.replace(/[\n\r]+/g, replace);
-    }
+    //if (this._wordWrap) {
+    //  var replace = Yanfly.Param.MSGWrapSpace ? ' ' : '';
+    //  text = text.replace(/[\n\r]+/g, replace);
+    //}
     if (this._wordWrap) {
       text = text.replace(/<(?:BR|line break)>/gi, '\n');
     } else {
