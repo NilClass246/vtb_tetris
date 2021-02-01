@@ -125,6 +125,7 @@
  * @desc x轴方向平移，单位像素。0为按钮的中心贴在最上面。
  * @default 570
  * 
+ * 
  *
  */
  
@@ -148,7 +149,7 @@
 	DrillUp.parameters = PluginManager.parameters('Drill_TitleSocialBotton');
 
 	DrillUp.title_socialBtns_max = 10;
-	DrillUp.title_socialBtns = [];
+DrillUp.title_socialBtns = [];
 	
 	for (var i = 0; i < DrillUp.title_socialBtns_max; i++) {
 		if( DrillUp.parameters['网址按钮-' + String(i+1) ] != "" ){
@@ -179,7 +180,7 @@ Scene_Title.prototype.createForeground = function() {
 	this.addChild(this._drill_social_btn_field);	
 	
 	for (var i = 0; i < DrillUp.title_socialBtns_max; i++) {
-		if( DrillUp.title_socialBtns[i].length != 0 ){
+        if (DrillUp.title_socialBtns[i].length != 0 && TetrisManager.Records.isTitleScreenChanged){
 			var temp_sprite_data = JSON.parse(JSON.stringify( DrillUp.title_socialBtns[i] ));	//拷贝object（杜绝引用造成的修改）
 			
 			var temp_sprite = new Sprite(ImageManager.loadTitle1(temp_sprite_data['src_img']));

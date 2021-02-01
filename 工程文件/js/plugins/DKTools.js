@@ -38348,6 +38348,7 @@ SceneManager.onError = function(e) {
 SceneManager.changeScene = function() {
     if (this.isSceneChanging() && !this.isCurrentSceneBusy()) {
         if (this._scene) {
+            TutorialManager.removeEmphasizers();
             this._scene.terminate();
             this._scene.detachReservation();
 
@@ -38369,6 +38370,7 @@ SceneManager.changeScene = function() {
                 this._sceneCreated = true;
 
                 this.onSceneCreate();
+                TutorialManager.addEmphasizers();
             }
         }
 
@@ -38385,6 +38387,7 @@ SceneManager.updateScene = function() {
             this._sceneCreated = true;
 
             this.onSceneCreate();
+            TutorialManager.addEmphasizers();
         }
 
         if (this._sceneCreated && !this._sceneStarted) {
@@ -38409,6 +38412,9 @@ SceneManager.updateScene = function() {
 
         if (this.isCurrentSceneStarted()) {
             this._scene.update();
+            if (TutorialManager) {
+                TutorialManager.update();
+            }
         }
     }
 };

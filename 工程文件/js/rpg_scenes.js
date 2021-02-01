@@ -63,7 +63,7 @@ Scene_Base.prototype.detachReservation = function() {
  * @instance 
  * @memberof Scene_Base
  */
-Scene_Base.prototype.create = function() {
+Scene_Base.prototype.create = function () {
 };
 
 /**
@@ -1021,6 +1021,10 @@ Scene_Menu.prototype.commandItem = function() {
 };
 
 Scene_Menu.prototype.commandPersonal = function() {
+    if (TutorialManager.TutorialID == 1||TutorialManager.TutorialID == 2) {
+        this._commandWindow.activate();
+        return;
+    }
     this._statusWindow.setFormationMode(false);
     this._statusWindow.selectLast();
     this._statusWindow.activate();
@@ -1029,6 +1033,10 @@ Scene_Menu.prototype.commandPersonal = function() {
 };
 
 Scene_Menu.prototype.commandFormation = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2){
+        this._commandWindow.activate();
+		return;
+	}
     this._statusWindow.setFormationMode(true);
     this._statusWindow.selectLast();
     this._statusWindow.activate();
@@ -1037,14 +1045,26 @@ Scene_Menu.prototype.commandFormation = function() {
 };
 
 Scene_Menu.prototype.commandOptions = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2) {
+        this._commandWindow.activate();
+        return;
+    }
     SceneManager.push(Scene_Options);
 };
 
 Scene_Menu.prototype.commandSave = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2) {
+        this._commandWindow.activate();
+        return;
+    }
     SceneManager.push(Scene_Save);
 };
 
 Scene_Menu.prototype.commandGameEnd = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2) {
+        this._commandWindow.activate();
+        return;
+    }
     SceneManager.push(Scene_GameEnd);
 };
 
@@ -1090,6 +1110,14 @@ Scene_Menu.prototype.onFormationCancel = function() {
         this._commandWindow.activate();
     }
 };
+
+Scene_Menu.prototype.popScene = function () {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2) {
+        this._commandWindow.activate();
+        return;
+    }
+    Scene_MenuBase.prototype.popScene.call(this);
+}
 
 //-----------------------------------------------------------------------------
 // Scene_ItemBase
@@ -1262,7 +1290,10 @@ Scene_Item.prototype.createCategoryWindow = function() {
 Scene_Item.prototype.createItemWindow = function() {
     var wy = this._categoryWindow.y + this._categoryWindow.height;
     var wh = Graphics.boxHeight - wy - this._tipsWindow.height;
-    this._itemWindow = new Window_ItemList(0, wy, Graphics.boxWidth*(2/3), wh);
+    this._itemWindow = new Window_ItemList(0, wy, Graphics.boxWidth * (2 / 3), wh);
+    console.log(wy);
+    console.log(Graphics.boxWidth * (2 / 3));
+    console.log(wh);
     this._itemWindow.setHelpWindow(this._helpWindow);
     this._itemWindow.setHandler('ok',     this.onItemOk.bind(this));
     this._itemWindow.setHandler('cancel', this.onItemCancel.bind(this));
@@ -1316,6 +1347,15 @@ Scene_Item.prototype.useItem = function() {
     Scene_ItemBase.prototype.useItem.call(this);
     this._itemWindow.redrawCurrentItem();
 };
+
+Scene_Item.prototype.popScene = function () {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2) {
+
+        this._categoryWindow.activate();
+        return;
+    }
+    Scene_ItemBase.prototype.popScene.call(this);
+}
 
 //-----------------------------------------------------------------------------
 // Scene_Skill

@@ -4799,7 +4799,13 @@ Scene_Menu.prototype.createCommandWindow = function() {
   this._commandWindow.setHandler('quest', this.commandQuest.bind(this));
 };
 
-Scene_Menu.prototype.commandQuest = function() {
+    Scene_Menu.prototype.commandQuest = function () {
+        if (TutorialManager.TutorialID == 1) {
+        SoundManager.playBuzzer();
+
+        this._commandWindow.activate();
+        return;
+    }
   SceneManager.push(Scene_Quest);
 };
 

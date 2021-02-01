@@ -330,10 +330,12 @@ Window_Base.prototype.processCharacter = function(textState) {
     }
 };
 
-Window_Base.prototype.processNormalCharacter = function(textState) {
+Window_Base.prototype.processNormalCharacter = function(textState, drawn) {
     var c = textState.text[textState.index++];
     var w = this.textWidth(c);
-    this.contents.drawText(c, textState.x, textState.y, w * 2, textState.height);
+    if (!drawn) {
+        this.contents.drawText(c, textState.x, textState.y, w * 2, textState.height);
+    }
     textState.x += w;
 };
 
@@ -368,7 +370,6 @@ Window_Base.prototype.getTextAlignPadding = function (textState) {
                 break;
         }
     }
-    console.log(data);
     return data;
 }
 
@@ -463,6 +464,16 @@ Window_Base.prototype.calcTextHeight = function(textState, all) {
     this.contents.fontSize = lastFontSize;
     return textHeight;
 };
+
+//added
+Window_Base.prototype.calcTextHeightEX = function (textState) {
+    while (textState.index < textState.text.length) {
+        this.processCharacter(textState);
+    }
+    var size = textState.y + this.calcTextHeight(textState, false);
+    this.contents.clear();
+    return size
+}
 
 Window_Base.prototype.drawIcon = function(iconIndex, x, y) {
     var bitmap = ImageManager.loadSystem('IconSet');
@@ -933,6 +944,10 @@ Window_Selectable.prototype.setHandler = function(symbol, method) {
     this._handlers[symbol] = method;
 };
 
+Window_Selectable.prototype.removeHandler = function (symbol) {
+    this._handlers[symbol] = null;
+}
+
 Window_Selectable.prototype.isHandled = function(symbol) {
     return !!this._handlers[symbol];
 };
@@ -940,6 +955,8 @@ Window_Selectable.prototype.isHandled = function(symbol) {
 Window_Selectable.prototype.callHandler = function(symbol) {
     if (this.isHandled(symbol)) {
         this._handlers[symbol]();
+    } else {
+        SoundManager.playCancel();
     }
 };
 
@@ -4642,10 +4659,11 @@ Window_ScrollText.prototype.startMessage = function() {
 };
 
 Window_ScrollText.prototype.refresh = function() {
-    var textState = { index: 0 };
+    var textState = { index: 0, x: this.textPadding(), y: 1, left: this.textPadding() };
     textState.text = this.convertEscapeCharacters(this._text);
+    textState.height = this.calcTextHeight(textState, false);
     this.resetFontSettings();
-    this._allTextHeight = this.calcTextHeight(textState, true);
+    this._allTextHeight = TetrisManager.isScrollCenterAlligned ? this.calcTextHeight(textState, true):this.calcTextHeightEX(textState);
     this.createContents();
     this.origin.y = -this.height;
     this.drawTextEx(this._text, this.textPadding(), 1);

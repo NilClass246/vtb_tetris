@@ -897,12 +897,12 @@ Scene_Title.prototype.initialize = function () {
 TetrisManager.Temps.Scene_Title_prototype_create = Scene_Title.prototype.create;
 Scene_Title.prototype.create = function () {
 	TetrisManager.Temps.Scene_Title_prototype_create.call(this);
-	if (!TetrisManager.Records.isTitleScreenChanged) {
-		var titletext = new Sprite(ImageManager.loadPicture("PrologueTitle"));
-		//var titletext = new Text_Base("No Tetris No Life", 500, 200, 55, 'left');
-		titletext.move(200, 100);
-		this.addChild(titletext);
-	}
+	//if (!TetrisManager.Records.isTitleScreenChanged) {
+	//	//var titletext = new Sprite(ImageManager.loadPicture("PrologueTitle"));
+	//	//var titletext = new Text_Base("No Tetris No Life", 500, 200, 55, 'left');
+	//	titletext.move(200, 100);
+	//	this.addChild(titletext);
+	//}
 }
 
 //============================================================
@@ -1111,6 +1111,17 @@ TetrisManager.collide = function (battler, cur) {
 // 杂项方法
 //============================================================
 
+TetrisManager.checkEmpty2Darray = function (arr) {
+	for (var i = 0; i < arr.length; i++) {
+		for (var j = 0; j < arr[i].length; j++) {
+			if (arr[i][j] != 0) {
+				return false;
+            }
+        }
+	}
+	return true;
+}
+
 TetrisManager.copy2DArray = function (origin) {
 	ArrayCopy = [];
 	for (var i = 0; i < origin.length; i++) {
@@ -1286,7 +1297,7 @@ TetrisManager.showInstructions = function () {
 
 TetrisManager.hideInstructions = function () {
 	if (!this.hiding) {
-		var s = new SpriteSlider(this.instructions, 268, 137, 268, 737, 60);
+		var s = new SpriteSlider(this.instructions, 268, 137, 268, 737, 60, {destrucsive: true});
 		SceneManager._scene.addChild(s);
 		this.hiding = true;
     }
@@ -2079,7 +2090,8 @@ Target_Window.prototype.update = function () {
 		if (this.lastTime <= 0) {
 			this.opacity -= 5;
 			if (this.opacity <= 0) {
-				this.destroy();
+				this.refresh();
+				this.completed = true;
 			}
         }
     }
@@ -3566,8 +3578,11 @@ function SpriteSlider() {
 SpriteSlider.prototype = Object.create(Sprite.prototype);
 SpriteSlider.prototype.constructor = SpriteSlider;
 
-SpriteSlider.prototype.initialize = function (Sparent, StartX, StartY, EndX, EndY, time) {
+SpriteSlider.prototype.initialize = function (Sparent, StartX, StartY, EndX, EndY, time, options) {
 	Sprite.prototype.initialize.call(this);
+	if (options) {
+		this.dEstrucsive = options.destrucsive;
+    }
 	this.Sparent = Sparent
 	this.Sparent.x = StartX;
 	this.Sparent.y = StartY;
@@ -3599,6 +3614,9 @@ SpriteSlider.prototype.update = function () {
 	}
 	if (this.laying_count >= this.laying_time) {
 		this.destroy();
+		if (this.dEstrucsive) {
+			this.Sparent.destroy();
+		}
 	}
 }
 
@@ -3638,6 +3656,105 @@ SpriteFloater.prototype.update = function () {
 }
 
 //-----------------------------------------------------------------------------
+
+var TutorialManager = TutorialManager || {};
+
+TutorialManager.TutorialID = -1;
+TutorialManager.TutorialStage = 0;
+TutorialManager.emphasizer_array = [];
+TutorialManager.emphasizer_pointer = 0;
+
+TutorialManager.update = function () {
+	if (this.TutorialID == 1) {
+		if ((SceneManager._scene instanceof Scene_Menu) && TutorialManager.TutorialStage == 0) {
+			TutorialManager.TutorialStage = 1;
+			this.nextEmphasizer();
+		}
+		if ((SceneManager._scene instanceof Scene_Item) && TutorialManager.TutorialStage == 1) {
+			TutorialManager.TutorialStage = 2;
+			this.nextEmphasizer();
+		}
+
+		if ((SceneManager._scene._itemWindow) && (SceneManager._scene._itemWindow.active)  && TutorialManager.TutorialStage == 2) {
+			$gameVariables.setValue(30, 2);
+			this.clearEmphasizer();
+			TutorialManager.TutorialID = -1;
+			TutorialManager.TutorialStage = 0;
+			TutorialManager.emphasizer_array = [];
+			TutorialManager.emphasizer_pointer = 0;
+        }
+	}
+
+	if (this.TutorialID == 2) {
+		if ((SceneManager._scene instanceof Scene_Menu) && TutorialManager.TutorialStage == 0) {
+			TutorialManager.TutorialStage = 1;
+			this.nextEmphasizer();
+		}
+		if ((SceneManager._scene instanceof Scene_Item) && TutorialManager.TutorialStage == 1) {
+			TutorialManager.TutorialStage = 2;
+			this.nextEmphasizer();
+		}
+
+		if ((SceneManager._scene._itemWindow) && (SceneManager._scene._itemWindow.active) && TutorialManager.TutorialStage == 2) {
+			$gameSwitches.setValue(35, false);
+			this.clearEmphasizer();
+			TutorialManager.TutorialID = -1;
+			TutorialManager.TutorialStage = 0;
+			TutorialManager.emphasizer_array = [];
+			TutorialManager.emphasizer_pointer = 0;
+		}
+    }
+
+}
+
+
+TutorialManager.addEmphasizer = function (text, x, y, width, height, options) {
+	var emphasizer = new Emphasizer(text, x, y, width, height, options);
+	this.emphasizer_array.push(emphasizer);
+	if (!this.emphasizer_added) {
+		SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
+		this.emphasizer_added = true;
+	}
+}
+
+TutorialManager.nextEmphasizer = function () {
+	this.emphasizer_pointer++;
+	if (this.emphasizer_array[this.emphasizer_pointer]) {
+		SceneManager._scene.removeChild(this.emphasizer_array[this.emphasizer_pointer - 1]);
+		SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
+	} else {
+		this.clearEmphasizer();
+		this.emphasizer_pointer = 0;
+		this.emphasizer_array = [];
+		this.emphasizer_added = false;
+	}
+}
+
+TutorialManager.clearEmphasizer = function () {
+	SceneManager._scene.removeChild(this.emphasizer_array[this.emphasizer_pointer]);
+	this.emphasizer_added = false;
+	if (this.emphasizerBehaviour) {
+		this.emphasizerBehaviour();
+		this.emphasizerBehaviour = null;
+	}
+
+}
+
+TutorialManager.setEmphasizerBehaviour = function (f) {
+	this.emphasizerBehaviour = f;
+}
+
+TutorialManager.removeEmphasizers = function () {
+	if (this.emphasizer_array[this.emphasizer_pointer]) {
+		SceneManager._scene.removeChild(this.emphasizer_array[this.emphasizer_pointer]);
+    }
+}
+
+TutorialManager.addEmphasizers = function () {
+	if (this.emphasizer_array[this.emphasizer_pointer]) {
+		SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
+	}
+}
 
 //-----------------------------------------------------------------------------
 

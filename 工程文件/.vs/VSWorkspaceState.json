@@ -6,8 +6,9 @@
     "\\js\\plugins",
     "\\locales",
     "\\locales\\cn",
+    "\\locales\\en",
     "\\locales\\jp"
   ],
-  "SelectedNode": "\\js\\plugins\\YEP_MessageCore.js",
+  "SelectedNode": "\\js\\rpg_windows.js",
   "PreviewInSolutionExplorer": false
 }

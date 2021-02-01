@@ -3192,3 +3192,204 @@ Stack: TypeError: Cannot read property 'ban' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Sat Jan 30 2021 15:09:08 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 29
+Event ID: 1
+Event Page: 1
+Last Event Command: 221
+Params: [2,false]
+Name: ReferenceError
+Message: x is not defined
+Stack: ReferenceError: x is not defined
+    at Window_ScrollText.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4656:36)
+    at Window_ScrollText.startMessage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4651:10)
+    at Window_ScrollText.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4644:18)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7113:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7111:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+
+Date: Sat Jan 30 2021 15:09:49 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 29
+Event ID: 1
+Event Page: 1
+Last Event Command: 221
+Params: [2,false]
+Name: TypeError
+Message: Cannot read property 'match' of undefined
+Stack: TypeError: Cannot read property 'match' of undefined
+    at Window_ScrollText.Window_Base.setWordWrap (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_MessageCore.js:716:14)
+    at Window_ScrollText.Window_Base.convertEscapeCharacters (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_MessageCore.js:707:17)
+    at Window_ScrollText.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4657:27)
+    at Window_ScrollText.startMessage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4651:10)
+    at Window_ScrollText.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4644:18)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7113:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7111:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Jan 30 2021 23:06:03 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: ReferenceError
+Message: fuck is not defined
+Stack: ReferenceError: fuck is not defined
+    at Scene_Boot.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:112:17)
+    at Scene_Boot.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:60:39)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GraphicalDesignMode.js:1306:35)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Jan 30 2021 23:06:18 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: ReferenceError
+Message: fuck is not defined
+Stack: ReferenceError: fuck is not defined
+    at Scene_Boot.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:112:17)
+    at Scene_Boot.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:60:39)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38411:25)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GraphicalDesignMode.js:1306:35)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Jan 30 2021 23:08:55 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Name: ReferenceError
+Message: input is not defined
+Stack: ReferenceError: input is not defined
+    at Object.TutorialManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3652:3)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38413:33)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GraphicalDesignMode.js:1306:35)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sat Jan 30 2021 23:18:57 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: ReferenceError
+Message: fuck is not defined
+Stack: ReferenceError: fuck is not defined
+    at Scene_Boot.Scene_Base.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:67:17)
+    at Scene_Boot.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:354:33)
+    at Scene_Boot.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38533:31)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38386:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jan 31 2021 15:31:26 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: undefined
+Message: Uncaught TypeError: Cannot set property 'opacity' of undefined
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Jan 31 2021 15:39:04 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'block' of undefined
+Stack: TypeError: Cannot read property 'block' of undefined
+    at Scene_Puzzle.Scene_Tetris.refreshNextWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2246:21)
+    at Scene_Puzzle.Scene_Tetris.createBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1530:8)
+    at Scene_Puzzle.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:384:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38386:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jan 31 2021 15:52:50 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'type' of undefined
+Stack: TypeError: Cannot read property 'type' of undefined
+    at Scene_Puzzle.Scene_Tetris.shadow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1756:25)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:338:9)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:247:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38414:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jan 31 2021 16:00:05 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'box' of undefined
+Stack: TypeError: Cannot read property 'box' of undefined
+    at Object.TetrisManager.collide (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1089:16)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1048:47)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:324:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:247:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38414:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jan 31 2021 16:00:10 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: undefined
+Message: Uncaught TypeError: Cannot set property 'opacity' of undefined
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Jan 31 2021 16:13:07 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: this.refres is not a function
+Stack: TypeError: this.refres is not a function
+    at Target_Window.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2093:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Puzzle.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Puzzle.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+    at Scene_Puzzle.Scene_MenuBase.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_MenuBackground.js:1013:32)
+    at Scene_Puzzle.Scene_MenuBase.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_MenuParticle.js:1040:30)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:226:34)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38414:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+
+Date: Sun Jan 31 2021 16:13:11 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: undefined
+Message: Uncaught TypeError: Cannot set property 'opacity' of undefined
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Jan 31 2021 16:14:10 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: undefined
+Message: Uncaught TypeError: Cannot set property 'opacity' of undefined
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js
+Stack: undefined
+
+Date: Sun Jan 31 2021 16:33:57 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot set property 'field' of undefined
+Stack: TypeError: Cannot set property 'field' of undefined
+    at Puzzle_Manager.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:595:22)
+    at Scene_Puzzle.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:380:18)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38386:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
+
+Date: Sun Jan 31 2021 16:50:21 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 18
+Event ID: 2
+Last Event Command: 221
+Params: [7]
+Name: TypeError
+Message: Cannot read property 'NaN' of undefined
+Stack: TypeError: Cannot read property 'NaN' of undefined
+    at Window_ScrollText.Window_Base.processNewLine (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:345:90)
+    at Window_ScrollText.Window_Base.processNewLine (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/aligncenter.js:110:31)
+    at Window_ScrollText.Window_Base.processCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/aligncenter.js:85:9)
+    at Window_ScrollText.Window_Base.calcTextHeightEX (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:471:14)
+    at Window_ScrollText.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4666:32)
+    at Window_ScrollText.startMessage (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4657:10)
+    at Window_ScrollText.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:4650:18)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7113:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7111:19)
+

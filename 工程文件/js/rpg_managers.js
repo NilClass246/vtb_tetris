@@ -1981,6 +1981,7 @@ SceneManager.updateMain = function() {
             this.updateInputData();
             this.changeScene();
             this.updateScene();
+
             this._accumulator -= this._deltaTime;
         }
     }

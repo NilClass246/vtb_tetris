@@ -63,6 +63,12 @@ Scene_Puzzle.prototype.initialize = function () {
 	this.loadKeyMapper();
 	this.initializeActor();
 	this.loadBlockSkin();
+	window.onblur = function () {
+		if (SceneManager._scene.Pause) {
+			SceneManager._scene.Pause();
+		}
+	};
+	this.spawnNext = true;
 }
 
 Scene_Puzzle.prototype.initializeActor = function () {
@@ -225,14 +231,14 @@ Scene_Puzzle.prototype.update = function () {
 			this.BeginClock -= 1;
 		} else {
 			this.startGame();
-        }
+		}
+
+		if (this.gameover&&this.puzzleInfo.end && this.puzzleInfo.end.completed && !this.AfterMathWindow) {
+			this.createAfterMath();
+		}
 		if (Input.isTriggered('ok') || TouchInput.isPressed()) {
-			if (this.gameover) {
-				if (!this.AfterMathWindow) {
-					this.createAfterMath();
-				} else {
+			if (this.AfterMathWindow) {
 					this.endGame();
-				}
 			}
 		}
 
@@ -240,8 +246,12 @@ Scene_Puzzle.prototype.update = function () {
 		if (this.running) {
 			this.update_Actor();
 			this.isGameOver();
-			this.puzzleInfo.update(this.player.SCORE);
 		}
+		if (this.puzzleInfo.isEnded()&&!this.gameover) {
+			this.running = false;
+			this.gameover = true;
+		}
+		this.puzzleInfo.update(this.player.SCORE);
     }
 }
 
@@ -267,6 +277,7 @@ Scene_Puzzle.prototype.update_Animation = function () {
 }
 
 Scene_Puzzle.prototype.startGame = function () {
+
 	if (!this.running && !this.gameover && !this.FirstBegin && this.layed) {
 		this.FirstBegin = true;
 		TetrisManager.setTimer();
@@ -280,33 +291,32 @@ Scene_Puzzle.prototype.startGame = function () {
 
 Scene_Puzzle.prototype.endGame = function () {
 	if (this.AfterMathWindow.isLayed() && !this.ExItIng) {
+		//window.onblur = function () { };
 		this.onEnd();
 		this.ExItIng = true;
 		this.startFadeOut(60, false);
 		this.unloadKeyMapper();
 		$gameVariables.setValue(6, this.player.SCORE);
+
 		TetrisManager.desetTimer();
-		SceneManager.pop(Scene_Puzzle);
-		Scene_Puzzle.prototype.onEnd = function () {
+		SceneManager.pop(Scene_Tetris);
+		Scene_Tetris.prototype.onEnd = function () {
 		}
 	}
 }
 
 Scene_Puzzle.prototype.isGameOver = function () {
 	if (this.player.exceeded) {
-		AudioManager.playSe(this.seBoom);
 		this.running = false;
 		this.gameover = true;
 		$gameSwitches.setValue(20, false);
-		var msg = new Target_Window("越界！");
+		var msg = new Target_Window("{crossborder}");
 		this._upperLayer.addChild(msg);
 	}
 
 	if (this.puzzleInfo.isEnded()) {
-		AudioManager.playSe(this.seBoom);
 		this.running = false;
 		this.gameover = true;
-		$gameSwitches.setValue(20, true);
     }
 }
 
@@ -326,7 +336,9 @@ Scene_Puzzle.prototype.update_Actor = function () {
 			this.player.cur = null;
 			this.lastKick = false;
 			this.createBox(this.player);
-			this.shadow(this.player);
+			if (this.player.cur) {
+				this.shadow(this.player);
+            }
 			this.drawArea(this.player);
 			this.player.holded = false;
 			this.player.delay_reset_times = 15;
@@ -361,7 +373,7 @@ Scene_Puzzle.prototype.create = function () {
 	this._upperLayer = new Sprite();
 	this.addChild(this._upperLayer);
 	//图层分级
-	this.puzzleInfo = new Puzzle_Manager(2);
+	this.puzzleInfo = new Puzzle_Manager(TetrisManager.puzzleID);
 	this.puzzleInfo.create();
 	this.createPlayerWindows();
 
@@ -396,7 +408,9 @@ Scene_Puzzle.prototype.createPlayerWindows = function () {
 	for (i = 0; i < 6; i++) {
 		this.addWindow(this.player.nextWindows[i]);
 	}
-
+	this.scoreText = new Sprite(ImageManager.loadPicture("ui//score"));
+	this.scoreText.move(this.player.xposition + this.ROW * this.player.xrange + 45, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 15)
+	this._blockLayer.addChild(this.scoreText);
 	this.refreshScoreBoard(this.player);
 }
 
@@ -456,107 +470,256 @@ Puzzle_Manager.prototype.initialize = function (ID) {
 }
 
 Puzzle_Manager.prototype.create = function () {
-	switch (this.puzzleID) {
-		case 1:
-			this.scene.addEmphasizer(
-				"{Prologue_inbattle_2_1}"
-				, 100, 312, 0, 0);
-			this.scene.addEmphasizer(
-				"{Prologue_inbattle_2_2}"
-				, 100, 312, 0, 0);
-			break;
-		case 2:
-			this.timeLimit = $gameVariables.value(11);
-			this.targetBoard = new Target_Window("在" + this.timeLimit + "秒内获取尽量多的分数！")
-			this.scene.addChild(this.targetBoard);
+	//switch (this.puzzleID) {
+	//	case 1:
+	//		this.scene.addEmphasizer(
+	//			"{Prologue_inbattle_2_1}"
+	//			, 100, 312, 0, 0);
+	//		this.scene.addEmphasizer(
+	//			"{Prologue_inbattle_2_2}"
+	//			, 100, 312, 0, 0);
+	//		break;
+	//	case 2:
+	//		this.timeLimit = $gameVariables.value(11);
+	//		this.targetBoard = new Target_Window("在" + this.timeLimit + "秒内获取尽量多的分数！")
+	//		this.scene.addChild(this.targetBoard);
 
-			this.CheckBoard = new Tetris_Window(0, 0, 300, 300);
-			this.CheckBoard.contents.fontSize = 18;
-			this.CheckBoard.removeChildAt(0)
-			this.EasyCheck = new CheckBox();
-			this.CheckBoard.addChild(this.EasyCheck);
-			this.EasyCheck.move(15, 21);
-			this.CheckBoard.drawText("Easy: " + $gameVariables.value(7) + "分", 28, 0);
-			this.NormalCheck = new CheckBox();
-			this.CheckBoard.addChild(this.NormalCheck)
-			this.NormalCheck.move(15, 49)
-			this.CheckBoard.drawText("Normal: " + $gameVariables.value(8) + "分", 28, 28);
-			this.HardCheck = new CheckBox();
-			this.CheckBoard.addChild(this.HardCheck);
-			this.HardCheck.move(15, 77)
-			this.CheckBoard.drawText("Hard: " + $gameVariables.value(9) + "分", 28, 56);
-			this.LunaticCheck = new CheckBox();
-			this.CheckBoard.addChild(this.LunaticCheck);
-			this.LunaticCheck.move(15, 105);
-			this.CheckBoard.drawText("Lunatic: " + $gameVariables.value(10) + "分", 28, 84);
+	//		this.CheckBoard = new Tetris_Window(0, 0, 300, 300);
+	//		this.CheckBoard.contents.fontSize = 18;
+	//		this.CheckBoard.removeChildAt(0)
+	//		this.EasyCheck = new CheckBox();
+	//		this.CheckBoard.addChild(this.EasyCheck);
+	//		this.EasyCheck.move(15, 21);
+	//		this.CheckBoard.drawText("Easy: " + $gameVariables.value(7) + "分", 28, 0);
+	//		this.NormalCheck = new CheckBox();
+	//		this.CheckBoard.addChild(this.NormalCheck)
+	//		this.NormalCheck.move(15, 49)
+	//		this.CheckBoard.drawText("Normal: " + $gameVariables.value(8) + "分", 28, 28);
+	//		this.HardCheck = new CheckBox();
+	//		this.CheckBoard.addChild(this.HardCheck);
+	//		this.HardCheck.move(15, 77)
+	//		this.CheckBoard.drawText("Hard: " + $gameVariables.value(9) + "分", 28, 56);
+	//		this.LunaticCheck = new CheckBox();
+	//		this.CheckBoard.addChild(this.LunaticCheck);
+	//		this.LunaticCheck.move(15, 105);
+	//		this.CheckBoard.drawText("Lunatic: " + $gameVariables.value(10) + "分", 28, 84);
 
-			this.scene.addChild(this.CheckBoard);
+	//		this.scene.addChild(this.CheckBoard);
 
-			this.infoBoard = new Tetris_Window(278, 142, 200, 500);
-			this.infoBoard.contents.fontSize = 18;
-			this.infoBoard.removeChildAt(0)
-			this.infoBoard.drawText(
-				"Time Left ", 0, 0)
-			this.infoBoard.drawText(
-				TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
-				20, 25)
-			this.infoBoard.drawText(
-				"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
-				0, 310)
-			this.infoBoard.drawText(
-				"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
-				0, 335)
+	//		this.infoBoard = new Tetris_Window(278, 142, 200, 500);
+	//		this.infoBoard.contents.fontSize = 18;
+	//		this.infoBoard.removeChildAt(0)
+	//		this.infoBoard.drawText(
+	//			"Time Left ", 0, 0)
+	//		this.infoBoard.drawText(
+	//			TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
+	//			20, 25)
+	//		this.infoBoard.drawText(
+	//			"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
+	//			0, 310)
+	//		this.infoBoard.drawText(
+	//			"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+	//			0, 335)
 
-			this.scene.addWindow(this.infoBoard);
-			this.ProgressBar = new VerticalProgressBar(50);
-			this.ProgressBar.move(75, 80);
-			this.infoBoard.addChild(this.ProgressBar);
-			this.ProgressBar.addPhase($gameVariables.value(10), "ui\\LunaticBar")
-			this.ProgressBar.addPhase($gameVariables.value(9), "ui\\HardBar")
-			this.ProgressBar.addPhase($gameVariables.value(8), "ui\\NormalBar")
-			this.ProgressBar.addPhase($gameVariables.value(7), "ui\\EasyBar")
-			break;
+	//		this.scene.addWindow(this.infoBoard);
+	//		this.ProgressBar = new VerticalProgressBar(50);
+	//		this.ProgressBar.move(75, 80);
+	//		this.infoBoard.addChild(this.ProgressBar);
+	//		this.ProgressBar.addPhase($gameVariables.value(10), "ui\\LunaticBar")
+	//		this.ProgressBar.addPhase($gameVariables.value(9), "ui\\HardBar")
+	//		this.ProgressBar.addPhase($gameVariables.value(8), "ui\\NormalBar")
+	//		this.ProgressBar.addPhase($gameVariables.value(7), "ui\\EasyBar")
+	//		break;
+	//}
+
+	if (this.puzzleID == 3) {
+		this.scene.player.field = [
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[10, 10, 10, 10, 10, 0, 10, 10, 10, 10],
+			[10, 10, 10, 10, 0, 0, 10, 10, 10, 10],
+			[10, 10, 10, 10, 0, 0, 0, 10, 10, 10],
+			[10, 10, 10, 0, 0, 0, 0, 10, 10, 10],
+			[10, 10, 10, 0, 0, 10, 0, 0, 10, 10],
+			[10, 10, 0, 0, 10, 10, 0, 0, 10, 10],
+			[10, 10, 0, 0, 10, 10, 10, 0, 0, 10],
+			[10, 0, 0, 10, 10, 10, 10, 0, 0, 10],
+			[10, 0, 0, 10, 10, 10, 10, 10, 0, 0],
+			[0, 0, 10, 10, 10, 10, 10, 10, 0, 0],
+			[0, 0, 10, 10, 10, 10, 10, 10, 10, 0],
+			[0, 10, 10, 10, 10, 10, 10, 10, 10, 0],
+			[0, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+		]
+		this.scene.spawnNext = false;
+		for (var i = 0; i < 12; i++) {
+			this.scene.player.next[i] = {
+				block: new Sprite(this.scene._minoSkin['1'][0]),
+				type: '1',
+				rotation: 0,
+				rotationTime: 0,
+				box: TetrisManager.data['1'][0].slice()
+			}
+		}
+		this.targetBoard = new Target_Window("{Prologue_puzzle_1_inst}");
+		this.scene.addChild(this.targetBoard);
 	}
+
+	if (this.puzzleID == 4) {
+		this.scene.player.field = [
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 10, 10, 0, 0, 0],
+			[10, 10, 10, 0, 0, 0, 10, 10, 10, 10],
+			[10, 10, 10, 10, 0, 10, 10, 10, 10, 10],
+			[10, 10, 10, 0, 0, 0, 10, 10, 10, 10],
+			[10, 10, 10, 10, 0, 10, 10, 10, 10, 10],
+			[10, 10, 10, 0, 0, 0, 10, 10, 10, 10],
+			[10, 10, 10, 10, 0, 10, 10, 10, 10, 10],
+			[10, 10, 10, 0, 0, 0, 10, 10, 10, 10],
+			[10, 10, 10, 10, 0, 10, 10, 10, 10, 10],
+			[10, 10, 10, 0, 0, 0, 10, 10, 10, 10],
+			[10, 10, 10, 10, 0, 10, 10, 10, 10, 10],
+		]
+		this.scene.spawnNext = false;
+		for (var i = 0; i < 5; i++) {
+			this.scene.player.next[i] = {
+				block: new Sprite(this.scene._minoSkin['t'][0]),
+				type: 't',
+				rotation: 0,
+				rotationTime: 0,
+				box: TetrisManager.data['t'][0].slice()
+			}
+		}
+		this.targetBoard = new Target_Window("{Prologue_puzzle_1_inst}");
+		this.scene.addChild(this.targetBoard);
+    }
 }
 
 Puzzle_Manager.prototype.update = function (score) {
-	switch (this.puzzleID) {
-		case 1:
-		case 2:
-			if (this.victory) {
-				this.end = new Target_Window("{Time_up}");
+	//switch (this.puzzleID) {
+	//	case 1:
+	//		break;
+	//	case 2:
+	//		if (this.victory) {
+	//			this.end = new Target_Window("{Time_up}");
+	//			this.scene.addChild(this.end);
+	//		} else {
+	//			this.infoBoard.refresh()
+	//			this.infoBoard.drawText(
+	//				"Time Left ", 0, 0)
+	//			this.infoBoard.drawText(
+	//				TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
+	//				20, 25)
+	//			this.infoBoard.drawText(
+	//				"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
+	//				0, 310)
+	//			this.infoBoard.drawText(
+	//				"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
+	//				0, 335)
+	//			this.ProgressBar.changeNumber(score)
+	//			this.EasyCheck.ChEck();
+	//			if (score >= $gameVariables.value(8)) {
+	//				this.NormalCheck.ChEck();
+	//				if (score >= $gameVariables.value(9)) {
+	//					this.HardCheck.ChEck();
+	//					if (score >= $gameVariables.value(10)) {
+	//						this.LunaticCheck.ChEck();
+	//					}
+	//				}
+	//			}
+	//		}
+
+	//		if (this.timeLimit - TetrisManager.getElapsedTime() <= 0) {
+	//			this.victory = true;
+	//		}
+	//		break;
+	//}
+
+	if (this.puzzleID == 3) {
+		if (!this.victory) {
+			if (TetrisManager.checkEmpty2Darray(this.scene.player.field)) {
+				$gameSwitches.setValue(20, true);
+				this.end = new Target_Window("{Prologue_puzzle_1_end}");
 				this.scene.addChild(this.end);
+				this.victory = true;
 			} else {
-				this.infoBoard.refresh()
-				this.infoBoard.drawText(
-					"Time Left ", 0, 0)
-				this.infoBoard.drawText(
-					TetrisManager.keepTwoDigits(this.timeLimit - TetrisManager.getElapsedTime()) + "sec",
-					20, 25)
-				this.infoBoard.drawText(
-					"LPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60)),
-					0, 310)
-				this.infoBoard.drawText(
-					"KPM " + TetrisManager.keepTwoDigits(TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60)),
-					0, 335)
-				this.ProgressBar.changeNumber(score)
-				this.EasyCheck.ChEck();
-				if (score >= $gameVariables.value(8)) {
-					this.NormalCheck.ChEck();
-					if (score >= $gameVariables.value(9)) {
-						this.HardCheck.ChEck();
-						if (score >= $gameVariables.value(10)) {
-							this.LunaticCheck.ChEck();
-						}
-					}
+				if (!this.scene.player.next[0]) {
+					$gameSwitches.setValue(20, false);
+					this.end = new Target_Window("{Prologue_puzzle_1_noend}");
+					this.scene.addChild(this.end);
+					this.victory = true;
 				}
 			}
-
-			if (this.timeLimit - TetrisManager.getElapsedTime() <= 0) {
-				this.victory = true;
-			}
-			break;
+        }
 	}
+
+	if (this.puzzleID == 4) {
+		if (!this.victory) {
+			if (!this.scene.player.next[0] && !this.scene.player.cur) {
+				if (this.scene.player.field[this.scene.player.field.length - 1].equals([0, 0, 0, 0, 0, 10, 10, 0, 0, 0])) {
+					$gameSwitches.setValue(20, true);
+					this.end = new Target_Window("{Prologue_puzzle_1_end}");
+					this.scene.addChild(this.end);
+					this.victory = true;
+				} else {
+					$gameSwitches.setValue(20, false);
+					this.end = new Target_Window("{Prologue_puzzle_1_noend}");
+					this.scene.addChild(this.end);
+					this.victory = true;
+				}
+			}
+        }
+    }
 }
 
 Puzzle_Manager.prototype.getElapsedTime = function () {

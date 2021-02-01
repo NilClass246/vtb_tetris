@@ -239,10 +239,6 @@ Window_Sign.prototype.refresh = function () {
             y+=38
         }
     }
-    //TODO: 防作弊
-    //TODO: 登记界面加入快捷键
-    //TODO: 立绘系统
-    //TODO: 写教程
     this.exchangeSign.move(42 + 4 * 35, 20);
     this.addChild(this.exchangeSign)
 }
@@ -254,14 +250,6 @@ Window_Sign.prototype.update = function () {
         TetrisManager.requestUpdateSign = false;
     }
 }
-
-//Scene_Item.prototype.update = function () {
-//    Scene_ItemBase.prototype.update.call(this);
-//    if (Input.isTriggered('shift')) {
-//        $gameActors.actor(1).signItem(this.item())
-//        this._signWindow.refresh();
-//    }
-//}
 
 Window_ItemList.prototype.update = function () {
     Window_Selectable.prototype.update.call(this);
