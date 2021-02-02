@@ -3466,3 +3466,24 @@ Stack: TypeError: Cannot read property '_signedItems' of null
     at Window_TitleCommand.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:5823:40)
     at Window_TitleCommand.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1084:18)
 
+Date: Mon Feb 01 2021 23:15:07 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 18
+Event ID: 2
+Event Page: 1
+Last Event Command: 242
+Params: [75]
+Name: TypeError
+Message: Cannot read property 'hp' of null
+Stack: TypeError: Cannot read property 'hp' of null
+    at Scene_Tetris.initialize_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:178:25)
+    at Scene_Tetris.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:119:7)
+    at new Scene_Tetris (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:65:18)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Function.SceneManager.push (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2085:10)
+    at tetrisStarter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2443:16)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+
