@@ -4959,6 +4959,7 @@ Game_Party.prototype.increaseSteps = function() {
 
 Game_Party.prototype.numItems = function(item) {
     var container = this.itemContainer(item);
+	console.log(container);
     return container ? container[item.id] || 0 : 0;
 };
 

@@ -1876,9 +1876,9 @@ TetrisManager.enemy_List = {
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
-			Mhp: 150,
-			atk: 35,
-			def: 20,
+			Mhp: 200,
+			atk: 45,
+			def: 30,
 			curEng: 0,
 			MEng: 30,
 			EngSpd: 2,
@@ -1905,9 +1905,9 @@ TetrisManager.enemy_List = {
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
-			Mhp: 150,
-			atk: 35,
-			def: 20,
+			Mhp: 200,
+			atk: 45,
+			def: 30,
 			curEng: 0,
 			MEng: 30,
 			EngSpd: 2,
@@ -1941,8 +1941,8 @@ TetrisManager.enemy_List = {
 			MEng: 30,
 			EngSpd: 2,
 
-			Gold: 20,
-			Exp: 20,
+			Gold: 4563,
+			Exp: 635,
 
 			xrange: 12,
 			yrange: 12,
@@ -1970,15 +1970,15 @@ TetrisManager.enemy_List = {
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
-			Mhp: 2250,
-			atk: 85,
-			def: 20,
+			Mhp: 2700,
+			atk: 100,
+			def: 30,
 			curEng: 0,
 			MEng: 30,
 			EngSpd: 2,
 
-			Gold: 20,
-			Exp: 20,
+			Gold: 8979,
+			Exp: 584,
 
 			xrange: 12,
 			yrange: 12,
@@ -2865,7 +2865,7 @@ TetrisManager.state_List = {
 		onGain: function (owner) {
 			this.owner = owner
 			this.oldTime = Date.now();
-			var actor = $gameActors.actor(1)
+			var actor = $gameActors.actor($gameVariables.value(32))
 			this.atk_amount = Math.floor(actor.atk*0.25)
 			actor.addParam(2, this.atk_amount);
 			this.owner.Gauge_Score_mag = this.owner.Gauge_Score_mag *1.25
@@ -2885,12 +2885,12 @@ TetrisManager.state_List = {
 			}
 		},
 		onLose: function () {
-			$gameActors.actor(1).addParam(2, -this.atk_amount);
+			$gameActors.actor($gameVariables.value(32)).addParam(2, -this.atk_amount);
 			this.owner.Gauge_Score_mag = this.owner.Gauge_Score_mag / 1.25
 			this.emitter.stop();
 		},
 		onEnd: function () {
-			$gameActors.actor(1).addParam(2, -this.atk_amount);
+			$gameActors.actor($gameVariables.value(32)).addParam(2, -this.atk_amount);
 			this.owner.Gauge_Score_mag = this.owner.Gauge_Score_mag / 1.25
 			this.emitter.stop();
         }

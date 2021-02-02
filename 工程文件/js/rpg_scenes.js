@@ -560,6 +560,11 @@ Scene_Map.prototype.initialize = function() {
     this._encounterEffectDuration = 0;
     this._mapLoaded = false;
     this._touchCount = 0;
+	if($gameActors && $gameActors.actor($gameVariables.value(32)) && $gameActors.actor($gameVariables.value(32))._signedItems){
+		for(var i=0; i<$gameActors.actor($gameVariables.value(32))._signedItems.length; i++){
+			$gameActors.actor($gameVariables.value(32))._signedItems[i] = $dataItems[$gameActors.actor($gameVariables.value(32))._signedItems[i].id];
+		}
+	}
 };
 
 Scene_Map.prototype.create = function() {
@@ -1840,6 +1845,7 @@ Scene_Load.prototype.onLoadSuccess = function() {
     this.reloadMapIfUpdated();
     SceneManager.goto(Scene_Map);
     this._loadSuccess = true;
+	//++++
 };
 
 Scene_Load.prototype.onLoadFailure = function() {

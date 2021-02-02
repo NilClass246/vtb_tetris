@@ -648,7 +648,7 @@ Window_Base.prototype.drawItemName = function(item, x, y, width) {
         this.resetTextColor();
         this.drawIcon(item.iconIndex, x + 2, y + 2);
         this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
-        if ($gameActors.actor(1)._signedItems.contains(item)) {
+        if ($gameActors.actor($gameVariables.value(32))._signedItems.contains(item)) {
             this.contents.blt(TetrisManager.starPic, 0, 0, 16, 16, x, y);
         }
     }

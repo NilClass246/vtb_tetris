@@ -107,6 +107,7 @@ Scene_Tetris.prototype.setEmphasizerBehaviour = function (f) {
 
 Scene_Tetris.prototype.initialize = function () {
 	Scene_ItemBase.prototype.initialize.call(this);
+	this.actorNum = $gameVariables.value(32);
 	this.initializeData();
 	this.loadKeyMapper();
 	this._enemies = [];
@@ -134,11 +135,11 @@ Scene_Tetris.prototype.initialize = function () {
 }
 
 Scene_Tetris.prototype.initialize_Actor = function () {
-	this.actor = $gameActors.actor(1)
+	this.actor = $gameActors.actor(this.actorNum)
 
 
 	this.player = {
-		actor: $gameActors.actor(1),
+		actor: $gameActors.actor(this.actorNum),
 		running: true,
 		category: "player",
 		xposition: 440,
@@ -161,7 +162,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		nextWindows: [],
 		holdWindow: null,
 		pictureBoard: new Tetris_Window(),
-		picture: new Tachi(TetrisManager.TachiCode),
+		picture: new Tachi(TetrisManager.TachiCodes[String($gameVariables.value(32))]),
 
 		delay_reset_times: 15,
 
@@ -430,7 +431,7 @@ Scene_Tetris.prototype.unloadKeyMapper = function () {
 }
 
 Scene_Tetris.prototype.loadBlockSkin = function () {
-	var armors = $gameActors.actor(1).armors()
+	var armors = $gameActors.actor(this.actorNum).armors()
 
 	for (var i in armors) {
 		switch (armors[i].name) {
@@ -438,7 +439,7 @@ Scene_Tetris.prototype.loadBlockSkin = function () {
 				this.skinID = "blockSkin\\default\\"
 				this.specialID = "blockSkin\\special\\classic\\"
 				break;
-			case "经典皮肤":
+			case "{Classic_skin}":
 				this.skinID = "blockSkin\\classic\\"
 				this.specialID = "blockSkin\\special\\classic\\"
 				break;
@@ -1980,7 +1981,7 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 	this.playerGaugeBoard.padding = 0;
 	this.playerGaugeBoard.removeChildAt(0);
 
-	this._playerStateBoard = new stateBoard($gameActors.actor(1));
+	this._playerStateBoard = new stateBoard($gameActors.actor(this.actorNum));
 	this._playerStateBoard.move(20, 575);
 
 	this._playerItemBoard = new itemBoard();
@@ -2341,7 +2342,7 @@ Scene_Tetris.prototype.createAfterMath = function () {
 		$gameParty.gainGold(this.player.gold_got);
 	}
 	if(this.player.exp_got){
-		$gameActors.actor(1).gainExp(this.player.exp_got);
+		$gameActors.actor(this.actorNum).gainExp(this.player.exp_got);
 	}
 }
 
@@ -2559,10 +2560,10 @@ Scene_Double.prototype.initializeData = function () {
 }
 
 Scene_Double.prototype.initialize_Actor = function () {
-	this.actor = $gameActors.actor(1)
+	this.actor = $gameActors.actor(this.actorNum)
 
 	this._operator1 = {
-		actor: $gameActors.actor(1),
+		actor: $gameActors.actor(this.actorNum),
 		category: "player",
 		xposition: 133,
 		yposition: 50,
@@ -2597,7 +2598,7 @@ Scene_Double.prototype.initialize_Actor = function () {
 	}
 
 	this._operator2 = {
-		actor: $gameActors.actor(1),
+		actor: $gameActors.actor(this.actorNum),
 		category: "player",
 		xposition: 823,
 		yposition: 50,
@@ -2636,7 +2637,7 @@ Scene_Double.prototype.initialize_Actor = function () {
 	}
 
 	this.player = {
-		actor: $gameActors.actor(1),
+		actor: $gameActors.actor(this.actorNum),
 		running: true,
 		category: "player",
 
@@ -2927,7 +2928,7 @@ Scene_Double.prototype.createPlayerWindows = function () {
 	this.playerGaugeBoard.padding = 0;
 	this.playerGaugeBoard.removeChildAt(0);
 
-	this._playerStateBoard = new stateBoard($gameActors.actor(1));
+	this._playerStateBoard = new stateBoard($gameActors.actor(this.actorNum));
 	this._playerStateBoard.move(420, 575);
 
 	this._playerItemBoard = new itemBoard();

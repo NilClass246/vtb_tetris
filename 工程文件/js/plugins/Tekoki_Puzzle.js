@@ -59,6 +59,7 @@ Scene_Puzzle.prototype.constructor = Scene_Puzzle;
 
 Scene_Puzzle.prototype.initialize = function () {
 	Scene_ItemBase.prototype.initialize.call(this);
+	this.actorNum = $gameVariables.value(32);
 	this.initializeData();
 	this.loadKeyMapper();
 	this.initializeActor();
@@ -72,10 +73,10 @@ Scene_Puzzle.prototype.initialize = function () {
 }
 
 Scene_Puzzle.prototype.initializeActor = function () {
-	this.actor = $gameActors.actor(1)
+	this.actor = $gameActors.actor(this.actorNum)
 
 	this.player = {
-		actor: $gameActors.actor(1),
+		actor: $gameActors.actor(this.actorNum),
 		running: true,
 		category: "player",
 		xposition: 425,

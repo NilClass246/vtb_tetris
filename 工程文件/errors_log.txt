@@ -3418,3 +3418,51 @@ Stack: TypeError: Cannot read property 'length' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1983:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1907:14)
 
+Date: Mon Feb 01 2021 21:26:50 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property '_signedItems' of null
+Stack: TypeError: Cannot read property '_signedItems' of null
+    at Scene_Title.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:35:63)
+    at Scene_Title.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/FilterController.js:1304:32)
+    at Scene_Title.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38448:35)
+    at Scene_Title.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:448:37)
+    at Scene_Title.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:896:55)
+    at new Scene_Title (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:441:21)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Scene_Boot.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:412:22)
+    at Scene_Boot.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Torigoya_Achievement.js:776:35)
+
+Date: Mon Feb 01 2021 21:26:50 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property '_signedItems' of null
+Stack: TypeError: Cannot read property '_signedItems' of null
+    at Scene_Title.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:35:63)
+    at Scene_Title.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/FilterController.js:1304:32)
+    at Scene_Title.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38448:35)
+    at Scene_Title.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:448:37)
+    at Scene_Title.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:896:55)
+    at new Scene_Title (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:441:21)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Scene_Boot.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:412:22)
+    at Scene_Boot.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Torigoya_Achievement.js:776:35)
+
+Date: Mon Feb 01 2021 21:39:00 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Title
+Name: TypeError
+Message: Cannot read property '_signedItems' of null
+Stack: TypeError: Cannot read property '_signedItems' of null
+    at Scene_Map.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:563:63)
+    at new Scene_Map (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:551:21)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Scene_Title.commandNewGame (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:526:18)
+    at Window_TitleCommand.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:957:31)
+    at Window_TitleCommand.Window_Command.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1485:14)
+    at Window_TitleCommand.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1215:14)
+    at Window_TitleCommand.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:5823:40)
+    at Window_TitleCommand.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1084:18)
+

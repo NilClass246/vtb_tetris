@@ -547,6 +547,10 @@ ConfigManager.applyData = function(config) {
 };
 
 ConfigManager.readFlag = function(config, name) {
+	//default to be true
+	if(name=="Trembling" && config[name] == undefined){
+		return true;
+	}
     return !!config[name];
 };
 

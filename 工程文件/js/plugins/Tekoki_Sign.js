@@ -224,7 +224,7 @@ Window_Sign.prototype.refresh = function () {
     }
 
     this._icons = [];
-    var items = $gameActors.actor(1)._signedItems;
+    var items = $gameActors.actor($gameVariables.value(32))._signedItems;
     var x = 32;
     var y = 16;
 
@@ -256,14 +256,14 @@ Window_ItemList.prototype.update = function () {
     if (SceneManager._scene instanceof Scene_Item) {
         if (Input.isTriggered('shift')) {
             SoundManager.playOk();
-            $gameActors.actor(1).signItem(this.item())
+            $gameActors.actor($gameVariables.value(32)).signItem(this.item())
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }
 
         if (Input.isTriggered('control')) {
             SoundManager.playOk();
-            $gameActors.actor(1).unsignItem(this.item())
+            $gameActors.actor($gameVariables.value(32)).unsignItem(this.item())
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }

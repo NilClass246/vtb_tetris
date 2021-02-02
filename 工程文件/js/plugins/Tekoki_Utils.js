@@ -797,7 +797,10 @@ TetrisManager.starPic = ImageManager.loadPicture('ui/signStar');
 
 TetrisManager.autoStart = false;
 
-TetrisManager.TachiCode = "redDumpling";
+TetrisManager.TachiCodes = {
+	"1": "redDumpling",
+	"2": "Fighter"
+}
 
 //============================================================
 // 成就参数
@@ -1768,7 +1771,7 @@ itemBoard.prototype.constructor = itemBoard;
 
 itemBoard.prototype.initialize = function () {
 	Sprite.prototype.initialize.call(this);
-	this._data = $gameActors.actor(1)._signedItems
+	this._data = $gameActors.actor($gameVariables.value(32))._signedItems
 	//$gameParty.allItems().filter(function (item) {
 	//	return DataManager.isItem(item) && item.itypeId === 1;
 	//}, this);
@@ -1923,7 +1926,7 @@ itemBoard.prototype.useItem = function (id) {
 }
 
 itemBoard.prototype.user = function () {
-	return $gameActors.actor(1);
+	return $gameActors.actor($gameVariables.value(32));
 }
 
 itemBoard.prototype.applyItem = function (item) {
