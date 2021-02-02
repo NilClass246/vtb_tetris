@@ -1440,8 +1440,8 @@ AfterMath_Window.prototype.initialize = function (info) {
 	this.drawText("本局最大连击：" + this.combo, 0, 28);
 	this.drawText("本局LPM：" + TetrisManager.keepTwoDigits(this.LPM), 0, 56);
 	this.drawText("本局KPM：" + TetrisManager.keepTwoDigits(this.APM), 0, 84);
-	this.drawText("获得金币：" + this.gold, 0, 140);
-	this.drawText("获得经验：" + this.exp, 0, 168);
+	this.drawText("获得金币：" + this.gold||"0", 0, 140);
+	this.drawText("获得经验：" + this.exp||"0", 0, 168);
 
 	this.contents.drawLine(500, 0, 500, 424, 5, "black");
 

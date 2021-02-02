@@ -316,9 +316,7 @@ Scene_Puzzle.prototype.isGameOver = function () {
 	if (this.player.exceeded) {
 		this.running = false;
 		this.gameover = true;
-		$gameSwitches.setValue(20, false);
-		var msg = new Target_Window("{crossborder}");
-		this._upperLayer.addChild(msg);
+		this.crossedBorder = true;
 	}
 
 	if (this.puzzleInfo.isEnded()) {
@@ -710,7 +708,7 @@ Puzzle_Manager.prototype.update = function (score) {
 				this.scene.addChild(this.end);
 				this.victory = true;
 			} else {
-				if (!this.scene.player.next[0]) {
+				if (!this.scene.player.next[0]||this.scene.crossedBorder) {
 					$gameSwitches.setValue(20, false);
 					this.end = new Target_Window("{Prologue_puzzle_1_noend}");
 					this.scene.addChild(this.end);
@@ -722,6 +720,12 @@ Puzzle_Manager.prototype.update = function (score) {
 
 	if (this.puzzleID == 4) {
 		if (!this.victory) {
+			if(this.scene.crossedBorder){
+					$gameSwitches.setValue(20, false);
+					this.end = new Target_Window("{Prologue_puzzle_1_noend}");
+					this.scene.addChild(this.end);
+					this.victory = true;
+			}
 			if (!this.scene.player.next[0] && !this.scene.player.cur) {
 				if (this.scene.player.field[this.scene.player.field.length - 1].equals([0, 0, 0, 0, 0, 10, 10, 0, 0, 0])) {
 					$gameSwitches.setValue(20, true);

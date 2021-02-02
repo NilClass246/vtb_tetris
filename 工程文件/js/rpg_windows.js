@@ -348,7 +348,10 @@ Window_Base.prototype.processNewLine = function (textState) {
     }
     textState.y += textState.height;
     textState.height = this.calcTextHeight(textState, false);
-    textState.index++;
+	if (DKTools.Localization._locale == "cn" && textState.text[textState.index]!="\n") {
+		return;
+	}
+	textState.index++;
 };
 //==todo: changed
 Window_Base.prototype.getTextAlignPadding = function (textState) {

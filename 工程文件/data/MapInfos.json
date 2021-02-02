@@ -1,7 +1,7 @@
 [
 null,
 {"id":1,"expanded":false,"name":"初始地图","order":3,"parentId":11,"scrollX":819,"scrollY":452},
-{"id":2,"expanded":false,"name":"试炼二层","order":31,"parentId":29,"scrollX":973.1999999999999,"scrollY":1041.6},
+{"id":2,"expanded":false,"name":"试炼二层","order":31,"parentId":29,"scrollX":973.1999999999999,"scrollY":1281.6},
 {"id":3,"expanded":false,"name":"MEA房间","order":4,"parentId":11,"scrollX":819,"scrollY":452},
 {"id":4,"expanded":false,"name":"NobuHime","order":10,"parentId":19,"scrollX":819,"scrollY":452},
 {"id":5,"expanded":true,"name":"勇者开场","order":25,"parentId":0,"scrollX":982.8,"scrollY":542.4},

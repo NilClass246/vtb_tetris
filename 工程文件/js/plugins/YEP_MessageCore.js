@@ -892,6 +892,9 @@ Yanfly.Message.Window_Base_processNormalCharacter =
     Window_Base.prototype.processNormalCharacter;
 Window_Base.prototype.processNormalCharacter = function(textState) {
     if (this.checkWordWrap(textState)) {
+		// if (DKTools.Localization._locale == "cn") {
+		// Yanfly.Message.Window_Base_processNormalCharacter.call(this, textState);
+		// }
         return this.processNewLine(textState);
     }
     Yanfly.Message.Window_Base_processNormalCharacter.call(this, textState);
@@ -901,7 +904,7 @@ Window_Base.prototype.checkWordWrap = function (textState) {
     if (!textState) return false;
     if (!this._wordWrap) return false;
     if (DKTools.Localization._locale == "cn") {
-        var word = textState.text.substring(textState.index, textState.index+1);
+        var word = textState.text.substring(textState.index, textState.index);
         var size = this.textWidthExCheck(word);
         return (size + textState.x >= this.wordwrapWidth() - this.textPadding());
     };

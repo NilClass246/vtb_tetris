@@ -1278,7 +1278,7 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 				operator.TspinPopup.y = operator.yposition + TetrisManager.AboveLines * operator.yrange + 75;
 				this._blockLayer.addChild(operator.TspinPopup);
 				operator.TspinPopup.activate();
-				var tempScore = Math.pow(5, arr.length);
+				var tempScore = Math.pow(3, arr.length+2);
 				TetrisManager.Count_Tspin += 1;
 			} else {
 				var tempScore = Math.pow(3, arr.length);

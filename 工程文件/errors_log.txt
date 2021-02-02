@@ -3487,3 +3487,35 @@ Stack: TypeError: Cannot read property 'hp' of null
     at Array.forEach (<anonymous>)
     at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
 
+Date: Tue Feb 02 2021 09:46:47 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Item
+Name: ReferenceError
+Message: fuck is not defined
+Stack: ReferenceError: fuck is not defined
+    at Window_ItemHelp.Window_Base.processNewLine (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:355:14)
+    at Window_ItemHelp.Window_Base.processNewLine (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/aligncenter.js:110:31)
+    at Window_ItemHelp.Window_Base.processCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/aligncenter.js:85:9)
+    at Window_ItemHelp.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:2321:18)
+    at Window_ItemHelp.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools_Localization.js:2100:48)
+    at Window_ItemHelp.Window_Help.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1569:10)
+    at Window_ItemHelp.Window_Help.setText (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1555:14)
+    at Window_ItemHelp.Window_Help.setItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_MessageCore.js:976:12)
+    at Window_ItemList.Window_Selectable.setHelpWindowItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1307:26)
+    at Window_ItemList.updateHelp (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2072:10)
+
+Date: Tue Feb 02 2021 09:53:17 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Item
+Name: ReferenceError
+Message: fuck is not defined
+Stack: ReferenceError: fuck is not defined
+    at Window_ItemHelp.Window_Base.processNewLine (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:357:14)
+    at Window_ItemHelp.Window_Base.processCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:321:14)
+    at Window_ItemHelp.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:2321:18)
+    at Window_ItemHelp.Window_Base.drawTextEx (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools_Localization.js:2100:48)
+    at Window_ItemHelp.Window_Help.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1571:10)
+    at Window_ItemHelp.Window_Help.setText (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1557:14)
+    at Window_ItemHelp.Window_Help.setItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_MessageCore.js:976:12)
+    at Window_ItemList.Window_Selectable.setHelpWindowItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1309:26)
+    at Window_ItemList.updateHelp (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2074:10)
+    at Window_ItemList.Window_Selectable.callUpdateHelp (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1299:14)
+
