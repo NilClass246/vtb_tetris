@@ -178,13 +178,13 @@ Scene_Puzzle.prototype.initializeData = function () {
 		name: "Click",
 		pan: 0,
 		pitch: 50,
-		volume: 150
+		volume: 50
 	}
 	this.seBoom = {
 		name: "Boom",
 		pan: 0,
 		pitch: 50,
-		volume: 150
+		volume: 50
 	}
 
 	//this.arr_delay = $gameVariables.value(3);
@@ -252,6 +252,12 @@ Scene_Puzzle.prototype.update = function () {
 			this.gameover = true;
 		}
 		this.puzzleInfo.update(this.player.SCORE);
+		if (Input.isTriggered('ok') || Input.isTriggered('cancel') || Input.isTriggered('menu') || TouchInput.isPressed()) {
+			if (this._isPaused && !this.isPausedThisTurn) {
+				this.Continue();
+			}
+		}
+		this.isPausedThisTurn = false;
     }
 }
 
@@ -321,6 +327,11 @@ Scene_Puzzle.prototype.isGameOver = function () {
 }
 
 Scene_Puzzle.prototype.update_Actor = function () {
+	if (Input.isTriggered('cancel') || Input.isTriggered('menu')) {
+		if (!this._isPaused && !this.isPausedThisTurn) {
+			this.Pause();
+		}
+	}
 
 	this.update_Movement(this.player);
 
@@ -369,6 +380,11 @@ Scene_Puzzle.prototype.create = function () {
 
 	this._effectLayer = new Sprite();
 	this.addChild(this._effectLayer);
+
+	this.PauseScreen = new Sprite();
+	this.PauseScreen.bitmap = ImageManager.loadPicture('PauseScreen');
+	this.PauseScreen.opacity = 0;
+	this.addChild(this.PauseScreen)
 
 	this._upperLayer = new Sprite();
 	this.addChild(this._upperLayer);

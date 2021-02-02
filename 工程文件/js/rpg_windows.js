@@ -1133,6 +1133,8 @@ Window_Selectable.prototype.isTouchedInsideFrame = function() {
 };
 
 Window_Selectable.prototype.onTouch = function(triggered) {
+	//TODO: changed here
+	return;
     var lastIndex = this.index();
     var x = this.canvasToLocalX(TouchInput.x);
     var y = this.canvasToLocalY(TouchInput.y);

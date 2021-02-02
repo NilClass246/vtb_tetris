@@ -1293,6 +1293,7 @@ Tetris_Window.prototype.refresh = function () {
 TetrisManager.showInstructions = function () {
 	this.instructions = new Window_Instructions();
 	SceneManager._scene.addChild(this.instructions);
+	this.hiding = false;
 }
 
 TetrisManager.hideInstructions = function () {

@@ -3580,7 +3580,9 @@ TouchInput.clear = function () {
  * @static
  * @method update
  */
-TouchInput.update = function() {
+
+TouchInput.update = function () {
+    // if (this.inactive) return;
     this._triggered = this._events.triggered;
     this._cancelled = this._events.cancelled;
     this._moved = this._events.moved;
@@ -3598,6 +3600,14 @@ TouchInput.update = function() {
     }
 };
 
+TouchInput.deactivate = function () {
+    this.inactive = true;
+}
+
+TouchInput.activate = function () {
+    this.inactive = false;
+}
+
 /**
  * Checks whether the mouse button or touchscreen is currently pressed down.
  *
@@ -3605,7 +3615,8 @@ TouchInput.update = function() {
  * @method isPressed
  * @return {Boolean} True if the mouse button or touchscreen is pressed
  */
-TouchInput.isPressed = function() {
+TouchInput.isPressed = function () {
+    if (this.inactive) return false;
     return this._mousePressed || this._screenPressed;
 };
 
@@ -3616,7 +3627,8 @@ TouchInput.isPressed = function() {
  * @method isTriggered
  * @return {Boolean} True if the mouse button or touchscreen is triggered
  */
-TouchInput.isTriggered = function() {
+TouchInput.isTriggered = function () {
+    if (this.inactive) return false;
     return this._triggered;
 };
 
@@ -3628,7 +3640,8 @@ TouchInput.isTriggered = function() {
  * @method isRepeated
  * @return {Boolean} True if the mouse button or touchscreen is repeated
  */
-TouchInput.isRepeated = function() {
+TouchInput.isRepeated = function () {
+    if (this.inactive) return false;
     return (this.isPressed() &&
             (this._triggered ||
              (this._pressedTime >= this.keyRepeatWait &&
@@ -3642,7 +3655,8 @@ TouchInput.isRepeated = function() {
  * @method isLongPressed
  * @return {Boolean} True if the left mouse button or touchscreen is long-pressed
  */
-TouchInput.isLongPressed = function() {
+TouchInput.isLongPressed = function () {
+    if (this.inactive) return false;
     return this.isPressed() && this._pressedTime >= this.keyRepeatWait;
 };
 
@@ -3653,7 +3667,8 @@ TouchInput.isLongPressed = function() {
  * @method isCancelled
  * @return {Boolean} True if the right mouse button is just pressed
  */
-TouchInput.isCancelled = function() {
+TouchInput.isCancelled = function () {
+    if (this.inactive) return false;
     return this._cancelled;
 };
 
@@ -3664,7 +3679,8 @@ TouchInput.isCancelled = function() {
  * @method isMoved
  * @return {Boolean} True if the mouse or a finger on the touchscreen is moved
  */
-TouchInput.isMoved = function() {
+TouchInput.isMoved = function () {
+    if (this.inactive) return false;
     return this._moved;
 };
 
@@ -3675,7 +3691,8 @@ TouchInput.isMoved = function() {
  * @method isReleased
  * @return {Boolean} True if the mouse button or touchscreen is released
  */
-TouchInput.isReleased = function() {
+TouchInput.isReleased = function () {
+    if (this.inactive) return false;
     return this._released;
 };
 

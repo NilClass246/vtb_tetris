@@ -182,7 +182,6 @@ Scene_Title.prototype.createForeground = function() {
 	for (var i = 0; i < DrillUp.title_socialBtns_max; i++) {
         if (DrillUp.title_socialBtns[i].length != 0 && TetrisManager.Records.isTitleScreenChanged){
 			var temp_sprite_data = JSON.parse(JSON.stringify( DrillUp.title_socialBtns[i] ));	//拷贝object（杜绝引用造成的修改）
-			
 			var temp_sprite = new Sprite(ImageManager.loadTitle1(temp_sprite_data['src_img']));
 			temp_sprite.anchor.x = 0.5;
 			temp_sprite.anchor.y = 0.5;
@@ -229,12 +228,15 @@ Scene_Title.prototype.drill_checkImgTouch = function() {
 Scene_Title.prototype.drill_isOnSprite = function(sprite) {
 	 var cw = sprite.bitmap.width / 2;
 	 var ch = sprite.bitmap.height / 2;
+	 
 	 if (sprite.visible === false) {return false};
 	 if (sprite.opacity === 0) {return false};
 	 if (TouchInput.x < sprite.x - cw) {return false};
 	 if (TouchInput.x > sprite.x + cw) {return false};
 	 if (TouchInput.y < sprite.y - ch) {return false};
 	 if (TouchInput.y > sprite.y + ch) {return false};
+	 console.log(TouchInput.x);
+	 console.log(sprite.x + cw);
 	 return true;	
 };
 
@@ -252,5 +254,48 @@ Scene_Title.prototype.openUrl = function(url, type) {
 		return;
 	}
 };
+//================================================
+//补充代码
+//================================================
+var _drill_SelectLanguage_socialBtn_createForeground = Scene_SelectLanguage.prototype.createForeground;
+Scene_SelectLanguage.prototype.createForeground = function(){
+	_drill_SelectLanguage_socialBtn_createForeground.call(this);
+	this._drill_visible_btns = [];
+	this._drill_social_btn_field = new Sprite();
+	this.addChild(this._drill_social_btn_field);
+	
+	var temp_sprite_data = {
+		src_img: "helpButton",
+		type: "window",
+		url: "https://www.bilibili.com/video/BV1DN411d7dU",
+		x: 375,
+		y: 462
+	}
+	
+	var temp_sprite = new Sprite(ImageManager.loadTitle1(temp_sprite_data['src_img']));
+	temp_sprite.anchor.x = 0.5;
+	temp_sprite.anchor.y = 0.5;
+	temp_sprite.x = temp_sprite_data['x'];
+	temp_sprite.y = temp_sprite_data['y'];
+	temp_sprite._drill_btn_url = temp_sprite_data['url'];
+	temp_sprite._drill_btn_type = temp_sprite_data['type'];
+	console.log(temp_sprite);
+	this._drill_visible_btns.push(temp_sprite);
+	this._drill_social_btn_field.addChild(temp_sprite);
+}
+
+var _drill_SelectLanguage_socialBtn_update = Scene_SelectLanguage.prototype.update;
+Scene_SelectLanguage.prototype.update = function(){
+	_drill_SelectLanguage_socialBtn_update.call(this);
+	if (TouchInput.isTriggered()) {	
+		this.drill_checkImgTouch();
+	};
+}
+
+Scene_SelectLanguage.prototype.drill_checkImgTouch = Scene_Title.prototype.drill_checkImgTouch
+
+Scene_SelectLanguage.prototype.drill_isOnSprite = Scene_Title.prototype.drill_isOnSprite
+
+Scene_SelectLanguage.prototype.openUrl = Scene_Title.prototype.openUrl
 
 

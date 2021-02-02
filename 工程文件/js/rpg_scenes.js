@@ -449,6 +449,7 @@ Scene_Title.prototype.create = function() {
     this.createForeground();
     this.createWindowLayer();
     this.createCommandWindow();
+	TouchInput.activate();
 };
 
 Scene_Title.prototype.start = function() {
@@ -519,6 +520,7 @@ Scene_Title.prototype.createCommandWindow = function() {
 
 Scene_Title.prototype.commandNewGame = function() {
     DataManager.setupNewGame();
+	TouchInput.deactivate();
     this._commandWindow.close();
     this.fadeOutAll();
     SceneManager.goto(Scene_Map);

@@ -2333,7 +2333,6 @@ Scene_SelectLanguage.prototype.createBackground = function() {
     if (!background) {
         return;
     }
-
     this._background = new DKTools.Sprite();
 
     this._background.setupGraphicName(background);

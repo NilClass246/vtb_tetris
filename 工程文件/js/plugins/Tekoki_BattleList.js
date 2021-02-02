@@ -1876,7 +1876,7 @@ TetrisManager.enemy_List = {
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
-			Mhp: 200,
+			Mhp: 150,
 			atk: 35,
 			def: 20,
 			curEng: 0,
@@ -1905,7 +1905,7 @@ TetrisManager.enemy_List = {
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
-			Mhp: 200,
+			Mhp: 150,
 			atk: 35,
 			def: 20,
 			curEng: 0,
@@ -2393,7 +2393,7 @@ TetrisManager.state_List = {
 			this.oldTime = Date.now();
 			this.owner.Be_Damaged_mag = this.owner.Be_Damaged_mag*1.5
 			if (this.owner.category == 'enemy') {
-				this.owner.MEng = this.owner.MEng * 0.5;
+				this.owner.Damage_mag = this.owner.Damage_mag * 1.5;
 				if (!this.emitter) {
 					if (this.owner.windowHeight_Revision) {
 						var r = this.owner.windowHeight_Revision;
@@ -2411,7 +2411,7 @@ TetrisManager.state_List = {
 				}
 				this.owner.StateBoard.setAvatarTint(this.id, 0xff99ff);
 			} else {
-				this.owner.AtkFreq = this.owner.AtkFreq * 0.5;
+				this.owner.Damage_mag = this.owner.Damage_mag * 1.5;
             }
 		},
 		update: function () {
@@ -2428,9 +2428,9 @@ TetrisManager.state_List = {
 			if (this.owner.category == 'enemy') {
 				this.emitter._emitter.emit = false;
 				this.owner.StateBoard.removeAvatarTint(this.id);
-				this.owner.MEng = this.owner.MEng / 0.5;
+				this.owner.Damage_mag = this.owner.Damage_mag / 1.5;
 			} else {
-				this.owner.AtkFreq = this.owner.AtkFreq / 0.5;
+				this.owner.Damage_mag = this.owner.Damage_mag / 1.5;
             }
 			this.owner.Be_Damaged_mag = this.owner.Be_Damaged_mag/1.5
 		}
@@ -3132,7 +3132,6 @@ MeaDoku.prototype.initialize = function (index) {
 	var scene = SceneManager._scene
 
 	this.enemy = scene._enemies[scene.getPlayer().TargetIndex];
-	TetrisManager.HarmSystem.dealDamage(scene.player, scene.player, 10, "real");
 	var sx = scene.getSkillPosition(index)[0];
 	var sy = scene.getSkillPosition(index)[1];
 	var ex = this.enemy.StateBoard.getStatePosition('4')[0];

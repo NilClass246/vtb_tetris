@@ -2337,9 +2337,12 @@ Scene_Tetris.prototype.createAfterMath = function () {
 	if ($gameVariables.value(24) > TetrisManager.Records.highestKPM) {
 		TetrisManager.Records.highestKPM = $gameVariables.value(24);
 	}
-
-	$gameParty.gainGold(this.player.gold_got);
-	$gameActors.actor(1).gainExp(this.player.exp_got);
+	if(this.player.gold_got){
+		$gameParty.gainGold(this.player.gold_got);
+	}
+	if(this.player.exp_got){
+		$gameActors.actor(1).gainExp(this.player.exp_got);
+	}
 }
 
 Scene_Tetris.prototype.eliminateBUGs = function (operator) {
@@ -2437,6 +2440,7 @@ tetrisStarter.prototype.update = function () {
 	this.count++
 	if (this.count >= this.time) {
 		SceneManager.push(Scene_Tetris);
+		this.destroy();
     }
 }
 
