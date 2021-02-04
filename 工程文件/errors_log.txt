@@ -3519,3 +3519,12 @@ Stack: ReferenceError: fuck is not defined
     at Window_ItemList.updateHelp (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2074:10)
     at Window_ItemList.Window_Selectable.callUpdateHelp (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1299:14)
 
+Date: Wed Feb 03 2021 17:55:56 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'addEmphasizers' of undefined
+Stack: TypeError: Cannot read property 'addEmphasizers' of undefined
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38390:29)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1987:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1911:14)
+

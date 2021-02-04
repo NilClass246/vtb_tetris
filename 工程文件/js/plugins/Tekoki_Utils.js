@@ -1687,18 +1687,6 @@ SkillManager.prototype.startSkill = function (id) {
 
 SkillManager.prototype.update = function () {
 	if (this.running) {
-		for (var i = 0; i < this._skill_list.length; i++) {
-			if (!this._skill_list[i].isPrepared) {
-				if ((Date.now() - this._skill_list[i].oldTime) / 1000 > 1) {
-					this._skill_list[i].CD -= 1;
-					this.skillButton_list[i].writeCDTxt(this._skill_list[i].CD);
-					this._skill_list[i].oldTime = Date.now();
-					if (this._skill_list[i].CD <= 0) {
-						this._skill_list[i].isPrepared = true;
-					}
-				}
-			}
-		}
 		if (!this.isOwnerEnemy) {
 			if (Input.isTriggered('skillone')) {
 				if (!this.usedFirstSkill) {
@@ -1721,7 +1709,51 @@ SkillManager.prototype.update = function () {
 				this.startSkill(2);
 			}
 		}
+
+		for (var i = 0; i < this._skill_list.length; i++) {
+			if (!this._skill_list[i].isPrepared) {
+
+				if (SceneManager._scene.emphasizer_added) {
+					if (!this.isPaused) {
+						this.pause();
+					}
+				} else {
+					if (this.isPaused) {
+						this.continue();
+					}
+
+				}
+
+				if (!SceneManager._scene.emphasizer_added && this._skill_list[i].beginCD) {
+					this._skill_list[i].oldTime = Date.now();
+					this._skill_list[i].beginCD = false;
+				}
+
+				if (!this.isPaused&& ((Date.now() - this._skill_list[i].oldTime) / 1000 > 1)) {
+					this._skill_list[i].CD -= 1;
+					this.skillButton_list[i].writeCDTxt(this._skill_list[i].CD);
+					this._skill_list[i].oldTime = Date.now();
+					if (this._skill_list[i].CD <= 0) {
+						this._skill_list[i].isPrepared = true;
+					}
+				}
+			}
+		}
     }
+}
+
+SkillManager.prototype.pause = function () {
+	this.isPaused = true;
+
+}
+
+SkillManager.prototype.continue = function () {
+	for (var i = 0; i < this._skill_list.length; i++) {
+		if (!this._skill_list[i].isPrepared) {
+			this._skill_list[i].oldTime = Date.now();
+		}
+	}
+	this.isPaused = false;
 }
 
 SkillManager.prototype.ban = function () {

@@ -1242,7 +1242,7 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 			var Tspined = false;
 			if (arr[0]) {
 				//提升能量
-				this.player.eng += 3;
+				//this.player.eng += 3;
 				//提升Combo
 				operator.Count_Combos += 1;
 				Tspined = this.isTspin(operator)
@@ -1278,14 +1278,14 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 				operator.TspinPopup.y = operator.yposition + TetrisManager.AboveLines * operator.yrange + 75;
 				this._blockLayer.addChild(operator.TspinPopup);
 				operator.TspinPopup.activate();
-				var tempScore = Math.pow(3, arr.length+2);
+				var tempScore = 4*(arr.length*2)+1;
 				TetrisManager.Count_Tspin += 1;
 			} else {
-				var tempScore = Math.pow(3, arr.length);
+				var tempScore = 4 * arr.length + 1;
 			}
 			//Combo加分
 			if (operator.Count_Combos > 0) {
-				tempScore = tempScore * (operator.Count_Combos+1);
+				tempScore = tempScore * Math.pow(1.15, operator.Count_Combos);
 			}
 			//B2B加分
 			if (arr[0]) {
@@ -1298,16 +1298,17 @@ Scene_Tetris.prototype.mergeBox = function(operator){
 						operator.b2bPopup.y = operator.yposition + TetrisManager.AboveLines * operator.yrange + 125;
 						this._blockLayer.addChild(operator.b2bPopup);
 						operator.b2bPopup.activate();
-						tempScore = tempScore * 2;
+						tempScore = tempScore * 1.2;
 					}
 					operator.lastBack = true
 				} else {
 					operator.lastBack = false
 				}
 			}
+			tempScore = Math.floor(tempScore);
 			//加入分数
 			operator.SCORE += tempScore;
-			operator.gaugeSCORE += tempScore* operator.Gauge_Score_mag;
+			operator.gaugeSCORE += Math.floor(tempScore * operator.Gauge_Score_mag);
 			this.refreshScoreBoard(operator);
 			var tempPopScore = new FNumber(tempScore, 12);
 			tempPopScore.changeDirection('left');

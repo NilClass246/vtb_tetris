@@ -2037,7 +2037,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 60;
-			this.oldTime = Date.now();
+			this.beginCD = true;
 		}
 	},
 	"9": {
@@ -2059,7 +2059,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 30;
-			this.oldTime = Date.now();
+			this.beginCD = true;
         }
     },
 	"寸劲拳": {
@@ -2097,7 +2097,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 15;
-			this.oldTime = Date.now();
+			this.beginCD = true;
 		}
 	},
 	"草": {
@@ -2133,7 +2133,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 30;
-			this.oldTime = Date.now();
+			this.beginCD = true;
 		}
 	},
 	"10": {
@@ -2156,7 +2156,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 20;
-			this.oldTime = Date.now();
+			this.beginCD = true;
 		}
 	},
 	"11": {
@@ -2240,7 +2240,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 12;
-			this.oldTime = Date.now();
+			this.beginCD = true;
 		}
 	},
 	"鲜血之触": {
@@ -2264,7 +2264,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 12;
-			this.oldTime = Date.now();
+			this.beginCD = true;
 		}
 	},
 	"定式下落": {
@@ -2286,7 +2286,7 @@ TetrisManager.skill_List = {
 		Reset: function () {
 			this.isPrepared = false;
 			this.CD = 12;
-			this.oldTime = Date.now();
+			this.beginCD = true;
 		}
 	},
 }
