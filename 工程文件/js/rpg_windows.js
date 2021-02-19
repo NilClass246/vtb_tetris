@@ -654,6 +654,10 @@ Window_Base.prototype.drawItemName = function(item, x, y, width) {
         if ($gameActors.actor($gameVariables.value(32))._signedItems.contains(item)) {
             this.contents.blt(TetrisManager.starPic, 0, 0, 16, 16, x, y);
         }
+
+        if ($gameActors.actor($gameVariables.value(32))._signedSkills.contains(item)) {
+            this.contents.blt(TetrisManager.starPic, 0, 0, 16, 16, x, y);
+        }
     }
 };
 

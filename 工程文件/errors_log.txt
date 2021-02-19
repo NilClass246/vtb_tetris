@@ -3528,3 +3528,86 @@ Stack: TypeError: Cannot read property 'addEmphasizers' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1987:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1911:14)
 
+Date: Tue Feb 16 2021 15:38:54 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Skill
+Name: RangeError
+Message: Maximum call stack size exceeded
+Stack: RangeError: Maximum call stack size exceeded
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:213:46)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:214:39)
+
+Date: Tue Feb 16 2021 16:36:37 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Skill
+Name: ReferenceError
+Message: skillIDList is not defined
+Stack: ReferenceError: skillIDList is not defined
+    at Window_SkillSign.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:230:25)
+    at Window_SkillSign.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:217:10)
+    at new Window_SkillSign (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:205:21)
+    at Scene_Skill.createSignWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1432:24)
+    at Scene_Skill.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1397:10)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38386:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1987:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1911:14)
+
+Date: Tue Feb 16 2021 16:39:27 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Skill
+Name: ReferenceError
+Message: item is not defined
+Stack: ReferenceError: item is not defined
+    at Game_Actor.unsignSkill (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:84:37)
+    at Window_SkillList.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:280:57)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7130:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7128:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Skill.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Skill.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+    at Scene_Skill.Scene_MenuBase.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_MenuBackground.js:1013:32)
+
+Date: Wed Feb 17 2021 15:16:20 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'length' of undefined
+Stack: TypeError: Cannot read property 'length' of undefined
+    at Spriteset_Map.drill_ET_updateNewEventText (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:477:29)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:465:7)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_TreasurePopup.js:364:34)
+    at Spriteset_Map.update [as Lagomoro_MapArea_update] (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MKR_PlayerSensor.js:2814:31)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Lagomoro_MapArea_OutManager.js:110:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:60:39)
+
+Date: Wed Feb 17 2021 15:18:28 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 24
+Event ID: 2
+Event Page: 1
+Last Event Command: 230
+Params: [45]
+Name: TypeError
+Message: Cannot read property 'hp' of null
+Stack: TypeError: Cannot read property 'hp' of null
+    at Scene_Tetris.initialize_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:179:25)
+    at Scene_Tetris.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:119:7)
+    at new Scene_Tetris (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:65:18)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Function.SceneManager.push (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2085:10)
+    at tetrisStarter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2475:16)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+

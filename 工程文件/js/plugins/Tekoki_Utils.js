@@ -342,6 +342,8 @@ TetrisManager.BlankLines = 2;
 
 TetrisManager.GaugeConstant = 10;
 
+TetrisManager.HPGaugeConstant = 50;
+
 TetrisManager.AboveLines = 16;
 
 TetrisManager.AiSpeed = 20;
@@ -3835,6 +3837,51 @@ ScreenMosaicEffect.prototype.update = function () {
 		.drawRect(rndj * this.w, rndi * this.h, this.w, this.h)
 		.endFill();
 	this.addChild(m);
+}
+
+//-----------------------------------------------------------------------------
+
+function ScoreGauge() {
+	this.initialize.apply(this, arguments);
+}
+
+ScoreGauge.prototype = Object.create(Sprite.prototype);
+ScoreGauge.prototype.constructor = ScoreGauge;
+
+ScoreGauge.prototype.initialize = function (options) {
+	Sprite.prototype.initialize.call(this);
+	this.max = options.max;
+	this.num = 0;
+	this.gaugeWidth = options.width;
+	this.gaugeHeight = options.height;
+	this.bitmap = new Bitmap(this.gaugeWidth, this.gaugeHeight);
+	this.colorpicker = new Tetris_Window(0, 0, 0, 0);
+}
+
+ScoreGauge.prototype.updateNum = function (num) {
+	this.num = num;
+	this.refresh();
+}
+
+ScoreGauge.prototype.updateMax = function (max) {
+	this.max = max;
+	this.refresh();
+}
+
+ScoreGauge.prototype.refresh = function () {
+	this.bitmap.clear();
+	var x = 0;
+	var y = 0;
+	var width = this.gaugeWidth;
+	var height = this.gaugeHeight;
+	var rate = this.num / this.max;
+	var color1 = this.colorpicker.hpGaugeColor1();
+	var color2 = this.colorpicker.hpGaugeColor2();
+	var fillH = Math.floor(height * rate);
+	var fillY = y + height - 2 - fillH
+	this.bitmap.fillRect(x, y, width, height, this.colorpicker.gaugeBackColor1());
+	this.bitmap.fillTrap(x, fillY, width, fillH, fillH, color1, color2, "|", "|");
+	//if (outline) { this.bitmap.outlineTrap(x, fillY, width, height, outlineColor1, outlineColor2, "|", "|") };
 }
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀

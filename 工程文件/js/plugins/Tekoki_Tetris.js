@@ -157,6 +157,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 		n: 0,
 		SCORE: 0,
 		gaugeSCORE: 0,
+		displayGaugeSCORE: 0,
 		curbag: TetrisManager.block_pics.slice(),
 
 		nextWindows: [],
@@ -271,7 +272,7 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 }
 
 Scene_Tetris.prototype.initialize_Skills = function () {
-	var skills = $gameParty.members()[0].skills();
+	var skills = this.actor._signedSkills;
 	var skillIDs = [] 
 	for (var i = 0; i < skills.length; i++) {
 		if (skills[i].id !== 1) {
@@ -410,6 +411,8 @@ Scene_Tetris.prototype.initializeData = function () {
 	this._isPaused = false;
 	this.isPausedThisTurn = false;
 	this.HpwarningCount = 0;
+
+	this.gaugeSpeed = 0.1;
 }
 
 Scene_Tetris.prototype.loadKeyMapper = function () {
@@ -691,7 +694,7 @@ Scene_Tetris.prototype.update_Enemy_Placement = function () {
 }
 
 Scene_Tetris.prototype.isGameOver = function () {
-	if (this.actor.hp <= 0 || this.player.exceeded) {
+	if (this.player.displayHp <= 0 || this.player.exceeded) {
 		AudioManager.playSe(this.seBoom);
 		this.running=false;
 		this.gameover=true;
@@ -749,17 +752,9 @@ Scene_Tetris.prototype.update_Actor = function () {
 		this.player.n = 0;
 	}
 
-	if (this.player.gaugeSCORE >= this.player.AtkFreq) {
-
-		var overkill = this.player.gaugeSCORE - this.player.AtkFreq
-		var damage = this.player.atk + overkill;
-		if (this._enemies[this.player.TargetIndex]) {
-			this.AttAck(this.player, this._enemies[this.player.TargetIndex], damage);
-		}
-		this.player.gaugeSCORE = 0;
-		this.drawArea(this.player);
-	}
-
+	this.update_gauge();
+	this.update_hp(this.player);
+	
 	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
 	TetrisManager.curhighestKPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
 
@@ -838,18 +833,57 @@ Scene_Tetris.prototype.update_auto = function () {
 		}
 	}
 
-	if (this.player.gaugeSCORE >= this.player.AtkFreq) {
-		var overkill = this.player.gaugeSCORE - this.player.AtkFreq
-		var damage = this.player.atk + overkill;
-		if (this._enemies[this.player.TargetIndex]) {
-			this.AttAck(this.player, this._enemies[this.player.TargetIndex], damage);
-		}
-		this.player.gaugeSCORE = 0;
-		this.drawArea(this.player);
-	}
+	this.update_gauge();
 
 	TetrisManager.curhighestLPM = TetrisManager.Count_Lines / (TetrisManager.getElapsedTime() / 60);
 	TetrisManager.curhighestKPM = TetrisManager.Count_Buttons / (TetrisManager.getElapsedTime() / 60);
+}
+
+Scene_Tetris.prototype.update_gauge = function(){
+	this.player.SCOREgauge.updateMax(this.player.AtkFreq);
+	
+	if(this.player.gaugeSCORE>0){
+		var gaugeChangedAmount = this.player.gaugeSCORE;
+		if(gaugeChangedAmount>0.5){
+			var gaugeChangedAmount = Math.max((Math.min(this.player.AtkFreq, this.player.gaugeSCORE)/TetrisManager.GaugeConstant), 0.5);
+		}
+		this.player.gaugeSCORE -= gaugeChangedAmount;
+		this.player.displayGaugeSCORE += gaugeChangedAmount;
+	}
+	
+	if (this.player.displayGaugeSCORE >= this.player.AtkFreq) {
+		var overkill = this.player.displayGaugeSCORE - this.player.AtkFreq
+		var damage = this.player.atk;
+		if (this._enemies[this.player.TargetIndex]) {
+			this.AttAck(this.player, this._enemies[this.player.TargetIndex], damage);
+		}
+		this.player.displayGaugeSCORE = overkill;
+		this.drawArea(this.player);
+	}
+	console.log(this.player.displayGaugeSCORE);
+	this.player.SCOREgauge.updateNum(this.player.displayGaugeSCORE);
+}
+
+Scene_Tetris.prototype.update_hp = function(battler){
+	if(battler.category == "player"){
+		var actualHP = battler.actor.hp;
+		var mhp = battler.actor.mhp
+	}else{
+		var mhp = battler.Mhp;
+		var actualHP = battler.curHp;
+	}
+	var hpChangedAmount = (actualHP - battler.displayHp);
+	if(Math.abs(hpChangedAmount)>1){
+		hpChangedAmount = hpChangedAmount/TetrisManager.HPGaugeConstant;
+		hpChangedAmount = (hpChangedAmount/Math.abs(hpChangedAmount))*(Math.abs(hpChangedAmount)).clamp(1, mhp/TetrisManager.HPGaugeConstant);
+	}
+	battler.displayHp += hpChangedAmount;
+
+	if(battler.category == "player"){
+		this.refreshPlayerGauge();
+	}else{
+		var actualHP = battler.curHp;
+	}
 }
 
 Scene_Tetris.prototype.changeTarget = function () {
@@ -1145,8 +1179,11 @@ Scene_Tetris.prototype.update_Enemy = function () {
 					}
                 }
             }
+			
+			this.update_hp(CurEnemy);
+			this.refreshEnemyHPGauge(i)
 
-			if (CurEnemy.curHp <= 0) {
+			if (CurEnemy.displayHp <= 0) {
 				CurEnemy.living = false;
 				this.player.gold_got += CurEnemy.Gold;
 				this.player.exp_got += CurEnemy.Exp;
@@ -1159,13 +1196,7 @@ Scene_Tetris.prototype.update_Enemy = function () {
 }
 
 Scene_Tetris.prototype.update_Animation = function () {
-	this.player.displayHp += (this.actor.hp - this.player.displayHp) / TetrisManager.GaugeConstant;
-	this.refreshPlayerGauge();
-
-	for (var i in this._enemies) {
-		this._enemies[i].displayHp += (this._enemies[i].curHp - this._enemies[i].displayHp) / TetrisManager.GaugeConstant;
-		this.refreshEnemyHPGauge(i)
-	}
+	
 	if (this.windowTrembling) {
 		if (this.player.mergeDownTrembling) {
 			this.player.mainwindow.y += 1;
@@ -1422,6 +1453,7 @@ Scene_Tetris.prototype.isTspin = function (operator){
 	}
 	return false;
 }
+
 Scene_Tetris.prototype.drawArea = function (operator) {
 	if (operator.category == "player") {
 		this.refreshPlayerWindow(operator);
@@ -1971,7 +2003,12 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 		120, 120
 	);
 	this.player.holdWindow.drawText("HOLD", 12, -10);
-
+	this.player.SCOREgauge = new ScoreGauge({
+		max: this.player.AtkFreq,
+		width: 10,
+		height: (this.COL - TetrisManager.AboveLines) * this.player.yrange-36,
+	})
+	this.player.SCOREgauge.move(290, 18);
 	this.refreshPlayerWindow(this.player);
 	
 	this.player.pictureBoard.move(0, 100, 400, 624);
@@ -2110,6 +2147,7 @@ Scene_Tetris.prototype.endGame = function () {
 		SceneManager.pop(Scene_Tetris);
 		Scene_Tetris.prototype.onEnd = function () {
 		}
+		this.actor.gainHp(this.player.displayHp - this.actor.hp);
 		if (this.actor.hp <= 0) {
 			this.actor.addState(1);
         }
@@ -2126,7 +2164,6 @@ Scene_Tetris.prototype.refreshPlayerGauge = function(){
 	//var eng_rate = this.player.eng / this.player.meng
 	if (this.HPwarning) {
 		if (!this.changedHpColor) {
-			console.log('changed')
 			var color1 = this.playerGaugeBoard.textColor(18);
 			var color2 = this.playerGaugeBoard.textColor(10);
 			this.HpwarningCount++;
@@ -2165,7 +2202,7 @@ Scene_Tetris.prototype.refreshPlayerWindow = function (operator) {
 		operator.yposition + TetrisManager.AboveLines * operator.yrange - 27,
 		this.ROW * operator.xrange + 65,
 		(this.COL - TetrisManager.AboveLines) * operator.yrange);
-	operator.mainwindow.drawVerticalGauge(265, 10, 10, (this.COL - TetrisManager.AboveLines) * operator.yrange, operator.gaugeSCORE / this.player.AtkFreq, operator.mainwindow.hpGaugeColor1(), operator.mainwindow.hpGaugeColor1());
+	// operator.mainwindow.drawVerticalGauge(265, 10, 10, (this.COL - TetrisManager.AboveLines) * operator.yrange, operator.gaugeSCORE / this.player.AtkFreq, operator.mainwindow.hpGaugeColor1(), operator.mainwindow.hpGaugeColor1());
 	for (var i = 0; i <= this.ROW; i++) {
 		operator.mainwindow.contents.drawLine(i * operator.xrange + 5, 0, i * operator.xrange + 5, (this.COL - TetrisManager.AboveLines) * operator.yrange);
 	}
@@ -2184,6 +2221,7 @@ Scene_Tetris.prototype.refreshPlayerWindow = function (operator) {
 		operator.effectLayer = new Sprite();
     }
 	operator.mainwindow.addChild(operator.effectLayer);
+	operator.mainwindow.addChild(this.player.SCOREgauge);
 }
 
 Scene_Tetris.prototype.addEffect = function (operator, sprite) {

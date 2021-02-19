@@ -560,10 +560,17 @@ Scene_Map.prototype.initialize = function() {
     this._encounterEffectDuration = 0;
     this._mapLoaded = false;
     this._touchCount = 0;
-	if($gameActors && $gameActors.actor($gameVariables.value(32)) && $gameActors.actor($gameVariables.value(32))._signedItems){
-		for(var i=0; i<$gameActors.actor($gameVariables.value(32))._signedItems.length; i++){
-			$gameActors.actor($gameVariables.value(32))._signedItems[i] = $dataItems[$gameActors.actor($gameVariables.value(32))._signedItems[i].id];
-		}
+    if ($gameActors && $gameActors.actor($gameVariables.value(32))) {
+        if ($gameActors.actor($gameVariables.value(32))._signedItems) {
+            for (var i = 0; i < $gameActors.actor($gameVariables.value(32))._signedItems.length; i++) {
+                $gameActors.actor($gameVariables.value(32))._signedItems[i] = $dataItems[$gameActors.actor($gameVariables.value(32))._signedItems[i].id];
+            }
+        }
+        if ($gameActors.actor($gameVariables.value(32))._signedSkills) {
+            for (var i = 0; i < $gameActors.actor($gameVariables.value(32))._signedSkills.length; i++) {
+                $gameActors.actor($gameVariables.value(32))._signedSkills[i] = $dataSkills[$gameActors.actor($gameVariables.value(32))._signedSkills[i].id];
+            }
+        }
 	}
 };
 
@@ -1298,9 +1305,6 @@ Scene_Item.prototype.createItemWindow = function() {
     var wy = this._categoryWindow.y + this._categoryWindow.height;
     var wh = Graphics.boxHeight - wy - this._tipsWindow.height;
     this._itemWindow = new Window_ItemList(0, wy, Graphics.boxWidth * (2 / 3), wh);
-    console.log(wy);
-    console.log(Graphics.boxWidth * (2 / 3));
-    console.log(wh);
     this._itemWindow.setHelpWindow(this._helpWindow);
     this._itemWindow.setHandler('ok',     this.onItemOk.bind(this));
     this._itemWindow.setHandler('cancel', this.onItemCancel.bind(this));
@@ -1382,11 +1386,15 @@ Scene_Skill.prototype.initialize = function() {
 
 Scene_Skill.prototype.create = function() {
     Scene_ItemBase.prototype.create.call(this);
-    this.createHelpWindow();
+    //this.createHelpWindow();
+    this._helpWindow = new Window_SkillHelp(10);
+    this.addWindow(this._helpWindow);
     this.createSkillTypeWindow();
     this.createStatusWindow();
+    this.createTipsWindow();
     this.createItemWindow();
     this.createActorWindow();
+    this.createSignWindow();
 };
 
 Scene_Skill.prototype.start = function() {
@@ -1395,7 +1403,7 @@ Scene_Skill.prototype.start = function() {
 };
 
 Scene_Skill.prototype.createSkillTypeWindow = function() {
-    var wy = this._helpWindow.height;
+    var wy = 0;
     this._skillTypeWindow = new Window_SkillType(0, wy);
     this._skillTypeWindow.setHelpWindow(this._helpWindow);
     this._skillTypeWindow.setHandler('skill',    this.commandSkill.bind(this));
@@ -1407,19 +1415,29 @@ Scene_Skill.prototype.createSkillTypeWindow = function() {
 
 Scene_Skill.prototype.createStatusWindow = function() {
     var wx = this._skillTypeWindow.width;
-    var wy = this._helpWindow.height;
-    var ww = Graphics.boxWidth - wx;
+    var wy = 0;
+    var ww = Graphics.boxWidth - wx - this._helpWindow.width;
     var wh = this._skillTypeWindow.height;
     this._statusWindow = new Window_SkillStatus(wx, wy, ww, wh);
     this._statusWindow.reserveFaceImages();
     this.addWindow(this._statusWindow);
 };
 
+Scene_Skill.prototype.createTipsWindow = function () {
+    this._tipsWindow = new Window_BottomTips('{Tips_Item}');
+    this.addWindow(this._tipsWindow);
+}
+
+Scene_Skill.prototype.createSignWindow = function () {
+    this._signWindow = new Window_SkillSign(this._helpWindow.height);
+    this.addWindow(this._signWindow)
+}
+
 Scene_Skill.prototype.createItemWindow = function() {
     var wx = 0;
     var wy = this._statusWindow.y + this._statusWindow.height;
-    var ww = Graphics.boxWidth;
-    var wh = Graphics.boxHeight - wy;
+    var ww = Graphics.boxWidth - this._helpWindow.width;
+    var wh = Graphics.boxHeight - wy - this._tipsWindow.height;
     this._itemWindow = new Window_SkillList(wx, wy, ww, wh);
     this._itemWindow.setHelpWindow(this._helpWindow);
     this._itemWindow.setHandler('ok',     this.onItemOk.bind(this));

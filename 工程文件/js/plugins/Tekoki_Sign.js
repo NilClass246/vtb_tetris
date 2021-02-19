@@ -29,7 +29,7 @@
  * +++ TekokiWorkshop - Tetris.js (v0.3) +++
  * https://virtual98.com/
  * =============================================================================
- * 实现道具登记界面的插件。
+ * 实现道具/技能登记界面的插件。
  * 目前还在测试阶段。
  * meameasuki！
  */
@@ -46,89 +46,6 @@
 TetrisManager.requestUpdateSign = false;
 
 //=============================================================================
-// ** 场景定义
-//=============================================================================
-
-function Scene_Sign() {
-    this.initialize.apply(this, arguments);
-}
-
-Scene_Sign.prototype = Object.create(Scene_MenuBase.prototype);
-Scene_Sign.prototype.constructor = Scene_Sign;
-
-Scene_Sign.prototype.initialize = function () {
-    Scene_ItemBase.prototype.initialize.call(this);
-}
-
-Scene_Sign.prototype.update = function () {
-    Scene_MenuBase.prototype.update.call(this);
-}
-
-Scene_Sign.prototype.create = function () {
-    Scene_ItemBase.prototype.create.call(this);
-
-    this.Window_Top = new Window_Help();
-
-    this.Window_Right = new SignWaitingWindow(600, 108, 600, 514);
-    this.Window_Right.setHelpWindow(this.Window_Top);
-
-    this.Window_Right.activate();
-    this.Window_Right.selectLast();
-
-    this.addWindow(this.Window_Right);
-    this.addWindow(this.Window_Top);
-}
-
-//=============================================================================
-// ** 道具选择界面
-//=============================================================================
-
-function SignWaitingWindow() {
-    this.initialize.apply(this, arguments);
-}
-
-SignWaitingWindow.prototype = Object.create(Window_ItemList.prototype);
-SignWaitingWindow.prototype.constructor = SignWaitingWindow;
-
-SignWaitingWindow.prototype.initialize = function (x, y ,width,height) {
-    Window_Selectable.prototype.initialize.call(this, x, y, width, height);
-    this._category = 'none';
-    this.refresh();
-}
-
-SignWaitingWindow.prototype.maxCols = function () {
-    return 1;
-};
-
-SignWaitingWindow.prototype.spacing = function () {
-    return 48;
-};
-
-SignWaitingWindow.prototype.includes = function (item) {
-    return DataManager.isItem(item) && item.itypeId === 1;
-};
-
-
-//=============================================================================
-// ** 道具登记界面
-//=============================================================================
-
-function SignHoldingWindow() {
-    this.initialize.apply(this, arguments);
-}
-
-SignHoldingWindow.prototype = Object.create(Window_Selectable.prototype);
-SignHoldingWindow.prototype.constructor = SignHoldingWindow;
-
-SignHoldingWindow.prototype.initialize = function (x, y, width, height) {
-    Window_Selectable.prototype.initialize.call(this, x, y, width, height);
-}
-
-function TestSigning() {
-    SceneManager.push(Scene_Sign);
-}
-
-//=============================================================================
 // ** 为了实现登记功能而添加的属性
 //=============================================================================
 
@@ -136,6 +53,7 @@ TetrisManager.Temps.Game_Actor_setup = Game_Actor.prototype.setup;
 Game_Actor.prototype.setup = function (actorId) {
     TetrisManager.Temps.Game_Actor_setup.call(this, actorId);
     this._signedItems = [];
+    this._signedSkills = [];
 }
 
 Game_Actor.prototype.signItem = function (item) {
@@ -151,6 +69,20 @@ Game_Actor.prototype.signItem = function (item) {
 Game_Actor.prototype.unsignItem = function (item) {
     if (this._signedItems.contains(item)) {
         this._signedItems.splice(this._signedItems.indexOf(item),1);
+    }
+}
+
+Game_Actor.prototype.signSkill = function (skill) {
+    if (skill
+        && !this._signedSkills.contains(skill)
+        && this._signedSkills.length < 3) {
+        this._signedSkills.push(skill);
+    }
+}
+
+Game_Actor.prototype.unsignSkill = function (skill) {
+    if (this._signedSkills.contains(skill)) {
+        this._signedSkills.splice(this._signedSkills.indexOf(skill), 1);
     }
 }
 
@@ -170,6 +102,22 @@ Window_ItemHelp.prototype.initialize = function (numLines) {
     var width = Graphics.boxWidth * (1 / 3);
     var height = this.fittingHeight(numLines || 2);
     var y = this.fittingHeight(1);
+    Window_Base.prototype.initialize.call(this, x, y, width, height);
+    this._text = '';
+}
+
+function Window_SkillHelp() {
+    this.initialize.apply(this, arguments);
+}
+
+Window_SkillHelp.prototype = Object.create(Window_Help.prototype);
+Window_SkillHelp.prototype.constructor = Window_SkillHelp;
+
+Window_SkillHelp.prototype.initialize = function (numLines) {
+    var x = Graphics.boxWidth * (2 / 3)
+    var width = Graphics.boxWidth * (1 / 3);
+    var height = this.fittingHeight(numLines || 2);
+    var y = 0;
     Window_Base.prototype.initialize.call(this, x, y, width, height);
     this._text = '';
 }
@@ -251,19 +199,91 @@ Window_Sign.prototype.update = function () {
     }
 }
 
+//=============================================================================
+
+function Window_SkillSign() {
+    this.initialize.apply(this, arguments);
+}
+
+Window_SkillSign.prototype = Object.create(Window_Base.prototype);
+Window_SkillSign.prototype.constructor = Window_SkillSign;
+
+Window_SkillSign.prototype.initialize = function (y) {
+    var x = Graphics.boxWidth * (2 / 3)
+    var y = y;
+    var width = Graphics.boxWidth * (1 / 3);
+    var height = this.fittingHeight(3);
+    Window_Base.prototype.initialize.call(this, x, y, width, height);
+    this.refresh();
+    TetrisManager.requestUpdateSign = false;
+}
+
+Window_SkillSign.prototype.refresh = function () {
+    if (this._skillboard) {
+        this.removeChild(this._skillboard);
+    }
+    this.skillButton_list = [];
+    var skillIDs = [];
+    var skills = $gameActors.actor($gameVariables.value(32))._signedSkills;
+    for (var i = 0; i < skills.length; i++) {
+        if (skills[i].id !== 1) {
+            skillIDs.push(String(skills[i].id));
+        }
+    }
+    for (var i = 0; i < skillIDs.length; i++) {
+        this.skillButton_list.push(new SkillButton(skillIDs[i]));
+    }
+    this._skillboard = new skillBoard(this.skillButton_list);
+    this.addChild(this._skillboard);
+    var x = 36;
+    var y = 36;
+    this._skillboard.move(x, y);
+}
+
+Window_SkillSign.prototype.update = function () {
+    Window_Base.prototype.update.call(this);
+    if (TetrisManager.requestUpdateSign) {
+        this.refresh();
+        TetrisManager.requestUpdateSign = false;
+    }
+}
+
+//=============================================================================
+
 Window_ItemList.prototype.update = function () {
     Window_Selectable.prototype.update.call(this);
     if (SceneManager._scene instanceof Scene_Item) {
         if (Input.isTriggered('shift')) {
             SoundManager.playOk();
-            $gameActors.actor($gameVariables.value(32)).signItem(this.item())
+            $gameActors.actor($gameVariables.value(32)).signItem(this.item());
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }
 
         if (Input.isTriggered('control')) {
             SoundManager.playOk();
-            $gameActors.actor($gameVariables.value(32)).unsignItem(this.item())
+            $gameActors.actor($gameVariables.value(32)).unsignItem(this.item());
+            TetrisManager.requestUpdateSign = true;
+            this.refresh();
+        }
+    }
+}
+
+//=============================================================================
+
+Window_SkillList.prototype.update = function () {
+    Window_Selectable.prototype.update.call(this);
+    if (SceneManager._scene instanceof Scene_Skill) {
+        if (Input.isTriggered('shift')) {
+            SoundManager.playOk();
+            $gameActors.actor($gameVariables.value(32)).signSkill(this.item());
+            TetrisManager.requestUpdateSign = true;
+            this.refresh();
+        }
+
+        if (Input.isTriggered('control')) {
+            SoundManager.playOk();
+            $gameActors.actor($gameVariables.value(32)).unsignSkill(this.item());
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }
