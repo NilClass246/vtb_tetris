@@ -3611,3 +3611,42 @@ Stack: TypeError: Cannot read property 'hp' of null
     at Array.forEach (<anonymous>)
     at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
 
+Date: Tue Mar 09 2021 23:16:44 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'addEmphasizers' of undefined
+Stack: TypeError: Cannot read property 'addEmphasizers' of undefined
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38390:29)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1987:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1911:14)
+
+Date: Wed Mar 10 2021 00:45:32 GMT-0700 (Mountain Standard Time)
+Name: TypeError
+Message: Cannot read property 'call' of undefined
+Stack: TypeError: Cannot read property 'call' of undefined
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:29:32)
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/FilterController.js:1304:32)
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38448:35)
+    at Scene_Boot.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:348:37)
+    at new Scene_Boot (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:341:21)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Function.SceneManager.run (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1807:14)
+    at Function.SceneManager.run (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1367:32)
+    at window.onload (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/main.js:8:18)
+
+Date: Wed Mar 10 2021 00:48:06 GMT-0700 (Mountain Standard Time)
+Name: TypeError
+Message: Cannot read property 'call' of undefined
+Stack: TypeError: Cannot read property 'call' of undefined
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:29:32)
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/FilterController.js:1304:32)
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38448:35)
+    at Scene_Boot.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:348:37)
+    at new Scene_Boot (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:341:21)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Function.SceneManager.run (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1807:14)
+    at Function.SceneManager.run (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1367:32)
+    at window.onload (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/main.js:8:18)
+

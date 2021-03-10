@@ -1,0 +1,64 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "kureha_666_0101.moc3",
+		"Textures": [
+			"kureha_666_0101.4096/texture_00.png",
+			"kureha_666_0101.4096/texture_01.png"
+		],
+		"Physics": "kureha_666_0101.physics3.json",
+		"Motions": {
+			"In": [
+				{
+					"File": "kureha_666_0101_m01a_in.motion3.json"
+				}
+			],
+			"Ok": [
+				{
+					"File": "kureha_666_0101_m03a_kettei.motion3.json"
+				}
+			],
+			"Out": [
+				{
+					"File": "kureha_666_0101_m04a_out.motion3.json"
+				}
+			],
+			"R_Good": [
+				{
+					"File": "kureha_666_0101_m05a_good.motion3.json"
+				}
+			],
+			"R_Bad": [
+				{
+					"File": "kureha_666_0101_m06a_bad.motion3.json"
+				}
+			],
+			"R_Verygood": [
+				{
+					"File": "kureha_666_0101_m07a_verygood.motion3.json"
+				}
+			],
+			"Idle": [
+				{
+					"File": "kureha_666_0101_m02a_idle.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": [
+				"ParamEyeLOpen",
+				"ParamEyeROpen"
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}

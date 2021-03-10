@@ -6286,6 +6286,8 @@ Game_CharacterBase.prototype.initMembers = function() {
     this._jumpCount = 0;
     this._jumpPeak = 0;
     this._movementSuccess = true;
+	this._innerX = 0;
+	this._innerY = 0;
 };
 
 Game_CharacterBase.prototype.pos = function(x, y) {
@@ -6721,6 +6723,22 @@ Game_CharacterBase.prototype.moveDiagonally = function(horz, vert) {
         this.setDirection(vert);
     }
 };
+
+//Changed
+Game_CharacterBase.prototype.moveFreely = function(d){
+	// this.setMovementSuccess(this.canPass(this._x, this._y, d));
+    // if (this.isMovementSucceeded()) {
+        // this.setDirection(d);
+        // this._x = $gameMap.roundXWithDirection(this._x, d);
+        // this._y = $gameMap.roundYWithDirection(this._y, d);
+        // this._realX = $gameMap.xWithDirection(this._x, this.reverseDir(d));
+        // this._realY = $gameMap.yWithDirection(this._y, this.reverseDir(d));
+        // this.increaseSteps();
+    // } else {
+        // this.setDirection(d);
+        // this.checkEventTriggerTouchFront(d);
+    // }
+}
 
 Game_CharacterBase.prototype.jump = function(xPlus, yPlus) {
     if (Math.abs(xPlus) > Math.abs(yPlus)) {
