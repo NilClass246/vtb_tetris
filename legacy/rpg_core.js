@@ -1,8 +1,6 @@
 //=============================================================================
-// rpg_core.js v1.6.2.1
+// rpg_core.js v1.6.2
 //=============================================================================
-
-const { inspect } = require('util');
 
 //-----------------------------------------------------------------------------
 /**
@@ -182,7 +180,7 @@ Utils.RPGMAKER_NAME = 'MV';
  * @type String
  * @final
  */
-Utils.RPGMAKER_VERSION = "1.6.2.1";
+Utils.RPGMAKER_VERSION = "1.6.1";
 
 /**
  * Checks whether the option is in the query string.
@@ -193,8 +191,8 @@ Utils.RPGMAKER_VERSION = "1.6.2.1";
  * @return {Boolean} True if the option is in the query string
  */
 Utils.isOptionValid = function(name) {
-	if (location.search.slice(1).split('&').contains(name)) { return 1; }
-	if (typeof nw !== "undefined" && nw.App.argv.length > 0 && nw.App.argv[0].split('&').contains(name)) { return 1; }
+    if (location.search.slice(1).split('&').contains(name)) {return 1;};
+    if (typeof nw !== "undefined" && nw.App.argv.length > 0 && nw.App.argv[0].split('&').contains(name)) {return 1;};
     return 0;
 };
 
@@ -218,13 +216,7 @@ Utils.isNwjs = function() {
  */
 Utils.isMobileDevice = function() {
     var r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-    if (!!navigator.userAgent.match(r)) {
-        Utils.isMobileDevice = function () { return true; };
-        return true;
-    }
-
-    Utils.isMobileDevice = function () { return false; };
-    return false;
+    return !!navigator.userAgent.match(r);
 };
 
 /**
@@ -236,13 +228,8 @@ Utils.isMobileDevice = function() {
  */
 Utils.isMobileSafari = function() {
     var agent = navigator.userAgent;
-	if (!!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
-        !agent.match('CriOS'))) {
-        Utils.isMobileSafari = function () { return true; };
-        return true;
-    }
-    Utils.isMobileSafari = function () { return false; };
-    return false;
+    return !!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
+              !agent.match('CriOS'));
 };
 
 /**
@@ -269,7 +256,7 @@ Utils.canReadGameFiles = function() {
     var lastScript = scripts[scripts.length - 1];
     var xhr = new XMLHttpRequest();
     try {
-        xhr.open('GET', CS_URL.MapURL(lastScript.src));
+        xhr.open('GET', lastScript.src);
         xhr.overrideMimeType('text/javascript');
         xhr.send();
         return true;
@@ -321,7 +308,7 @@ Utils.isSupportPassiveEvent = function() {
     window.addEventListener("test", null, options);
     Utils._supportPassiveEvent = passive;
     return passive;
-};
+}
 
 //-----------------------------------------------------------------------------
 /**
@@ -383,8 +370,8 @@ CacheEntry.prototype.setTimeToLive = function (ticks, seconds) {
 
 CacheEntry.prototype.isStillAlive = function () {
     var cache = this.cache;
-	    return ((this.ttlTicks === 0) || (this.touchTicks + this.ttlTicks < cache.updateTicks)) &&
-        ((this.ttlSeconds === 0) || (this.touchSeconds + this.ttlSeconds < cache.updateSeconds));
+    return ((this.ttlTicks == 0) || (this.touchTicks + this.ttlTicks < cache.updateTicks )) &&
+        ((this.ttlSeconds == 0) || (this.touchSeconds + this.ttlSeconds < cache.updateSeconds ));
 };
 
 /**
@@ -547,13 +534,13 @@ ImageCache.prototype._truncateCache = function(){
 };
 
 ImageCache.prototype._mustBeHeld = function(item){
-    // request only is weak so it can be purged
+    // request only is weak so It's purgeable
     if(item.bitmap.isRequestOnly()) return false;
     // reserved item must be held
     if(item.reservationId) return true;
     // not ready bitmap must be held (because of checking isReady())
     if(!item.bitmap.isReady()) return true;
-    // then the item may purged
+    // then the item may purgeable
     return false;
 };
 
@@ -1174,8 +1161,7 @@ Bitmap.prototype.blt = function(source, sx, sy, sw, sh, dx, dy, dw, dh) {
 };
 
 /**
- * Performs a block transfer, using assumption that original image was
- *  not modified (no hue)
+ * Performs a block transfer, using assumption that original image was not modified (no hue)
  *
  * @method blt
  * @param {Bitmap} source The bitmap to draw
@@ -1417,17 +1403,17 @@ Bitmap.prototype.adjustTone = function(r, g, b) {
  */
 Bitmap.prototype.rotateHue = function(offset) {
     function rgbToHsl(r, g, b) {
-        var c_min = Math.min(r, g, b);
-        var c_max = Math.max(r, g, b);
+        var cmin = Math.min(r, g, b);
+        var cmax = Math.max(r, g, b);
         var h = 0;
         var s = 0;
-        var l = (c_min + c_max) / 2;
-        var delta = c_max - c_min;
+        var l = (cmin + cmax) / 2;
+        var delta = cmax - cmin;
 
         if (delta > 0) {
-            if (r === c_max) {
+            if (r === cmax) {
                 h = 60 * (((g - b) / delta + 6) % 6);
-            } else if (g === c_max) {
+            } else if (g === cmax) {
                 h = 60 * ((b - r) / delta + 2);
             } else {
                 h = 60 * ((r - g) / delta + 4);
@@ -1520,11 +1506,11 @@ Bitmap.prototype.blur = function() {
  * @method addLoadListener
  * @param {Function} listner The callback function
  */
-Bitmap.prototype.addLoadListener = function (listener) {
+Bitmap.prototype.addLoadListener = function(listner) {
     if (!this.isReady()) {
-        this._loadListeners.push(listener);
+        this._loadListeners.push(listner);
     } else {
-        listener(this);
+        listner(this);
     }
 };
 
@@ -1679,7 +1665,6 @@ Bitmap.request = function(url){
 };
 
 Bitmap.prototype._requestImage = function(url){
-	url = CS_URL.MapURL(url);
     if(Bitmap._reuseImages.length !== 0){
         this._image = Bitmap._reuseImages.pop();
     }else{
@@ -1698,7 +1683,7 @@ Bitmap.prototype._requestImage = function(url){
         this._loadingState = 'decrypting';
         Decrypter.decryptImg(url, this);
     } else {
-        this._image.src = CS_URL.MapURL(url);
+        this._image.src = url;
 
         this._image.addEventListener('load', this._loadListener = Bitmap.prototype._onLoad.bind(this));
         this._image.addEventListener('error', this._errorListener = this._loader || Bitmap.prototype._onError.bind(this));
@@ -1760,9 +1745,6 @@ Graphics.initialize = function(width, height, type) {
     this._errorPrinter = null;
     this._canvas = null;
     this._video = null;
-    // Before bringing in 1.6.2 this was:
-    // this._videoUnlocked = !Utils.isMobileDevice();
-    // From 1.6.2
     this._videoUnlocked = false;
     this._videoLoading = false;
     this._upperCanvas = null;
@@ -1891,7 +1873,9 @@ Graphics.render = function(stage) {
         var startTime = Date.now();
         if (stage) {
             this._renderer.render(stage);
-            // No need to flush here, let PixiJS5 handle it
+            if (this._renderer.gl && this._renderer.gl.flush) {
+                this._renderer.gl.flush();
+            }
         }
         var endTime = Date.now();
         var elapsed = endTime - startTime;
@@ -1961,7 +1945,7 @@ Graphics.canUseSaturationBlend = function() {
  */
 Graphics.setLoadingImage = function(src) {
     this._loadingImage = new Image();
-    this._loadingImage.src = CS_URL.MapURL(src);
+    this._loadingImage.src = src;
 };
 
 /**
@@ -2133,7 +2117,6 @@ Graphics.isFontLoaded = function(name) {
  * @param {String} src
  */
 Graphics.playVideo = function(src) {
-	src = CS_URL.MapURL(src);
     this._videoLoader = ResourceHandler.createLoader(null, this._playVideo.bind(this, src), this._onVideoError.bind(this));
     this._playVideo(src);
 };
@@ -2145,7 +2128,6 @@ Graphics.playVideo = function(src) {
  * @private
  */
 Graphics._playVideo = function(src) {
-	src = CS_URL.MapURL(src);
     this._video.src = src;
     this._video.onloadeddata = this._onVideoLoad.bind(this);
     this._video.onerror = this._videoLoader;
@@ -2595,26 +2577,25 @@ Graphics._paintUpperCanvas = function() {
  * @private
  */
 Graphics._createRenderer = function() {
-	PIXI.utils.skipHello();
-    // Map the textures
-    PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.ON;
-    // Cleanup garbage at the correct time rather than automatically
-    PIXI.settings.GC_MODE = PIXI.GC_MODES.MANUAL;
-    PIXI.settings.GC_MAX_IDLE = 1;
-    // Do some things to make is look better, may cause problems
-    PIXI.settings.ROUND_PIXELS = true;
-    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-
-    var options = {
-        view: this._canvas,
-        width: this._width,
-		height: this._height,
-        clearBeforeRender: false,
-		resolution: window.devicePixelRatio
-    };
+    PIXI.dontSayHello = true;
+    var width = this._width;
+    var height = this._height;
+    var options = { view: this._canvas };
     try {
-	
-	this._renderer = new PIXI.Renderer(options);
+        switch (this._rendererType) {
+        case 'canvas':
+            this._renderer = new PIXI.CanvasRenderer(width, height, options);
+            break;
+        case 'webgl':
+            this._renderer = new PIXI.WebGLRenderer(width, height, options);
+            break;
+        default:
+            this._renderer = PIXI.autoDetectRenderer(width, height, options);
+            break;
+        }
+
+        if(this._renderer && this._renderer.textureGC)
+            this._renderer.textureGC.maxIdle = 1;
 
     } catch (e) {
         this._renderer = null;
@@ -2849,8 +2830,6 @@ Graphics._onWindowResize = function() {
  */
 Graphics._onKeyDown = function(event) {
     if (!event.ctrlKey && !event.altKey) {
-        // Replace with key and update codes to strings
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
         switch (event.keyCode) {
         case 113:   // F2
             event.preventDefault();
@@ -2989,8 +2968,8 @@ function Input() {
  * @static
  * @method initialize
  */
-Input.initialize = function() {
-	this.running = true;
+Input.initialize = function () {
+    this.running = true;
     this.clear();
     this._wrapNwjsAlert();
     this._setupEventHandlers();
@@ -3022,14 +3001,13 @@ Input.keyRepeatInterval = 6;
  * @type Object
  */
 Input.keyMapper = {
-    // Original Keycodes
     9: 'tab',       // tab
     13: 'ok',       // enter
     16: 'shift',    // shift
     17: 'control',  // control
     18: 'control',  // alt
     27: 'escape',   // escape
-    32: 'space',       // space
+    32: 'space',    // space
     33: 'pageup',   // pageup
     34: 'pagedown', // pagedown
     37: 'left',     // left arrow
@@ -3037,8 +3015,14 @@ Input.keyMapper = {
     39: 'right',    // right arrow
     40: 'down',     // down arrow
     45: 'escape',   // insert
-    81: 'pageup',   // Q
-    87: 'pagedown', // W
+    49: 'itemone', // 1
+    50: 'itemtwo', // 2
+    51: 'itemthree', // 3
+    52: 'itemfour', // 4
+    81: 'skillone',   // Q
+    87: 'skilltwo', // W
+    69: 'skillthree', // E
+    82: 'itemshift', // R
     88: 'escape',   // X
     90: 'ok',       // Z
     96: 'escape',   // numpad 0
@@ -3046,10 +3030,7 @@ Input.keyMapper = {
     100: 'left',    // numpad 4
     102: 'right',   // numpad 6
     104: 'up',      // numpad 8
-    120: 'debug',   // F9
-    // Additional keycodes
-    // Move out to a plugin?
-    8: "backspace", 19: "pause", 35: "end", 36: "home", 46: "delete", 48: "0", 49: "itemone", 50: "itemtwo", 51: "itemthree", 52: "itemfour", 53: "5", 54: "6", 55: "7", 56: "8", 57: "9", 59: ";", 65: "a", 66: "b", 67: "c", 68: "d", 69: "skillthree", 70: "f", 71: "g", 72: "h", 73: "i", 74: "j", 75: "k", 76: "l", 77: "m", 78: "n", 79: "o", 80: "p",81: 'skillone', 82: "itemshift", 83: "s", 84: "t", 85: "u", 86: "v",87: 'skilltwo', 89: "y", 97: "numpad_1", 99: "numpad_3", 101: "numpad_5", 103: "numpad_7", 105: "numpad_9", 106: "numpad_star", 107: "numpad_plus", 109: "numpad_minus", 110: "numpad_dot", 111: "numpad_divide", 112: "f1", 113: "f2", 114: "f3", 115: "f4", 116: "f5", 117: "f6", 118: "f7", 119: "f8", 121: "f10", 122: "f11", 123: "f12", 173: "minus", 187: "equals", 188: "comma", 190: "dot", 191: "forward_slash", 192: "backtick", 219: "left_bracket", 220: "backslash", 221: "right_bracket", 222: "single_quote"
+    120: 'debug'    // F9
 };
 
 /**
@@ -3150,7 +3131,7 @@ Input.isRunning = function () {
  * @param {String} keyName The mapped name of the key
  * @return {Boolean} True if the key is pressed
  */
- Input.isPressed_Gamepad = function(keyName) {
+Input.isPressed = function(keyName) {
     if (this._isEscapeCompatible(keyName) && this.isPressed('escape')) {
         return true;
     } else {
@@ -3570,8 +3551,8 @@ TouchInput.keyRepeatInterval = 6;
  * @static
  * @method clear
  */
-TouchInput.clear = function() {
-	this._currentTouches = [];
+TouchInput.clear = function () {
+    this._currentTouches = [];
     this._mousePressed = false;
     this._screenPressed = false;
     this._pressedTime = 0;
@@ -3634,7 +3615,7 @@ TouchInput.activate = function () {
  * @method isPressed
  * @return {Boolean} True if the mouse button or touchscreen is pressed
  */
-TouchInput.isPressed = function() {
+TouchInput.isPressed = function () {
     if (this.inactive) return false;
     return this._mousePressed || this._screenPressed;
 };
@@ -3646,8 +3627,8 @@ TouchInput.isPressed = function() {
  * @method isTriggered
  * @return {Boolean} True if the mouse button or touchscreen is triggered
  */
-TouchInput.isTriggered = function() {
-	if (this.inactive) return false;
+TouchInput.isTriggered = function () {
+    if (this.inactive) return false;
     return this._triggered;
 };
 
@@ -3659,8 +3640,8 @@ TouchInput.isTriggered = function() {
  * @method isRepeated
  * @return {Boolean} True if the mouse button or touchscreen is repeated
  */
-TouchInput.isRepeated = function() {
-	if (this.inactive) return false;
+TouchInput.isRepeated = function () {
+    if (this.inactive) return false;
     return (this.isPressed() &&
             (this._triggered ||
              (this._pressedTime >= this.keyRepeatWait &&
@@ -3674,8 +3655,8 @@ TouchInput.isRepeated = function() {
  * @method isLongPressed
  * @return {Boolean} True if the left mouse button or touchscreen is long-pressed
  */
-TouchInput.isLongPressed = function() {
-	if (this.inactive) return false;
+TouchInput.isLongPressed = function () {
+    if (this.inactive) return false;
     return this.isPressed() && this._pressedTime >= this.keyRepeatWait;
 };
 
@@ -3686,8 +3667,8 @@ TouchInput.isLongPressed = function() {
  * @method isCancelled
  * @return {Boolean} True if the right mouse button is just pressed
  */
-TouchInput.isCancelled = function() {
-	if (this.inactive) return false;
+TouchInput.isCancelled = function () {
+    if (this.inactive) return false;
     return this._cancelled;
 };
 
@@ -3698,8 +3679,8 @@ TouchInput.isCancelled = function() {
  * @method isMoved
  * @return {Boolean} True if the mouse or a finger on the touchscreen is moved
  */
-TouchInput.isMoved = function() {
-	if (this.inactive) return false;
+TouchInput.isMoved = function () {
+    if (this.inactive) return false;
     return this._moved;
 };
 
@@ -3710,8 +3691,8 @@ TouchInput.isMoved = function() {
  * @method isReleased
  * @return {Boolean} True if the mouse button or touchscreen is released
  */
-TouchInput.isReleased = function() {
-	if (this.inactive) return false;
+TouchInput.isReleased = function () {
+    if (this.inactive) return false;
     return this._released;
 };
 
@@ -3914,7 +3895,7 @@ TouchInput._onTouchStart = function(event) {
             this._screenPressed = true;
             this._pressedTime = 0;
             if (event.touches.length >= 2) {
-				this._currentTouches = event.touches;
+                this._currentTouches = event.touches;
                 this._onCancel(x, y);
             } else {
                 this._onTrigger(x, y);
@@ -4060,15 +4041,15 @@ function Sprite() {
     this.initialize.apply(this, arguments);
 }
 
-Sprite.prototype = Object.create(PIXI.picture.Sprite.prototype);
+Sprite.prototype = Object.create(PIXI.Sprite.prototype);
 Sprite.prototype.constructor = Sprite;
 
-Sprite.voidFilter = new PIXI.filters.AlphaFilter();
+Sprite.voidFilter = new PIXI.filters.VoidFilter();
 
 Sprite.prototype.initialize = function(bitmap) {
     var texture = new PIXI.Texture(new PIXI.BaseTexture());
 
-    PIXI.picture.Sprite.call(this, texture);
+    PIXI.Sprite.call(this, texture);
 
     this._bitmap = null;
     this._frame = new Rectangle();
@@ -4114,9 +4095,7 @@ Object.defineProperty(Sprite.prototype, 'bitmap', {
                 value.addLoadListener(this._onBitmapLoad.bind(this));
             }else{
                 this._refreshFrame = false;
-                try {
-                    this.texture.frame = Rectangle.emptyRectangle;
-                } catch (ex) { }
+                this.texture.frame = Rectangle.emptyRectangle;
             }
         }
     },
@@ -4180,7 +4159,7 @@ Object.defineProperty(Sprite.prototype, 'opacity', {
  */
 Sprite.prototype.update = function() {
     this.children.forEach(function(child) {
-        if (child.update && !child.nupdate) {
+        if (child.update) {
             child.update();
         }
     });
@@ -4199,7 +4178,7 @@ Sprite.prototype.move = function(x, y) {
 };
 
 /**
- * Sets the rectangle of the bitmap that the sprite displays.
+ * Sets the rectagle of the bitmap that the sprite displays.
  *
  * @method setFrame
  * @param {Number} x The x coordinate of the frame
@@ -4444,7 +4423,7 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
 };
 
 Sprite.prototype._renderCanvas_PIXI = PIXI.Sprite.prototype._renderCanvas;
-Sprite.prototype._render_PIXI = PIXI.Sprite.prototype._render;
+Sprite.prototype._renderWebGL_PIXI = PIXI.Sprite.prototype._renderWebGL;
 
 /**
  * @method _renderCanvas
@@ -4465,20 +4444,61 @@ Sprite.prototype._renderCanvas = function(renderer) {
 };
 
 /**
- * @method _render
+ * checks if we need to speed up custom blendmodes
+ * @param renderer
+ * @private
+ */
+Sprite.prototype._speedUpCustomBlendModes = function(renderer) {
+    var picture = renderer.plugins.picture;
+    var blend = this.blendMode;
+    if (renderer.renderingToScreen && renderer._activeRenderTarget.root) {
+        if (picture.drawModes[blend]) {
+            var stage = renderer._lastObjectRendered;
+            var f = stage._filters;
+            if (!f || !f[0]) {
+                setTimeout(function () {
+                    var f = stage._filters;
+                    if (!f || !f[0]) {
+                        stage.filters = [Sprite.voidFilter];
+                        stage.filterArea = new PIXI.Rectangle(0, 0, Graphics.width, Graphics.height);
+                    }
+                }, 0);
+            }
+        }
+    }
+};
+
+/**
+ * @method _renderWebGL
  * @param {Object} renderer
  * @private
  */
-Sprite.prototype._render = function (renderer) {
+Sprite.prototype._renderWebGL = function(renderer) {
     if (this.bitmap) {
-		// Keep the bitmap in cache
         this.bitmap.touch();
+    }
+    if(this.bitmap && !this.bitmap.isReady()){
+        return;
     }
     if (this.texture.frame.width > 0 && this.texture.frame.height > 0) {
         if (this._bitmap) {
             this._bitmap.checkDirty();
         }
-	this._render_PIXI(renderer);
+
+        //copy of pixi-v4 internal code
+        this.calculateVertices();
+
+        if (this.pluginName === 'sprite' && this._isPicture) {
+            // use heavy renderer, which reduces artifacts and applies corrent blendMode,
+            // but does not use multitexture optimization
+            this._speedUpCustomBlendModes(renderer);
+            renderer.setObjectRenderer(renderer.plugins.picture);
+            renderer.plugins.picture.render(this);
+        } else {
+            // use pixi super-speed renderer
+            renderer.setObjectRenderer(renderer.plugins[this.pluginName]);
+			renderer.plugins[this.pluginName].render(this);
+        }
     }
 };
 
@@ -4813,15 +4833,8 @@ Tilemap.prototype.refreshTileset = function() {
  * @private
  */
 Tilemap.prototype.updateTransform = function() {
-	var ox;
-    var oy;
-    if (this.roundPixels) {
-        ox = Math.floor(this.origin.x);
-        oy = Math.floor(this.origin.y);
-    } else {
-        ox = this.origin.x;
-        oy = this.origin.y;
-    }
+    var ox = Math.floor(this.origin.x);
+    var oy = Math.floor(this.origin.y);
     var startX = Math.floor((ox - this._margin) / this._tileWidth);
     var startY = Math.floor((oy - this._margin) / this._tileHeight);
     this._updateLayerPositions(startX, startY);
@@ -4946,23 +4959,21 @@ Tilemap.prototype._paintAllTiles = function(startX, startY) {
  * @private
  */
 Tilemap.prototype._paintTiles = function(startX, startY, x, y) {
-	const tableEdgeVirtualId = 10000;
-    const mx = startX + x;
-    const my = startY + y;
-    const dx = (mx * this._tileWidth).mod(this._layerWidth);
-    const dy = (my * this._tileHeight).mod(this._layerHeight);
-    const lx = dx / this._tileWidth;
-    const ly = dy / this._tileHeight;
-    const tileId0 = this._readMapData(mx, my, 0);
-    const tileId1 = this._readMapData(mx, my, 1);
-    const tileId2 = this._readMapData(mx, my, 2);
-    const tileId3 = this._readMapData(mx, my, 3);
-    const shadowBits = this._readMapData(mx, my, 4);
-    const upperTileId1 = this._readMapData(mx, my - 1, 1);
-    const lowerTiles = [];
-    const upperTiles = [];
-    const lowerLayer = this._lowerBitmap;
-    const upperLayer = this._upperBitmap;
+    var tableEdgeVirtualId = 10000;
+    var mx = startX + x;
+    var my = startY + y;
+    var dx = (mx * this._tileWidth).mod(this._layerWidth);
+    var dy = (my * this._tileHeight).mod(this._layerHeight);
+    var lx = dx / this._tileWidth;
+    var ly = dy / this._tileHeight;
+    var tileId0 = this._readMapData(mx, my, 0);
+    var tileId1 = this._readMapData(mx, my, 1);
+    var tileId2 = this._readMapData(mx, my, 2);
+    var tileId3 = this._readMapData(mx, my, 3);
+    var shadowBits = this._readMapData(mx, my, 4);
+    var upperTileId1 = this._readMapData(mx, my - 1, 1);
+    var lowerTiles = [];
+    var upperTiles = [];
 
     if (this._isHigherTile(tileId0)) {
         upperTiles.push(tileId0);
@@ -4999,18 +5010,18 @@ Tilemap.prototype._paintTiles = function(startX, startY, x, y) {
         }
     }
 
-    const lastLowerTiles = this._readLastTiles(0, lx, ly);
+    var lastLowerTiles = this._readLastTiles(0, lx, ly);
     if (!lowerTiles.equals(lastLowerTiles) ||
             (Tilemap.isTileA1(tileId0) && this._frameUpdated)) {
         this._lowerBitmap.clearRect(dx, dy, this._tileWidth, this._tileHeight);
-        for (let i = 0; i < lowerTiles.length; i++) {
-            let lowerTileId = lowerTiles[i];
+        for (var i = 0; i < lowerTiles.length; i++) {
+            var lowerTileId = lowerTiles[i];
             if (lowerTileId < 0) {
-                this._drawShadow(lowerLayer, shadowBits, dx, dy);
+                this._drawShadow(this._lowerBitmap, shadowBits, dx, dy);
             } else if (lowerTileId >= tableEdgeVirtualId) {
-                this._drawTableEdge(lowerLayer, upperTileId1, dx, dy);
+                this._drawTableEdge(this._lowerBitmap, upperTileId1, dx, dy);
             } else {
-                this._drawTile(lowerLayer, lowerTileId, dx, dy);
+                this._drawTile(this._lowerBitmap, lowerTileId, dx, dy);
             }
         }
         this._writeLastTiles(0, lx, ly, lowerTiles);
@@ -5019,8 +5030,8 @@ Tilemap.prototype._paintTiles = function(startX, startY, x, y) {
     var lastUpperTiles = this._readLastTiles(1, lx, ly);
     if (!upperTiles.equals(lastUpperTiles)) {
         this._upperBitmap.clearRect(dx, dy, this._tileWidth, this._tileHeight);
-        for (let i = 0; i < upperTiles.length; i++) {
-            this._drawTile(upperLayer, upperTiles[i], dx, dy);
+        for (var j = 0; j < upperTiles.length; j++) {
+            this._drawTile(this._upperBitmap, upperTiles[j], dx, dy);
         }
         this._writeLastTiles(1, lx, ly, upperTiles);
     }
@@ -5563,9 +5574,9 @@ Tilemap.WATERFALL_AUTOTILE_TABLE = [
 
 //-----------------------------------------------------------------------------
 /**
- * The shader tilemap which displays 2D tile-based game map using shaders
+ * The tilemap which displays 2D tile-based game map using shaders
  *
- * @class ShaderTilemap
+ * @class Tilemap
  * @constructor
  */
 function ShaderTilemap() {
@@ -5575,26 +5586,12 @@ function ShaderTilemap() {
 
 ShaderTilemap.prototype = Object.create(Tilemap.prototype);
 ShaderTilemap.prototype.constructor = ShaderTilemap;
-// FIXME: Comment out of tilemap
-// Issue:
-// Sometimes the upper layer will appear partly transparent so disabling
-// this for now, and falling back on the tileset render
-// Only happens on tileId3 with a tint to make things darker,
-// and then only in specific cases.  Regardless this is a minor
-// performance boost over the Tilemap (at least for me) so just going
-// to ignore it.
-//
-// Note: May cause issues with plugins if they are overriding some of the
-// ShaderTilemap APIs
-//TODO: ShaderTilemap disabled
-if (false) {
+
 // we need this constant for some platforms (Samsung S4, S5, Tab4, HTC One H8)
-/* Disabled for PixiJS5 on Desktop: needs mobile testings
 PIXI.glCore.VertexArrayObject.FORCE_NATIVE = true;
 PIXI.settings.GC_MODE = PIXI.GC_MODES.AUTO;
 PIXI.tilemap.TileRenderer.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 PIXI.tilemap.TileRenderer.DO_CLEAR = true;
-*/
 
 /**
  * Uploads animation state in renderer
@@ -5604,7 +5601,7 @@ PIXI.tilemap.TileRenderer.DO_CLEAR = true;
  */
 ShaderTilemap.prototype._hackRenderer = function(renderer) {
     var af = this.animationFrame % 4;
-    if (af === 3) af = 1;
+    if (af==3) af = 1;
     renderer.plugins.tilemap.tileAnim[0] = af * this._tileWidth;
     renderer.plugins.tilemap.tileAnim[1] = (this.animationFrame % 3) * this._tileHeight;
     return renderer;
@@ -5625,12 +5622,12 @@ ShaderTilemap.prototype.renderCanvas = function(renderer) {
 /**
  * PIXI render method
  *
- * @method render
+ * @method renderWebGL
  * @param {Object} pixi renderer
  */
-ShaderTilemap.prototype.render = function (renderer) {
+ShaderTilemap.prototype.renderWebGL = function(renderer) {
     this._hackRenderer(renderer);
-    PIXI.Container.prototype.render.call(this, renderer);
+    PIXI.Container.prototype.renderWebGL.call(this, renderer);
 };
 
 /**
@@ -5642,7 +5639,7 @@ ShaderTilemap.prototype.refresh = function() {
     if (this._lastBitmapLength !== this.bitmaps.length) {
         this._lastBitmapLength = this.bitmaps.length;
         this.refreshTileset();
-    }
+    };
     this._needsRepaint = true;
 };
 
@@ -5662,11 +5659,9 @@ ShaderTilemap.prototype.refreshTileset = function() {
  * @private
  */
 ShaderTilemap.prototype.updateTransform = function() {
-    var ox;
-    var oy;
     if (this.roundPixels) {
-        ox = Math.floor(this.origin.x);
-        oy = Math.floor(this.origin.y);
+        var ox = Math.floor(this.origin.x);
+        var oy = Math.floor(this.origin.y);
     } else {
         ox = this.origin.x;
         oy = this.origin.y;
@@ -5705,12 +5700,11 @@ ShaderTilemap.prototype._createLayers = function() {
         this.addChild(this.upperZLayer = new PIXI.tilemap.ZLayer(this, 4));
 
         var parameters = PluginManager.parameters('ShaderTilemap');
-        var useSquareShader = Number(parameters.hasOwnProperty('squareShader') ? parameters.squareShader : 0);
+        var useSquareShader = Number(parameters.hasOwnProperty('squareShader') ? parameters['squareShader'] : 0);
 
         this.lowerZLayer.addChild(this.lowerLayer = new PIXI.tilemap.CompositeRectTileLayer(0, [], useSquareShader));
         this.lowerLayer.shadowColor = new Float32Array([0.0, 0.0, 0.0, 0.5]);
         this.upperZLayer.addChild(this.upperLayer = new PIXI.tilemap.CompositeRectTileLayer(4, [], useSquareShader));
-
     }
 };
 
@@ -5721,11 +5715,9 @@ ShaderTilemap.prototype._createLayers = function() {
  * @private
  */
 ShaderTilemap.prototype._updateLayerPositions = function(startX, startY) {
-	var oy;
-    var ox;
     if (this.roundPixels) {
-        ox = Math.floor(this.origin.x);
-        oy = Math.floor(this.origin.y);
+        var ox = Math.floor(this.origin.x);
+        var oy = Math.floor(this.origin.y);
     } else {
         ox = this.origin.x;
         oy = this.origin.y;
@@ -5743,8 +5735,8 @@ ShaderTilemap.prototype._updateLayerPositions = function(startX, startY) {
  * @private
  */
 ShaderTilemap.prototype._paintAllTiles = function(startX, startY) {
-    this.lowerZLayer.children[0].clear();
-    this.upperZLayer.children[0].clear();
+    this.lowerZLayer.clear();
+    this.upperZLayer.clear();
     var tileCols = Math.ceil(this._width / this._tileWidth) + 1;
     var tileRows = Math.ceil(this._height / this._tileHeight) + 1;
     for (var y = 0; y < tileRows; y++) {
@@ -5763,69 +5755,68 @@ ShaderTilemap.prototype._paintAllTiles = function(startX, startY) {
  * @private
  */
 ShaderTilemap.prototype._paintTiles = function(startX, startY, x, y) {
-    const tableEdgeVirtualId = 10000;
-    const mx = startX + x;
-    const my = startY + y;
-    const dx = x * this._tileWidth;
-    const dy = y * this._tileHeight;
-    const tileId0 = this._readMapData(mx, my, 0);
-    const tileId1 = this._readMapData(mx, my, 1);
-    const tileId2 = this._readMapData(mx, my, 2);
-    const tileId3 = this._readMapData(mx, my, 3);
-    const shadowBits = this._readMapData(mx, my, 4);
-    const upperTileId1 = this._readMapData(mx, my - 1, 1);
-    const lowerTiles = [];
-    const upperTiles = [];
-    const lowerLayer = this.lowerLayer.children[0];
-    const upperLayer = this.upperLayer.children[0];
+    var mx = startX + x;
+    var my = startY + y;
+    var dx = x * this._tileWidth, dy = y * this._tileHeight;
+    var tileId0 = this._readMapData(mx, my, 0);
+    var tileId1 = this._readMapData(mx, my, 1);
+    var tileId2 = this._readMapData(mx, my, 2);
+    var tileId3 = this._readMapData(mx, my, 3);
+    var shadowBits = this._readMapData(mx, my, 4);
+    var upperTileId1 = this._readMapData(mx, my - 1, 1);
+    var lowerLayer = this.lowerLayer.children[0];
+    var upperLayer = this.upperLayer.children[0];
 
     if (this._isHigherTile(tileId0)) {
-        upperTiles.push(tileId0);
+        this._drawTile(upperLayer, tileId0, dx, dy);
     } else {
-        lowerTiles.push(tileId0);
+        this._drawTile(lowerLayer, tileId0, dx, dy);
     }
     if (this._isHigherTile(tileId1)) {
-        upperTiles.push(tileId1);
+        this._drawTile(upperLayer, tileId1, dx, dy);
     } else {
-        lowerTiles.push(tileId1);
+        this._drawTile(lowerLayer, tileId1, dx, dy);
     }
 
-    lowerTiles.push(-shadowBits);
-	
+    this._drawShadow(lowerLayer, shadowBits, dx, dy);
     if (this._isTableTile(upperTileId1) && !this._isTableTile(tileId1)) {
         if (!Tilemap.isShadowingTile(tileId0)) {
-            lowerTiles.push(tableEdgeVirtualId + upperTileId1);
+            this._drawTableEdge(lowerLayer, upperTileId1, dx, dy);
         }
     }
 
     if (this._isOverpassPosition(mx, my)) {
-        upperTiles.push(tileId2);
-        upperTiles.push(tileId3);
+        this._drawTile(upperLayer, tileId2, dx, dy);
+        this._drawTile(upperLayer, tileId3, dx, dy);
     } else {
         if (this._isHigherTile(tileId2)) {
-            upperTiles.push(tileId2);
+            this._drawTile(upperLayer, tileId2, dx, dy);
         } else {
-            lowerTiles.push(tileId2);
+            this._drawTile(lowerLayer, tileId2, dx, dy);
         }
         if (this._isHigherTile(tileId3)) {
-            upperTiles.push(tileId3);
+            this._drawTile(upperLayer, tileId3, dx, dy);
         } else {
-            lowerTiles.push(tileId3);
+            this._drawTile(lowerLayer, tileId3, dx, dy);
         }
     }
-	for (let i = 0; i < lowerTiles.length; i++) {
-        let lowerTileId = lowerTiles[i];
-        if (lowerTileId < 0) {
-            this._drawShadow(lowerLayer, shadowBits, dx, dy);
-        } else if (lowerTileId >= tableEdgeVirtualId) {
-            this._drawTableEdge(lowerLayer, upperTileId1, dx, dy);
-        } else {
-            this._drawTile(lowerLayer, lowerTileId, dx, dy);
-        }
-    }
+};
 
-    for (let i = 0; i < upperTiles.length; i++) {
-        this._drawTile(upperLayer, upperTiles[i], dx, dy);
+/**
+ * @method _drawTile
+ * @param {Array} layers
+ * @param {Number} tileId
+ * @param {Number} dx
+ * @param {Number} dy
+ * @private
+ */
+ShaderTilemap.prototype._drawTile = function(layer, tileId, dx, dy) {
+    if (Tilemap.isVisibleTile(tileId)) {
+        if (Tilemap.isAutotile(tileId)) {
+            this._drawAutotile(layer, tileId, dx, dy);
+        } else {
+            this._drawNormalTile(layer, tileId, dx, dy);
+        }
     }
 };
 
@@ -5999,7 +5990,6 @@ ShaderTilemap.prototype._drawShadow = function(layer, shadowBits, dx, dy) {
         }
     }
 };
-}
 //-----------------------------------------------------------------------------
 /**
  * The sprite object for a tiling image.
@@ -6012,13 +6002,13 @@ function TilingSprite() {
     this.initialize.apply(this, arguments);
 }
 
-TilingSprite.prototype = Object.create(PIXI.picture.TilingSprite.prototype);
+TilingSprite.prototype = Object.create(PIXI.extras.PictureTilingSprite.prototype);
 TilingSprite.prototype.constructor = TilingSprite;
 
 TilingSprite.prototype.initialize = function(bitmap) {
     var texture = new PIXI.Texture(new PIXI.BaseTexture());
 
-    PIXI.picture.TilingSprite.call(this, texture);
+    PIXI.extras.PictureTilingSprite.call(this, texture);
 
     this._bitmap = null;
     this._width = 0;
@@ -6036,7 +6026,8 @@ TilingSprite.prototype.initialize = function(bitmap) {
     this.bitmap = bitmap;
 };
 
-TilingSprite.prototype._renderCanvas_PIXI = PIXI.picture.TilingSprite.prototype._renderCanvas;
+TilingSprite.prototype._renderCanvas_PIXI = PIXI.extras.PictureTilingSprite.prototype._renderCanvas;
+TilingSprite.prototype._renderWebGL_PIXI = PIXI.extras.PictureTilingSprite.prototype._renderWebGL;
 
 /**
  * @method _renderCanvas
@@ -6049,6 +6040,23 @@ TilingSprite.prototype._renderCanvas = function(renderer) {
     }
     if (this.texture.frame.width > 0 && this.texture.frame.height > 0) {
         this._renderCanvas_PIXI(renderer);
+    }
+};
+
+/**
+ * @method _renderWebGL
+ * @param {Object} renderer
+ * @private
+ */
+TilingSprite.prototype._renderWebGL = function(renderer) {
+    if (this._bitmap) {
+        this._bitmap.touch();
+    }
+    if (this.texture.frame.width > 0 && this.texture.frame.height > 0) {
+        if (this._bitmap) {
+            this._bitmap.checkDirty();
+        }
+        this._renderWebGL_PIXI(renderer);
     }
 };
 
@@ -6068,9 +6076,7 @@ Object.defineProperty(TilingSprite.prototype, 'bitmap', {
             if (this._bitmap) {
                 this._bitmap.addLoadListener(this._onBitmapLoad.bind(this));
             } else {
-                try {
-                    this.texture.frame = Rectangle.emptyRectangle;
-                } catch (ex) { }
+                this.texture.frame = Rectangle.emptyRectangle;
             }
         }
     },
@@ -6149,7 +6155,7 @@ TilingSprite.prototype.updateTransform = function() {
     this.updateTransformTS();
 };
 
-TilingSprite.prototype.updateTransformTS = PIXI.picture.TilingSprite.prototype.updateTransform;
+TilingSprite.prototype.updateTransformTS = PIXI.extras.TilingSprite.prototype.updateTransform;
 
 /**
  * @method _onBitmapLoad
@@ -6173,6 +6179,25 @@ TilingSprite.prototype._refresh = function() {
     this.texture.frame = frame;
     this.texture._updateID++;
     this.tilingTexture = null;
+};
+
+
+TilingSprite.prototype._speedUpCustomBlendModes = Sprite.prototype._speedUpCustomBlendModes;
+
+/**
+ * @method _renderWebGL
+ * @param {Object} renderer
+ * @private
+ */
+TilingSprite.prototype._renderWebGL = function(renderer) {
+    if (this._bitmap) {
+        this._bitmap.touch();
+        this._bitmap.checkDirty();
+    }
+
+    this._speedUpCustomBlendModes(renderer);
+
+    this._renderWebGL_PIXI(renderer);
 };
 
 // The important members from Pixi.js
@@ -6354,8 +6379,7 @@ Window.prototype.initialize = function() {
     this._windowContentsSprite = null;
     this._windowArrowSprites = [];
     this._windowPauseSignSprite = null;
-    this.filterArea = new PIXI.Rectangle();
-    this.filters = [new PIXI.filters.AlphaFilter()];
+
     this._createAllParts();
 
     /**
@@ -6430,39 +6454,6 @@ Object.defineProperty(Window.prototype, 'contents', {
     },
     set: function(value) {
         this._windowContentsSprite.bitmap = value;
-    },
-    configurable: true
-});
-/**
- * The width of the window in pixels.
- *
- * @property width
- * @type Number
- */
-Object.defineProperty(Window.prototype, 'x', {
-    get: function () {
-        return this.position.x;
-    },
-    set: function (value) {
-        this.transform.position.x = value;
-        this.filterArea.copyFrom(this);
-    },
-    configurable: true
-});
-
-/**
- * The height of the window in pixels.
- *
- * @property height
- * @type Number
- */
-Object.defineProperty(Window.prototype, 'y', {
-    get: function () {
-        return this.position.y;
-    },
-    set: function (value) {
-        this.transform.position.y = value;
-        this.filterArea.copyFrom(this);
     },
     configurable: true
 });
@@ -6629,15 +6620,13 @@ Window.prototype.update = function() {
  * @param {Number} height The height of the window
  */
 Window.prototype.move = function(x, y, width, height) {
-	this.transform.position.x = x || 0;
-    this.transform.position.y = y || 0;
+    this.x = x || 0;
+    this.y = y || 0;
     if (this._width !== width || this._height !== height) {
         this._width = width || 0;
         this._height = height || 0;
         this._refreshAllParts();
-    } else {
-        this.filterArea.copyFrom(this);
-	}
+    }
 };
 
 /**
@@ -6760,7 +6749,6 @@ Window.prototype._onWindowskinLoad = function() {
  * @private
  */
 Window.prototype._refreshAllParts = function() {
-	this.filterArea.copyFrom(this);
     this._refreshBack();
     this._refreshFrame();
     this._refreshCursor();
@@ -7062,13 +7050,26 @@ WindowLayer.prototype.initialize = function() {
     this._height = 0;
     this._tempCanvas = null;
     this._translationMatrix = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+
+    this._windowMask = new PIXI.Graphics();
+    this._windowMask.beginFill(0xffffff, 1);
+    this._windowMask.drawRect(0, 0, 0, 0);
+    this._windowMask.endFill();
+    this._windowRect = this._windowMask.graphicsData[0].shape;
+
+    this._renderSprite = null;
+    this.filterArea = new PIXI.Rectangle();
+    this.filters = [WindowLayer.voidFilter];
+
     //temporary fix for memory leak bug
     this.on('removed', this.onRemoveAsAChild);
 };
 
 WindowLayer.prototype.onRemoveAsAChild = function() {
     this.removeChildren();
-};
+}
+
+WindowLayer.voidFilter = new PIXI.filters.VoidFilter();
 
 /**
  * The width of the window layer in pixels.
@@ -7136,7 +7137,7 @@ WindowLayer.prototype.update = function() {
  * @param {Object} renderSession
  * @private
  */
-WindowLayer.prototype._renderCanvas = function (renderer) {
+WindowLayer.prototype.renderCanvas = function(renderer) {
     if (!this.visible || !this.renderable) {
         return;
     }
@@ -7184,6 +7185,7 @@ WindowLayer.prototype._renderCanvas = function (renderer) {
         }
     }
 };
+
 /**
  * @method _canvasClearWindowRect
  * @param {Object} renderSession
@@ -7197,18 +7199,52 @@ WindowLayer.prototype._canvasClearWindowRect = function(renderSession, window) {
     var rh = window.height * window._openness / 255;
     renderSession.context.clearRect(rx, ry, rw, rh);
 };
-WindowLayer.prototype.render_PIXI = PIXI.Container.prototype.render;
 
 /**
- * @method render
- * @param {PIXI.WebGLRenderer} renderSession
+ * @method _renderWebGL
+ * @param {Object} renderSession
  * @private
  */
-WindowLayer.prototype.render = function (renderer) {
-    for (const child of this.children) {
-        if (child.visible && child.renderable &&
-            (!child._isWindow || child.openness > 0)) {
-            child.render(renderer);
+WindowLayer.prototype.renderWebGL = function(renderer) {
+    if (!this.visible || !this.renderable) {
+        return;
+    }
+
+    if (this.children.length==0) {
+        return;
+    }
+
+    renderer.flush();
+    this.filterArea.copy(this);
+    renderer.filterManager.pushFilter(this, this.filters);
+    renderer.currentRenderer.start();
+
+    var shift = new PIXI.Point();
+    var rt = renderer._activeRenderTarget;
+    var projectionMatrix = rt.projectionMatrix;
+    shift.x = Math.round((projectionMatrix.tx + 1) / 2 * rt.sourceFrame.width);
+    shift.y = Math.round((projectionMatrix.ty + 1) / 2 * rt.sourceFrame.height);
+
+    for (var i = 0; i < this.children.length; i++) {
+        var child = this.children[i];
+        if (child._isWindow && child.visible && child.openness > 0) {
+            this._maskWindow(child, shift);
+            renderer.maskManager.pushScissorMask(this, this._windowMask);
+            renderer.clear();
+            renderer.maskManager.popScissorMask();
+            renderer.currentRenderer.start();
+            child.renderWebGL(renderer);
+            renderer.currentRenderer.flush();
+        }
+    }
+
+    renderer.flush();
+    renderer.filterManager.popFilter();
+    renderer.maskManager.popScissorMask();
+
+    for (var j = 0; j < this.children.length; j++) {
+        if (!this.children[j]._isWindow) {
+            this.children[j].renderWebGL(renderer);
         }
     }
 };
@@ -7648,6 +7684,15 @@ ToneSprite.prototype._renderCanvas = function(renderer) {
     }
 };
 
+/**
+ * @method _renderWebGL
+ * @param {Object} renderSession
+ * @private
+ */
+ToneSprite.prototype._renderWebGL = function(renderer) {
+    // Not supported
+};
+
 //-----------------------------------------------------------------------------
 /**
  * The root object of the display tree.
@@ -7726,7 +7771,6 @@ WebAudio._standAlone = (function(top){
 })(this);
 
 WebAudio.prototype.initialize = function(url) {
-	url = CS_URL.MapURL(url);
     if (!WebAudio._initialized) {
         WebAudio.initialize();
     }
@@ -7865,7 +7909,7 @@ WebAudio._setupEventHandlers = function() {
         if (context && context.state === "suspended" && typeof context.resume === "function") {
             context.resume().then(function() {
                 WebAudio._onTouchStart();
-            });
+            })
         } else {
             WebAudio._onTouchStart();
         }
@@ -8124,8 +8168,8 @@ WebAudio.prototype.stop = function() {
     this._removeNodes();
     if (this._stopListeners) {
         while (this._stopListeners.length > 0) {
-            var listener = this._stopListeners.shift();
-            listener();
+            var listner = this._stopListeners.shift();
+            listner();
         }
     }
 };
@@ -8190,20 +8234,20 @@ WebAudio.prototype.seek = function() {
  * Add a callback function that will be called when the audio data is loaded.
  *
  * @method addLoadListener
- * @param {Function} listener The callback function
+ * @param {Function} listner The callback function
  */
-WebAudio.prototype.addLoadListener = function (listener) {
-    this._loadListeners.push(listener);
+WebAudio.prototype.addLoadListener = function(listner) {
+    this._loadListeners.push(listner);
 };
 
 /**
  * Add a callback function that will be called when the playback is stopped.
  *
  * @method addStopListener
- * @param {Function} listener The callback function
+ * @param {Function} listner The callback function
  */
-WebAudio.prototype.addStopListener = function (listener) {
-    this._stopListeners.push(listener);
+WebAudio.prototype.addStopListener = function(listner) {
+    this._stopListeners.push(listner);
 };
 
 /**
@@ -8215,7 +8259,6 @@ WebAudio.prototype._load = function(url) {
     if (WebAudio._context) {
         var xhr = new XMLHttpRequest();
         if(Decrypter.hasEncryptedAudio) url = Decrypter.extToEncryptExt(url);
-		else url = CS_URL.MapURL(url);
         xhr.open('GET', url);
         xhr.responseType = 'arraybuffer';
         xhr.onload = function() {
@@ -8357,8 +8400,8 @@ WebAudio.prototype._updatePanner = function() {
  */
 WebAudio.prototype._onLoad = function() {
     while (this._loadListeners.length > 0) {
-        var listener = this._loadListeners.shift();
-        listener();
+        var listner = this._loadListeners.shift();
+        listner();
     }
 };
 
@@ -8458,13 +8501,13 @@ WebAudio.prototype._readMetaData = function(array, index, size) {
             if (text.match(/LOOPLENGTH=([0-9]+)/)) {
                 this._loopLength = parseInt(RegExp.$1);
             }
-            if (text === 'LOOPSTART' || text === 'LOOPLENGTH') {
+            if (text == 'LOOPSTART' || text == 'LOOPLENGTH') {
                 var text2 = '';
                 i += 16;
                 while (array[i] > 0) {
                     text2 += String.fromCharCode(array[i++]);
                 }
-                if (text === 'LOOPSTART') {
+                if (text == 'LOOPSTART') {
                     this._loopStart = parseInt(text2);
                 } else {
                     this._loopLength = parseInt(text2);
@@ -8546,7 +8589,7 @@ Html5Audio.setup = function (url) {
     if(Decrypter.hasEncryptedAudio && this._audioElement.src) {
         window.URL.revokeObjectURL(this._audioElement.src);
     }
-    this._url = CS_URL.MapURL(url);
+    this._url = url;
 };
 
 /**
@@ -8596,7 +8639,7 @@ Html5Audio._onTouchStart = function () {
             this._unlocked = true;
         } else {
             if (this._staticSePath) {
-                this._audioElement.src = CS_URL.MapURL(this._staticSePath);
+                this._audioElement.src = this._staticSePath;
                 this._audioElement.volume = 0;
                 this._audioElement.loop = false;
                 this._audioElement.play();
@@ -8861,10 +8904,10 @@ Html5Audio.seek = function () {
  *
  * @static
  * @method addLoadListener
- * @param {Function} listener The callback function
+ * @param {Function} listner The callback function
  */
-Html5Audio.addLoadListener = function (listener) {
-    this._loadListeners.push(listener);
+Html5Audio.addLoadListener = function (listner) {
+    this._loadListeners.push(listner);
 };
 
 /**
@@ -8876,7 +8919,7 @@ Html5Audio.addLoadListener = function (listener) {
 Html5Audio._load = function (url) {
     if (this._audioElement) {
         this._isLoading = true;
-        this._audioElement.src = CS_URL.MapURL(url);
+        this._audioElement.src = url;
         this._audioElement.load();
     }
 };
@@ -9147,14 +9190,14 @@ JsonEx._decode = function(value, circular, registry) {
                 }
                 if(value[key] && value[key]['@r']){
                     //object is reference
-                    circular.push([key, value, value[key]['@r']]);
+                    circular.push([key, value, value[key]['@r']])
+                }
                 value[key] = this._decode(value[key], circular, registry);
             }
         }
     }
     return value;
 };
-}
 
 /**
  * @static
@@ -9163,7 +9206,7 @@ JsonEx._decode = function(value, circular, registry) {
  * @return {String}
  * @private
  */
-JsonEx._getConstructorName = function(value) {
+JsonEx._getConstructorName = function (value) {
     var name = value.constructor.name;
     if (name === undefined) {
         var func = /^\s*function\s*([A-Za-z0-9_$]*)/;
@@ -9184,7 +9227,7 @@ JsonEx._resetPrototype = function(value, prototype) {
     if (Object.setPrototypeOf !== undefined) {
         Object.setPrototypeOf(value, prototype);
     } else if ('__proto__' in value) {
-        value.__proto__ = prototype; // jshint ignore:line
+        value.__proto__ = prototype;
     } else {
         var newValue = Object.create(prototype);
         for (var key in value) {
@@ -9303,14 +9346,15 @@ Decrypter.createBlobUrl = function(arrayBuffer){
 };
 
 Decrypter.extToEncryptExt = function(url) {
-	const path = require('path').posix;
-    const ext = path.extname(url);
-    var newExt = ext;
+    var ext = url.split('.').pop();
+    var encryptedExt = ext;
 
-    if (ext === ".ogg" && Decrypter.hasEncryptedAudio) newExt = ".rpgmvo";
-    else if (ext === ".m4a" && Decrypter.hasEncryptedImages) newExt = ".rpgmvm";
-    else if (ext === ".png" && Decrypter.hasEncryptedImages) newExt = ".rpgmvp";
-    return CS_URL.MapURL(path.basename(url, ext) + newExt);
+    if(ext === "ogg") encryptedExt = ".rpgmvo";
+    else if(ext === "m4a") encryptedExt = ".rpgmvm";
+    else if(ext === "png") encryptedExt = ".rpgmvp";
+    else encryptedExt = ext;
+
+    return url.slice(0, url.lastIndexOf(ext) - 1) + encryptedExt;
 };
 
 Decrypter.readEncryptionkey = function(){
@@ -9370,109 +9414,3 @@ ResourceHandler.retry = function() {
         this._reloaders.length = 0;
     }
 };
-
-//-----------------------------------------------------------------------------
-/**
- * The static class that handles mapping case insensitive URL calls to case
- * sensitive file names
- *
- * @class CS_URL
- */
-function CS_URL() {
-    throw new Error('This is a static class');
-}
-
-CS_URL.urlMap = {};
-CS_URL.absolutePrefix = "";
-
-/**
- * Initializes the CS_URL static object
- * @static
- * @method Initialize
- */
-CS_URL.Initialize = function () {
-    // List case sensitive platforms here
-    if (nw.process.platform !== "linux" &&
-        nw.process.platform !== "android") {
-        CS_URL.MapURL = function (url) {
-            return url;
-        };
-    }
-    else {
-        CS_URL.absolutePrefix = require('path').posix.dirname(window.location.pathname);
-        CS_URL.InitializeMap(nw.__dirname, "/");
-    }
-};
-
-/**
- * Initializes the file map (called recursively)
- * @static
- * @method InitializeMap
- * @param {String} baseSystemPath path on the actual machine (OS specific path)
- * @param {String} baseFilePath path in the URL (POSIX path regardless of OS)
- */
-CS_URL.InitializeMap = function (baseSystemPath, baseFilePath) {
-    const fs = require('fs');
-    const path = require('path');
-    const items = fs.readdirSync(baseSystemPath, { withFileTypes: true });
-    for (const entry of items) {
-        var isDir = entry.isDirectory();
-        if (entry.isSymbolicLink()) {
-            const realItem = fs.readlinkSync(path.join(baseSystemPath, entry.name));
-            isDir = fs.statSync(realItem).isDirectory();
-        }
-        if (isDir) {
-            CS_URL.InitializeMap(
-                path.join(baseSystemPath, entry.name),
-                path.posix.join(baseFilePath, entry.name));
-        } else {
-            var fileName = entry.name;
-            var ext = path.extname(fileName);
-            fileName = path.posix.join(baseFilePath, path.basename(fileName, ext));
-            CS_URL.urlMap[fileName + ext] = fileName + ext;
-            CS_URL.urlMap[fileName.toLowerCase() + ext] = fileName + ext;
-            // if we find an encrypted file, add the decrypted name to the list
-            // of things to look for
-            if (ext === ".rpgmvo" && Decrypter.hasEncryptedAudio) ext = ".ogg";
-            else if (ext === ".rpgmvm" && Decrypter.hasEncryptedImages) ext = ".m4a";
-            else if (ext === ".rpgmvp" && Decrypter.hasEncryptedImages) ext = ".png";
-            else { continue; }
-            CS_URL.urlMap[fileName + ext] = fileName + ext;
-            CS_URL.urlMap[fileName.toLowerCase() + ext] = fileName + ext;
-
-        }
-    }
-    if (baseFilePath === "") {
-    }
-};
-
-/**
- * Maps a case insensitive URL to a case sensitive one
- * @static
- * @method MapURL
- * @param {String} url
- * @return {String}
- */
-CS_URL.MapURL = function (url) {
-    var item = url;
-    // URLs follow posix rules for paths regardless of platform
-    const pathUtils = require('path').posix;
-    try {
-        item = new URL(item).pathname;
-    } catch (ex) {
-    }
-    if (!pathUtils.isAbsolute(item)) {
-        item = pathUtils.join(CS_URL.absolutePrefix, item);
-    }
-
-    var result = CS_URL.urlMap[item];
-    if (result) { return result; }
-    // You can enable logging here to find files that have the wrong case
-    //console.log("File \"" + item + "\" not found, trying lowercase");
-    result = CS_URL.urlMap[item.toLowerCase()];
-    if (result) { return result; }
-    //console.log("\"" + item + "\" still not found giving up");
-    return url;
-};
-
-CS_URL.Initialize();

@@ -1,7 +1,6 @@
 //=============================================================================
-// rpg_windows.js v1.6.2.1
+// rpg_windows.js v1.6.2
 //=============================================================================
-/*jshint esversion: 6 */
 
 //-----------------------------------------------------------------------------
 // Window_Base
@@ -26,7 +25,8 @@ Window_Base.prototype.initialize = function(x, y, width, height) {
     this._opening = false;
     this._closing = false;
     this._dimmerSprite = null;
-	this.font_Size = 28
+
+    this.font_Size = 28
 };
 
 Window_Base._iconWidth  = 32;
@@ -268,7 +268,7 @@ Window_Base.prototype.drawTextEx = function(text, x, y) {
         textState.text = this.convertEscapeCharacters(text);
         textState.height = this.calcTextHeight(textState, false);
         this.resetFontSettings();
-		//===todo: changed
+        //===todo: changed
         if (TetrisManager.isScrollCenterAlligned) {
             textState.paddingData = this.getTextAlignPadding(textState);
             textState.dataPointer = 0;
@@ -353,7 +353,6 @@ Window_Base.prototype.processNewLine = function (textState) {
 	}
 	textState.index++;
 };
-
 //==todo: changed
 Window_Base.prototype.getTextAlignPadding = function (textState) {
     var data = [""];
@@ -517,8 +516,8 @@ Window_Base.prototype.drawCharacter = function(characterName, characterIndex, x,
 Window_Base.prototype.drawGauge = function(x, y, width, rate, color1, color2) {
     var fillW = Math.floor(width * rate);
     var gaugeY = y + this.lineHeight() - 8;
-    this.contents.fillRect(x, gaugeY, width, 6, this.gaugeBackColor());
-    this.contents.gradientFillRect(x, gaugeY, fillW, 6, color1, color2);
+    this.contents.fillRect(x, gaugeY, width, 10, this.gaugeBackColor());
+    this.contents.gradientFillRect(x, gaugeY, fillW, 10, color1, color2);
 };
 
 Window_Base.prototype.hpColor = function(actor) {
@@ -652,6 +651,7 @@ Window_Base.prototype.drawItemName = function(item, x, y, width) {
         this.resetTextColor();
         this.drawIcon(item.iconIndex, x + 2, y + 2);
         this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
+		//changed
         if ($gameActors.actor($gameVariables.value(32))._signedItems.contains(item)) {
             this.contents.blt(TetrisManager.starPic, 0, 0, 16, 16, x, y);
         }
@@ -1141,9 +1141,9 @@ Window_Selectable.prototype.isTouchedInsideFrame = function() {
 };
 
 Window_Selectable.prototype.onTouch = function(triggered) {
-    	//TODO: changed here
+	//TODO: changed here
 	return;
-	var lastIndex = this.index();
+    var lastIndex = this.index();
     var x = this.canvasToLocalX(TouchInput.x);
     var y = this.canvasToLocalY(TouchInput.y);
     var hitIndex = this.hitTest(x, y);
@@ -3137,7 +3137,7 @@ Window_ShopNumber.prototype.setup = function(item, max, price) {
     this._price = price;
     this._number = 1;
     this.placeButtons();
-    this.updateButtonsVisibility();
+    this.updateButtonsVisiblity();
     this.refresh();
 };
 
@@ -3185,7 +3185,7 @@ Window_ShopNumber.prototype.placeButtons = function() {
     }
 };
 
-Window_ShopNumber.prototype.updateButtonsVisibility = function () {
+Window_ShopNumber.prototype.updateButtonsVisiblity = function() {
     if (TouchInput.date > Input.date) {
         this.showButtons();
     } else {
@@ -4039,7 +4039,7 @@ Window_NumberInput.prototype.start = function() {
     this._number = this._number.clamp(0, Math.pow(10, this._maxDigits) - 1);
     this.updatePlacement();
     this.placeButtons();
-    this.updateButtonsVisibility();
+    this.updateButtonsVisiblity();
     this.createContents();
     this.refresh();
     this.open();
@@ -4121,7 +4121,7 @@ Window_NumberInput.prototype.placeButtons = function() {
     }
 };
 
-Window_NumberInput.prototype.updateButtonsVisibility = function () {
+Window_NumberInput.prototype.updateButtonsVisiblity = function() {
     if (TouchInput.date > Input.date) {
         this.showButtons();
     } else {
@@ -5966,7 +5966,6 @@ Window_DebugRange.prototype.processCancel = function() {
 
 Window_DebugRange.prototype.setEditWindow = function(editWindow) {
     this._editWindow = editWindow;
-//    this.update();
 };
 
 //-----------------------------------------------------------------------------

@@ -3650,3 +3650,30 @@ Stack: TypeError: Cannot read property 'call' of undefined
     at Function.SceneManager.run (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1367:32)
     at window.onload (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/main.js:8:18)
 
+Date: Wed Mar 10 2021 01:06:52 GMT-0700 (Mountain Standard Time)
+Name: TypeError
+Message: Cannot read property 'call' of undefined
+Stack: TypeError: Cannot read property 'call' of undefined
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:29:32)
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/FilterController.js:1304:32)
+    at Scene_Boot.Scene_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38448:35)
+    at Scene_Boot.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:348:37)
+    at new Scene_Boot (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:341:21)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:2076:27)
+    at Function.SceneManager.goto (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38434:31)
+    at Function.SceneManager.run (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1807:14)
+    at Function.SceneManager.run (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1367:32)
+    at window.onload (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/main.js:8:18)
+
+Date: Thu Mar 11 2021 16:57:27 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Map
+Map ID: 25
+Event ID: 10
+Event Page: 1
+Last Event Command: 355
+Params: ["",0,0,2]
+Name: undefined
+Message: Uncaught TypeError: Cannot read property 'deltaMS' of undefined
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/index.js
+Stack: undefined
+

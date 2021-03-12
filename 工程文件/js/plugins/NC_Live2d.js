@@ -26,13 +26,21 @@ NC = NC || {};
 //=============================================================================
 
 NC.ModelList ={};
+//const model_url = "live2d/haru/haru.model.json";
+
+console.log(window.PIXI.Ticker.shared);
+const model_url = "live2d/kureha_666/kureha_666_0101.model3.json";
 (async function loadLive2d(){
-    NC.ModelList["haru"] = await PIXI.live2d.Live2DModel.from("live2d/haru/haru.model.json");
+    NC.ModelList["haru"] = await PIXI.live2d.Live2DModel.from(model_url);
+    NC.ModelList["haru"].nupdate =true;
 })();
+
+
 
 function start_live2d(name) {
     SceneManager._scene._spriteset._baseSprite.addChild(NC.ModelList[name]);
 }
+
 
 
 

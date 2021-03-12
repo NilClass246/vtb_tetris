@@ -1,7 +1,6 @@
 //=============================================================================
-// rpg_managers.js v1.6.2.1
+// rpg_managers.js v1.6.2
 //=============================================================================
-/*jshint esversion: 6 */
 
 //-----------------------------------------------------------------------------
 // DataManager
@@ -78,7 +77,7 @@ DataManager.loadDatabase = function() {
 
 DataManager.loadDataFile = function(name, src) {
     var xhr = new XMLHttpRequest();
-    var url = CS_URL.MapURL('data/' + src);
+    var url = 'data/' + src;
     xhr.open('GET', url);
     xhr.overrideMimeType('application/json');
     xhr.onload = function() {
@@ -607,11 +606,9 @@ StorageManager.remove = function(savefileId) {
 
 StorageManager.backup = function(savefileId) {
     if (this.exists(savefileId)) {
-		var data;
-        var compressed;
         if (this.isLocalMode()) {
-			data = this.loadFromLocalFile(savefileId);
-            compressed = LZString.compressToBase64(data);
+            var data = this.loadFromLocalFile(savefileId);
+            var compressed = LZString.compressToBase64(data);
             var fs = require('fs');
             var dirPath = this.localFileDirectoryPath();
             var filePath = this.localFilePath(savefileId) + ".bak";
@@ -620,8 +617,8 @@ StorageManager.backup = function(savefileId) {
             }
             fs.writeFileSync(filePath, compressed);
         } else {
-            data = this.loadFromWebStorage(savefileId);
-            compressed = LZString.compressToBase64(data);
+            var data = this.loadFromWebStorage(savefileId);
+            var compressed = LZString.compressToBase64(data);
             var key = this.webStorageKey(savefileId) + "bak";
             localStorage.setItem(key, compressed);
         }
@@ -652,11 +649,9 @@ StorageManager.cleanBackup = function(savefileId) {
 
 StorageManager.restoreBackup = function(savefileId) {
     if (this.backupExists(savefileId)) {
-		var data;
-        var compressed;
         if (this.isLocalMode()) {
-            data = this.loadFromLocalBackupFile(savefileId);
-            compressed = LZString.compressToBase64(data);
+            var data = this.loadFromLocalBackupFile(savefileId);
+            var compressed = LZString.compressToBase64(data);
             var fs = require('fs');
             var dirPath = this.localFileDirectoryPath();
             var filePath = this.localFilePath(savefileId);
@@ -666,8 +661,8 @@ StorageManager.restoreBackup = function(savefileId) {
             fs.writeFileSync(filePath, compressed);
             fs.unlinkSync(filePath + ".bak");
         } else {
-            data = this.loadFromWebStorageBackup(savefileId);
-            compressed = LZString.compressToBase64(data);
+            var data = this.loadFromWebStorageBackup(savefileId);
+            var compressed = LZString.compressToBase64(data);
             var key = this.webStorageKey(savefileId);
             localStorage.setItem(key, compressed);
             localStorage.removeItem(key + "bak");
@@ -1472,7 +1467,7 @@ AudioManager.makeEmptyAudioObject = function() {
 
 AudioManager.createBuffer = function(folder, name) {
     var ext = this.audioFileExt();
-    var url = CS_URL.MapURL(this._path + folder + '/' + encodeURIComponent(name) + ext);
+    var url = this._path + folder + '/' + encodeURIComponent(name) + ext;
     if (this.shouldUseHtml5Audio() && folder === 'bgm') {
         if(this._blobUrl) Html5Audio.setup(this._blobUrl);
         else Html5Audio.setup(url);
@@ -1990,6 +1985,7 @@ SceneManager.updateMain = function() {
             this.updateInputData();
             this.changeScene();
             this.updateScene();
+
             this._accumulator -= this._deltaTime;
         }
     }
@@ -2833,7 +2829,7 @@ PluginManager.setParameters = function(name, parameters) {
 };
 
 PluginManager.loadScript = function(name) {
-    var url = CS_URL.MapURL(this._path + name);
+    var url = this._path + name;
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = url;

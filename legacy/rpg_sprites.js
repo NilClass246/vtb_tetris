@@ -1,7 +1,6 @@
 //=============================================================================
-// rpg_sprites.js v1.6.2.1
+// rpg_sprites.js v1.6.2
 //=============================================================================
-/*jshint esversion: 6 */
 
 //-----------------------------------------------------------------------------
 // Sprite_Base
@@ -844,7 +843,7 @@ Sprite_Actor.prototype.motionSpeed = function() {
 
 Sprite_Actor.prototype.refreshMotion = function() {
     var actor = this._actor;
-    var motionGuard = Sprite_Actor.MOTIONS.guard;
+    var motionGuard = Sprite_Actor.MOTIONS['guard'];
     if (actor) {
         if (this._motion === motionGuard && !BattleManager.isInputting()) {
                 return;
@@ -1908,9 +1907,6 @@ function Sprite_Picture() {
 Sprite_Picture.prototype = Object.create(Sprite.prototype);
 Sprite_Picture.prototype.constructor = Sprite_Picture;
 
-Sprite_Picture.prototype._renderCanvas_PIXI = PIXI.picture.Sprite.prototype._renderCanvas;
-Sprite_Picture.prototype._render_PIXI = PIXI.picture.Sprite.prototype._render;
-
 Sprite_Picture.prototype.initialize = function(pictureId) {
     Sprite.prototype.initialize.call(this);
     this._pictureId = pictureId;
@@ -2367,7 +2363,7 @@ Spriteset_Map.prototype.createWeather = function() {
     this.addChild(this._weather);
 };
 
-Spriteset_Map.prototype.updateTileset = function() {
+Spriteset_Map.prototype.updateTileset = function () {
     if (this._tileset !== $gameMap.tileset()) {
         this.loadTileset();
     }
@@ -2389,7 +2385,7 @@ Spriteset_Map.prototype.updateParallax = function() {
     if (this._parallaxName !== $gameMap.parallaxName()) {
         this._parallaxName = $gameMap.parallaxName();
 
-        if (this._parallax.bitmap && Graphics.isWebGL() !== true) {
+        if (this._parallax.bitmap && Graphics.isWebGL() != true) {
             this._canvasReAddParallax();
         } else {
             this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
@@ -2401,17 +2397,9 @@ Spriteset_Map.prototype.updateParallax = function() {
     }
 };
 
-Spriteset_Map.prototype.updateTilemap = function() {
+Spriteset_Map.prototype.updateTilemap = function () {
     this._tilemap.origin.x = $gameMap.displayX() * $gameMap.tileWidth();
     this._tilemap.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
-    /* removed in 1.6.2 - But apparently is still needed for some games */
-    if (this._tilemap.bitmaps) {
-        if (!this.isTilesetReady && this._tilemap.bitmaps.every(bitmap => bitmap.isRequestReady())) {
-            this._tilemap.refresh();
-            this._tilemap.refreshTileset();
-            this.isTilesetReady = true;
-        }
-    }
 };
 
 Spriteset_Map.prototype.updateShadow = function() {

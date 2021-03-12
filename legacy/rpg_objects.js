@@ -1,7 +1,6 @@
 //=============================================================================
-// rpg_objects.js v1.6.2.1
+// rpg_objects.js v1.6.2
 //=============================================================================
-/*jshint esversion: 6 */
 
 //-----------------------------------------------------------------------------
 // Game_Temp
@@ -89,7 +88,7 @@ Game_System.prototype.initialize = function() {
     this._defeatMe = null;
     this._savedBgm = null;
     this._walkingBgm = null;
-	this._isCheating = false;
+    this._isCheating = false;
 };
 
 Game_System.prototype.isJapanese = function() {
@@ -1696,7 +1695,7 @@ Game_Action.prototype.evalDamageFormula = function(target) {
         var b = target;
         var v = $gameVariables._data;
         var sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
-        var value = Math.max(eval(item.damage.formula), 0) * sign; // jshint ignore:line
+        var value = Math.max(eval(item.damage.formula), 0) * sign;
 		if (isNaN(value)) value = 0;
 		return value;
     } catch (e) {
@@ -1982,7 +1981,7 @@ Game_Action.prototype.applyGlobal = function() {
 //-----------------------------------------------------------------------------
 // Game_ActionResult
 //
-// The game object class for a result of a battle action. For convenience, all
+// The game object class for a result of a battle action. For convinience, all
 // member variables in this class are public.
 
 function Game_ActionResult() {
@@ -2773,7 +2772,7 @@ Game_BattlerBase.prototype.paySkillCost = function(skill) {
     this._tp -= this.skillTpCost(skill);
 };
 
-Game_BattlerBase.prototype.isOccasionOk = function(item) {
+Game_BattlerBase.prototype.isOccasionOk = function (item) {
     if ($gameParty.inBattle()) {
         return item.occasion === 0 || item.occasion === 1;
     } else {
@@ -5440,7 +5439,7 @@ Game_Map.prototype.setup = function(mapId) {
     this._tilesetId = $dataMap.tilesetId;
     this._displayX = 0;
     this._displayY = 0;
-    this.refreshVehicles();
+    this.refereshVehicles();
     this.setupEvents();
     this.setupScroll();
     this.setupParallax();
@@ -5511,7 +5510,7 @@ Game_Map.prototype.createVehicles = function() {
     this._vehicles[2] = new Game_Vehicle('airship');
 };
 
-Game_Map.prototype.refreshVehicles = function () {
+Game_Map.prototype.refereshVehicles = function() {
     this._vehicles.forEach(function(vehicle) {
         vehicle.refresh();
     });
@@ -6287,6 +6286,8 @@ Game_CharacterBase.prototype.initMembers = function() {
     this._jumpCount = 0;
     this._jumpPeak = 0;
     this._movementSuccess = true;
+	this._innerX = 0;
+	this._innerY = 0;
 };
 
 Game_CharacterBase.prototype.pos = function(x, y) {
@@ -6723,6 +6724,22 @@ Game_CharacterBase.prototype.moveDiagonally = function(horz, vert) {
     }
 };
 
+//Changed
+Game_CharacterBase.prototype.moveFreely = function(d){
+	// this.setMovementSuccess(this.canPass(this._x, this._y, d));
+    // if (this.isMovementSucceeded()) {
+        // this.setDirection(d);
+        // this._x = $gameMap.roundXWithDirection(this._x, d);
+        // this._y = $gameMap.roundYWithDirection(this._y, d);
+        // this._realX = $gameMap.xWithDirection(this._x, this.reverseDir(d));
+        // this._realY = $gameMap.yWithDirection(this._y, this.reverseDir(d));
+        // this.increaseSteps();
+    // } else {
+        // this.setDirection(d);
+        // this.checkEventTriggerTouchFront(d);
+    // }
+}
+
 Game_CharacterBase.prototype.jump = function(xPlus, yPlus) {
     if (Math.abs(xPlus) > Math.abs(yPlus)) {
         if (xPlus !== 0) {
@@ -7092,7 +7109,7 @@ Game_Character.prototype.processMoveCommand = function(command) {
         AudioManager.playSe(params[0]);
         break;
     case gc.ROUTE_SCRIPT:
-        eval(params[0]); // jshint ignore:line
+        eval(params[0]);
         break;
     }
 };
@@ -9306,7 +9323,7 @@ Game_Interpreter.prototype.command111 = function() {
             result = Input.isPressed(this._params[1]);
             break;
         case 12:  // Script
-            result = !!eval(this._params[1]); // jshint ignore:line
+            result = !!eval(this._params[1]);
             break;
         case 13:  // Vehicle
             result = ($gamePlayer.vehicle() === $gameMap.vehicle(this._params[1]));
@@ -9438,15 +9455,16 @@ Game_Interpreter.prototype.command122 = function() {
                 this.operateVariable(i, this._params[2], this._params[4] + Math.randomInt(value));
             }
             return true;
+            break;
         case 3: // Game Data
             value = this.gameDataOperand(this._params[4], this._params[5], this._params[6]);
             break;
         case 4: // Script
-            value = eval(this._params[4]); // jshint ignore:line
+            value = eval(this._params[4]);
             break;
     }
-    for (var j = this._params[0]; j <= this._params[1]; j++) {
-        this.operateVariable(j, this._params[2], value);
+    for (var i = this._params[0]; i <= this._params[1]; i++) {
+        this.operateVariable(i, this._params[2], value);
     }
     return true;
 };
@@ -10428,7 +10446,7 @@ Game_Interpreter.prototype.command336 = function() {
 
 // Show Battle Animation
 Game_Interpreter.prototype.command337 = function() {
-    if (this._params[2] === true) {
+    if (this._params[2] == true) {
         this.iterateEnemyIndex(-1,function(enemy) {
             if (enemy.isAlive()) {
                 enemy.startAnimation(this._params[1],false,0);
@@ -10498,7 +10516,7 @@ Game_Interpreter.prototype.command355 = function() {
         this._index++;
         script += this.currentCommand().parameters[0] + '\n';
     }
-    eval(script); // jshint ignore:line
+    eval(script);
     return true;
 };
 
@@ -10519,7 +10537,6 @@ Game_Interpreter.requestImages = function(list, commonList){
 
     list.forEach(function(command){
         var params = command.parameters;
-		var name = "";
         switch(command.code){
             // Show Text
             case 101:
@@ -10544,7 +10561,7 @@ Game_Interpreter.requestImages = function(list, commonList){
             case 129:
                 var actor = $gameActors.actor(params[0]);
                 if (actor && params[1] === 0) {
-                    name = actor.characterName();
+                    var name = actor.characterName();
                     ImageManager.requestCharacter(name);
                 }
                 break;
@@ -10630,7 +10647,7 @@ Game_Interpreter.requestImages = function(list, commonList){
             // Enemy Transform
             case 336:
                 var enemy = $dataEnemies[params[1]];
-                name = enemy.battlerName;
+                var name = enemy.battlerName;
                 var hue = enemy.battlerHue;
                 if ($gameSystem.isSideView()) {
                     ImageManager.requestSvEnemy(name, hue);
