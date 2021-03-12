@@ -2,8 +2,6 @@
 // rpg_core.js v1.6.2.1
 //=============================================================================
 
-const { inspect } = require('util');
-
 //-----------------------------------------------------------------------------
 /**
  * This is not a class, but contains some methods that will be added to the
@@ -269,7 +267,8 @@ Utils.canReadGameFiles = function() {
     var lastScript = scripts[scripts.length - 1];
     var xhr = new XMLHttpRequest();
     try {
-        xhr.open('GET', CS_URL.MapURL(lastScript.src));
+        xhr.open('GET', lastScript.src);
+        //xhr.open('GET', CS_URL.MapURL(lastScript.src));
         xhr.overrideMimeType('text/javascript');
         xhr.send();
         return true;
@@ -1679,7 +1678,7 @@ Bitmap.request = function(url){
 };
 
 Bitmap.prototype._requestImage = function(url){
-	url = CS_URL.MapURL(url);
+	//url = CS_URL.MapURL(url);
     if(Bitmap._reuseImages.length !== 0){
         this._image = Bitmap._reuseImages.pop();
     }else{
@@ -1698,7 +1697,8 @@ Bitmap.prototype._requestImage = function(url){
         this._loadingState = 'decrypting';
         Decrypter.decryptImg(url, this);
     } else {
-        this._image.src = CS_URL.MapURL(url);
+        this._image.src = url;
+        //this._image.src = CS_URL.MapURL(url);
 
         this._image.addEventListener('load', this._loadListener = Bitmap.prototype._onLoad.bind(this));
         this._image.addEventListener('error', this._errorListener = this._loader || Bitmap.prototype._onError.bind(this));
@@ -1961,7 +1961,8 @@ Graphics.canUseSaturationBlend = function() {
  */
 Graphics.setLoadingImage = function(src) {
     this._loadingImage = new Image();
-    this._loadingImage.src = CS_URL.MapURL(src);
+    this._loadingImage.src = src;
+    //this._loadingImage.src = CS_URL.MapURL(src);
 };
 
 /**
@@ -2133,7 +2134,7 @@ Graphics.isFontLoaded = function(name) {
  * @param {String} src
  */
 Graphics.playVideo = function(src) {
-	src = CS_URL.MapURL(src);
+	//src = CS_URL.MapURL(src);
     this._videoLoader = ResourceHandler.createLoader(null, this._playVideo.bind(this, src), this._onVideoError.bind(this));
     this._playVideo(src);
 };
@@ -2145,7 +2146,7 @@ Graphics.playVideo = function(src) {
  * @private
  */
 Graphics._playVideo = function(src) {
-	src = CS_URL.MapURL(src);
+	//src = CS_URL.MapURL(src);
     this._video.src = src;
     this._video.onloadeddata = this._onVideoLoad.bind(this);
     this._video.onerror = this._videoLoader;
@@ -7726,7 +7727,7 @@ WebAudio._standAlone = (function(top){
 })(this);
 
 WebAudio.prototype.initialize = function(url) {
-	url = CS_URL.MapURL(url);
+	//url = CS_URL.MapURL(url);
     if (!WebAudio._initialized) {
         WebAudio.initialize();
     }
@@ -8215,7 +8216,7 @@ WebAudio.prototype._load = function(url) {
     if (WebAudio._context) {
         var xhr = new XMLHttpRequest();
         if(Decrypter.hasEncryptedAudio) url = Decrypter.extToEncryptExt(url);
-		else url = CS_URL.MapURL(url);
+		//else url = CS_URL.MapURL(url);
         xhr.open('GET', url);
         xhr.responseType = 'arraybuffer';
         xhr.onload = function() {
@@ -8546,7 +8547,8 @@ Html5Audio.setup = function (url) {
     if(Decrypter.hasEncryptedAudio && this._audioElement.src) {
         window.URL.revokeObjectURL(this._audioElement.src);
     }
-    this._url = CS_URL.MapURL(url);
+    this._url = url;
+    //this._url = CS_URL.MapURL(url);
 };
 
 /**
@@ -8596,7 +8598,8 @@ Html5Audio._onTouchStart = function () {
             this._unlocked = true;
         } else {
             if (this._staticSePath) {
-                this._audioElement.src = CS_URL.MapURL(this._staticSePath);
+                this._audioElement.src = this._staticSePath;
+                //this._audioElement.src = CS_URL.MapURL(this._staticSePath);
                 this._audioElement.volume = 0;
                 this._audioElement.loop = false;
                 this._audioElement.play();
@@ -8876,7 +8879,8 @@ Html5Audio.addLoadListener = function (listener) {
 Html5Audio._load = function (url) {
     if (this._audioElement) {
         this._isLoading = true;
-        this._audioElement.src = CS_URL.MapURL(url);
+        this._audioElement.src = url;
+        //this._audioElement.src = CS_URL.MapURL(url);
         this._audioElement.load();
     }
 };
@@ -9303,14 +9307,24 @@ Decrypter.createBlobUrl = function(arrayBuffer){
 };
 
 Decrypter.extToEncryptExt = function(url) {
-	const path = require('path').posix;
-    const ext = path.extname(url);
-    var newExt = ext;
+    var ext = url.split('.').pop();
+    var encryptedExt = ext;
 
-    if (ext === ".ogg" && Decrypter.hasEncryptedAudio) newExt = ".rpgmvo";
-    else if (ext === ".m4a" && Decrypter.hasEncryptedImages) newExt = ".rpgmvm";
-    else if (ext === ".png" && Decrypter.hasEncryptedImages) newExt = ".rpgmvp";
-    return CS_URL.MapURL(path.basename(url, ext) + newExt);
+    if (ext === "ogg" && Decrypter.hasEncryptedAudio) encryptedExt = ".rpgmvo";
+    else if (ext === "m4a" && Decrypter.hasEncryptedImages) encryptedExt = ".rpgmvm";
+    else if (ext === "png" && Decrypter.hasEncryptedImages) encryptedExt = ".rpgmvp";
+    else encryptedExt = ext;
+    return url.slice(0, url.lastIndexOf(ext) - 1) + encryptedExt;
+
+
+	//const path = require('path').posix;
+    //const ext = path.extname(url);
+    //var newExt = ext;
+
+    //if (ext === ".ogg" && Decrypter.hasEncryptedAudio) newExt = ".rpgmvo";
+    //else if (ext === ".m4a" && Decrypter.hasEncryptedImages) newExt = ".rpgmvm";
+    //else if (ext === ".png" && Decrypter.hasEncryptedImages) newExt = ".rpgmvp";
+    //return CS_URL.MapURL(path.basename(url, ext) + newExt);
 };
 
 Decrypter.readEncryptionkey = function(){
@@ -9392,16 +9406,16 @@ CS_URL.absolutePrefix = "";
  */
 CS_URL.Initialize = function () {
     // List case sensitive platforms here
-    if (nw.process.platform !== "linux" &&
-        nw.process.platform !== "android") {
-        CS_URL.MapURL = function (url) {
-            return url;
-        };
-    }
-    else {
-        CS_URL.absolutePrefix = require('path').posix.dirname(window.location.pathname);
-        CS_URL.InitializeMap(nw.__dirname, "/");
-    }
+    // if (nw.process.platform !== "linux" &&
+    //     nw.process.platform !== "android") {
+    //     CS_URL.MapURL = function (url) {
+    //         return url;
+    //     };
+    // }
+    // else {
+    //     CS_URL.absolutePrefix = require('path').posix.dirname(window.location.pathname);
+    //     CS_URL.InitializeMap(nw.__dirname, "/");
+    // }
 };
 
 /**
@@ -9412,38 +9426,38 @@ CS_URL.Initialize = function () {
  * @param {String} baseFilePath path in the URL (POSIX path regardless of OS)
  */
 CS_URL.InitializeMap = function (baseSystemPath, baseFilePath) {
-    const fs = require('fs');
-    const path = require('path');
-    const items = fs.readdirSync(baseSystemPath, { withFileTypes: true });
-    for (const entry of items) {
-        var isDir = entry.isDirectory();
-        if (entry.isSymbolicLink()) {
-            const realItem = fs.readlinkSync(path.join(baseSystemPath, entry.name));
-            isDir = fs.statSync(realItem).isDirectory();
-        }
-        if (isDir) {
-            CS_URL.InitializeMap(
-                path.join(baseSystemPath, entry.name),
-                path.posix.join(baseFilePath, entry.name));
-        } else {
-            var fileName = entry.name;
-            var ext = path.extname(fileName);
-            fileName = path.posix.join(baseFilePath, path.basename(fileName, ext));
-            CS_URL.urlMap[fileName + ext] = fileName + ext;
-            CS_URL.urlMap[fileName.toLowerCase() + ext] = fileName + ext;
-            // if we find an encrypted file, add the decrypted name to the list
-            // of things to look for
-            if (ext === ".rpgmvo" && Decrypter.hasEncryptedAudio) ext = ".ogg";
-            else if (ext === ".rpgmvm" && Decrypter.hasEncryptedImages) ext = ".m4a";
-            else if (ext === ".rpgmvp" && Decrypter.hasEncryptedImages) ext = ".png";
-            else { continue; }
-            CS_URL.urlMap[fileName + ext] = fileName + ext;
-            CS_URL.urlMap[fileName.toLowerCase() + ext] = fileName + ext;
+    // const fs = require('fs');
+    // const path = require('path');
+    // const items = fs.readdirSync(baseSystemPath, { withFileTypes: true });
+    // for (const entry of items) {
+    //     var isDir = entry.isDirectory();
+    //     if (entry.isSymbolicLink()) {
+    //         const realItem = fs.readlinkSync(path.join(baseSystemPath, entry.name));
+    //         isDir = fs.statSync(realItem).isDirectory();
+    //     }
+    //     if (isDir) {
+    //         CS_URL.InitializeMap(
+    //             path.join(baseSystemPath, entry.name),
+    //             path.posix.join(baseFilePath, entry.name));
+    //     } else {
+    //         var fileName = entry.name;
+    //         var ext = path.extname(fileName);
+    //         fileName = path.posix.join(baseFilePath, path.basename(fileName, ext));
+    //         CS_URL.urlMap[fileName + ext] = fileName + ext;
+    //         CS_URL.urlMap[fileName.toLowerCase() + ext] = fileName + ext;
+    //         // if we find an encrypted file, add the decrypted name to the list
+    //         // of things to look for
+    //         if (ext === ".rpgmvo" && Decrypter.hasEncryptedAudio) ext = ".ogg";
+    //         else if (ext === ".rpgmvm" && Decrypter.hasEncryptedImages) ext = ".m4a";
+    //         else if (ext === ".rpgmvp" && Decrypter.hasEncryptedImages) ext = ".png";
+    //         else { continue; }
+    //         CS_URL.urlMap[fileName + ext] = fileName + ext;
+    //         CS_URL.urlMap[fileName.toLowerCase() + ext] = fileName + ext;
 
-        }
-    }
-    if (baseFilePath === "") {
-    }
+    //     }
+    // }
+    // if (baseFilePath === "") {
+    // }
 };
 
 /**
@@ -9454,25 +9468,25 @@ CS_URL.InitializeMap = function (baseSystemPath, baseFilePath) {
  * @return {String}
  */
 CS_URL.MapURL = function (url) {
-    var item = url;
-    // URLs follow posix rules for paths regardless of platform
-    const pathUtils = require('path').posix;
-    try {
-        item = new URL(item).pathname;
-    } catch (ex) {
-    }
-    if (!pathUtils.isAbsolute(item)) {
-        item = pathUtils.join(CS_URL.absolutePrefix, item);
-    }
+    // var item = url;
+    // // URLs follow posix rules for paths regardless of platform
+    // const pathUtils = require('path').posix;
+    // try {
+    //     item = new URL(item).pathname;
+    // } catch (ex) {
+    // }
+    // if (!pathUtils.isAbsolute(item)) {
+    //     item = pathUtils.join(CS_URL.absolutePrefix, item);
+    // }
 
-    var result = CS_URL.urlMap[item];
-    if (result) { return result; }
-    // You can enable logging here to find files that have the wrong case
-    //console.log("File \"" + item + "\" not found, trying lowercase");
-    result = CS_URL.urlMap[item.toLowerCase()];
-    if (result) { return result; }
-    //console.log("\"" + item + "\" still not found giving up");
+    // var result = CS_URL.urlMap[item];
+    // if (result) { return result; }
+    // // You can enable logging here to find files that have the wrong case
+    // //console.log("File \"" + item + "\" not found, trying lowercase");
+    // result = CS_URL.urlMap[item.toLowerCase()];
+    // if (result) { return result; }
+    // //console.log("\"" + item + "\" still not found giving up");
     return url;
 };
 
-CS_URL.Initialize();
+//CS_URL.Initialize();

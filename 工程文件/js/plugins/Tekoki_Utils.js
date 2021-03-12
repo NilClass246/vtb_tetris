@@ -2184,25 +2184,15 @@ Text_Base.prototype.initialize = function (text, width, height, size, align) {
 	this.w = width;
 	this.a = align;
 	this.s = size;
-	var text = DKTools.Localization.getText(text);
-	var texts = text.split("\n");
-	this._height = (texts.length) * (size * (4 / 3) * 2);
-
-	this.window = new Window_Base(0, 0, this.w+2*18, this._height+2*18);
-	this.window.contents.fontSize = this.s;
-	Yanfly.Param.FontSize = this.s;
-	this.window.contents.align = this.a;
-	this.window.drawTextEx(text, 0, 0);
-	Yanfly.Param.FontSize = 22;
-	this.bitmap = this.window.contents;
-	this.bitmap.fontSize = this.s;
+	this.originalSize = Yanfly.Param.FontSize;
+	this.rewrite(text);
 	//for (var i = 0; i < texts.length; i++) {
 	//	this.bitmap.drawText(texts[i], 0, i * size, width, this._height, align);
 	//}
 }
 
 Text_Base.prototype.rewrite = function (text) {
-	text = DKTools.Localization.getText(text);
+	var text = DKTools.Localization.getText(text);
 	var texts = text.split("\n");
 	this._height = (texts.length) * (this.s * (4 / 3) * 2);
 	this.window = new Window_Base(0, 0, this.w + 2 * 18, this._height + 2 * 18);
@@ -2210,8 +2200,9 @@ Text_Base.prototype.rewrite = function (text) {
 	Yanfly.Param.FontSize = this.s;
 	this.window.contents.align = this.a;
 	this.window.drawTextEx(text, 0, 0);
-	Yanfly.Param.FontSize = 22;
+	Yanfly.Param.FontSize = this.originalSize;
 	this.bitmap = this.window.contents;
+
 }
 
 Text_Base.prototype.processLine = function (textState) {
@@ -3580,11 +3571,12 @@ Emphasizer.prototype.initialize = function (text, x, y, width, height, options) 
 		.lineTo(Graphics.boxWidth, 0)
 		.lineTo(Graphics.boxWidth, Graphics.boxHeight)
 		.lineTo(0, Graphics.boxHeight)
+		.beginHole()
 		.moveTo(x, y)
 		.lineTo(x + width, y)
 		.lineTo(x + width, y + height)
 		.lineTo(x, y + height)
-		.addHole()
+		.endHole()
 		.endFill();
 	this.addChild(this.blackHole);
 	this.blackHole.alpha = 125 / 255;
@@ -3592,6 +3584,7 @@ Emphasizer.prototype.initialize = function (text, x, y, width, height, options) 
 	Ftext.move((options ? (options.textX ? options.textX : x) : x),
 		(options ? (options.textY ? options.textY : y - Ftext._height) : y - Ftext._height));
 	this.addChild(Ftext);
+
 	if (options && options.behaviour) {
 		options.behaviour.call(this);
     }

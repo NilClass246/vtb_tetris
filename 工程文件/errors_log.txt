@@ -3677,3 +3677,18 @@ Message: Uncaught TypeError: Cannot read property 'deltaMS' of undefined
 Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/index.js
 Stack: undefined
 
+Date: Thu Mar 11 2021 19:25:28 GMT-0700 (Mountain Standard Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: (intermediate value).beginFill(...).moveTo(...).lineTo(...).lineTo(...).lineTo(...).moveTo(...).lineTo(...).lineTo(...).lineTo(...).addHole is not a function
+Stack: TypeError: (intermediate value).beginFill(...).moveTo(...).lineTo(...).lineTo(...).lineTo(...).moveTo(...).lineTo(...).lineTo(...).lineTo(...).addHole is not a function
+    at Emphasizer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3587:4)
+    at new Emphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3569:18)
+    at Scene_Tetris.addEmphasizer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:72:19)
+    at Object.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:749:10)
+    at Scene_Tetris.createEnemyWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2065:21)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1951:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38386:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1992:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1916:14)
+

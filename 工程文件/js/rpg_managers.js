@@ -78,7 +78,8 @@ DataManager.loadDatabase = function() {
 
 DataManager.loadDataFile = function(name, src) {
     var xhr = new XMLHttpRequest();
-    var url = CS_URL.MapURL('data/' + src);
+    var url = 'data/' + src;
+    //var url = CS_URL.MapURL('data/' + src);
     xhr.open('GET', url);
     xhr.overrideMimeType('application/json');
     xhr.onload = function() {
@@ -1472,7 +1473,8 @@ AudioManager.makeEmptyAudioObject = function() {
 
 AudioManager.createBuffer = function(folder, name) {
     var ext = this.audioFileExt();
-    var url = CS_URL.MapURL(this._path + folder + '/' + encodeURIComponent(name) + ext);
+    var url = this._path + folder + '/' + encodeURIComponent(name) + ext;
+    //var url = CS_URL.MapURL(this._path + folder + '/' + encodeURIComponent(name) + ext);
     if (this.shouldUseHtml5Audio() && folder === 'bgm') {
         if(this._blobUrl) Html5Audio.setup(this._blobUrl);
         else Html5Audio.setup(url);
@@ -2833,7 +2835,8 @@ PluginManager.setParameters = function(name, parameters) {
 };
 
 PluginManager.loadScript = function(name) {
-    var url = CS_URL.MapURL(this._path + name);
+    var url = this._path + name;
+    //var url = CS_URL.MapURL(this._path + name);
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = url;

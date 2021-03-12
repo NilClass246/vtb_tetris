@@ -10079,8 +10079,8 @@ DKTools.PreloadManager = class {
                     } else if (type === 'image') {
                         files = entity.getImageFiles(options).data;
                     }
-
-                    files.forEach((file) => {
+					if(files){
+						files.forEach((file) => {
                         const fullPath = file.getFullPath();
 
                         if (this._queue[type][fullPath]) {
@@ -10089,6 +10089,7 @@ DKTools.PreloadManager = class {
 
                         this._queue[type][fullPath] = { ...object, path: fullPath };
                     });
+					}
                 } else {
                     throw new Error('Web browsers and mobile phones cannot load directories!');
                 }
