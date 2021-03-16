@@ -3581,13 +3581,32 @@ Emphasizer.prototype.initialize = function (text, x, y, width, height, options) 
 	this.addChild(this.blackHole);
 	this.blackHole.alpha = 125 / 255;
 	var Ftext = new FloatingText(text, 1200, 28, (options ? (options.fontSize ? options.fontSize : 24) : 24));
+	var t = new TempContainer();
 	Ftext.move((options ? (options.textX ? options.textX : x) : x),
 		(options ? (options.textY ? options.textY : y - Ftext._height) : y - Ftext._height));
-	this.addChild(Ftext);
+	t.addChild(Ftext);
+	this.addChild(t);
+	t.x = 100;
+	t.y = 100;
+	t.width = 300;
+	t.height = 300;
 
 	if (options && options.behaviour) {
 		options.behaviour.call(this);
     }
+}
+
+function TempContainer(){
+	this.initialize.apply(this, arguments);
+}
+
+TempContainer.prototype = Object.create(PIXI.Container.prototype);
+TempContainer.prototype.constructor = TempContainer;
+
+TempContainer.prototype.initialize = function(){
+	PIXI.Container.call(this);
+	this.filterArea = new PIXI.Rectangle();
+    this.filters = [new PIXI.filters.AlphaFilter()];
 }
 
 //-----------------------------------------------------------------------------

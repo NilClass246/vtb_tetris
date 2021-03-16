@@ -3692,3 +3692,139 @@ Stack: TypeError: (intermediate value).beginFill(...).moveTo(...).lineTo(...).li
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1992:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1916:14)
 
+Date: Tue Mar 16 2021 10:03:17 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Map ID: 25
+Event ID: 6
+Event Page: 1
+Last Event Command: 356
+Params: ["Tint set #9fbfdf"]
+Name: TypeError
+Message: Cannot read property 'commandNameList' of null
+Stack: TypeError: Cannot read property 'commandNameList' of null
+    at Game_Interpreter.PCMV_LIB.Utils.Game_Interpreter.pluginCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PCMV_LIB.js:520:12)
+    at Game_Interpreter.command356 (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:10509:10)
+    at Game_Interpreter.executeCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8932:34)
+    at Game_Interpreter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8840:19)
+    at Game_Map.updateInterpreter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6117:27)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6024:14)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_Shadow.js:140:30)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:649:24)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:1176:26)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:394:23)
+
+Date: Tue Mar 16 2021 10:03:44 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Map ID: 25
+Event ID: 6
+Event Page: 1
+Last Event Command: 356
+Params: ["Tint set #9fbfdf"]
+Name: TypeError
+Message: Cannot read property 'commandNameList' of null
+Stack: TypeError: Cannot read property 'commandNameList' of null
+    at Game_Interpreter.PCMV_LIB.Utils.Game_Interpreter.pluginCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PCMV_LIB.js:520:12)
+    at Game_Interpreter.command356 (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:10509:10)
+    at Game_Interpreter.executeCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8932:34)
+    at Game_Interpreter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8840:19)
+    at Game_Map.updateInterpreter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6117:27)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6024:14)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_Shadow.js:140:30)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:649:24)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:1176:26)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:394:23)
+
+Date: Tue Mar 16 2021 10:07:29 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Map ID: 25
+Event ID: 6
+Event Page: 1
+Last Event Command: 356
+Params: ["Tint set #9fbfdf"]
+Name: TypeError
+Message: Cannot read property 'commandNameList' of null
+Stack: TypeError: Cannot read property 'commandNameList' of null
+    at Game_Interpreter.PCMV_LIB.Utils.Game_Interpreter.pluginCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PCMV_LIB.js:520:12)
+    at Game_Interpreter.command356 (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:10509:10)
+    at Game_Interpreter.executeCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8932:34)
+    at Game_Interpreter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8840:19)
+    at Game_Map.updateInterpreter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6117:27)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6024:14)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_Shadow.js:140:30)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:649:24)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:1176:26)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:394:23)
+
+Date: Tue Mar 16 2021 10:08:38 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Map ID: 25
+Event ID: 6
+Event Page: 1
+Last Event Command: 356
+Params: ["Tint set #9fbfdf"]
+Name: TypeError
+Message: Cannot read property 'commandNameList' of null
+Stack: TypeError: Cannot read property 'commandNameList' of null
+    at Game_Interpreter.PCMV_LIB.Utils.Game_Interpreter.pluginCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/PCMV_LIB.js:521:12)
+    at Game_Interpreter.command356 (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:10509:10)
+    at Game_Interpreter.executeCommand (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8932:34)
+    at Game_Interpreter.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:8840:19)
+    at Game_Map.updateInterpreter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6117:27)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:6024:14)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_Shadow.js:140:30)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:649:24)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_LayerCamera.js:1176:26)
+    at Game_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:394:23)
+
+Date: Tue Mar 16 2021 10:31:16 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: ReferenceError
+Message: pos is not defined
+Stack: ReferenceError: pos is not defined
+    at Game_Event.pos (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/KMS_AreaEvent.js:197:2)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:5830:22
+    at Array.filter (<anonymous>)
+    at Game_Map.eventsXy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:5829:26)
+    at Game_Player.performTransfer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1563:14)
+    at Scene_Map.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:594:21)
+    at Scene_Map.t.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YSP_Preloader.js:75:14249)
+    at Scene_Map.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventDuplicator.js:279:28)
+    at Scene_Map.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1785:28)
+    at Scene_Map.isReady (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:586:14)
+
+Date: Tue Mar 16 2021 10:31:16 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'open' of undefined
+Stack: TypeError: Cannot read property 'open' of undefined
+    at Scene_Map.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:604:29)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38407:29)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Tue Mar 16 2021 10:31:32 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: ReferenceError
+Message: pos is not defined
+Stack: ReferenceError: pos is not defined
+    at Game_Event.pos (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/KMS_AreaEvent.js:197:2)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:5830:22
+    at Array.filter (<anonymous>)
+    at Game_Map.eventsXy (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_objects.js:5829:26)
+    at Game_Player.performTransfer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1563:14)
+    at Scene_Map.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:594:21)
+    at Scene_Map.t.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YSP_Preloader.js:75:14249)
+    at Scene_Map.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventDuplicator.js:279:28)
+    at Scene_Map.onMapLoaded (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1785:28)
+    at Scene_Map.isReady (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:586:14)
+
+Date: Tue Mar 16 2021 10:31:32 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'open' of undefined
+Stack: TypeError: Cannot read property 'open' of undefined
+    at Scene_Map.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:604:29)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38407:29)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
