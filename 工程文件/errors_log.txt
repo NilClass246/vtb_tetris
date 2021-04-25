@@ -3828,3 +3828,246 @@ Stack: TypeError: Cannot read property 'open' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
 
+Date: Fri Apr 23 2021 19:47:44 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: canv.requestFullscreen is not a function
+Stack: TypeError: canv.requestFullscreen is not a function
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:563:8)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Sat Apr 24 2021 15:21:00 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Boot
+Name: TypeError
+Message: Cannot read property 'addEmphasizers' of undefined
+Stack: TypeError: Cannot read property 'addEmphasizers' of undefined
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38391:29)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Sat Apr 24 2021 15:28:13 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Window_Options.drawBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:274:42)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:240:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:341:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7142:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7140:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 15:31:52 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Window_Options.drawBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:274:42)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:240:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:341:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7142:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7140:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 16:48:39 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Window_Options.drawBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:274:42)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:240:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:341:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 16:50:49 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Window_Options.drawBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:275:42)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:240:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:342:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 16:52:49 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Window_Options.drawBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:275:42)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:240:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:342:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 16:53:33 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:291:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:341:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 16:54:33 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:291:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:341:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 17:00:00 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:291:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:341:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 17:00:12 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:291:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:341:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 17:05:42 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:290:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:340:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 17:06:37 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:289:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:339:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 17:06:48 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:289:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:339:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 17:08:43 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at Window_Options.drawButton (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:289:82)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:339:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Sat Apr 24 2021 17:39:01 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Window_Options.drawBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:273:38)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:241:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:336:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7152:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+

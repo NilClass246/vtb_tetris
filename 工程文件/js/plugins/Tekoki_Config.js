@@ -53,6 +53,8 @@ ConfigManager.DASDelay = 10;
 ConfigManager.SoftSpeed = 20;
 ConfigManager.isDancePad = false;
 ConfigManager.Trembling = true;
+ConfigManager.isHandStation = false;
+ConfigManager.HandStationSensitivity = 0;
 
 Input.defaultDancePadInput = {
     0: 'up',
@@ -73,6 +75,8 @@ ConfigManager.makeData = function () {
     config.SoftSpeed = this.SoftSpeed;
     config.isDancePad = this.isDancePad;
     config.Trembling = this.Trembling;
+    config.isHandStation = this.isHandStation;
+    config.HandStationSensitivity= this.HandStationSensitivity;
     return config;
 };
 
@@ -84,6 +88,8 @@ ConfigManager.applyData = function (config) {
     this.SoftSpeed = this.readSoft(config, 'SoftSpeed');
     this.isDancePad = this.readFlag(config, 'isDancePad');
     this.Trembling = this.readFlag(config, 'Trembling');
+    this.isHandStation = this.readFlag(config, 'isHandStation');
+    this.HandStationSensitivity = this.readSensitivity(config, 'HandStationSensitivity');
 };
 
 ConfigManager.readARR = function (config, name) {
@@ -113,6 +119,14 @@ ConfigManager.readSoft = function (config, name) {
     }
 };
 
+ConfigManager.readSensitivity = function(config, name){
+    var value = config[name];
+    if (value !== undefined) {
+        return value;
+    } else {
+        return 0;
+    }
+}
 //=============================================================================
 
 TetrisManager.Temps.Window_Options_addGeneralOptions = Window_Options.prototype.addGeneralOptions
@@ -121,8 +135,10 @@ Window_Options.prototype.addGeneralOptions = function () {
     this.addCommand('方块移动速度(ARR)设置', 'ARRParams', true);
     this.addCommand('方块灵敏度(DAS)设置', 'DASParams', true);
     this.addCommand('软降倍率设置', 'SoftParams', true);
-    this.addCommand('是否使用跳舞毯配置', 'isDancePad');
+    this.addCommand('是否应用跳舞毯配置', 'isDancePad');
     this.addCommand('是否应用下落抖动', 'Trembling');
+    this.addCommand('是否应用手台配置', 'isHandStation');
+    this.addCommand('手台灵敏度配置', 'HandStationSensitivity');
 }
 
 TetrisManager.Temps.Window_Options_drawItem = Window_Options.prototype.drawItem;
@@ -130,7 +146,8 @@ TetrisManager.Temps.Window_Options_drawItem = Window_Options.prototype.drawItem;
 Window_Options.prototype.drawItem = function (index) {
     if (this.commandSymbol(index) === 'ARRParams'
         || this.commandSymbol(index) === 'DASParams'
-        || this.commandSymbol(index) === 'SoftParams') {
+        || this.commandSymbol(index) === 'SoftParams'
+        || this.commandSymbol(index) === 'HandStationSensitivity') {
         var rect = this.itemRectForText(index);
         var text = this.commandName(index);
         this.resetTextColor();
@@ -146,7 +163,8 @@ TetrisManager.Temps.Window_Options_processOk = Window_Options.prototype.processO
 Window_Options.prototype.processOk = function () {
     if (this.commandSymbol(this.index()) === 'ARRParams'
         || this.commandSymbol(this.index()) === 'DASParams'
-        || this.commandSymbol(this.index()) === 'SoftParams') {
+        || this.commandSymbol(this.index()) === 'SoftParams'
+        || this.commandSymbol(this.index()) === 'HandStationSensitivity') {
         Window_Command.prototype.processOk.call(this);
     } else {
         TetrisManager.Temps.Window_Options_processOk.call(this);
@@ -172,6 +190,7 @@ Scene_Options.prototype.createOptionsWindow = function () {
     this._optionsWindow.setHandler('ARRParams', this.ARRParamsConfig.bind(this));
     this._optionsWindow.setHandler('DASParams', this.DASParamsConfig.bind(this));
     this._optionsWindow.setHandler('SoftParams', this.SoftParamsConfig.bind(this));
+    this._optionsWindow.setHandler('HandStationSensitivity', this.HandStationSensitivityConfig.bind(this));
 };
 
 Scene_Options.prototype.ARRParamsConfig = function () {
@@ -190,6 +209,13 @@ Scene_Options.prototype.SoftParamsConfig = function () {
     var a = new Tetris_numberInput(2);
     this.addWindow(a)
     a.start();
+}
+
+Scene_Options.prototype.HandStationSensitivityConfig = function () {
+    var a = new Tetris_numberInput(3);
+    this.addWindow(a);
+    a.start();
+    this.addWindow(a._messageWindow);
 }
 
 Scene_Options.prototype.BackToOptions = function () {
@@ -213,30 +239,36 @@ Tetris_numberInput.prototype.initialize = function (index) {
     this._maxDigits = 1;
     this.IndEx = index
     this.openness = 0;
-    this._messageWindow = new Tetris_Window(-520, 120, 1200, 200);
+    this._messageWindow = new Tetris_Window(0, 424, 1200, 200);
     this.createButtons();
     this.deactivate();
 };
 
 Tetris_numberInput.prototype.start = function () {
-    this._maxDigits = 4;
-    this.addChild(this._messageWindow);
     switch (this.IndEx) {
         case 0:
+            this._maxDigits = 4;
             this._number = ConfigManager.ARRDelay;
             this._messageWindow.drawText("方块移动速度（ARR）的数值（单位：帧/格）", 0, 0)
             this._messageWindow.drawText("数值越大越慢", 0, 28)
             break;
         case 1:
+            this._maxDigits = 4;
             this._number = ConfigManager.DASDelay;
             this._messageWindow.drawText("方块移动灵敏度（DAS）的数值（单位：帧）", 0, 0)
             this._messageWindow.drawText("数值越小越灵敏", 0, 28)
             break;
         case 2:
+            this._maxDigits = 4;
             this._number = ConfigManager.SoftSpeed;
             this._messageWindow.drawText("软降倍率的数值（单位：正常速度的倍数）", 0, 0)
             this._messageWindow.drawText("数值越大越快", 0, 28)
             break;
+        case 3:
+            this._maxDigits = 3;
+            this._number = ConfigManager.HandStationSensitivity;
+            this._messageWindow.drawText("手台旋转的灵敏度，在不使用手台进行游戏的情况下可以不用设置", 0, 0)
+            this._messageWindow.drawText("数值越大越灵敏", 0, 28)
     }
     this._number = this._number.clamp(0, Math.pow(10, this._maxDigits) - 1);
     this.updatePlacement();
@@ -400,11 +432,14 @@ Tetris_numberInput.prototype.processOk = function () {
         case 2:
             ConfigManager.SoftSpeed = this._number;
             break;
+        case 3:
+            ConfigManager.HandStationSensitivity = this._number;
     }
     //this._messageWindow.terminateMessage();
     this.updateInputData();
     this.deactivate();
     this.close();
+    this._messageWindow.close();
     ConfigManager.save();
     ConfigManager.load();
     SceneManager._scene.BackToOptions();

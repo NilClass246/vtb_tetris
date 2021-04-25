@@ -3085,7 +3085,8 @@ Input.clear = function() {
     //I modified it.
     this._currentGamePadState = {};
     this._previousGamePadState = {};
-
+    this.movementX = 0; 
+    this.movementY = 0;
     this._gamepadStates = [];
     this._latestButton = null;
     this._latestButtons = [];
@@ -3120,6 +3121,9 @@ Input.update = function () {
                 this._pressedTime = 0;
                 this._date = Date.now();
             }
+            if(ConfigManager.isHandStation){
+                Input.updateHandStation();
+            }
 
             if (this._currentGamePadState[name] && !this._previousGamePadState[name]) {
                 this._latestGamePadButtons.push(name);
@@ -3141,6 +3145,26 @@ Input.begin = function () {
 
 Input.isRunning = function () {
     return this.running;
+}
+
+document.addEventListener("mousemove", function(e){
+    if(ConfigManager.isHandStation){
+        Input.movementX += e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+        Input.movementY += e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+    }
+});
+
+Input.updateHandStation = function(){
+    var sentivitity = 100 - ConfigManager.HandStationSensitivity;
+    if(this.movementY>=sentivitity){
+        this._latestButtons.push("up");
+        this.movementY = 0;
+    }
+    if(this.movementY<=-sentivitity){
+        this._latestButtons.push("control");
+        this.movementY = 0;
+    }
+    //console.log("movementX = "+movementX+" movementY = "+movementY);
 }
 
 /**
@@ -3180,7 +3204,7 @@ Input.isTriggered = function (keyName) {
         return true;
     } else {
         for (var i = 0; i < this._latestButtons.length; i++) {
-            if (this._latestButtons[i] === keyName) {
+            if (this._latestButtons[i] == keyName) {
                 return true;
             }
         }

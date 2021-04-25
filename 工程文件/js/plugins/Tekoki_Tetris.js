@@ -73,6 +73,9 @@ Scene_Tetris.prototype.addEmphasizer = function (text, x, y, width, height, opti
 	this.emphasizer_array.push(emphasizer);
 	if (!this.emphasizer_added) {
 		this.running = false;
+		if(ConfigManager.isHandStation){
+			TetrisManager.pointerUnlock();
+		}
 		this.addChild(this.emphasizer_array[this.emphasizer_pointer]);
 		this.emphasizer_added = true;
 	}
@@ -95,6 +98,9 @@ Scene_Tetris.prototype.clearEmphasizer = function () {
 	this.removeChild(this.emphasizer_array[this.emphasizer_pointer - 1]);
 	this.running = true;
 	TetrisManager.resetTimer();
+	if(ConfigManager.isHandStation){
+		TetrisManager.pointerLock();
+	}
 	if (this.emphasizerBehaviour) {
 		this.emphasizerBehaviour();
 		this.emphasizerBehaviour = null;
@@ -132,6 +138,9 @@ Scene_Tetris.prototype.initialize = function () {
 	};
 
 	this.spawnNext = true;
+	if(ConfigManager.isHandStation){
+		TetrisManager.pointerLock();
+	}
 }
 
 Scene_Tetris.prototype.initialize_Actor = function () {
@@ -559,6 +568,8 @@ Scene_Tetris.prototype.createBackground = function () {
 Scene_Tetris.prototype.update = function () {
 	Scene_MenuBase.prototype.update.call(this);
 	if (Input.isTriggered("pageup")) {
+		var canv = document.getElementById('GameCanvas');
+		canv.requestPointerLock();
 		for (var i = 0; i < this._enemies.length; i++) {
 			TetrisManager.HarmSystem.dealDamage(this.player, this._enemies[i], this._enemies[i].Mhp, "real");
         }
@@ -860,7 +871,6 @@ Scene_Tetris.prototype.update_gauge = function(){
 		this.player.displayGaugeSCORE = overkill;
 		this.drawArea(this.player);
 	}
-	console.log(this.player.displayGaugeSCORE);
 	this.player.SCOREgauge.updateNum(this.player.displayGaugeSCORE);
 }
 
@@ -2151,6 +2161,9 @@ Scene_Tetris.prototype.endGame = function () {
 		if (this.actor.hp <= 0) {
 			this.actor.addState(1);
         }
+		if(ConfigManager.isHandStation){
+			TetrisManager.pointerUnlock();
+		}
 	}
 }
 //如果你做了很过分的更改，请覆写这个方法来复元。
@@ -2327,6 +2340,9 @@ Scene_Tetris.prototype.Pause = function () {
 		this.openPauseScreen();
 		this._isPaused = true;
 		this.isPausedThisTurn = true;
+		if(ConfigManager.isHandStation){
+			TetrisManager.pointerUnlock();
+		}
     }
 }
 
@@ -2337,6 +2353,9 @@ Scene_Tetris.prototype.Continue = function () {
 	this.closePauseScreen();
 	this._isPaused = false;
 	this.isPausedThisTurn = true;
+	if(ConfigManager.isHandStation){
+		TetrisManager.pointerLock();
+	}
 }
 
 Scene_Tetris.prototype.openPauseScreen = function () {

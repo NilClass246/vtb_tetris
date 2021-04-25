@@ -1274,6 +1274,35 @@ Game_Actor.prototype.initialize = function (actorId) {
 
 TetrisManager.isScrollCenterAlligned = false;
 
+TetrisManager.pointerLocked = false;
+
+TetrisManager.pointerLock = function(){
+	this.pointerLocked = true;
+	this.lockPointer();
+}
+
+TetrisManager.pointerUnlock = function(){
+	this.pointerLocked = false;
+	document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
+	document.exitPointerLock();
+}
+
+TetrisManager.SetFullScreen = function(){
+	var canv = document.getElementById("GameCanvas");
+	canv.requestFullscreen = canv.requestFullscreen || canv.mozRequestFullscreen || canv.mozRequestFullScreen || canv.webkitRequestFullscreen;
+	canv.requestFullscreen();
+};
+
+TetrisManager.lockPointer = function(){
+	var canv = document.getElementById("GameCanvas");
+	canv.requestPointerLock();
+}
+
+TetrisManager.ExitFullScreen = function(){
+	document.exitFullscreen = document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen;
+	document.exitFullscreen();
+}
+
 //=============================================================================
 // 小组件定义
 //=============================================================================
@@ -1498,6 +1527,21 @@ AfterMath_Window.prototype.isLayed = function () {
 
 TetrisManager.HarmSystem = {};
 
+TetrisManager.Temps.Game_Actor_prototype_addParam = Game_Actor.prototype.addParam;
+Game_Actor.prototype.addParam = function(paramId, value){
+	TetrisManager.Temps.Game_Actor_prototype_addParam.call(this, paramId, value);
+	this._updateSpecialParams(paramID, value);
+}
+
+Game_Actor.prototype._updateSpecialParams = function(paramID, value){
+	if(paramID==2){
+		this.addParam(0, 10*value);
+	}
+	if(paramID ==4){
+		this.addParam(1, 5*value);
+	}
+}
+
 /**
  * 造成伤害和治疗的主方法.
  *
@@ -1629,6 +1673,16 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 			//this.createXYanimationWindow(1, target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height / 2);
 		}
 	}
+}
+
+TetrisManager.HarmSystem.getAtk = function(actor){
+	return actor.atk*3;
+}
+
+TetrisManager.HarmSystem.getPhysPower = function(actor){
+}
+
+TetrisManager.HarmSystem.getSpellPower = function(actor){
 }
 
 //============================================================
@@ -2176,11 +2230,10 @@ function Text_Base() {
 	this.initialize.apply(this, arguments);
 }
 
-Text_Base.prototype = Object.create(Sprite.prototype);
+Text_Base.prototype = Object.create(Tetris_Window.prototype);
 Text_Base.prototype.constructor = Text_Base;
 
 Text_Base.prototype.initialize = function (text, width, height, size, align) {
-	Sprite.prototype.initialize.call(this);
 	this.w = width;
 	this.a = align;
 	this.s = size;
@@ -2191,22 +2244,26 @@ Text_Base.prototype.initialize = function (text, width, height, size, align) {
 	//}
 }
 
+Text_Base.prototype.standardPadding = function() {
+    return 0;
+};
+
 Text_Base.prototype.rewrite = function (text) {
 	var text = DKTools.Localization.getText(text);
 	var texts = text.split("\n");
-	this._height = (texts.length) * (this.s * (4 / 3) * 2);
-	this.window = new Window_Base(0, 0, this.w + 2 * 18, this._height + 2 * 18);
-	this.window.contents.fontSize = this.s;
+	this.h = (texts.length) * (this.s * (4 / 3) * 2);
+	Tetris_Window.prototype.initialize.call(this, 0, 0,  this.w, this.h);
+	this.removeChildAt(0);
+	this.contents.fontSize = this.s;
 	Yanfly.Param.FontSize = this.s;
-	this.window.contents.align = this.a;
-	this.window.drawTextEx(text, 0, 0);
+	this.contents.align = this.a;
+	this.drawTextEx(text, 0, 0);
 	Yanfly.Param.FontSize = this.originalSize;
-	this.bitmap = this.window.contents;
 
 }
 
-Text_Base.prototype.processLine = function (textState) {
-
+Text_Base.prototype.refresh = function () {
+	this.contents.clear();
 }
 
 //-----------------------------------------------------------------------------
@@ -3581,32 +3638,16 @@ Emphasizer.prototype.initialize = function (text, x, y, width, height, options) 
 	this.addChild(this.blackHole);
 	this.blackHole.alpha = 125 / 255;
 	var Ftext = new FloatingText(text, 1200, 28, (options ? (options.fontSize ? options.fontSize : 24) : 24));
-	var t = new TempContainer();
 	Ftext.move((options ? (options.textX ? options.textX : x) : x),
-		(options ? (options.textY ? options.textY : y - Ftext._height) : y - Ftext._height));
-	t.addChild(Ftext);
-	this.addChild(t);
-	t.x = 100;
-	t.y = 100;
-	t.width = 300;
-	t.height = 300;
+		(options ? (options.textY ? options.textY : y - Ftext._height) : y - Ftext._height),
+		Ftext.width,
+		Ftext.height);
 
+	this.addChild(Ftext);
+	console.log(Ftext);
 	if (options && options.behaviour) {
 		options.behaviour.call(this);
     }
-}
-
-function TempContainer(){
-	this.initialize.apply(this, arguments);
-}
-
-TempContainer.prototype = Object.create(PIXI.Container.prototype);
-TempContainer.prototype.constructor = TempContainer;
-
-TempContainer.prototype.initialize = function(){
-	PIXI.Container.call(this);
-	this.filterArea = new PIXI.Rectangle();
-    this.filters = [new PIXI.filters.AlphaFilter()];
 }
 
 //-----------------------------------------------------------------------------
