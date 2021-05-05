@@ -185,7 +185,7 @@ Window_Options.prototype.initialize_BarSprite = function(){
         {
             //バー画像
             var bitmap = ImageManager.load_MenuUi($img_bar_ABOS);
-            for(var i = 0; i < 16; i++)
+            for(var i = 0; i < 17; i++)
             {
                 this.sprite_img_bar[i] = new Sprite(bitmap);
                 //一回飛ばす
@@ -204,7 +204,7 @@ Window_Options.prototype.initialize_BarSprite = function(){
         {
             //ボタン画像
             var bitmap = ImageManager.load_MenuUi($img_button_ABOS);
-            for(var i = 0; i < 16; i++)
+            for(var i = 0; i < 17; i++)
             {
                 this.sprite_img_button[i] = new Sprite(bitmap);
                 //一回飛ばす
@@ -275,7 +275,6 @@ Window_Options.prototype.drawBar = function(x, y, x2, y2,color,lineWidth,index){
         //画像ありの場合
         this.sprite_img_bar[index].x = x
         this.sprite_img_bar[index].y = y - (this.sprite_img_bar[index].height / 2);
-        console.log(index+ " : " + y);
     }
 };
 
@@ -283,7 +282,6 @@ Window_Options.prototype.drawButton = function(x , y , radius , color,index){
     if($img_button_ABOS === '' || $img_button_ABOS === undefined)
     {
         //画像なしの場合
-        console.log(1);
         this.sprite_bar.bitmap.drawCircle(x,y,radius + 2,'#000');//外枠
         this.sprite_bar.bitmap.drawCircle(x,y,radius,color);//内側
     }else{

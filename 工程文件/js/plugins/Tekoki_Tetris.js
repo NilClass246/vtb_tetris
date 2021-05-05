@@ -113,7 +113,7 @@ Scene_Tetris.prototype.setEmphasizerBehaviour = function (f) {
 
 Scene_Tetris.prototype.initialize = function () {
 	Scene_ItemBase.prototype.initialize.call(this);
-	this.actorNum = $gameVariables.value(32);
+	this.actorNum = $gameVariables.value(32)||1;
 	this.initializeData();
 	this.loadKeyMapper();
 	this._enemies = [];
@@ -567,13 +567,13 @@ Scene_Tetris.prototype.createBackground = function () {
 
 Scene_Tetris.prototype.update = function () {
 	Scene_MenuBase.prototype.update.call(this);
-	//if (Input.isTriggered("pageup")) {
+	if (Input.isTriggered("pageup")) {
 	//	var canv = document.getElementById('GameCanvas');
 	//	canv.requestPointerLock();
-	//	for (var i = 0; i < this._enemies.length; i++) {
-	//		TetrisManager.HarmSystem.dealDamage(this.player, this._enemies[i], this._enemies[i].Mhp, "real");
-     //   }
-    //}
+		//for (var i = 0; i < this._enemies.length; i++) {
+		//	TetrisManager.HarmSystem.dealDamage(this.player, this._enemies[i], this._enemies[i].Mhp, "real");
+        //}
+    }
 
 	if (this.beginFlag) {
 		this.beginFlag = false;

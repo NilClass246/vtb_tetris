@@ -59,7 +59,7 @@ Scene_Puzzle.prototype.constructor = Scene_Puzzle;
 
 Scene_Puzzle.prototype.initialize = function () {
 	Scene_ItemBase.prototype.initialize.call(this);
-	this.actorNum = $gameVariables.value(32);
+	this.actorNum = $gameVariables.value(32)||1;
 	this.initializeData();
 	this.loadKeyMapper();
 	this.initializeActor();
@@ -70,6 +70,9 @@ Scene_Puzzle.prototype.initialize = function () {
 		}
 	};
 	this.spawnNext = true;
+	if(ConfigManager.isHandStation){
+		TetrisManager.pointerLock();
+	}
 }
 
 Scene_Puzzle.prototype.initializeActor = function () {
@@ -308,6 +311,10 @@ Scene_Puzzle.prototype.endGame = function () {
 		TetrisManager.desetTimer();
 		SceneManager.pop(Scene_Tetris);
 		Scene_Tetris.prototype.onEnd = function () {
+		}
+
+		if(ConfigManager.isHandStation){
+			TetrisManager.pointerUnlock();
 		}
 	}
 }

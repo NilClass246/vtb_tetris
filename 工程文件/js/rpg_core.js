@@ -3123,7 +3123,7 @@ Input.update = function () {
                 this._pressedTime = 0;
                 this._date = Date.now();
             }
-            if(ConfigManager.isHandStation){
+            if(ConfigManager.isHandStation&& (SceneManager._scene instanceof Scene_Tetris||SceneManager._scene instanceof Scene_Puzzle)){
                 Input.updateHandStation();
             }
 
@@ -3151,21 +3151,59 @@ Input.isRunning = function () {
 
 document.addEventListener("mousemove", function(e){
     if(ConfigManager.isHandStation){
-        Input.movementX += e.movementX || e.mozMovementX || e.webkitMovementX || 0;
-        Input.movementY += e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+        var sensitivity = ConfigManager.HandStationSensitivity;
+        var x = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+        var y = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+        if(Math.abs(x)>sensitivity/2){
+            Input.movementX +=x;
+        }
+        if(Math.abs(y)>sensitivity/2){
+            Input.movementY +=y
+        }
+        //Input.movementX += e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+        //Input.movementY += e.movementY || e.mozMovementY || e.webkitMovementY || 0;
     }
 });
 
 Input.updateHandStation = function(){
-    var sentivitity = 100 - ConfigManager.HandStationSensitivity;
-    if(this.movementY>=sentivitity){
-        this._latestButtons.push("up");
-        this.movementY = 0;
+    var sentivitity = ConfigManager.HandStationSensitivity;
+    if(ConfigManager.isLeftHanded){
+        if(this.movementX>=sentivitity){
+            this._latestButtons.push("control");
+            this.movementX = 0;
+        }
+        if(this.movementX<=-sentivitity){
+            this._latestButtons.push("up");
+            this.movementY = 0;
+        }
+    
+        if(this.movementY>=sentivitity){
+            this._latestButtons.push("pageup");
+            this.movementX = 0;
+        }
+        if(this.movementY<=-sentivitity){
+            this._latestButtons.push("pagedown");
+            this.movementX = 0;
+        }
+    }else{
+        if(this.movementY>=sentivitity){
+            this._latestButtons.push("up");
+            this.movementY = 0;
+        }
+        if(this.movementY<=-sentivitity){
+            this._latestButtons.push("control");
+            this.movementY = 0;
+        }
+        if(this.movementX>=sentivitity){
+            this._latestButtons.push("pagedown");
+            this.movementX = 0;
+        }
+        if(this.movementX<=-sentivitity){
+            this._latestButtons.push("pageup");
+            this.movementX = 0;
+        }
     }
-    if(this.movementY<=-sentivitity){
-        this._latestButtons.push("control");
-        this.movementY = 0;
-    }
+
     //console.log("movementX = "+movementX+" movementY = "+movementY);
 }
 

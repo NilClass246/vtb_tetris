@@ -4274,3 +4274,44 @@ Stack: ReferenceError: posVec is not defined
     at Game_Player.Game_CharacterBase.updateMover (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1077:17)
     at Game_Player.Game_CharacterBase.updateAnalogMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1042:10)
 
+Date: Tue May 04 2021 22:11:57 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: RangeError
+Message: Maximum call stack size exceeded
+Stack: RangeError: Maximum call stack size exceeded
+    at Array.indexOf (<anonymous>)
+    at Array.value (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:127:25)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4093:15)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4158:10)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4158:10)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4158:10)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4158:10)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4158:10)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4158:10)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4158:10)
+
+Date: Tue May 04 2021 22:30:34 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property '_signedItems' of null
+Stack: TypeError: Cannot read property '_signedItems' of null
+    at itemBoard.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1885:58)
+    at new itemBoard (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1877:18)
+    at Scene_Tetris.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2035:26)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1960:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38387:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Tue May 04 2021 23:29:07 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: ReferenceError
+Message: movementX is not defined
+Stack: ReferenceError: movementX is not defined
+    at Function.Input.updateHandStation (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:3197:21)
+    at Function.Input.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:3127:23)
+    at Function.SceneManager.updateInputData (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1977:11)
+    at Function.SceneManager.updateInputData (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1352:46)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1992:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+

@@ -54,7 +54,8 @@ ConfigManager.SoftSpeed = 20;
 ConfigManager.isDancePad = false;
 ConfigManager.Trembling = true;
 ConfigManager.isHandStation = false;
-ConfigManager.HandStationSensitivity = 0;
+ConfigManager.HandStationSensitivity = 100;
+ConfigManager.isLeftHanded = false;
 
 Input.defaultDancePadInput = {
     0: 'up',
@@ -77,6 +78,7 @@ ConfigManager.makeData = function () {
     config.Trembling = this.Trembling;
     config.isHandStation = this.isHandStation;
     config.HandStationSensitivity= this.HandStationSensitivity;
+    config.isLeftHanded = this.isLeftHanded;
     return config;
 };
 
@@ -90,6 +92,7 @@ ConfigManager.applyData = function (config) {
     this.Trembling = this.readFlag(config, 'Trembling');
     this.isHandStation = this.readFlag(config, 'isHandStation');
     this.HandStationSensitivity = this.readSensitivity(config, 'HandStationSensitivity');
+    this.isLeftHanded = this.readFlag(config, 'isLeftHanded');
 };
 
 ConfigManager.readARR = function (config, name) {
@@ -124,7 +127,7 @@ ConfigManager.readSensitivity = function(config, name){
     if (value !== undefined) {
         return value;
     } else {
-        return 0;
+        return 100;
     }
 }
 //=============================================================================
@@ -138,7 +141,9 @@ Window_Options.prototype.addGeneralOptions = function () {
     this.addCommand('是否应用跳舞毯配置', 'isDancePad');
     this.addCommand('是否应用下落抖动', 'Trembling');
     this.addCommand('是否应用手台配置', 'isHandStation');
+    this.addCommand('左惯用手模式', 'isLeftHanded')
     this.addCommand('手台灵敏度配置', 'HandStationSensitivity');
+
 }
 
 TetrisManager.Temps.Window_Options_drawItem = Window_Options.prototype.drawItem;
@@ -168,6 +173,23 @@ Window_Options.prototype.processOk = function () {
         Window_Command.prototype.processOk.call(this);
     } else {
         TetrisManager.Temps.Window_Options_processOk.call(this);
+        if(this.commandSymbol(this.index()) == 'isHandStation'){
+            if(ConfigManager.isHandStation && ConfigManager.isLeftHanded){
+                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftHandStationMap));
+            }
+            if(ConfigManager.isHandStation && !ConfigManager.isLeftHanded){
+                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.RightHandStationMap));
+            }
+        }
+
+        if(this.commandSymbol(this.index()) == 'isLeftHanded'){
+            if(ConfigManager.isHandStation && ConfigManager.isLeftHanded){
+                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftHandStationMap));
+            }
+            if(ConfigManager.isHandStation && !ConfigManager.isLeftHanded){
+                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.RightHandStationMap));
+            }
+        }
     }
 };
 
@@ -197,18 +219,21 @@ Scene_Options.prototype.ARRParamsConfig = function () {
     var a = new Tetris_numberInput(0);
     this.addWindow(a)
     a.start();
+    this.addWindow(a._messageWindow);
 }; 
 
 Scene_Options.prototype.DASParamsConfig = function () {
     var a = new Tetris_numberInput(1);
     this.addWindow(a)
     a.start();
+    this.addWindow(a._messageWindow);
 }; 
 
 Scene_Options.prototype.SoftParamsConfig = function () {
     var a = new Tetris_numberInput(2);
     this.addWindow(a)
     a.start();
+    this.addWindow(a._messageWindow);
 }
 
 Scene_Options.prototype.HandStationSensitivityConfig = function () {
@@ -268,7 +293,7 @@ Tetris_numberInput.prototype.start = function () {
             this._maxDigits = 3;
             this._number = ConfigManager.HandStationSensitivity;
             this._messageWindow.drawText("手台旋转的灵敏度，在不使用手台进行游戏的情况下可以不用设置", 0, 0)
-            this._messageWindow.drawText("数值越大越灵敏", 0, 28)
+            this._messageWindow.drawText("数值越小越灵敏", 0, 28)
     }
     this._number = this._number.clamp(0, Math.pow(10, this._maxDigits) - 1);
     this.updatePlacement();

@@ -644,9 +644,33 @@ ConfigManager.HandStationMap = {
 	50: 'down',
 	51: 'ok',
 	9: 'tab',
-	38: 'pageup',
-	40: 'pagedown'
 };
+
+ConfigManager.RightHandStationMap = {
+	83: 'up',
+	68: 'escape',
+	70: 'space',
+	90: 'left',
+	88: 'right',
+	67: 'down',
+	86: 'shift',
+	50: 'down',
+	51: 'ok',
+	9: 'tab',
+}
+
+ConfigManager.LeftHandStationMap = {
+	70: 'up',
+	68: 'escape',
+	83: 'space',
+	86: 'left',
+	67: 'right',
+	88: 'down',
+	90: 'shift',
+	51: 'down',
+	50: 'ok',
+	40: 'tab',
+}
 
 //ConfigManager.wasdMap = {
 //    9: 'tab', 13: 'ok', 16: 'shift', 17: 'control', 18: 'control', 27: 'escape',

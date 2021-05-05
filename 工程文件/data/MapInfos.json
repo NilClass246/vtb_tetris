@@ -17,7 +17,7 @@ null,
 {"id":15,"expanded":true,"name":"爱丽丝开场事件","order":12,"parentId":19,"scrollX":1217,"scrollY":678},
 {"id":16,"expanded":false,"name":"爱丽丝开场事件(日)","order":13,"parentId":15,"scrollX":811,"scrollY":444},
 {"id":17,"expanded":false,"name":"Aqua事件","order":16,"parentId":19,"scrollX":1104,"scrollY":912},
-{"id":18,"expanded":false,"name":"Boss房","order":28,"parentId":29,"scrollX":973.1999999999999,"scrollY":607.1999999999999},
+{"id":18,"expanded":false,"name":"Boss房","order":28,"parentId":29,"scrollX":973.1999999999999,"scrollY":609.6},
 {"id":19,"expanded":true,"name":"小剧场","order":9,"parentId":23,"scrollX":819,"scrollY":452},
 {"id":20,"expanded":false,"name":"马自立事件","order":14,"parentId":19,"scrollX":819,"scrollY":452},
 {"id":21,"expanded":false,"name":"Aqua闪回","order":15,"parentId":20,"scrollX":1088,"scrollY":544},
@@ -33,5 +33,5 @@ null,
 null,
 {"id":32,"expanded":false,"name":"Mea房间","order":29,"parentId":29,"scrollX":973.1999999999999,"scrollY":1003.1999999999999},
 {"id":33,"expanded":false,"name":"虚无","order":33,"parentId":0,"scrollX":456.59999999999997,"scrollY":447},
-{"id":34,"expanded":false,"name":"试炼一层","order":30,"parentId":29,"scrollX":973.1999999999999,"scrollY":681.6}
+{"id":34,"expanded":false,"name":"试炼一层","order":30,"parentId":29,"scrollX":973.1999999999999,"scrollY":897.5999999999999}
 ]

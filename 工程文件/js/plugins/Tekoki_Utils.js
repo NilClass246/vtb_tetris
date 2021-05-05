@@ -1332,7 +1332,7 @@ TetrisManager.showInstructions = function () {
 
 TetrisManager.hideInstructions = function () {
 	if (!this.hiding) {
-		var s = new SpriteSlider(this.instructions, 268, 137, 268, 737, 60, {destrucsive: true});
+		var s = new SpriteSlider(this.instructions, 268, 107, 268, 737, 60, {destrucsive: true});
 		SceneManager._scene.addChild(s);
 		this.hiding = true;
     }
@@ -1347,15 +1347,16 @@ Window_Instructions.prototype.constructor = Window_Instructions;
 
 Window_Instructions.prototype.initialize = function () {
 	Window_Base.prototype.initialize.call(this, 268, 0, 644, 425);
-	this.window_title = new Tetris_Window(0, -75, 644, 75);
-	this.addChild(this.window_title)
+	this.window_title = new Tetris_Window(268, -75, 644, 75);
+	this.addChild(this.window_title);
+
 	this.window_title.drawText("{instructions_title}", 10, 0);
 	this.drawText("{instructions_Line1}", 10, 0);
 	this.drawText("{instructions_Line2}", 10, 28);
 	this.drawText("{instructions_Line3}", 10, 56);
 	this.drawText("{instructions_Line4}", 10, 84);
 	this.drawText("{instructions_Line5}", 475, 112);
-	this.silder = new SpriteSlider(this, 268, -500, 268, 137, 60);
+	this.silder = new SpriteSlider(this, 268, -500, 268, 107, 60);
 	this.addChild(this.silder);
 	this.a = new SequenceAnimation({ name: "地图按键\\未标题-3", FinalNumber: 21, framedigits: 2, initialNumber: 0, delay: 2 });
 	this.a.move(10, 200);
@@ -4095,7 +4096,7 @@ ItemSkillPointer.prototype.changeIndexTo = function(index){
 		this.visible = true;
 	}
 
-	if([0, 1, 2].contains(this.current_index)&&!SkillManager.running){
+	if([3, 4, 5, 6].contains(this.current_index)&&!itemManager.running){
 		this.visible = false;
 	}else{
 		this.visible = true;
@@ -4154,7 +4155,7 @@ ItemSkillPointer.prototype.changeIndexTo = function(index){
 				this.aim(target);
 			}else{
 				itemManager.shiftBoard();
-				this.changeIndexTo(3);
+				this.changeIndex(-1);
 			}
 			break;
 		case 4:
