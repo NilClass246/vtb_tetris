@@ -64,7 +64,17 @@ Yanfly.KeyConfig.version = 1.04;
  * @parent ---Help Text---
  * @desc This is the help message that will display for WASD.
  * @default Changes your keyboard to WASD movement.
- *
+ * 
+ * @param HandStation Layout
+ * @parent ---Help Text---
+ * @desc This is the text for switching to the HandStation layout.
+ * @default HandStation Movement Layout
+ * 
+ * @param HandStation Help
+ * @parent ---Help Text---
+ * @desc This is the help message that will display for HandStation.
+ * @default Changes your keyboard to HandStation movement.
+ * 
  * @param Finish Config
  * @parent ---Help Text---
  * @desc This is the text for finishing with keyboard configuration.
@@ -493,6 +503,8 @@ Yanfly.Param.KeyConfigDefaultTx = String(Yanfly.Parameters['Default Layout']);
 Yanfly.Param.KeyConfigDefaultHelp = String(Yanfly.Parameters['Default Help']);
 Yanfly.Param.KeyConfigWasdTx = String(Yanfly.Parameters['WASD Layout']);
 Yanfly.Param.KeyConfigWasdHelp = String(Yanfly.Parameters['WASD Help']);
+Yanfly.Param.KeyConfigHandStationTx = String(Yanfly.Parameters['HandStation Layout']);
+Yanfly.Param.KeyConfigHandStationHelp = String(Yanfly.Parameters['HandStation Help']);
 Yanfly.Param.KeyConfigFinishTx = String(Yanfly.Parameters['Finish Config']);
 Yanfly.Param.KeyConfigFinishHelp = String(Yanfly.Parameters['Finish Help']);
 Yanfly.Param.KeyConfigAssignColor = Number(Yanfly.Parameters['Assigned Color']);
@@ -619,6 +631,21 @@ ConfigManager.wasdMap = {
   75: 'up', 76: 'escape', 77: 'menu', 219: 'pageup',  221: 'pagedown', 45: 'escape',
   46: 'ok', 35: 'escape', 36: 'menu', 96: 'escape', 98: 'down', 100: 'left',
   102: 'right', 104: 'up', 120: 'debug' 
+};
+
+ConfigManager.HandStationMap = {
+	83: 'up',
+	68: 'escape',
+	70: 'space',
+	90: 'left',
+	88: 'right',
+	67: 'down',
+	86: 'shift',
+	50: 'down',
+	51: 'ok',
+	9: 'tab',
+	38: 'pageup',
+	40: 'pagedown'
 };
 
 //ConfigManager.wasdMap = {
@@ -881,11 +908,13 @@ Window_KeyConfig.prototype.makeCommandList = function(index) {
 			this.addCommand(keyName, 'key', enabled);
 		}
 		this.addCommand(Yanfly.Param.KeyConfigDefaultTx, 'default', true);
-		for (var i = 0; i < 6; ++i) this.addCommand(' ', 'default', true);
+		for (var i = 0; i < 4; ++i) this.addCommand(' ', 'default', true);
 		this.addCommand(Yanfly.Param.KeyConfigWasdTx, 'wasd', true);
-		for (var i = 0; i < 6; ++i) this.addCommand(' ', 'wasd', true);
+		for (var i = 0; i < 4; ++i) this.addCommand(' ', 'wasd', true);
+		this.addCommand(Yanfly.Param.KeyConfigHandStationTx, 'handstation', true);
+		for (var i = 0; i < 4; ++i) this.addCommand(' ', 'handstation', true);
 		this.addCommand(Yanfly.Param.KeyConfigFinishTx, 'cancel', true);
-		for (var i = 0; i < 6; ++i) this.addCommand(' ', 'cancel', true);
+		for (var i = 0; i < 5; ++i) this.addCommand(' ', 'cancel', true);
 };
 
 Window_KeyConfig.prototype.isKeyEnabled = function (keyName) {
@@ -923,15 +952,18 @@ Window_KeyConfig.prototype.itemRect = function(index) {
 		} else if ([101, 102].contains(index)) {
 			rect.x = 101 % maxCols * (rect.width + this.spacing()) - this._scrollX;
 			rect.width = (this.itemWidth() + this.spacing()) * 2 - this.spacing();
-		} else if ([105, 106, 107, 108, 109, 110, 111].contains(index)) {
+		} else if ([105, 106, 107, 108, 109].contains(index)) {
 			rect.x = 105 % maxCols * (rect.width + this.spacing()) - this._scrollX;
-			rect.width = (this.itemWidth() + this.spacing()) * 7 - this.spacing();
-		} else if ([112, 113, 114, 115, 116, 117, 118].contains(index)) {
-			rect.x = 112 % maxCols * (rect.width + this.spacing()) - this._scrollX;
-			rect.width = (this.itemWidth() + this.spacing()) * 7 - this.spacing();
-		} else if ([119, 120, 121, 122, 123, 124, 125].contains(index)) {
-			rect.x = 119 % maxCols * (rect.width + this.spacing()) - this._scrollX;
-			rect.width = (this.itemWidth() + this.spacing()) * 7 - this.spacing();
+			rect.width = (this.itemWidth() + this.spacing()) * 5 - this.spacing();
+		} else if ([110, 111, 112, 113, 114].contains(index)) {
+			rect.x = 110 % maxCols * (rect.width + this.spacing()) - this._scrollX;
+			rect.width = (this.itemWidth() + this.spacing()) * 5 - this.spacing();
+		} else if ([115, 116, 117, 118, 119].contains(index)) {
+			rect.x = 115 % maxCols * (rect.width + this.spacing()) - this._scrollX;
+			rect.width = (this.itemWidth() + this.spacing()) * 5 - this.spacing();
+		}else if([120, 121, 122, 123, 124, 125].contains(index)){
+			rect.x = 120 % maxCols * (rect.width + this.spacing()) - this._scrollX;
+			rect.width = (this.itemWidth() + this.spacing()) * 6 - this.spacing();
 		}
 		rect.y += Math.max(0, (this.contents.height - this.lineHeight() * 12) / 2);
     return rect;
@@ -939,8 +971,8 @@ Window_KeyConfig.prototype.itemRect = function(index) {
 
 Window_KeyConfig.prototype.leaveEmpty = function(index) {
     return [55, 56, 57, 58, 62, 64, 76, 77, 79, 84, 85, 86, 88, 89, 90, 91,
-			92, 93, 95, 97, 102, 104, 106, 107, 108, 109, 110, 111, 113, 114,
-			115, 116, 117, 118, 120, 121, 122, 123, 124, 125].contains(index);
+			92, 93, 95, 97, 102, 104, 106, 107, 108, 109, 111, 112, 113, 114
+			, 116, 117, 118, 119, 121, 122, 123, 124, 125].contains(index);
 };
 
 Window_KeyConfig.prototype.drawItem = function(index) {
@@ -1129,11 +1161,13 @@ Window_KeyConfig.prototype.cursorRight = function(wrap) {
             this.select(98);
 		} else if ([101, 102].contains(index)) {
 			this.select(103);
-		} else if ([105, 106, 107, 108, 109, 110, 111].contains(index)) {
-			this.select(112);
-		} else if ([112, 113, 114, 115, 116, 117, 118].contains(index)) {
-			this.select(119);
-		} else if ([119, 120, 121, 122, 123, 124, 125].contains(index)) {
+		} else if ([105, 106, 107, 108, 109].contains(index)) {
+			this.select(110);
+		} else if ([110, 111, 112, 113, 114].contains(index)) {
+			this.select(115);
+		} else if ([115, 116, 117, 118, 119].contains(index)) {
+			this.select(120);
+		} else if ([120, 121, 122, 123, 124, 125].contains(index)){
 			this.select(0);
 		} else {
 			Window_Command.prototype.cursorRight.call(this, wrap);
@@ -1158,12 +1192,14 @@ Window_KeyConfig.prototype.cursorLeft = function(wrap) {
             this.select(94);
 		} else if ([101, 102].contains(index)) {
 			this.select(100);
-		} else if ([105, 106, 107, 108, 109, 110, 111].contains(index)) {
+		} else if ([105, 106, 107, 108, 109].contains(index)) {
 			this.select(104);
-		} else if ([112, 113, 114, 115, 116, 117, 118].contains(index)) {
-			this.select(111);
-		} else if ([119, 120, 121, 122, 123, 124, 125].contains(index)) {
-			this.select(118);
+		} else if ([110, 111, 112, 113, 114].contains(index)) {
+			this.select(109);
+		} else if ([115, 116, 117, 118, 119].contains(index)) {
+			this.select(114);
+		} else if ([120, 121, 122, 123, 124, 125].contains(index)) {
+			this.select(119);
 		} else {
 			Window_Command.prototype.cursorLeft.call(this, wrap);
 		}
@@ -1180,6 +1216,9 @@ Window_KeyConfig.prototype.updateHelp = function() {
 			break;
 		case 'wasd':
 			this._helpWindow.setText(Yanfly.Param.KeyConfigWasdHelp);
+			break;
+		case 'handstation':
+			this._helpWindow.setText(Yanfly.Param.KeyConfigHandStationHelp);
 			break;
 		case 'cancel':
 			this._helpWindow.setText(Yanfly.Param.KeyConfigFinishHelp);
@@ -1310,6 +1349,7 @@ Scene_KeyConfig.prototype.createKeyConfigWindow = function() {
 	this._configWindow = new Window_KeyConfig(this._helpWindow);
 	this._configWindow.setHandler('default', this.commandDefault.bind(this));
 	this._configWindow.setHandler('wasd', this.commandWasd.bind(this));
+	this._configWindow.setHandler('handstation', this.commandHandStation.bind(this));
 	this._configWindow.setHandler('cancel', this.commandExit.bind(this));
 	this._configWindow.setHandler('key', this.commandKey.bind(this));
 	this.addWindow(this._configWindow);
@@ -1331,6 +1371,11 @@ Scene_KeyConfig.prototype.commandWasd = function() {
     ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.wasdMap));
 	this.refreshWindows();
 };
+
+Scene_KeyConfig.prototype.commandHandStation =function(){
+	ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.HandStationMap));
+	this.refreshWindows();
+}
 
 Scene_KeyConfig.prototype.commandKey = function() {
 	this._actionWindow.select(0);

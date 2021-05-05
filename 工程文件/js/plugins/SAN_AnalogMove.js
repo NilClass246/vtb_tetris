@@ -400,6 +400,7 @@ CharacterMover.dir8ToDir4 = function(dir8, dir4) {
 
 // オブジェクト初期化
 CharacterMover.prototype.initialize = function(character) {
+
     this.initVectors(character);
     this.initflags();
 };

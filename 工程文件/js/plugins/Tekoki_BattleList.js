@@ -1,5 +1,5 @@
 //=============================================================================
-// Tekoki_Puzzle.js v0.3
+// Tekoki_BattleList.js v0.3
 //=============================================================================
 
 /*:
@@ -1776,10 +1776,9 @@ TetrisManager.enemy_List = {
 		{
 			name: "Slime",
 			category: "enemy",
-			xposition: 825,
+			xposition: 888,
 			yposition: 84,
 			assumeYpos: 84,
-			//avatar: new Sprite(),
 			avatarName: "Slime_Avatar",
 			dx: 420,
 			dy: 200,
@@ -1788,8 +1787,8 @@ TetrisManager.enemy_List = {
 			curHp: 0,
 			displayHp: 0,
 			Mhp: 200,
-			atk: 35,
-			def: 20,
+			atk: 45,
+			def: 30,
 			curEng: 0,
 			MEng: 30,
 			EngSpd: 2,
@@ -1797,26 +1796,26 @@ TetrisManager.enemy_List = {
 			Gold: 20,
 			Exp: 20,
 
-			xrange: 12,
-			yrange: 12,
+			xrange: 9,
+			yrange: 9,
+			AiSpeed: 15
 		},
 		{
 			name: "Slime",
 			category: "enemy",
-			xposition: 1020,
-			yposition: 276,
-			assumeYpos: 276,
-			//avatar: new Sprite(),
+			xposition: 888,
+			yposition: 384,
+			assumeYpos: 384,
 			avatarName: "Slime_Avatar",
-			dx: 600,
-			dy: 300,
+			dx: 420,
+			dy: 200,
 
 			level: 1,
 			curHp: 0,
 			displayHp: 0,
 			Mhp: 200,
-			atk: 35,
-			def: 20,
+			atk: 45,
+			def: 30,
 			curEng: 0,
 			MEng: 30,
 			EngSpd: 2,
@@ -1824,8 +1823,9 @@ TetrisManager.enemy_List = {
 			Gold: 20,
 			Exp: 20,
 
-			xrange: 12,
-			yrange: 12,
+			xrange: 9,
+			yrange: 9,
+			AiSpeed: 15
 		}
 	],
 	"Vampire": [

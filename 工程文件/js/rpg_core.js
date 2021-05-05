@@ -3023,14 +3023,13 @@ Input.keyRepeatInterval = 6;
  * @type Object
  */
 Input.keyMapper = {
-    // Original Keycodes
     9: 'tab',       // tab
     13: 'ok',       // enter
     16: 'shift',    // shift
     17: 'control',  // control
     18: 'control',  // alt
     27: 'escape',   // escape
-    32: 'space',       // space
+    32: 'space',    // space
     33: 'pageup',   // pageup
     34: 'pagedown', // pagedown
     37: 'left',     // left arrow
@@ -3038,8 +3037,14 @@ Input.keyMapper = {
     39: 'right',    // right arrow
     40: 'down',     // down arrow
     45: 'escape',   // insert
-    81: 'pageup',   // Q
-    87: 'pagedown', // W
+    49: 'itemone', // 1
+    50: 'itemtwo', // 2
+    51: 'itemthree', // 3
+    52: 'itemfour', // 4
+    81: 'skillone',   // Q
+    87: 'skilltwo', // W
+    69: 'skillthree', // E
+    82: 'itemshift', // R
     88: 'escape',   // X
     90: 'ok',       // Z
     96: 'escape',   // numpad 0
@@ -3047,10 +3052,7 @@ Input.keyMapper = {
     100: 'left',    // numpad 4
     102: 'right',   // numpad 6
     104: 'up',      // numpad 8
-    120: 'debug',   // F9
-    // Additional keycodes
-    // Move out to a plugin?
-    8: "backspace", 19: "pause", 35: "end", 36: "home", 46: "delete", 48: "0", 49: "itemone", 50: "itemtwo", 51: "itemthree", 52: "itemfour", 53: "5", 54: "6", 55: "7", 56: "8", 57: "9", 59: ";", 65: "a", 66: "b", 67: "c", 68: "d", 69: "skillthree", 70: "f", 71: "g", 72: "h", 73: "i", 74: "j", 75: "k", 76: "l", 77: "m", 78: "n", 79: "o", 80: "p",81: 'skillone', 82: "itemshift", 83: "s", 84: "t", 85: "u", 86: "v",87: 'skilltwo', 89: "y", 97: "numpad_1", 99: "numpad_3", 101: "numpad_5", 103: "numpad_7", 105: "numpad_9", 106: "numpad_star", 107: "numpad_plus", 109: "numpad_minus", 110: "numpad_dot", 111: "numpad_divide", 112: "f1", 113: "f2", 114: "f3", 115: "f4", 116: "f5", 117: "f6", 118: "f7", 119: "f8", 121: "f10", 122: "f11", 123: "f12", 173: "minus", 187: "equals", 188: "comma", 190: "dot", 191: "forward_slash", 192: "backtick", 219: "left_bracket", 220: "backslash", 221: "right_bracket", 222: "single_quote"
+    120: 'debug'    // F9
 };
 
 /**

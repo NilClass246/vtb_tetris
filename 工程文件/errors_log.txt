@@ -4071,3 +4071,206 @@ Stack: TypeError: Cannot set property 'x' of undefined
     at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
     at Array.forEach (<anonymous>)
 
+Date: Tue May 04 2021 12:00:54 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at Window_Options.drawBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:276:38)
+    at Window_Options.addBar (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:244:14)
+    at Window_Options.updateBarSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:340:18)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/AddBarsToOptionsScene.js:163:10)
+    at Window_Options.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/GamepadConfig.js:360:45)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7156:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7154:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+
+Date: Tue May 04 2021 14:25:44 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'x' of undefined
+Stack: TypeError: Cannot read property 'x' of undefined
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4041:47)
+    at ItemSkillPointer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3981:7)
+    at new ItemSkillPointer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3969:18)
+    at Scene_Tetris.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2071:27)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1960:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38387:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Tue May 04 2021 14:41:40 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: this.useItem is not a function
+Stack: TypeError: this.useItem is not a function
+    at ItemSkillPointer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4012:11)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4211:19
+    at Array.forEach (<anonymous>)
+    at Sprite.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4209:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Tetris.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Tetris.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+    at Scene_Tetris.Scene_MenuBase.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_MenuBackground.js:1013:32)
+    at Scene_Tetris.Scene_MenuBase.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_MenuParticle.js:1040:30)
+
+Date: Tue May 04 2021 15:01:28 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at ItemSkillPointer.targetPointer.aim (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4003:29)
+    at ItemSkillPointer.targetPointer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:3980:7)
+    at ItemSkillPointer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4019:37)
+    at new ItemSkillPointer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4012:18)
+    at Scene_Tetris.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2071:27)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1960:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38387:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Tue May 04 2021 15:14:03 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at ItemSkillPointer.targetPointer.aim (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4003:54)
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4094:10)
+    at ItemSkillPointer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4026:7)
+    at new ItemSkillPointer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4014:18)
+    at Scene_Tetris.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2071:27)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1960:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38387:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Tue May 04 2021 15:15:34 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at ItemSkillPointer.targetPointer.aim (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4003:20)
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4094:10)
+    at ItemSkillPointer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4026:7)
+    at new ItemSkillPointer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4014:18)
+    at Scene_Tetris.createPlayerWindows (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2071:27)
+    at Scene_Tetris.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1960:7)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38387:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1994:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
+
+Date: Tue May 04 2021 15:27:46 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot read property 'width' of undefined
+Stack: TypeError: Cannot read property 'width' of undefined
+    at ItemSkillPointer.targetPointer.aim (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4005:36)
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4136:10)
+    at ItemSkillPointer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4039:8)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4211:19
+    at Array.forEach (<anonymous>)
+    at Sprite.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4209:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Tetris.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Tetris.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+
+Date: Tue May 04 2021 15:37:25 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'x' of undefined
+Stack: TypeError: Cannot read property 'x' of undefined
+    at Vector.add2 (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:214:40)
+    at PlayerMover.CharacterMover.movPosVec (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:463:25)
+    at PlayerMover.<anonymous> (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:512:33)
+    at Array.forEach (<anonymous>)
+    at PlayerMover.CharacterMover.updatePosition (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:508:16)
+    at PlayerMover.CharacterMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:476:10)
+    at PlayerMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:750:37)
+    at Game_Player.Game_CharacterBase.updateMover (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1072:17)
+    at Game_Player.Game_CharacterBase.updateAnalogMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1037:10)
+    at Game_Player.Game_CharacterBase.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1024:14)
+
+Date: Tue May 04 2021 15:54:03 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: ReferenceError
+Message: evaVelVec is not defined
+Stack: ReferenceError: evaVelVec is not defined
+    at PlayerMover.CharacterMover.evadingVelVec (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:685:5)
+    at PlayerMover.CharacterMover.checkCollidingCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:675:29)
+    at PlayerMover.CharacterMover.checkColliding (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:536:10)
+    at PlayerMover.<anonymous> (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:511:18)
+    at Array.forEach (<anonymous>)
+    at PlayerMover.CharacterMover.updatePosition (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:508:16)
+    at PlayerMover.CharacterMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:476:10)
+    at PlayerMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:751:37)
+    at Game_Player.Game_CharacterBase.updateMover (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1073:17)
+    at Game_Player.Game_CharacterBase.updateAnalogMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1038:10)
+
+Date: Tue May 04 2021 15:54:27 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: ReferenceError
+Message: evaVelVec is not defined
+Stack: ReferenceError: evaVelVec is not defined
+    at PlayerMover.CharacterMover.evadingVelVec (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:684:15)
+    at PlayerMover.CharacterMover.checkCollidingCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:675:29)
+    at PlayerMover.CharacterMover.checkColliding (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:536:10)
+    at PlayerMover.<anonymous> (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:511:18)
+    at Array.forEach (<anonymous>)
+    at PlayerMover.CharacterMover.updatePosition (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:508:16)
+    at PlayerMover.CharacterMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:476:10)
+    at PlayerMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:751:37)
+    at Game_Player.Game_CharacterBase.updateMover (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1073:17)
+    at Game_Player.Game_CharacterBase.updateAnalogMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1038:10)
+
+Date: Tue May 04 2021 16:14:20 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Math.PI is not a function
+Stack: TypeError: Math.PI is not a function
+    at PlayerMover.CharacterMover.evadingVelVec (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:684:40)
+    at PlayerMover.CharacterMover.checkCollidingCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:675:29)
+    at PlayerMover.CharacterMover.checkColliding (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:536:10)
+    at PlayerMover.<anonymous> (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:511:18)
+    at Array.forEach (<anonymous>)
+    at PlayerMover.CharacterMover.updatePosition (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:508:16)
+    at PlayerMover.CharacterMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:476:10)
+    at PlayerMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:755:37)
+    at Game_Player.Game_CharacterBase.updateMover (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1077:17)
+    at Game_Player.Game_CharacterBase.updateAnalogMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1042:10)
+
+Date: Tue May 04 2021 16:17:52 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: ReferenceError
+Message: relPosVec is not defined
+Stack: ReferenceError: relPosVec is not defined
+    at PlayerMover.CharacterMover.evadingVelVec (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:684:5)
+    at PlayerMover.CharacterMover.checkCollidingCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:675:29)
+    at PlayerMover.CharacterMover.checkColliding (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:536:10)
+    at PlayerMover.<anonymous> (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:511:18)
+    at Array.forEach (<anonymous>)
+    at PlayerMover.CharacterMover.updatePosition (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:508:16)
+    at PlayerMover.CharacterMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:476:10)
+    at PlayerMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:750:37)
+    at Game_Player.Game_CharacterBase.updateMover (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1072:17)
+    at Game_Player.Game_CharacterBase.updateAnalogMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1037:10)
+
+Date: Tue May 04 2021 16:31:33 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: ReferenceError
+Message: posVec is not defined
+Stack: ReferenceError: posVec is not defined
+    at PlayerMover.CharacterMover.evadingVelVec (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:681:21)
+    at PlayerMover.CharacterMover.checkCollidingCharacter (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:675:29)
+    at PlayerMover.CharacterMover.checkColliding (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:536:10)
+    at PlayerMover.<anonymous> (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:511:18)
+    at Array.forEach (<anonymous>)
+    at PlayerMover.CharacterMover.updatePosition (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:508:16)
+    at PlayerMover.CharacterMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:476:10)
+    at PlayerMover.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:755:37)
+    at Game_Player.Game_CharacterBase.updateMover (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1077:17)
+    at Game_Player.Game_CharacterBase.updateAnalogMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/SAN_AnalogMove.js:1042:10)
+

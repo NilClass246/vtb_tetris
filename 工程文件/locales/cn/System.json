@@ -45,5 +45,7 @@
     "easy_option": "简单难度（50%属性）",
     "normal_option": "普通难度（100%属性）",
     "hard_option": "困难难度（150%属性）",
-    "lunatic_option": "地狱难度（200%属性）"
+    "lunatic_option": "地狱难度（200%属性）",
+    "escape_success": "逃脱成功！",
+    "escape_failed": "逃脱失败！"
 }

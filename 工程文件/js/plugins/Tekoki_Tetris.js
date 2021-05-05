@@ -567,13 +567,13 @@ Scene_Tetris.prototype.createBackground = function () {
 
 Scene_Tetris.prototype.update = function () {
 	Scene_MenuBase.prototype.update.call(this);
-	if (Input.isTriggered("pageup")) {
-		var canv = document.getElementById('GameCanvas');
-		canv.requestPointerLock();
-		for (var i = 0; i < this._enemies.length; i++) {
-			TetrisManager.HarmSystem.dealDamage(this.player, this._enemies[i], this._enemies[i].Mhp, "real");
-        }
-    }
+	//if (Input.isTriggered("pageup")) {
+	//	var canv = document.getElementById('GameCanvas');
+	//	canv.requestPointerLock();
+	//	for (var i = 0; i < this._enemies.length; i++) {
+	//		TetrisManager.HarmSystem.dealDamage(this.player, this._enemies[i], this._enemies[i].Mhp, "real");
+     //   }
+    //}
 
 	if (this.beginFlag) {
 		this.beginFlag = false;
@@ -1906,12 +1906,12 @@ Scene_Tetris.prototype.tryEscape = function () {
 		AudioManager.playSe(this.seBoom);
 		this.running = false;
 		this.gameover = true;
-		this.say('成功逃脱！确认以退出...', 200)
+		this.say('{escape_success}', 200)
 		this.StartWindow.deactivate();
 		this.StartWindow.close();
 	} else {
 		this.startGame();
-		this.say('逃脱失败！', 200)
+		this.say('{escape_failed}', 200)
     }
 }
 
@@ -2066,6 +2066,11 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 	this.scoreText.move(this.player.xposition + this.ROW * this.player.xrange + 45, (this.COL - TetrisManager.AboveLines) * this.player.yrange - 15)
 	this._blockLayer.addChild(this.scoreText);
 	this.refreshScoreBoard(this.player);
+	
+	if(Input.isControllerConnected()||ConfigManager.isHandStation){
+		this.itemSkillPointer = new ItemSkillPointer();
+		this._effectLayer.addChild(this.itemSkillPointer);
+	}
 }
 
 Scene_Tetris.prototype.createEnemyWindows = function () {

@@ -1532,7 +1532,14 @@ Game_Actor.prototype.addParam = function(paramId, value){
 	TetrisManager.Temps.Game_Actor_prototype_addParam.call(this, paramId, value);
 	this._updateSpecialParams(paramID, value);
 }
-
+// 0 - 最大生命值 mhp
+// 1 - 最大魔力值 mmp
+// 2 - 力量 （影响攻击力和最大生命值）atk
+// 3 - 防御力 def
+// 4 - 智力 mat
+// 5 - 魔法防御 mdf
+// 6 - 敏捷 agi
+// 7 - 幸运 luk
 Game_Actor.prototype._updateSpecialParams = function(paramID, value){
 	if(paramID==2){
 		this.addParam(0, 10*value);
@@ -1680,9 +1687,27 @@ TetrisManager.HarmSystem.getAtk = function(actor){
 }
 
 TetrisManager.HarmSystem.getPhysPower = function(actor){
+	return Math.floor((actor.atk>30?actor.atk:0)/7);
 }
 
 TetrisManager.HarmSystem.getSpellPower = function(actor){
+	return Math.floor((actor.mat>20?(actor.atk-20):0)/5);
+}
+
+TetrisManager.HarmSystem.getCDReduction = function(actor){
+	var cdr = 0;
+	if(actor.mat>=20){
+		cdr = 0.25*actor.mat-20;
+	}
+	return cdr;
+}
+
+TetrisManager.HarmSystem.getAtkEnergyRate = function(actor){
+	return Math.min(1+actor.agi*0.01, 1.5);
+}
+
+TetrisManager.HarmSystem.getEvadedRate = function(actor){
+	return Math.pow(1.002, actor.agi);
 }
 
 //============================================================
@@ -1695,6 +1720,7 @@ function SkillManager() {
 SkillManager.prototype.initialize = function (skillIDList, isOwnerEnemy) {
 	this.usedFirstSkill = false;
 	this.running = true;
+	this.isGamePadMode = Input.isControllerConnected();
 	this._skill_list = [];
 	this.skillButton_list = [];
 	for (var i = 0; i < skillIDList.length; i++) {
@@ -1733,35 +1759,31 @@ SkillManager.prototype.initialize = function (skillIDList, isOwnerEnemy) {
 }
 
 SkillManager.prototype.startSkill = function (id) {
-	if (this._skill_list[id] && this._skill_list[id].isPrepared && this._skill_list[id].CanUse()) {
-		this.skillButton_list[id].shine();
-		this._skill_list[id].MakeEffect();
-		this._skill_list[id].Reset();
-		this.skillButton_list[id].writeCDTxt(this._skill_list[id].CD);
-    }
+	if(this.running){
+		if (!this.usedFirstSkill) {
+			this.usedFirstSkill = true;
+		}
+		if (this._skill_list[id] && this._skill_list[id].isPrepared && this._skill_list[id].CanUse()) {
+			this.skillButton_list[id].shine();
+			this._skill_list[id].MakeEffect();
+			this._skill_list[id].Reset();
+			this.skillButton_list[id].writeCDTxt(this._skill_list[id].CD);
+		}
+	}
 }
 
 SkillManager.prototype.update = function () {
 	if (this.running) {
 		if (!this.isOwnerEnemy) {
 			if (Input.isTriggered('skillone')) {
-				if (!this.usedFirstSkill) {
-					this.usedFirstSkill = true;
-                }
 				this.startSkill(0);
 			}
 
 			if (Input.isTriggered('skilltwo')) {
-				if (!this.usedFirstSkill) {
-					this.usedFirstSkill = true;
-				}
 				this.startSkill(1);
 			}
 
 			if (Input.isTriggered('skillthree')) {
-				if (!this.usedFirstSkill) {
-					this.usedFirstSkill = true;
-				}
 				this.startSkill(2);
 			}
 		}
@@ -1937,47 +1959,20 @@ itemBoard.prototype.update = function () {
 	Sprite.prototype.update.call(this);
 	if (this.running && (SceneManager._scene.running || SceneManager._scene.emphasizer_added)) {
 		if (Input.isTriggered('itemone')) {
-			var id = this.boardIndex + 0
-			this.useItem(id);
+			this.useItem(0);
 		}
 		if (Input.isTriggered('itemtwo')) {
-			var id = this.boardIndex + 1
-			this.useItem(id);
+			this.useItem(1);
 		}
 		if (Input.isTriggered('itemthree')) {
-			var id = this.boardIndex + 2
-			this.useItem(id);
+			this.useItem(2);
 		}
 		if (Input.isTriggered('itemfour')) {
-			var id = this.boardIndex + 3
-			this.useItem(id);
+			this.useItem(3);
 		}
 
 		if (Input.isTriggered('itemshift')) {
-			if (!this.changingIcon) {
-				if (this._data[this.boardIndex + 4]) {
-					this.boardIndex += 4;
-					this.setIndex += 1;
-					this.lastSet = this.setIndex - 1;
-				} else {
-					this.boardIndex = 0;
-					this.setIndex = 0;
-					this.lastSet = this.iconSets.length - 1;
-				}
-				this.removeChild(this.iconSets[this.setIndex]);
-				this.iconSets[this.setIndex].move(4 * 38, 0);
-				this.iconSets[this.setIndex].opacity = 0;
-				this.addChild(this.iconSets[this.setIndex]);
-				this.changingIcon = true;
-
-				if (this.itemSetPosition == 1) {
-					this.itemArrow.bitmap = this.itemBitmap2;
-					this.itemSetPosition = 2;
-				} else {
-					this.itemArrow.bitmap = this.itemBitmap1;
-					this.itemSetPosition = 1;
-				}
-			}
+			this.shiftBoard();
 		}
 
 		if (this.changingIcon) {
@@ -2001,16 +1996,46 @@ itemBoard.prototype.update = function () {
 
 }
 
+itemBoard.prototype.shiftBoard = function(){
+	if (!this.changingIcon) {
+		if (this._data[this.boardIndex + 4]) {
+			this.boardIndex += 4;
+			this.setIndex += 1;
+			this.lastSet = this.setIndex - 1;
+		} else {
+			this.boardIndex = 0;
+			this.setIndex = 0;
+			this.lastSet = this.iconSets.length - 1;
+		}
+		this.removeChild(this.iconSets[this.setIndex]);
+		this.iconSets[this.setIndex].move(4 * 38, 0);
+		this.iconSets[this.setIndex].opacity = 0;
+		this.addChild(this.iconSets[this.setIndex]);
+		this.changingIcon = true;
+
+		if (this.itemSetPosition == 1) {
+			this.itemArrow.bitmap = this.itemBitmap2;
+			this.itemSetPosition = 2;
+		} else {
+			this.itemArrow.bitmap = this.itemBitmap1;
+			this.itemSetPosition = 1;
+		}
+	}
+}
+
 itemBoard.prototype.useItem = function (id) {
-	var item = this._data[id];
-	if (item && $gameParty.numItems(item) > 0) {
-		SoundManager.playUseItem();
-		this.user().useItem(item);
-		this.applyItem(item);
-		//this.checkCommonEvent();
-		this.Icons[id].writeNum($gameParty.numItems(item))
-		this.Icons[id].shine();
-    }
+	if (this.running && (SceneManager._scene.running || SceneManager._scene.emphasizer_added)) {
+		id = this.boardIndex+id;
+		var item = this._data[id];
+		if (item && $gameParty.numItems(item) > 0) {
+			SoundManager.playUseItem();
+			this.user().useItem(item);
+			this.applyItem(item);
+			//this.checkCommonEvent();
+			this.Icons[id].writeNum($gameParty.numItems(item))
+			this.Icons[id].shine();
+		}
+	}
 }
 
 itemBoard.prototype.user = function () {
@@ -3868,6 +3893,7 @@ ScreenMosaicEffect.prototype.initialize = function () {
 }
 
 ScreenMosaicEffect.prototype.update = function () {
+	//Sprite.prototype.update.call(this);
 	this.constant -= 1;
 	var rndi = Math.floor(Math.random() * this.data.length);
 	var rndj = Math.floor(Math.random() * this.data[rndi].length);
@@ -3936,6 +3962,247 @@ ScoreGauge.prototype.refresh = function () {
 	this.bitmap.fillTrap(x, fillY, width, fillH, fillH, color1, color2, "|", "|");
 	//if (outline) { this.bitmap.outlineTrap(x, fillY, width, height, outlineColor1, outlineColor2, "|", "|") };
 }
+
+//-----------------------------------------------------------------------------
+// 目标sprite的超类
+
+function targetPointer(){
+	this.initialize.apply(this, arguments);
+}
+
+targetPointer.prototype = Object.create(Sprite.prototype);
+targetPointer.prototype.constructor = targetPointer;
+
+targetPointer.prototype.initialize = function(target){
+	Sprite.prototype.initialize.call(this);
+	this.w = 0;
+	this.h = 0;
+	if(target){
+		this.aim(target);
+	}
+}
+
+targetPointer.prototype.update = function(){
+	Sprite.prototype.update.call(this);
+	if (this.scale.x != this.targetScaleX) {
+		this.scale.x += (this.targetScaleX - this.scale.x) / TetrisManager.GaugeConstant;
+	}
+
+	if (this.scale.y != this.targetScaleY) {
+		this.scale.y += (this.targetScaleY - this.scale.y) / TetrisManager.GaugeConstant;
+	}
+
+	if (this.x != this.targetX) {
+		this.x += (this.targetX - this.x) / TetrisManager.GaugeConstant;
+	}
+
+	if (this.y != this.targetY) {
+		this.y += (this.targetY - this.y) / TetrisManager.GaugeConstant;
+	}
+}
+
+targetPointer.prototype.aim = function(target){
+	this.targetScaleX = target.bitmap.width/this.w;
+	this.targetScaleY = target.bitmap.height/this.h;
+
+	this.targetX = target.x;
+	this.targetY = target.y;
+}
+
+//-----------------------------------------------------------------------------
+
+function ItemSkillPointer(){
+	this.initialize.apply(this, arguments);
+}
+
+ItemSkillPointer.prototype = Object.create(targetPointer.prototype);
+ItemSkillPointer.prototype.constructor = ItemSkillPointer;
+
+ItemSkillPointer.prototype.initialize = function(){
+	targetPointer.prototype.initialize.call(this);
+	this.w = 200;
+	this.h = 200;
+	this.button_list = ['skillone, skilltwo, skillthree, itemone, itemtwo, itemthree, itemfour']
+	this.current_index = -1;
+	this.bitmap = ImageManager.loadPicture("Target");
+	this.iconsetNumber = SceneManager._scene._playerItemBoard.boardIndex;
+	this.changeIndex(1);
+}
+
+ItemSkillPointer.prototype.update = function(){
+	targetPointer.prototype.update.call(this);
+
+	if(Input.isTriggered('pageup')){
+		this.changeIndex(-1);
+	}
+
+	if(Input.isTriggered('pagedown')){
+		this.changeIndex(1);
+	}
+
+	if(Input.isTriggered('ok')){
+		if(SceneManager._scene.running){
+			var itemManager = SceneManager._scene._playerItemBoard;
+			var SkillManager = SceneManager._scene._Skill_Manager;
+			switch(this.current_index){
+				case 0:
+					SkillManager.startSkill(0);
+					break;
+				case 1:
+					SkillManager.startSkill(1);
+					break;
+				case 2:
+					SkillManager.startSkill(2);
+					break;
+				case 3:
+					itemManager.useItem(0);
+					break;
+				case 4:
+					itemManager.useItem(1);
+					break;
+				case 5:
+					itemManager.useItem(2);
+					break;
+				case 6:
+					itemManager.useItem(3);
+					break;
+			}
+		}
+	}
+}
+
+ItemSkillPointer.prototype.changeIndex = function(diff){
+	this.current_index+=diff;
+	this.changeIndexTo(this.current_index);
+}
+
+ItemSkillPointer.prototype.changeIndexTo = function(index){
+	var itemManager = SceneManager._scene._playerItemBoard;
+	var SkillManager = SceneManager._scene._Skill_Manager;
+	this.iconsetNumber = SceneManager._scene._playerItemBoard.boardIndex;
+	this.current_index = index;
+	if(this.current_index<0){
+		this.current_index = 6;
+	}
+
+	if(this.current_index>6){
+		itemManager.shiftBoard();
+		this.current_index = 3;
+	}
+	if([0, 1, 2].contains(this.current_index)&&!SkillManager.running){
+		this.visible = false;
+	}else{
+		this.visible = true;
+	}
+
+	if([0, 1, 2].contains(this.current_index)&&!SkillManager.running){
+		this.visible = false;
+	}else{
+		this.visible = true;
+	}
+
+	switch(this.current_index){
+		case 0:
+
+			if(SkillManager.skillButton_list[0]){
+				this.visible = true;
+				var button = SkillManager.skillButton_list[0];
+				var target = {
+					x: SkillManager._skill_board.x + button.x,
+					y: SkillManager._skill_board.y + button.y,
+					bitmap: button.bitmap
+				}
+				this.aim(target);
+			}else{
+				this.visible = false;
+			}
+			break;
+		case 1:
+			if(SkillManager.skillButton_list[1]){
+				var button = SkillManager.skillButton_list[1];
+				var target = {
+					x: SkillManager._skill_board.x + button.x,
+					y: SkillManager._skill_board.y + button.y,
+					bitmap: button.bitmap
+				}
+				this.aim(target);
+			}else{
+				this.changeIndex(-1);
+			}
+			break;
+		case 2:
+			if(SkillManager.skillButton_list[2]){
+				var button = SkillManager.skillButton_list[2];
+				var target = {
+					x: SkillManager._skill_board.x + button.x,
+					y: SkillManager._skill_board.y + button.y,
+					bitmap: button.bitmap
+				}
+				this.aim(target);
+			}else{
+				this.changeIndex(-1);
+			}
+			break;
+		case 3:
+			if(itemManager.Icons[this.iconsetNumber+0]){
+				var icon = itemManager.Icons[this.iconsetNumber+0];
+				var target = {
+					x: itemManager.x + icon.x,
+					y: itemManager.y + icon.y,
+					bitmap : new Bitmap(32, 32)
+				}
+				this.aim(target);
+			}else{
+				itemManager.shiftBoard();
+				this.changeIndexTo(3);
+			}
+			break;
+		case 4:
+			if(itemManager.Icons[this.iconsetNumber+1]){
+				var icon = itemManager.Icons[this.iconsetNumber+1];
+				var target = {
+					x: itemManager.x + icon.x,
+					y: itemManager.y + icon.y,
+					bitmap : new Bitmap(32, 32)
+				}
+				this.aim(target);
+			}else{
+				itemManager.shiftBoard();
+				this.changeIndexTo(3);
+			}
+			break;
+		case 5:
+			if(itemManager.Icons[this.iconsetNumber+2]){
+				var icon = itemManager.Icons[this.iconsetNumber+2];
+				var target = {
+					x: itemManager.x + icon.x,
+					y: itemManager.y + icon.y,
+					bitmap : new Bitmap(32, 32)
+				}
+				this.aim(target);
+			}else{
+				itemManager.shiftBoard();
+				this.changeIndexTo(3);
+			}
+			break;
+		case 6:
+			if(itemManager.Icons[this.iconsetNumber+3]){
+				var icon = itemManager.Icons[this.iconsetNumber+3];
+				var target = {
+					x: itemManager.x + icon.x,
+					y: itemManager.y + icon.y,
+					bitmap : new Bitmap(32, 32)
+				}
+				this.aim(target);
+			}else{
+				itemManager.shiftBoard();
+				this.changeIndexTo(3);
+			}
+			break;
+
+	}
+}
+
 
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢀⢀⢀⢀⢀⢀⢀⢀⢀⣀⣤⣴⣶⣾⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀
 //⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢀⢀⢀⢀⢀⢀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄
