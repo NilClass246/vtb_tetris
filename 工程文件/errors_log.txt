@@ -4315,3 +4315,302 @@ Stack: ReferenceError: movementX is not defined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1992:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1918:14)
 
+Date: Wed May 05 2021 16:10:21 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameSystem.versionId is not a function
+Stack: TypeError: $gameSystem.versionId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1875:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:15:08 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameMap.mapId is not a function
+Stack: TypeError: $gameMap.mapId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1876:46)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:16:00 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameSystem.versionId is not a function
+Stack: TypeError: $gameSystem.versionId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1876:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:17:05 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gamePlayer.reserveTransfer is not a function
+Stack: TypeError: $gamePlayer.reserveTransfer is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1876:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:17:33 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gamePlayer.reserveTransfer is not a function
+Stack: TypeError: $gamePlayer.reserveTransfer is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1877:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:20:15 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameSystem.versionId is not a function
+Stack: TypeError: $gameSystem.versionId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1875:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1863:10)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:29:30 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameSystem.versionId is not a function
+Stack: TypeError: $gameSystem.versionId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1875:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:31:18 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameSystem.versionId is not a function
+Stack: TypeError: $gameSystem.versionId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1875:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:34:25 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameSystem.versionId is not a function
+Stack: TypeError: $gameSystem.versionId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1875:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Wed May 05 2021 16:38:31 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Load
+Name: TypeError
+Message: $gameSystem.versionId is not a function
+Stack: TypeError: $gameSystem.versionId is not a function
+    at Scene_Load.reloadMapIfUpdated (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1875:21)
+    at Scene_Load.onLoadSuccess (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_FakeLoadScreen.js:263:8)
+    at Scene_Load.onSavefileOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1854:14)
+    at Window_SavefileList.Window_Selectable.callHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:965:31)
+    at Window_SavefileList.Window_Selectable.callOkHandler (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1238:10)
+    at Window_SavefileList.Window_Selectable.processOk (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1223:14)
+    at Window_SavefileList.Window_Selectable.processHandling (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1092:18)
+    at Window_SavefileList.Window_Selectable.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1049:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7190:19
+    at Array.forEach (<anonymous>)
+
+Date: Thu May 06 2021 17:00:23 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Options
+Name: undefined
+Message: Uncaught TypeError: Cannot read property 'call' of null
+Filename: chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Config.js
+Stack: undefined
+
+Date: Thu May 06 2021 19:28:58 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Skill
+Name: TypeError
+Message: Cannot read property '_signedSkills' of null
+Stack: TypeError: Cannot read property '_signedSkills' of null
+    at Window_SkillSign.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:227:61)
+    at Window_SkillSign.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:217:10)
+    at new Window_SkillSign (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:205:21)
+    at Scene_Skill.createSignWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1432:24)
+    at Scene_Skill.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1397:10)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38387:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Thu May 06 2021 19:31:05 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Skill
+Name: TypeError
+Message: Cannot read property '_signedSkills' of null
+Stack: TypeError: Cannot read property '_signedSkills' of null
+    at Window_SkillSign.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:228:61)
+    at Window_SkillSign.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:218:10)
+    at new Window_SkillSign (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Sign.js:206:21)
+    at Scene_Skill.createSignWindow (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1432:24)
+    at Scene_Skill.create (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1397:10)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38387:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Thu May 06 2021 19:32:42 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Skill
+Name: TypeError
+Message: Cannot read property '_signedItems' of null
+Stack: TypeError: Cannot read property '_signedItems' of null
+    at Window_SkillList.Window_Base.drawItemName (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:655:56)
+    at Window_SkillList.drawItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2277:14)
+    at Window_SkillList.Window_Selectable.drawAllItems (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1323:18)
+    at Window_SkillList.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2304:10)
+    at Window_SkillList.setActor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2208:14)
+    at Scene_Skill.refreshActor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1453:22)
+    at Scene_Skill.start (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:1402:10)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38397:33)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Thu May 06 2021 19:32:42 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Skill
+Name: TypeError
+Message: Cannot read property '_signedItems' of null
+Stack: TypeError: Cannot read property '_signedItems' of null
+    at Window_SkillList.Window_Base.drawItemName (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:655:56)
+    at Window_SkillList.drawItem (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2277:14)
+    at Window_SkillList.Window_Selectable.drawAllItems (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:1323:18)
+    at Window_SkillList.refresh (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2304:10)
+    at Window_SkillList.setStypeId (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2216:14)
+    at Window_SkillType.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_windows.js:2133:27)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7261:19
+    at Array.forEach (<anonymous>)
+    at WindowLayer.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:7259:19)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+
+Date: Tue May 11 2021 16:26:57 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: ReferenceError
+Message: f is not defined
+Stack: ReferenceError: f is not defined
+    at Scene_Puzzle.isGameOver (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:335:1)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Tue May 11 2021 21:28:43 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: RangeError
+Message: Maximum call stack size exceeded
+Stack: RangeError: Maximum call stack size exceeded
+    at itemBoard.shiftBoard (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2006:42)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4211:17)
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4113:7)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4212:10)
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4113:7)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4212:10)
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4113:7)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4212:10)
+    at ItemSkillPointer.changeIndex (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4113:7)
+    at ItemSkillPointer.changeIndexTo (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:4212:10)
+
+Date: Thu May 13 2021 19:44:38 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: Cannot set property 'x' of undefined
+Stack: TypeError: Cannot set property 'x' of undefined
+    at ShiningText.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2319:16)
+    at new ShiningText (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2309:18)
+    at Scene_Tetris.addAutoSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2095:20)
+    at Scene_Tetris.startAutoMode (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:279:7)
+    at AutoModeTimer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:4332:8)
+    at new AutoModeTimer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:4323:18)
+    at Object.MakeEffect (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:2240:12)
+    at SkillManager.startSkill (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1779:25)
+    at SkillManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1790:10)
+    at Scene_Tetris.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:635:24)
+
+Date: Thu May 13 2021 20:20:41 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Tetris
+Name: TypeError
+Message: this.rewrite is not a function
+Stack: TypeError: this.rewrite is not a function
+    at ShiningText.Text_Base.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2278:7)
+    at ShiningText.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2316:33)
+    at new ShiningText (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:2309:18)
+    at Scene_Tetris.addAutoSprite (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2095:20)
+    at Scene_Tetris.startAutoMode (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:279:7)
+    at AutoModeTimer.initialize (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:4332:8)
+    at new AutoModeTimer (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:4323:18)
+    at Object.MakeEffect (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_BattleList.js:2240:12)
+    at SkillManager.startSkill (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1779:25)
+    at SkillManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1790:10)
+
+Date: Thu May 13 2021 21:02:36 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'box' of undefined
+Stack: TypeError: Cannot read property 'box' of undefined
+    at Object.TetrisManager.collide (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1099:16)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1107:47)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:346:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:256:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+

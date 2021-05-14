@@ -408,10 +408,14 @@ Scene_Boot.prototype.start = function() {
         Window_TitleCommand.initCommandPosition();
 
         ConfigManager.load();
-        ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap))
+        if(ConfigManager.TempKeyMapper){
+            //console.log(ConfigManager.TempKeyMapper);
+            ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.TempKeyMapper));
+            ConfigManager.TempKeyMapper = null;
+        }
         ConfigManager.applyKeyConfig();
-        ConfigManager.save();
-        ConfigManager.load();
+        //ConfigManager.save();
+        //ConfigManager.load();
         Input.gamepadMapper = Input.defaultgamepadInput;
     }
     this.updateDocumentTitle();
@@ -579,6 +583,9 @@ Scene_Map.prototype.create = function() {
     this._transfer = $gamePlayer.isTransferring();
     var mapId = this._transfer ? $gamePlayer.newMapId() : $gameMap.mapId();
     DataManager.loadMapData(mapId);
+    //if(ConfigManager.isHandStation){
+		//TetrisManager.pointerLock();
+	//}
 };
 
 Scene_Map.prototype.isReady = function() {

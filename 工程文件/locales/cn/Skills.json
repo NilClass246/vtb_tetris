@@ -4,5 +4,7 @@
 	"taunt": "战术嘲讽",
 	"taunt_desc": "使目标敌人受到的伤害和造成的伤害提高。",
 	"T_Soul": "T旋之魂",
-	"T_Soul_desc": "使接下来的所有方块变为T方块。"
+	"T_Soul_desc": "使接下来的所有方块变为T方块。",
+	"scarecrow": "稻草人",
+    "scarecrow_desc": "异色瞳的稻草人\n感觉有生命的样子\n\n自动下落方块20秒"
 }

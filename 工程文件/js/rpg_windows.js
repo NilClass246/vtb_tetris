@@ -652,11 +652,12 @@ Window_Base.prototype.drawItemName = function(item, x, y, width) {
         this.resetTextColor();
         this.drawIcon(item.iconIndex, x + 2, y + 2);
         this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
-        if ($gameActors.actor($gameVariables.value(32))._signedItems.contains(item)) {
+        var actorNum = $gameVariables.value(32)||1;
+        if ($gameActors.actor(actorNum)._signedItems.contains(item)) {
             this.contents.blt(TetrisManager.starPic, 0, 0, 16, 16, x, y);
         }
 
-        if ($gameActors.actor($gameVariables.value(32))._signedSkills.contains(item)) {
+        if ($gameActors.actor(actorNum)._signedSkills.contains(item)) {
             this.contents.blt(TetrisManager.starPic, 0, 0, 16, 16, x, y);
         }
     }
@@ -2720,7 +2721,7 @@ Window_Options.prototype.initialize = function() {
 };
 
 Window_Options.prototype.windowWidth = function() {
-    return 400;
+    return 600;
 };
 
 Window_Options.prototype.windowHeight = function() {

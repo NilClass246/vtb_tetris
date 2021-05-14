@@ -93,5 +93,8 @@
 
     "Prologue_BeforeBattle_1_1": "前面的战斗将会非常的艰苦，要不要再回头多探索一下呢？",
     "Prologue_BeforeBattle_2_1": "前方有个强大的气息……\n带好你所有的道具和装备，决战就在前方。",
-    "Prologue_BeforeBattle_2_2": "……"
+    "Prologue_BeforeBattle_2_2": "……",
+    "inst_skills1": "在与最终BOSS战斗前，先装备上勇者的技能吧\n要想装备技能，请按下X键进入菜单。",
+    "inst_skills2": "选中并打开技能窗口。",
+    "inst_skills3": "选中技能并按下shift键即可将道具登记在快捷背包上。\n注意，战斗中只能使用登记在背包中的技能。\n选中你想登记的技能，结束本教程。"
 }

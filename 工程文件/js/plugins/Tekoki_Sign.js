@@ -172,7 +172,8 @@ Window_Sign.prototype.refresh = function () {
     }
 
     this._icons = [];
-    var items = $gameActors.actor($gameVariables.value(32))._signedItems;
+    var actorNum = $gameVariables.value(32)||1;
+    var items = $gameActors.actor(actorNum)._signedItems;
     var x = 32;
     var y = 16;
 
@@ -224,7 +225,8 @@ Window_SkillSign.prototype.refresh = function () {
     }
     this.skillButton_list = [];
     var skillIDs = [];
-    var skills = $gameActors.actor($gameVariables.value(32))._signedSkills;
+    var actorNum = $gameVariables.value(32)||1;
+    var skills = $gameActors.actor(actorNum)._signedSkills;
     for (var i = 0; i < skills.length; i++) {
         if (skills[i].id !== 1) {
             skillIDs.push(String(skills[i].id));
@@ -254,15 +256,17 @@ Window_ItemList.prototype.update = function () {
     Window_Selectable.prototype.update.call(this);
     if (SceneManager._scene instanceof Scene_Item) {
         if (Input.isTriggered('shift')) {
+            var actorNum = $gameVariables.value(32)||1;
             SoundManager.playOk();
-            $gameActors.actor($gameVariables.value(32)).signItem(this.item());
+            $gameActors.actor(actorNum).signItem(this.item());
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }
 
         if (Input.isTriggered('control')) {
+            var actorNum = $gameVariables.value(32)||1;
             SoundManager.playOk();
-            $gameActors.actor($gameVariables.value(32)).unsignItem(this.item());
+            $gameActors.actor(actorNum).unsignItem(this.item());
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }
@@ -275,15 +279,17 @@ Window_SkillList.prototype.update = function () {
     Window_Selectable.prototype.update.call(this);
     if (SceneManager._scene instanceof Scene_Skill) {
         if (Input.isTriggered('shift')) {
+            var actorNum = $gameVariables.value(32)||1;
             SoundManager.playOk();
-            $gameActors.actor($gameVariables.value(32)).signSkill(this.item());
+            $gameActors.actor(actorNum).signSkill(this.item());
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }
 
         if (Input.isTriggered('control')) {
+            var actorNum = $gameVariables.value(32)||1;
             SoundManager.playOk();
-            $gameActors.actor($gameVariables.value(32)).unsignSkill(this.item());
+            $gameActors.actor(actorNum).unsignSkill(this.item());
             TetrisManager.requestUpdateSign = true;
             this.refresh();
         }

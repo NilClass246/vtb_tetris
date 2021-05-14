@@ -38413,6 +38413,7 @@ SceneManager.updateScene = function() {
 
         if (this.isCurrentSceneStarted()) {
             this._scene.update();
+            //Todo: changed
             if (TutorialManager) {
                 TutorialManager.update();
             }

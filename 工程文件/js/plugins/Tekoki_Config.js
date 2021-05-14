@@ -54,7 +54,7 @@ ConfigManager.SoftSpeed = 20;
 ConfigManager.isDancePad = false;
 ConfigManager.Trembling = true;
 ConfigManager.isHandStation = false;
-ConfigManager.HandStationSensitivity = 100;
+ConfigManager.HandStationSensitivity = 5;
 ConfigManager.isLeftHanded = false;
 
 Input.defaultDancePadInput = {
@@ -138,11 +138,12 @@ Window_Options.prototype.addGeneralOptions = function () {
     this.addCommand('方块移动速度(ARR)设置', 'ARRParams', true);
     this.addCommand('方块灵敏度(DAS)设置', 'DASParams', true);
     this.addCommand('软降倍率设置', 'SoftParams', true);
+    this.addCommand('俄罗斯方块游戏测试', 'TetrisTest');
     this.addCommand('是否应用跳舞毯配置', 'isDancePad');
     this.addCommand('是否应用下落抖动', 'Trembling');
-    this.addCommand('是否应用手台配置', 'isHandStation');
-    this.addCommand('左惯用手模式', 'isLeftHanded')
-    this.addCommand('手台灵敏度配置', 'HandStationSensitivity');
+    this.addCommand('是否Virgoo Fever控制器配置', 'isHandStation');
+    this.addCommand('Virgoo Fever左惯用手模式', 'isLeftHanded')
+    this.addCommand('Virgoo Fever灵敏度配置', 'HandStationSensitivity');
 
 }
 
@@ -152,7 +153,8 @@ Window_Options.prototype.drawItem = function (index) {
     if (this.commandSymbol(index) === 'ARRParams'
         || this.commandSymbol(index) === 'DASParams'
         || this.commandSymbol(index) === 'SoftParams'
-        || this.commandSymbol(index) === 'HandStationSensitivity') {
+        || this.commandSymbol(index) === 'HandStationSensitivity'
+        || this.commandSymbol(index) === 'TetrisTest') {
         var rect = this.itemRectForText(index);
         var text = this.commandName(index);
         this.resetTextColor();
@@ -171,27 +173,61 @@ Window_Options.prototype.processOk = function () {
         || this.commandSymbol(this.index()) === 'SoftParams'
         || this.commandSymbol(this.index()) === 'HandStationSensitivity') {
         Window_Command.prototype.processOk.call(this);
+    }else if(this.commandSymbol(this.index()) === 'TetrisTest'){
+        TetrisManager.puzzleID = -1;
+        SceneManager.push(Scene_Puzzle);
     } else {
         TetrisManager.Temps.Window_Options_processOk.call(this);
-        if(this.commandSymbol(this.index()) == 'isHandStation'){
-            if(ConfigManager.isHandStation && ConfigManager.isLeftHanded){
-                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftHandStationMap));
-            }
-            if(ConfigManager.isHandStation && !ConfigManager.isLeftHanded){
-                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.RightHandStationMap));
-            }
-        }
+        this.processHandStation();
 
-        if(this.commandSymbol(this.index()) == 'isLeftHanded'){
-            if(ConfigManager.isHandStation && ConfigManager.isLeftHanded){
-                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftHandStationMap));
-            }
-            if(ConfigManager.isHandStation && !ConfigManager.isLeftHanded){
-                ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.RightHandStationMap));
-            }
-        }
     }
 };
+
+Window_Options.prototype.processHandStation = function(){
+    if(this.commandSymbol(this.index()) == 'isHandStation'){
+        if(ConfigManager.isHandStation && ConfigManager.isLeftHanded){
+            ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftHandStationMap));
+            ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftMapHandStationMap));
+            //TetrisManager.pointerLock();
+
+        }else if(ConfigManager.isHandStation && !ConfigManager.isLeftHanded){
+            ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.RightHandStationMap));
+            ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.RightMapHandStationMap));
+            //TetrisManager.pointerLock();
+        }else if(!ConfigManager.isHandStation){
+            ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap));
+            ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap));
+            //TetrisManager.pointerUnlock();
+        }
+        ConfigManager.applyKeyConfig();
+        ConfigManager.save();
+    }
+
+    if(this.commandSymbol(this.index()) == 'isLeftHanded'){
+        if(ConfigManager.isHandStation && ConfigManager.isLeftHanded){
+            ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftHandStationMap));
+            ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.LeftMapHandStationMap));
+            //TetrisManager.pointerLock();
+        }else if(ConfigManager.isHandStation && !ConfigManager.isLeftHanded){
+            ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.RightHandStationMap));
+            ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.RightMapHandStationMap));
+            //TetrisManager.pointerLock();
+        }else if(!ConfigManager.isHandStation){
+            ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap));
+            ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap));
+            //TetrisManager.pointerUnlock();
+        }
+        ConfigManager.applyKeyConfig();
+        ConfigManager.save();
+    }
+}
+TetrisManager.onfocus = window.onfocus || function(){};
+window.onfocus = function(){
+    TetrisManager.onfocus.call(this);
+    //if(ConfigManager.isHandStation){
+        //TetrisManager.pointerLock();
+    //}
+}
 
 TetrisManager.Temps.Window_Options_changeValue = Window_Options.prototype.changeValue;
 Window_Options.prototype.changeValue = function (symbol, value) {
@@ -201,6 +237,8 @@ Window_Options.prototype.changeValue = function (symbol, value) {
     } else {
         Input.gamepadMapper = Input.defaultgamepadInput;
     }
+
+    this.processHandStation();
 };
 
 //=============================================================================
@@ -262,6 +300,8 @@ Tetris_numberInput.prototype.initialize = function (index) {
     Window_Selectable.prototype.initialize.call(this, 0, 0, 0, 0);
     this._number = 0;
     this._maxDigits = 1;
+    this._maxValue = null;
+    this._minValue = null
     this.IndEx = index
     this.openness = 0;
     this._messageWindow = new Tetris_Window(0, 424, 1200, 200);
@@ -290,10 +330,18 @@ Tetris_numberInput.prototype.start = function () {
             this._messageWindow.drawText("数值越大越快", 0, 28)
             break;
         case 3:
-            this._maxDigits = 3;
+            this._maxDigits = 2;
+            this._maxValue = 10;
+            this._minValue = 1;
             this._number = ConfigManager.HandStationSensitivity;
             this._messageWindow.drawText("手台旋转的灵敏度，在不使用手台进行游戏的情况下可以不用设置", 0, 0)
-            this._messageWindow.drawText("数值越小越灵敏", 0, 28)
+            this._messageWindow.drawText("数值越小越灵敏， 仅可设置在1-10之间", 0, 28)
+            break;
+    }
+    if(!this._number){
+        this._number = 0;
+    }else{
+        this._number = Number(this._number);
     }
     this._number = this._number.clamp(0, Math.pow(10, this._maxDigits) - 1);
     this.updatePlacement();
@@ -425,6 +473,9 @@ Tetris_numberInput.prototype.changeDigit = function (up) {
         n = (n + 9) % 10;
     }
     this._number += n * place;
+    switch(this.IndEx){
+
+    }
     this.refresh();
     SoundManager.playCursor();
 };
@@ -446,6 +497,14 @@ Tetris_numberInput.prototype.isOkTriggered = function () {
 };
 
 Tetris_numberInput.prototype.processOk = function () {
+    if(this._minValue&&this._number<this._minValue){
+        SoundManager.playBuzzer();
+        return;
+    }
+    if(this._maxValue && this._number>this._maxValue){
+        SoundManager.playBuzzer();
+        return;
+    }
     SoundManager.playOk();
     switch (this.IndEx) {
         case 0:

@@ -3116,15 +3116,15 @@ Input.update = function () {
         }
         this._latestButtons = [];
         this._latestGamePadButtons = [];
+        if(ConfigManager.isHandStation){
+            Input.updateHandStation();
+        }
         for (var name in this._currentState) {
             if (this._currentState[name] && !this._previousState[name]) {
                 this._latestButtons.push(name);
                 this._latestButton = name;
                 this._pressedTime = 0;
                 this._date = Date.now();
-            }
-            if(ConfigManager.isHandStation&& (SceneManager._scene instanceof Scene_Tetris||SceneManager._scene instanceof Scene_Puzzle)){
-                Input.updateHandStation();
             }
 
             if (this._currentGamePadState[name] && !this._previousGamePadState[name]) {
@@ -3154,55 +3154,124 @@ document.addEventListener("mousemove", function(e){
         var sensitivity = ConfigManager.HandStationSensitivity;
         var x = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
         var y = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
-        if(Math.abs(x)>sensitivity/2){
-            Input.movementX +=x;
-        }
-        if(Math.abs(y)>sensitivity/2){
-            Input.movementY +=y
-        }
+        Input.movementX +=x;
+        Input.movementY +=y;
         //Input.movementX += e.movementX || e.mozMovementX || e.webkitMovementX || 0;
         //Input.movementY += e.movementY || e.mozMovementY || e.webkitMovementY || 0;
     }
 });
 
 Input.updateHandStation = function(){
-    var sentivitity = ConfigManager.HandStationSensitivity;
-    if(ConfigManager.isLeftHanded){
-        if(this.movementX>=sentivitity){
-            this._latestButtons.push("control");
-            this.movementX = 0;
-        }
-        if(this.movementX<=-sentivitity){
-            this._latestButtons.push("up");
-            this.movementY = 0;
-        }
-    
-        if(this.movementY>=sentivitity){
-            this._latestButtons.push("pageup");
-            this.movementX = 0;
-        }
-        if(this.movementY<=-sentivitity){
-            this._latestButtons.push("pagedown");
-            this.movementX = 0;
-        }
-    }else{
-        if(this.movementY>=sentivitity){
-            this._latestButtons.push("up");
-            this.movementY = 0;
-        }
-        if(this.movementY<=-sentivitity){
-            this._latestButtons.push("control");
-            this.movementY = 0;
-        }
-        if(this.movementX>=sentivitity){
-            this._latestButtons.push("pagedown");
-            this.movementX = 0;
-        }
-        if(this.movementX<=-sentivitity){
-            this._latestButtons.push("pageup");
-            this.movementX = 0;
+    var sentivitity = ConfigManager.HandStationSensitivity+10;
+    if(SceneManager._scene instanceof Scene_Tetris||SceneManager._scene instanceof Scene_Puzzle){
+        if(ConfigManager.isLeftHanded){
+            //console.log("yes")
+            if(this.movementX>=sentivitity){
+                this._currentState["control"] = true;
+                this.movementX = 0;
+            }else{
+                this._currentState["control"] = false;
+            }
+            if(this.movementX<=-sentivitity){
+                this._currentState["up"] = true;
+                this.movementX = 0;
+            }else{
+                this._currentState["up"] = false;
+            }
+        
+            if(this.movementY>=sentivitity){
+                this._currentState["pageup"] = true;
+                this.movementY = 0;
+            }else{
+                this._currentState["pageup"] = false;
+            }
+            if(this.movementY<=-sentivitity){
+                this._currentState["pagedown"] = true;
+                this.movementY = 0;
+            }else{
+                this._currentState["pagedown"] = false;
+            }
+        }else{
+            if(this.movementY>=sentivitity){
+                this._currentState["up"] = true;
+                this.movementY = 0;
+            }else{
+                this._currentState["up"] = false;
+            }
+            if(this.movementY<=-sentivitity){
+                this._currentState["control"] = true;
+                this.movementY = 0;
+            }else{
+                this._currentState["control"] = false;
+            }
+            if(this.movementX>=sentivitity){
+                this._currentState["pagedown"] = true;
+                this.movementX = 0;
+            }else{
+                this._currentState["pagedown"] = false;
+            }
+            if(this.movementX<=-sentivitity){
+                this._currentState["pageup"] = true;
+                this.movementX = 0;
+            }else{
+                this._currentState["pageup"] = false;
+            }
         }
     }
+    // else{
+    //     if(ConfigManager.isLeftHanded){
+    //         if(this.movementX>=sentivitity){
+    //             this._currentState["up"] = true;
+    //             this.movementX = 0;
+    //         }else{
+    //             this._currentState["up"] = false;
+    //         }
+    //         if(this.movementX<=-sentivitity){
+    //             this._currentState["down"] = true;
+    //             this.movementX = 0;
+    //         }else{
+    //             this._currentState["down"] = false;
+    //         }
+        
+    //         if(this.movementY>=sentivitity){
+    //             this._currentState["left"] = true;
+    //             this.movementY = 0;
+    //         }else{
+    //             this._currentState["left"] = false;
+    //         }
+    //         if(this.movementY<=-sentivitity){
+    //             this._currentState["right"] = true;
+    //             this.movementY = 0;
+    //         }else{
+    //             this._currentState["right"] = false;
+    //         }
+    //     }else{
+    //         if(this.movementY>=sentivitity){
+    //             this._currentState["down"] = true;
+    //             this.movementY = 0;
+    //         }else{
+    //             this._currentState["down"] = false;
+    //         }
+    //         if(this.movementY<=-sentivitity){
+    //             this._currentState["up"] = true;
+    //             this.movementY = 0;
+    //         }else{
+    //             this._currentState["up"] = false;
+    //         }
+    //         if(this.movementX>=sentivitity){
+    //             this._currentState["right"] = true;
+    //             this.movementX = 0;
+    //         }else{
+    //             this._currentState["right"] = false;
+    //         }
+    //         if(this.movementX<=-sentivitity){
+    //             this._currentState["left"] = true;
+    //             this.movementX = 0;
+    //         }else{
+    //             this._currentState["left"] = false;
+    //         }
+    //     }
+    // }
 
     //console.log("movementX = "+movementX+" movementY = "+movementY);
 }
@@ -9216,13 +9285,13 @@ JsonEx._decode = function(value, circular, registry) {
                 if(value[key] && value[key]['@r']){
                     //object is reference
                     circular.push([key, value, value[key]['@r']]);
+                }
                 value[key] = this._decode(value[key], circular, registry);
             }
         }
     }
     return value;
 };
-}
 
 /**
  * @static

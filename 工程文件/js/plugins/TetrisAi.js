@@ -9,9 +9,15 @@ Position_Manager.prototype.initialize = function () {
 	this.emptylines = 0;
 }
 
-Position_Manager.prototype.inputData = function (field, cur) {
+Position_Manager.prototype.inputData = function (field, cur, curx, cury) {
 	this.field = TetrisManager.copy2DArray(field);
 	this.cur = cur;
+	this.initialPosition = {
+		x: curx,
+		y: cury,
+		rotation: this.cur.rotation,
+		rotationTime: this.cur.rotationTime
+	}
 	this.filledlines = []
 	for (var i = 0; i < this.field.length; i++) {
 		for (var j = 0; j < this.field[i].length; j++) {
@@ -216,17 +222,7 @@ Position_Manager.prototype.findBestSolution = function () {
 Position_Manager.prototype.render_ActionQueue = function () {
 	var BestSolution = this.findBestSolution();
 	var ActionQueue = [];
-	if (this.cur.type == "o") {
-		var x = TetrisManager.blockInitalPos + 1;
-	} else {
-		var x = TetrisManager.blockInitalPos;
-    }
-	var tempCur = {
-		x: x,
-		y: 0,
-		rotation: 0,
-		rotationTime: 0
-	}
+	var tempCur = JSON.parse(JSON.stringify(this.initialPosition));
 
 	while (tempCur.rotation < BestSolution.rotation) {
 		tempCur = this.RotateRight(tempCur);

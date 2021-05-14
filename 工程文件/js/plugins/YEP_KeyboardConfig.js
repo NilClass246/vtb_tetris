@@ -622,6 +622,7 @@ Input._switchButton = function(button) {
 // ConfigManager
 //=============================================================================
 ConfigManager.keyMapper = JSON.parse(JSON.stringify(Input.keyMapper));
+ConfigManager.TempKeyMapper = null;
 ConfigManager.TetrisKeyMapper = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.defaultMap = JSON.parse(JSON.stringify(Input.keyMapper));
 ConfigManager.wasdMap = {
@@ -635,7 +636,7 @@ ConfigManager.wasdMap = {
 
 ConfigManager.HandStationMap = {
 	83: 'up',
-	68: 'escape',
+	68: 'cancel',
 	70: 'space',
 	90: 'left',
 	88: 'right',
@@ -644,33 +645,69 @@ ConfigManager.HandStationMap = {
 	50: 'down',
 	51: 'ok',
 	9: 'tab',
-};
+}
 
 ConfigManager.RightHandStationMap = {
-	83: 'up',
-	68: 'escape',
-	70: 'space',
+	83: 'tab',
+	68: 'ok',
+	70: 'shift',
 	90: 'left',
 	88: 'right',
 	67: 'down',
-	86: 'shift',
-	50: 'down',
-	51: 'ok',
-	9: 'tab',
+	86: 'space',
+	27: 'cancel',
+	38: 'chooseSkill',
+	40: 'chooseItem',
+	120: 'debug'
 }
 
 ConfigManager.LeftHandStationMap = {
-	70: 'up',
-	68: 'escape',
-	83: 'space',
-	86: 'left',
-	67: 'right',
+	83: 'shift',
+	68: 'ok',
+	70: 'tab',
+	90: 'space',
 	88: 'down',
-	90: 'shift',
-	51: 'down',
-	50: 'ok',
-	40: 'tab',
+	67: 'right',
+	86: 'left',
+	27: 'cancel',
+	13: 'chooseSkill', //enter
+	9: 'chooseItem', //tab
+	120: 'debug'
 }
+
+ConfigManager.LeftMapHandStationMap = {
+	83: 'ctrl', //s
+	68: 'shift', //d
+	70: 'up', //f
+	90: 'escape', //z
+	88: 'ok', //x
+	67: 'right', //c
+	86: 'left', //v
+	50: 'shift', //2
+	51: 'down', //3
+	120: 'debug' //f9
+}
+
+ConfigManager.RightMapHandStationMap = {
+	83: 'up', //s
+	68: 'shift', //d
+	70: 'ctrl', //f
+	90: 'left', //z
+	88: 'right', //x
+	67: 'ok', //c
+	86: 'escape', //v
+	50: 'down', //2
+	51: 'shift', //3
+	120: 'debug' //f9
+}
+
+//ConfigManger: 手台适配对应测试快捷键
+// 83: s
+// 68: d
+// 70: f
+// 90: z
+// 88: x
+// 67: c
 
 //ConfigManager.wasdMap = {
 //    9: 'tab', 13: 'ok', 16: 'shift', 17: 'control', 18: 'control', 27: 'escape',
@@ -784,14 +821,16 @@ ConfigManager.makeData = function() {
     var config = Yanfly.KeyConfig.ConfigManager_makeData.call(this);
     config.keyMapper = this.keyMapper;
     config.TetrisKeyMapper = this.TetrisKeyMapper;
+	config.TempKeyMapper = this.TempKeyMapper;
 	return config;
 };
 
 Yanfly.KeyConfig.ConfigManager_applyData = ConfigManager.applyData;
 ConfigManager.applyData = function(config) {
   Yanfly.KeyConfig.ConfigManager_applyData.call(this, config);
-    //this.keyMapper = this.readKeyConfig(config, 'keyMapper');
+    this.keyMapper = this.readKeyConfig(config, 'keyMapper');
     this.TetrisKeyMapper = this.readKeyConfig(config, 'TetrisKeyMapper');
+	this.TempKeyMapper = this.readKeyConfig(config, 'TempKeyMapper');
     //this.keyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap))
 	this.applyKeyConfig();
 };
@@ -806,6 +845,8 @@ ConfigManager.readKeyConfig = function(config, name) {
     var value = config[name];
     if (value !== undefined) {
         return value;
+	}else if(name == 'TempKeyMapper'){
+		return null;
     } else {
         return JSON.parse(JSON.stringify(ConfigManager.defaultMap));
     }

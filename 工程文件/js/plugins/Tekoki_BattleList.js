@@ -791,13 +791,14 @@ TetrisManager.special_List = {
 		},
 		createBeforePlayer: function () {
 			var scene = SceneManager._scene;
-			this.pictureBoard = new Tetris_Window(scene._enemies[0].xposition + 24, 100, 350, 624);
+			this.pictureBoard = new Tetris_Window(scene._enemies[0].xposition, 100, 350, 624);
 			this.pictureBoard.removeChildAt(0)
 			this.picture = new Tachi("Darklord-final");
 			this.picture.move(-200, 0);
 			this.pictureBoard.addChild(this.picture);
 			scene.addWindow(this.pictureBoard);
 			this.picture.startBreathing();
+			this.dying = false;
         },
 		create: function () {
 			var scene = SceneManager._scene;
@@ -845,7 +846,13 @@ TetrisManager.special_List = {
 		update: function () {
 			var scene = SceneManager._scene;
 			var time = TetrisManager.getElapsedTime();
-			if (time >= this.record_time) {
+			if (time >= this.record_time&&!this.dying) {
+				TetrisManager.save();
+				TetrisManager.HarmSystem.dealDamage(null, scene._enemies[0], scene._enemies[0].Mhp, 'real');
+				this.picture.startDying();
+				this.dying = true;
+			}
+			if(this.dying){
 				var result = scene.player.SCORE;
 				if (result >= this.lunaticLevel) {
 					TetrisManager.Records.difficulty = 3;
@@ -856,9 +863,6 @@ TetrisManager.special_List = {
 				} else if (result >= this.easyLevel) {
 					TetrisManager.Records.difficulty = 0;
 				}
-				TetrisManager.save();
-				TetrisManager.HarmSystem.dealDamage(null, scene._enemies[0], scene._enemies[0].Mhp, 'real');
-				this.picture.startDying();
 			}
 
 			//this.timeMark.rewrite(TetrisManager.keepTwoDigits(this.record_time-time)+"{sec}");
@@ -882,7 +886,7 @@ TetrisManager.special_List = {
 		},
 		createBeforePlayer: function () {
 			var scene = SceneManager._scene;
-			this.pictureBoard = new Tetris_Window(scene._enemies[0].xposition + 24, 100, 350, 624);
+			this.pictureBoard = new Tetris_Window(scene._enemies[0].xposition, 100, 350, 624);
 			this.pictureBoard.removeChildAt(0)
 			this.picture = new Tachi('EvilGod');
 			this.picture.move(-200, 0);
@@ -927,7 +931,7 @@ TetrisManager.special_List = {
 				this.usedSkill = true;
 			}
 
-			if (!this.usedItem && ((scene.actor.hp - scene.player.displayHp) < 0)) {
+			if (!this.usedItem && ((scene.actor.hp - scene.player.displayHp) < 0) && scene.actor.hp>0) {
 				scene.addEmphasizer(
 					"{Prologue_inbattle_3_3}"
 					, 0, 475, 360, 75);
@@ -2220,6 +2224,29 @@ TetrisManager.skill_List = {
 		Reset: function () {
 		}
 	},
+	"12":{
+		name: "稻草人",
+		pic: "Auto",
+		user: "player",
+		isPrepared: true,
+		oldTime: 0,
+		CD: 20,
+		description: "",
+		CanUse: function () {
+			return true
+		},
+		MakeEffect: function () {
+			var scene = SceneManager._scene
+			var s = new AutoModeTimer(20);
+			scene.addChild(s);
+			
+		},
+		Reset: function () {
+			this.isPrepared = false;
+			this.CD = 20;
+			this.beginCD = true;
+		}
+	},
 	"痛苦分裂": {
 		name: "痛苦分裂",
 		pic: "占位测试",
@@ -2289,6 +2316,7 @@ TetrisManager.skill_List = {
 			this.beginCD = true;
 		}
 	},
+	
 }
 
 TetrisManager.state_List = {
@@ -2919,8 +2947,7 @@ TetrisManager.state_List = {
 TetrisManager.item_List = {
 	"1": function () {
 		var player = SceneManager._scene.getPlayer();
-		TetrisManager.HarmSystem.dealDamage(null, player, -500, 'healing');
-		SceneManager._scene._playerStateBoard.applyStates("4", 10)
+		TetrisManager.HarmSystem.dealDamage(null, player, -player.actor.mhp, 'healing');
 	},
 	"2": function () {
 		SceneManager._scene._playerStateBoard.applyStates("8", 5)
@@ -4265,7 +4292,51 @@ SlicingFireEffect.prototype.stop = function () {
 	this.emitter.stop();
 }
 
+//-----------------------------------------------------------------------------
 
+function SkillTimer(){
+	this.initialize.apply(this, arguments);
+}
 
+SkillTimer.prototype = Object.create(Sprite.prototype);
+SkillTimer.prototype.constructor = SkillTimer;
 
+SkillTimer.prototype.initialize = function(time){
+	Sprite.prototype.initialize.call(this);
+	this.duration = time;
+	this.startTime = TetrisManager.getElapsedTime();
+	this.currentTime = TetrisManager.getElapsedTime() - this.startTime;
+}
 
+SkillTimer.prototype.update = function(){
+	Sprite.prototype.update.call(this);
+	this.currentTime = TetrisManager.getElapsedTime() - this.startTime;
+}
+
+SkillTimer.prototype.getElapsedTime = function(){
+	return this.currentTime;
+}
+
+//-----------------------------------------------------------------------------
+
+function AutoModeTimer(){
+	this.initialize.apply(this, arguments);
+}
+
+AutoModeTimer.prototype = Object.create(SkillTimer.prototype);
+AutoModeTimer.prototype.constructor = AutoModeTimer;
+
+AutoModeTimer.prototype.initialize = function(time){
+	SkillTimer.prototype.initialize.call(this, time);
+	var scene = SceneManager._scene;
+	scene.startAutoMode();
+}
+
+AutoModeTimer.prototype.update = function(){
+	SkillTimer.prototype.update.call(this);
+	if(this.getElapsedTime()>=this.duration){
+		var scene = SceneManager._scene;
+		scene.endAutoMode();
+		this.destroy();
+	}
+}

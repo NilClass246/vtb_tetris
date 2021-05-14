@@ -902,6 +902,11 @@ Scene_Title.prototype.initialize = function () {
 TetrisManager.Temps.Scene_Title_prototype_create = Scene_Title.prototype.create;
 Scene_Title.prototype.create = function () {
 	TetrisManager.Temps.Scene_Title_prototype_create.call(this);
+	//console.log(ConfigManager.keyMapper);
+	ConfigManager.applyKeyConfig();
+	//if(ConfigManager.isHandStation){
+		//TetrisManager.pointerLock();
+	//}
 	//if (!TetrisManager.Records.isTitleScreenChanged) {
 	//	//var titletext = new Sprite(ImageManager.loadPicture("PrologueTitle"));
 	//	//var titletext = new Text_Base("No Tetris No Life", 500, 200, 55, 'left');
@@ -1216,6 +1221,10 @@ TetrisManager.rgbToHex = function (r, g, b) {
 	return Number("0x" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b));
 }
 
+TetrisManager.convertToSecond = function(systemTime){
+	return Math.floor(systemTime/1000);
+}
+
 //============================================================
 // 内部方法继承与覆写
 //============================================================
@@ -1279,6 +1288,7 @@ TetrisManager.pointerLocked = false;
 TetrisManager.pointerLock = function(){
 	this.pointerLocked = true;
 	this.lockPointer();
+	//console.log('locked')
 }
 
 TetrisManager.pointerUnlock = function(){
@@ -1472,8 +1482,8 @@ AfterMath_Window.prototype.initialize = function (info) {
 	this.drawText("本局最大连击：" + this.combo, 0, 28);
 	this.drawText("本局LPM：" + TetrisManager.keepTwoDigits(this.LPM), 0, 56);
 	this.drawText("本局KPM：" + TetrisManager.keepTwoDigits(this.APM), 0, 84);
-	this.drawText("获得金币：" + this.gold||"0", 0, 140);
-	this.drawText("获得经验：" + this.exp||"0", 0, 168);
+	this.drawText("获得金币：" + (this.gold?this.gold:"0"), 0, 140);
+	this.drawText("获得经验：" + (this.exp?this.exp:"0"), 0, 168);
 
 	this.contents.drawLine(500, 0, 500, 424, 5, "black");
 
@@ -1905,16 +1915,16 @@ itemBoard.prototype.initialize = function () {
 
 	for (name in Input.keyMapper) {
 		if (Input.keyMapper[name] == 'itemone') {
-			this.itemOneHotKey = TetrisManager.keyCodeList[String(name)];
+			this.itemOneHotKey = ((TetrisManager.keyCodeList[String(name)])?(TetrisManager.keyCodeList[String(name)]):"");
 		}
 		if (Input.keyMapper[name] == 'itemtwo') {
-			this.itemTwoHotKey = TetrisManager.keyCodeList[String(name)];
+			this.itemTwoHotKey = ((TetrisManager.keyCodeList[String(name)])?(TetrisManager.keyCodeList[String(name)]):"");
 		}
 		if (Input.keyMapper[name] == 'itemthree') {
-			this.itemThreeHotKey = TetrisManager.keyCodeList[String(name)];
+			this.itemThreeHotKey = ((TetrisManager.keyCodeList[String(name)])?(TetrisManager.keyCodeList[String(name)]):"");
 		}
 		if (Input.keyMapper[name] == 'itemfour') {
-			this.itemFourHotKey = TetrisManager.keyCodeList[String(name)];
+			this.itemFourHotKey = ((TetrisManager.keyCodeList[String(name)])?(TetrisManager.keyCodeList[String(name)]):"");
 		}
 	}
 
@@ -1929,16 +1939,24 @@ itemBoard.prototype.initialize = function () {
 		}
 		switch (count) {
 			case 0:
-				this.Icons[i].writeHotKey(this.itemOneHotKey);
+				if(this.itemOneHotKey){
+					this.Icons[i].writeHotKey(this.itemOneHotKey);
+				}
 				break;
 			case 1:
-				this.Icons[i].writeHotKey(this.itemTwoHotKey);
+				if(this.itemTwoHotKey){
+					this.Icons[i].writeHotKey(this.itemTwoHotKey);
+				}
 				break;
 			case 2:
-				this.Icons[i].writeHotKey(this.itemThreeHotKey);
+				if(this.itemThreeHotKey){
+					this.Icons[i].writeHotKey(this.itemThreeHotKey);
+				}
 				break;
 			case 3:
-				this.Icons[i].writeHotKey(this.itemFourHotKey);
+				if(this.itemFourHotKey){
+					this.Icons[i].writeHotKey(this.itemFourHotKey);
+				}
 				break;
 		}
 		this.Icons[i].move(count * 38, 0);
@@ -2094,7 +2112,7 @@ itemIcon.prototype.initialize = function (item) {
 		this.numTxt.move(0, 16);
 		this.addChild(this.numTxt);
 		this.writeNum($gameParty.numItems(item))
-		console.log($gameParty.numItems(item));
+		//console.log($gameParty.numItems(item));
 		this.anchor.x = 0.5;
 		this.anchor.y = 0.5;
 
@@ -2298,19 +2316,21 @@ function ShiningText() {
 	this.initialize.apply(this, arguments);
 }
 
-ShiningText.prototype = Object.create(Text_Base.prototype);
+ShiningText.prototype = Object.create(Sprite.prototype);
 ShiningText.prototype.constructor = ShiningText;
 
 ShiningText.prototype.initialize = function (text, width, height, size) {
-	Text_Base.prototype.initialize.call(this, text, width, height, size, 'center');
+	Sprite.prototype.initialize.call(this);
+	var t = new Text_Base(text, width, height, size, 'center');
+	this.bitmap = t.contents;
+	//this.bitmap._smooth = true;
+	//console.log(this.bitmap);
 	this.layed = false;
 	this.opacity = 0;
-	this.anchor.x = 0.5;
-	this.anchor.y = 0.5;
 }
 
 ShiningText.prototype.update = function () {
-	Text_Base.prototype.update.call(this);
+	Sprite.prototype.update.call(this);
 	if (!this.layed) {
 		this.opacity += 5;
 		if (this.opacity >= 255) {
@@ -3670,7 +3690,7 @@ Emphasizer.prototype.initialize = function (text, x, y, width, height, options) 
 		Ftext.height);
 
 	this.addChild(Ftext);
-	console.log(Ftext);
+	//console.log(Ftext);
 	if (options && options.behaviour) {
 		options.behaviour.call(this);
     }
@@ -3780,6 +3800,7 @@ TutorialManager.TutorialID = -1;
 TutorialManager.TutorialStage = 0;
 TutorialManager.emphasizer_array = [];
 TutorialManager.emphasizer_pointer = 0;
+TutorialManager.tempSpeed = 0;
 
 TutorialManager.update = function () {
 	if (this.TutorialID == 1) {
@@ -3795,10 +3816,7 @@ TutorialManager.update = function () {
 		if ((SceneManager._scene._itemWindow) && (SceneManager._scene._itemWindow.active)  && TutorialManager.TutorialStage == 2) {
 			$gameVariables.setValue(30, 2);
 			this.clearEmphasizer();
-			TutorialManager.TutorialID = -1;
-			TutorialManager.TutorialStage = 0;
-			TutorialManager.emphasizer_array = [];
-			TutorialManager.emphasizer_pointer = 0;
+			this.reset();
         }
 	}
 
@@ -3815,15 +3833,60 @@ TutorialManager.update = function () {
 		if ((SceneManager._scene._itemWindow) && (SceneManager._scene._itemWindow.active) && TutorialManager.TutorialStage == 2) {
 			$gameSwitches.setValue(35, false);
 			this.clearEmphasizer();
-			TutorialManager.TutorialID = -1;
-			TutorialManager.TutorialStage = 0;
-			TutorialManager.emphasizer_array = [];
-			TutorialManager.emphasizer_pointer = 0;
+			this.reset();
 		}
     }
 
+	if(this.TutorialID == 3){
+		if ((SceneManager._scene instanceof Scene_Menu) && TutorialManager.TutorialStage == 0) {
+			TutorialManager.TutorialStage = 1;
+			this.nextEmphasizer();
+		}
+		if ((SceneManager._scene instanceof Scene_Skill) && TutorialManager.TutorialStage == 1) {
+			TutorialManager.TutorialStage = 2;
+			this.nextEmphasizer();
+		}
+
+		if ((SceneManager._scene._itemWindow) && (SceneManager._scene._itemWindow.active) && TutorialManager.TutorialStage == 2) {
+			$gameSwitches.setValue(35, false);
+			this.clearEmphasizer();
+			this.reset();
+		}
+	}
+
 }
 
+TutorialManager.reset = function(){
+	this.TutorialID = -1;
+	this.TutorialStage = 0;
+	this.emphasizer_array = [];
+	this.emphasizer_pointer = 0;
+	$gamePlayer.drill_MS_setASpeed(TutorialManager.tempSpeed);
+	TutorialManager.tempSpeed = 0;
+}
+
+TutorialManager.startTutorial = function(id){
+	this.TutorialID = id;
+	if(this.TutorialID == 1){
+		TutorialManager.addEmphasizer("{inst_items1}", 200, 200, 0, 0);
+		TutorialManager.addEmphasizer("{inst_items2}", 18, 18, 204, 36, {textY: 72});
+		TutorialManager.addEmphasizer("{inst_items3}", 0, 72, 800, 480, {textY: 172, textX:200});
+	}
+	if(this.TutorialID == 2){
+		TutorialManager.addEmphasizer("{inst_equips1}", 200, 200, 0, 0);
+		TutorialManager.addEmphasizer("{inst_equips2}", 18, 18, 204, 36, {textY: 72});
+		TutorialManager.addEmphasizer("{inst_equips3}", 0, 72, 800, 480, {textY: 172, textX:200});
+	}
+
+	if(this.TutorialID == 3){
+		TutorialManager.addEmphasizer("{inst_skills1}", 200, 200, 0, 0);
+		TutorialManager.addEmphasizer("{inst_skills2}", 18, 54, 204, 36, {textY: 126});
+		TutorialManager.addEmphasizer("{inst_skills3}", 0, 198, 800, 354, {textY: 172, textX:200});
+	}
+	TutorialManager.tempSpeed = $gamePlayer._moveSpeed;
+	$gamePlayer.drill_MS_setASpeed(0);
+	TutorialManager.TutorialStage = 0;
+}
 
 TutorialManager.addEmphasizer = function (text, x, y, width, height, options) {
 	var emphasizer = new Emphasizer(text, x, y, width, height, options);
@@ -3872,6 +3935,87 @@ TutorialManager.addEmphasizers = function () {
 		SceneManager._scene.addChild(this.emphasizer_array[this.emphasizer_pointer]);
 	}
 }
+
+TetrisManager.Temps.Scene_Menu_commandItem = Scene_Menu.prototype.commandItem;
+Scene_Menu.prototype.commandItem = function() {
+	if(TutorialManager.TutorialID==3){
+		this._commandWindow.activate();
+        return;
+	}
+    TetrisManager.Temps.Scene_Menu_commandItem.call(this);
+};
+
+TetrisManager.Temps.Scene_Menu_commandPersonal = Scene_Menu.prototype.commandPersonal;
+Scene_Menu.prototype.commandPersonal = function() {
+    if (TutorialManager.TutorialID == 1||TutorialManager.TutorialID == 2 || (TutorialManager.TutorialID==3&&this._commandWindow.currentSymbol()!="skill")) {
+        this._commandWindow.activate();
+        return;
+    }
+	TetrisManager.Temps.Scene_Menu_commandPersonal.call(this);
+};
+
+TetrisManager.Temps.Scene_Menu_commandFormation = Scene_Menu.prototype.commandFormation;
+Scene_Menu.prototype.commandFormation = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2 || TutorialManager.TutorialID==3){
+        this._commandWindow.activate();
+		return;
+	}
+	TetrisManager.Temps.Scene_Menu_commandFormation.call(this);
+};
+
+TetrisManager.Temps.Scene_Menu_commandOptions = Scene_Menu.prototype.commandOptions
+Scene_Menu.prototype.commandOptions = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2 || TutorialManager.TutorialID==3) {
+        this._commandWindow.activate();
+        return;
+    }
+	TetrisManager.Temps.Scene_Menu_commandOptions.call(this);
+};
+
+TetrisManager.Temps.Scene_Menu_commandSave = Scene_Menu.prototype.commandSave;
+Scene_Menu.prototype.commandSave = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2 || TutorialManager.TutorialID==3) {
+        this._commandWindow.activate();
+        return;
+    }
+    TetrisManager.Temps.Scene_Menu_commandSave.call(this);
+};
+
+TetrisManager.Temps.Scene_Menu_commandGameEnd = Scene_Menu.prototype.commandGameEnd;
+Scene_Menu.prototype.commandGameEnd = function() {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2 || TutorialManager.TutorialID==3) {
+        this._commandWindow.activate();
+        return;
+    }
+    TetrisManager.Temps.Scene_Menu_commandGameEnd.call(this);
+};
+
+TetrisManager.Temps.Scene_Menu_popScene = Scene_Item.prototype.popScene;
+Scene_Menu.prototype.popScene = function () {
+    if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2|| TutorialManager.TutorialID==3) {
+        this._commandWindow.activate();
+        return;
+    }
+    TetrisManager.Temps.Scene_Menu_popScene.call(this);
+}
+TetrisManager.Temps.Scene_Item_popScene = Scene_Item.prototype.popScene;
+Scene_Item.prototype.popScene = function(){
+	if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2|| TutorialManager.TutorialID==3) {
+        this._categoryWindow.activate();
+        return;
+    }
+	TetrisManager.Temps.Scene_Item_popScene.call(this);
+}
+
+TetrisManager.Temps.Scene_Skill_popScene = Scene_Skill.prototype.popScene;
+Scene_Skill.prototype.popScene = function(){
+	if (TutorialManager.TutorialID == 1 || TutorialManager.TutorialID == 2|| TutorialManager.TutorialID==3) {
+        this._skillTypeWindow.activate();
+        return;
+    }
+	TetrisManager.Temps.Scene_Skill_popScene.call(this);
+}
+
 
 //-----------------------------------------------------------------------------
 
@@ -4021,12 +4165,14 @@ ItemSkillPointer.prototype.constructor = ItemSkillPointer;
 
 ItemSkillPointer.prototype.initialize = function(){
 	targetPointer.prototype.initialize.call(this);
+	//console.log(1);
 	this.w = 200;
 	this.h = 200;
 	this.button_list = ['skillone, skilltwo, skillthree, itemone, itemtwo, itemthree, itemfour']
 	this.current_index = -1;
 	this.bitmap = ImageManager.loadPicture("Target");
 	this.iconsetNumber = SceneManager._scene._playerItemBoard.boardIndex;
+	this.currentType = "skill";
 	this.changeIndex(1);
 }
 
@@ -4039,6 +4185,14 @@ ItemSkillPointer.prototype.update = function(){
 
 	if(Input.isTriggered('pagedown')){
 		this.changeIndex(1);
+	}
+
+	if(Input.isTriggered('chooseSkill')){
+		this.changeType("skill");
+	}
+
+	if(Input.isTriggered('chooseItem')){
+		this.changeType("item");
 	}
 
 	if(Input.isTriggered('ok')){
@@ -4074,37 +4228,57 @@ ItemSkillPointer.prototype.update = function(){
 
 ItemSkillPointer.prototype.changeIndex = function(diff){
 	this.current_index+=diff;
+	//console.log("diff: "+diff);
 	this.changeIndexTo(this.current_index);
 }
 
+
 ItemSkillPointer.prototype.changeIndexTo = function(index){
+	//console.log("input: "+index);
+	//console.log("isSkill: "+ (this.currentType=="skill"))
 	var itemManager = SceneManager._scene._playerItemBoard;
 	var SkillManager = SceneManager._scene._Skill_Manager;
 	this.iconsetNumber = SceneManager._scene._playerItemBoard.boardIndex;
 	this.current_index = index;
-	if(this.current_index<0){
-		this.current_index = 6;
-	}
+	//技能的情况
+	if(this.currentType == "skill"){
+		//处理越界
+		if(this.current_index<0){
+			this.current_index = 0;
+		}
 
-	if(this.current_index>6){
-		itemManager.shiftBoard();
-		this.current_index = 3;
-	}
-	if([0, 1, 2].contains(this.current_index)&&!SkillManager.running){
-		this.visible = false;
-	}else{
-		this.visible = true;
-	}
+		if(this.current_index>2){
+			this.current_index = 2
+		}
 
-	if([3, 4, 5, 6].contains(this.current_index)&&!itemManager.running){
-		this.visible = false;
-	}else{
-		this.visible = true;
-	}
+		//处理可视性
+		if(!SkillManager.running){
+			this.visible = false;
+		}else{
+			this.visible = true;
+		}
+		
+	}else{//道具的情况
+		//处理越界
+		if(this.current_index<3){
+			this.current_index = 3;
+		}
 
+		if(this.current_index> 6){
+			itemManager.shiftBoard();
+			this.current_index = 3;
+		}
+
+		//处理可视性
+		if(!itemManager.running){
+			this.visible = false;
+		}else{
+			this.visible = true;
+		}
+	}
+	//console.log("output: "+ this.current_index);
 	switch(this.current_index){
 		case 0:
-
 			if(SkillManager.skillButton_list[0]){
 				this.visible = true;
 				var button = SkillManager.skillButton_list[0];
@@ -4115,7 +4289,12 @@ ItemSkillPointer.prototype.changeIndexTo = function(index){
 				}
 				this.aim(target);
 			}else{
-				this.visible = false;
+				if(itemManager.Icons[this.iconsetNumber+0] && itemManager.running){
+					//console.log("!!!!")
+					this.changeType('item');
+				}else{
+					this.visible = false;
+				}
 			}
 			break;
 		case 1:
@@ -4154,8 +4333,7 @@ ItemSkillPointer.prototype.changeIndexTo = function(index){
 				}
 				this.aim(target);
 			}else{
-				itemManager.shiftBoard();
-				this.changeIndex(-1);
+				this.changeType("skill");
 			}
 			break;
 		case 4:
@@ -4202,6 +4380,11 @@ ItemSkillPointer.prototype.changeIndexTo = function(index){
 			break;
 
 	}
+}
+
+ItemSkillPointer.prototype.changeType = function(type){
+	this.currentType = type;
+	this.changeIndex(0);
 }
 
 

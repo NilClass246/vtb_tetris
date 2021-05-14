@@ -236,9 +236,14 @@ Scene_Puzzle.prototype.update = function () {
 		} else {
 			this.startGame();
 		}
-
-		if (this.gameover&&this.puzzleInfo.end && this.puzzleInfo.end.completed && !this.AfterMathWindow) {
-			this.createAfterMath();
+		if(this.puzzleInfo.end){
+			if(this.gameover&&this.puzzleInfo.end.completed && !this.AfterMathWindow){
+				this.createAfterMath();
+			}
+		}else{
+			if(this.gameover&& !this.AfterMathWindow){
+				this.createAfterMath();
+			}
 		}
 		if (Input.isTriggered('ok') || TouchInput.isPressed()) {
 			if (this.AfterMathWindow) {
@@ -309,7 +314,7 @@ Scene_Puzzle.prototype.endGame = function () {
 		$gameVariables.setValue(6, this.player.SCORE);
 
 		TetrisManager.desetTimer();
-		SceneManager.pop(Scene_Tetris);
+		SceneManager.pop(Scene_Puzzle);
 		Scene_Tetris.prototype.onEnd = function () {
 		}
 
@@ -325,7 +330,6 @@ Scene_Puzzle.prototype.isGameOver = function () {
 		this.gameover = true;
 		this.crossedBorder = true;
 	}
-
 	if (this.puzzleInfo.isEnded()) {
 		this.running = false;
 		this.gameover = true;
@@ -554,6 +558,16 @@ Puzzle_Manager.prototype.create = function () {
 	//		break;
 	//}
 
+	// 配置测试
+	if (this.puzzleID == -1){
+		SceneManager._scene.BeginClock = 0;
+		SceneManager._scene.noPause = true;
+		var a = new Tetris_Window(0, 0, 200, 100);
+		a.drawText("按取消键退出", 0, 0);
+		SceneManager._scene.addWindow(a);
+
+	}
+	// I字谜题
 	if (this.puzzleID == 3) {
 		this.scene.player.field = [
 			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -609,7 +623,7 @@ Puzzle_Manager.prototype.create = function () {
 		this.targetBoard = new Target_Window("{Prologue_puzzle_1_inst}");
 		this.scene.addChild(this.targetBoard);
 	}
-
+	// T字谜题
 	if (this.puzzleID == 4) {
 		this.scene.player.field = [
 			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -706,6 +720,12 @@ Puzzle_Manager.prototype.update = function (score) {
 	//		}
 	//		break;
 	//}
+
+	if (this.puzzleID == -1){
+		if (Input.isTriggered('cancel')){
+			this.victory = true;
+		}
+	}
 
 	if (this.puzzleID == 3) {
 		if (!this.victory) {

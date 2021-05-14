@@ -273,11 +273,18 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 
 	this.initialize_Skills();
 
-	if ($gameVariables.value(18) == 1) {
-		this.player.auto = true;
-		this.player.pathGenerator = new Position_Manager();
-		this.player.actionQueue = [];
-	}
+}
+
+Scene_Tetris.prototype.startAutoMode = function(){
+	this.addAutoSprite();
+	this.player.auto = true;
+	this.player.pathGenerator = new Position_Manager();
+	this.player.actionQueue = [];
+}
+
+Scene_Tetris.prototype.endAutoMode = function(){
+	this.removeAutoSprite();
+	this.player.auto = false;
 }
 
 Scene_Tetris.prototype.initialize_Skills = function () {
@@ -425,7 +432,8 @@ Scene_Tetris.prototype.initializeData = function () {
 }
 
 Scene_Tetris.prototype.loadKeyMapper = function () {
-	ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.TetrisKeyMapper))
+	ConfigManager.TempKeyMapper = JSON.parse(JSON.stringify(ConfigManager.keyMapper));
+	ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.TetrisKeyMapper));
 	ConfigManager.save();
 	ConfigManager.load();
 	Input.gamepadMapper = Input.TetrisgamepadInput;
@@ -433,7 +441,8 @@ Scene_Tetris.prototype.loadKeyMapper = function () {
 }
 
 Scene_Tetris.prototype.unloadKeyMapper = function () {
-	ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.defaultMap))
+	ConfigManager.keyMapper = JSON.parse(JSON.stringify(ConfigManager.TempKeyMapper));
+	ConfigManager.TempKeyMapper = null;
 	ConfigManager.applyKeyConfig();
 	ConfigManager.save();
 	ConfigManager.load();
@@ -561,29 +570,30 @@ Scene_Tetris.prototype.start = function () {
 	this.startFadeIn(60, false);
 }
 
-Scene_Tetris.prototype.createBackground = function () {
+Scene_Tetris.prototype.createBackground = function () {                
 	Scene_MenuBase.prototype.createBackground.call(this);
 }
 
 Scene_Tetris.prototype.update = function () {
 	Scene_MenuBase.prototype.update.call(this);
-	if (Input.isTriggered("pageup")) {
+	if (Input.isTriggered("debug")) {
 	//	var canv = document.getElementById('GameCanvas');
 	//	canv.requestPointerLock();
-		//for (var i = 0; i < this._enemies.length; i++) {
-		//	TetrisManager.HarmSystem.dealDamage(this.player, this._enemies[i], this._enemies[i].Mhp, "real");
-        //}
-    }
+		for (var i = 0; i < this._enemies.length; i++) {
+			TetrisManager.HarmSystem.dealDamage(this.player, this._enemies[i], this._enemies[i].Mhp, "real");
+        }
+		//TetrisManager.HarmSystem.dealDamage(this.player, this.player, this.actor.mhp, "real");
+   	}
 
 	if (this.beginFlag) {
 		this.beginFlag = false;
-		for (var i = 0; i < this._enemies.length; i++) {
+		for (var i = 0; i < this._enemies.length; i++) {                      
 			if (this._enemies[i].manager && this._enemies[i].manager.onFirstUpdate) {
 				this._enemies[i].manager.onFirstUpdate();
             }
         }
     }
-
+                                                                                  
 	if (!this.layed) {
 		this.update_Player_Placement();
 		this.update_Enemy_Placement();
@@ -637,7 +647,7 @@ Scene_Tetris.prototype.update = function () {
             }
 			this.isGameOver();
 		}
-		if (Input.isTriggered('ok') || Input.isTriggered('cancel') || Input.isTriggered('menu') || TouchInput.isPressed()) {
+		if (Input.isTriggered('ok') || Input.isTriggered('cancel') || Input.isTriggered('menu')||Input.isTriggered('escape') || TouchInput.isPressed()) {
 			if (this._isPaused && !this.isPausedThisTurn) {
 				this.Continue();
 			}
@@ -815,6 +825,10 @@ Scene_Tetris.prototype.update_auto = function () {
 			this.player.holded = false;
 			this.player.delay_reset_times = 15;
 		} else {
+			if(this.player.actionQueue.length ==0){
+				this.player.pathGenerator.inputData(this.player.field, this.player.cur, this.getPosX(this.player), this.getPosY(this.player));
+				this.player.actionQueue = this.player.pathGenerator.render_ActionQueue();
+			}
 			var nextStep = this.player.actionQueue.shift();
 			switch (nextStep) {
 				case 'Rotate':
@@ -1575,7 +1589,7 @@ Scene_Tetris.prototype.createBox = function (battler) {
 		
 		this.addBox(battler, battler.cur);
 		if (battler.category == 'enemy'|| battler.auto) {
-			battler.pathGenerator.inputData(battler.field, battler.cur);
+			battler.pathGenerator.inputData(battler.field, battler.cur, this.getPosX(battler), this.getPosY(battler));
 			battler.actionQueue = battler.pathGenerator.render_ActionQueue();
 		}
 		this.refreshNextWindows(battler);
@@ -1722,6 +1736,9 @@ Scene_Tetris.prototype.holdBox = function(operator){
 	}
 	operator.justHold = true;
 	if (!operator.hold) {
+		if(!operator.next[0]){
+			return;
+		}
 		operator.holded = true;
 		this.removeFromMainWindow(operator, operator.cur.block)
 		var type = operator.cur.type;
@@ -1800,6 +1817,9 @@ Scene_Tetris.prototype.calPositionX = function(cur){
 }
 
 Scene_Tetris.prototype.shadow = function(battler){
+	if(!battler || !battler.cur){
+		return;
+	}
 	var type = battler.cur.type;
 	var rotation = battler.cur.rotation;
 
@@ -2071,7 +2091,23 @@ Scene_Tetris.prototype.createPlayerWindows = function () {
 		this.itemSkillPointer = new ItemSkillPointer();
 		this._effectLayer.addChild(this.itemSkillPointer);
 	}
+
+	if ($gameVariables.value(18) == 1) {
+		this.startAutoMode();
+	}
 }
+
+Scene_Tetris.prototype.addAutoSprite = function(){
+	this.autoSprite = new ShiningText("AUTO", 100, 100, 32);
+	this._effectLayer.addChild(this.autoSprite);
+	this.autoSprite.x = this.player.xposition - 15 - 7 + (this.ROW * this.player.xrange + 65) / 2-100/2;
+	this.autoSprite.y = this.player.yposition + TetrisManager.AboveLines * this.player.yrange - 27 + ((this.COL - TetrisManager.AboveLines) * this.player.yrange) / 2-100/2;
+}
+
+Scene_Tetris.prototype.removeAutoSprite = function(){
+	this._effectLayer.removeChild(this.autoSprite);
+}
+
 
 Scene_Tetris.prototype.createEnemyWindows = function () {
 	for (var i = 0; i < this._enemies.length; i++) {
@@ -2137,6 +2173,7 @@ Scene_Tetris.prototype.startGame = function () {
 
 Scene_Tetris.prototype.endGame = function () {
 	if (this.AfterMathWindow.isLayed() && !this.ExItIng) {
+		SceneManager.pop(Scene_Tetris);
 		//window.onblur = function () { };
 		this.onEnd();
 		this.ExItIng = true;
@@ -2159,7 +2196,6 @@ Scene_Tetris.prototype.endGame = function () {
 		$gameSystem._drill_LCa_sY.speed = (1 - 1 - $gameSystem._drill_LCa_sY.cur) / $gameSystem._drill_LCa_sY.time;
 
 		TetrisManager.desetTimer();
-		SceneManager.pop(Scene_Tetris);
 		Scene_Tetris.prototype.onEnd = function () {
 		}
 		this.actor.gainHp(this.player.displayHp - this.actor.hp);
@@ -2337,7 +2373,7 @@ Scene_Tetris.prototype.refreshCombo = function (battler) {
 }
 
 Scene_Tetris.prototype.Pause = function () {
-	if (this.running) {
+	if (this.running&&!this.noPause) {
 		this.running = false;
 		$gameSystem.saveBgm();
 		AudioManager.fadeOutBgm(1);
