@@ -347,6 +347,7 @@ TetrisManager.HPGaugeConstant = 50;
 TetrisManager.AboveLines = 16;
 
 TetrisManager.AiSpeed = 20;
+TetrisManager.playerAiSpeed = 20;
 
 TetrisManager.Xrevision = 23;
 
@@ -1096,6 +1097,9 @@ TetrisManager.getRotationResult = function (battler, direction) {
 }
 
 TetrisManager.collide = function (battler, cur) {
+	if(!cur){
+		return false;
+	}
 	var box = cur.box;
 	var len = cur.box.length;
 	var x = Math.floor((cur.block.x - TetrisManager.Xrevision) / battler.xrange);
@@ -1242,6 +1246,19 @@ Game_BattlerBase.prototype.isOccasionOk = function (item) {
 		}
 	}
 }
+TetrisManager.Temps.Game_Party_isAllDead = Game_Party.prototype.isAllDead
+Game_Party.prototype.isAllDead = function() {
+	var allwell = false;
+	for(var i=0; i<$gameParty.allMembers().length; i++){
+		if($gameParty.allMembers()[i].hp>0){
+			allwell = true;
+		}
+	}
+	if(!allwell){
+		return true;
+	}
+	TetrisManager.Temps.Game_Party_isAllDead.call(this);
+};
 
 Window_Selectable.prototype.getOpenness = function () {
 	return this.openness;

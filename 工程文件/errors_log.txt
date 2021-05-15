@@ -4614,3 +4614,106 @@ Stack: TypeError: Cannot read property 'box' of undefined
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
 
+Date: Fri May 14 2021 07:44:38 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'box' of undefined
+Stack: TypeError: Cannot read property 'box' of undefined
+    at Object.TetrisManager.collide (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Utils.js:1099:16)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1107:47)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:346:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:256:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Fri May 14 2021 08:14:49 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'block' of undefined
+Stack: TypeError: Cannot read property 'block' of undefined
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:367:20)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Fri May 14 2021 08:17:03 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'renderPos' of undefined
+Stack: TypeError: Cannot read property 'renderPos' of undefined
+    at Scene_Puzzle.Scene_Tetris.addBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1601:10)
+    at Scene_Puzzle.Scene_Tetris.createBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1591:8)
+    at Scene_Puzzle.Scene_Tetris.holdBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1768:8)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1087:8)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:346:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Fri May 14 2021 08:19:12 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'block' of undefined
+Stack: TypeError: Cannot read property 'block' of undefined
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:367:20)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Fri May 14 2021 08:20:27 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'block' of undefined
+Stack: TypeError: Cannot read property 'block' of undefined
+    at Scene_Puzzle.Scene_Tetris.getPosX (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:2479:35)
+    at Scene_Puzzle.Scene_Tetris.bMove (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1650:15)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:977:14)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:346:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Fri May 14 2021 08:24:10 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'block' of undefined
+Stack: TypeError: Cannot read property 'block' of undefined
+    at Scene_Puzzle.Scene_Tetris.holdBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1773:52)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1087:8)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:346:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Fri May 14 2021 08:26:18 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'block' of null
+Stack: TypeError: Cannot read property 'block' of null
+    at Scene_Puzzle.Scene_Tetris.holdBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1801:17)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1087:8)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:346:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+
+Date: Fri May 14 2021 08:28:05 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Puzzle
+Name: TypeError
+Message: Cannot read property 'block' of null
+Stack: TypeError: Cannot read property 'block' of null
+    at Scene_Puzzle.Scene_Tetris.holdBox (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1807:46)
+    at Scene_Puzzle.Scene_Tetris.update_Movement (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Tetris.js:1087:8)
+    at Scene_Puzzle.update_Actor (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:346:7)
+    at Scene_Puzzle.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Tekoki_Puzzle.js:257:9)
+    at Function.SceneManager.updateScene (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/DKTools.js:38415:25)
+    at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
+    at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
+

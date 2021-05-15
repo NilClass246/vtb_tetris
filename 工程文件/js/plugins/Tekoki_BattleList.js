@@ -2237,7 +2237,7 @@ TetrisManager.skill_List = {
 		},
 		MakeEffect: function () {
 			var scene = SceneManager._scene
-			var s = new AutoModeTimer(20);
+			var s = new AutoModeTimer(5);
 			scene.addChild(s);
 			
 		},
@@ -4329,6 +4329,8 @@ AutoModeTimer.prototype.constructor = AutoModeTimer;
 AutoModeTimer.prototype.initialize = function(time){
 	SkillTimer.prototype.initialize.call(this, time);
 	var scene = SceneManager._scene;
+	this.savedSpeed = TetrisManager.playerAiSpeed;
+	TetrisManager.playerAiSpeed = 3;
 	scene.startAutoMode();
 }
 
@@ -4337,6 +4339,7 @@ AutoModeTimer.prototype.update = function(){
 	if(this.getElapsedTime()>=this.duration){
 		var scene = SceneManager._scene;
 		scene.endAutoMode();
+		TetrisManager.playerAiSpeed = this.savedSpeed;
 		this.destroy();
 	}
 }

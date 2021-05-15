@@ -252,6 +252,7 @@ Scene_Puzzle.prototype.update = function () {
 		}
 
 		this.update_Animation();
+		//console.log(this.running);
 		if (this.running) {
 			this.update_Actor();
 			this.isGameOver();
@@ -342,33 +343,33 @@ Scene_Puzzle.prototype.update_Actor = function () {
 			this.Pause();
 		}
 	}
-
 	this.update_Movement(this.player);
+	if(this.player.cur){
+		this.player.n += 1
+		if (this.player.n >= this.player.step) {
 
-	this.player.n += 1
-	if (this.player.n >= this.player.step) {
+			if (TetrisManager.collide(this.player, this.player.cur)) {
+				AudioManager.playSe(this.seTick)
+				this.mergeBox(this.player);
+				TetrisManager.Count_Blocks += 1;
+				this.refreshScoreBoard(this.player);
+				this.removeFromMainWindow(this.player, this.player.cur.block)
+				this.player.cur = null;
+				this.lastKick = false;
+				this.createBox(this.player);
+				if (this.player.cur) {
+					this.shadow(this.player);
+				}
+				this.drawArea(this.player);
+				this.player.holded = false;
+				this.player.delay_reset_times = 15;
+			} else {
+				this.player.cur.block.y += this.player.yrange;
+				this.lastKick = false;
+			}
 
-		if (TetrisManager.collide(this.player, this.player.cur)) {
-			AudioManager.playSe(this.seTick)
-			this.mergeBox(this.player);
-			TetrisManager.Count_Blocks += 1;
-			this.refreshScoreBoard(this.player);
-			this.removeFromMainWindow(this.player, this.player.cur.block)
-			this.player.cur = null;
-			this.lastKick = false;
-			this.createBox(this.player);
-			if (this.player.cur) {
-				this.shadow(this.player);
-            }
-			this.drawArea(this.player);
-			this.player.holded = false;
-			this.player.delay_reset_times = 15;
-		} else {
-			this.player.cur.block.y += this.player.yrange;
-			this.lastKick = false;
+			this.player.n = 0;
 		}
-
-		this.player.n = 0;
 	}
 	//TODO: 双人模式
 	//TODO：TouchInput卡键修复
@@ -753,7 +754,7 @@ Puzzle_Manager.prototype.update = function (score) {
 					this.scene.addChild(this.end);
 					this.victory = true;
 			}
-			if (!this.scene.player.next[0] && !this.scene.player.cur) {
+			if (!this.scene.player.next[0] && !this.scene.player.cur && !this.scene.player.hold) {
 				if (this.scene.player.field[this.scene.player.field.length - 1].equals([0, 0, 0, 0, 0, 10, 10, 0, 0, 0])) {
 					$gameSwitches.setValue(20, true);
 					this.end = new Target_Window("{Prologue_puzzle_1_end}");
