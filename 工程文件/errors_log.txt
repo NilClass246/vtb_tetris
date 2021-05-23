@@ -4717,3 +4717,83 @@ Stack: TypeError: Cannot read property 'block' of null
     at Function.SceneManager.updateMain (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1995:18)
     at Function.SceneManager.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_managers.js:1919:14)
 
+Date: Fri May 21 2021 22:22:25 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'children' of undefined
+Stack: TypeError: Cannot read property 'children' of undefined
+    at ShaderTilemap._paintTiles (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Lagomoro_MapArea_OutManager.js:312:38)
+    at ShaderTilemap.Tilemap._paintAllTiles (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:5069:18)
+    at ShaderTilemap.Tilemap.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4968:14)
+    at Sprite.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Sprite.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1118:38)
+    at Spriteset_Map.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Spriteset_Map.Sprite.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1118:38)
+    at Scene_Map.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Renderer.render (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:22043:28)
+    at Function.Graphics.render (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:1893:28)
+
+Date: Sat May 22 2021 21:33:34 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'children' of undefined
+Stack: TypeError: Cannot read property 'children' of undefined
+    at ShaderTilemap._paintTiles (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Lagomoro_MapArea_OutManager.js:312:38)
+    at ShaderTilemap.Tilemap._paintAllTiles (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:5069:18)
+    at ShaderTilemap.Tilemap.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4968:14)
+    at Sprite.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Sprite.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1118:38)
+    at Spriteset_Map.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Spriteset_Map.Sprite.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1118:38)
+    at Scene_Map.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Renderer.render (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:22043:28)
+    at Function.Graphics.render (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:1893:28)
+
+Date: Sun May 23 2021 15:38:46 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'children' of undefined
+Stack: TypeError: Cannot read property 'children' of undefined
+    at ShaderTilemap._paintTiles (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Lagomoro_MapArea_OutManager.js:312:38)
+    at ShaderTilemap.Tilemap._paintAllTiles (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:5069:18)
+    at ShaderTilemap.Tilemap.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:4968:14)
+    at Sprite.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Sprite.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1118:38)
+    at Spriteset_Map.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Spriteset_Map.Sprite.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/YEP_CoreEngine.js:1118:38)
+    at Scene_Map.Container.updateTransform (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:8163:24)
+    at Renderer.render (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/libs/pixi-legacy.js:22043:28)
+    at Function.Graphics.render (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_core.js:1893:28)
+
+Date: Sun May 23 2021 15:42:19 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'length' of undefined
+Stack: TypeError: Cannot read property 'length' of undefined
+    at Spriteset_Map.drill_ET_updateNewEventText (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:477:29)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:465:7)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_TreasurePopup.js:364:34)
+    at Spriteset_Map.update [as Lagomoro_MapArea_update] (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MKR_PlayerSensor.js:2814:31)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Lagomoro_MapArea_OutManager.js:110:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:60:39)
+
+Date: Sun May 23 2021 15:43:07 GMT-0600 (Mountain Daylight Time)
+Scene: Scene_Map
+Name: TypeError
+Message: Cannot read property 'length' of undefined
+Stack: TypeError: Cannot read property 'length' of undefined
+    at Spriteset_Map.drill_ET_updateNewEventText (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:477:29)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Drill_EventText.js:465:7)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MOG_TreasurePopup.js:364:34)
+    at Spriteset_Map.update [as Lagomoro_MapArea_update] (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/MKR_PlayerSensor.js:2814:31)
+    at Spriteset_Map.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/Lagomoro_MapArea_OutManager.js:110:10)
+    at chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:266:19
+    at Array.forEach (<anonymous>)
+    at Scene_Map.Scene_Base.updateChildren (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:264:19)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/rpg_scenes.js:113:10)
+    at Scene_Map.Scene_Base.update (chrome-extension://hhjjficbkfkkakjjjihlpgbncgafmoga/js/plugins/NC_AntiCheat.js:60:39)
+

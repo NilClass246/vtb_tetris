@@ -5721,7 +5721,7 @@ ShaderTilemap.prototype.constructor = ShaderTilemap;
 // Note: May cause issues with plugins if they are overriding some of the
 // ShaderTilemap APIs
 //TODO: ShaderTilemap disabled
-if (false) {
+if (true) {
 // we need this constant for some platforms (Samsung S4, S5, Tab4, HTC One H8)
 /* Disabled for PixiJS5 on Desktop: needs mobile testings
 PIXI.glCore.VertexArrayObject.FORCE_NATIVE = true;
