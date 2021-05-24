@@ -2247,6 +2247,28 @@ TetrisManager.skill_List = {
 			this.beginCD = true;
 		}
 	},
+	"13":{
+		name: "折光",
+		pic: "BendingLight",
+		user: "player",
+		isPrepared: true,
+		oldTime: 0,
+		CD: 20,
+		description: "",
+		CanUse: function () {
+			return true
+		},
+		MakeEffect: function () {
+			var scene = SceneManager._scene
+
+			
+		},
+		Reset: function () {
+			this.isPrepared = false;
+			this.CD = 20;
+			this.beginCD = true;
+		}
+	},
 	"痛苦分裂": {
 		name: "痛苦分裂",
 		pic: "占位测试",
