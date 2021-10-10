@@ -63,6 +63,18 @@ Position_Manager.prototype.generateAllSolution = function () {
 	return solution_list;
 }
 
+Position_Manager.prototype.findWorstSolution = function(){
+	var solution_list = this.generateAllSolution();
+	var worst = solution_list[0];
+	for(var i =0; i<solution_list.length; i++){
+		if(solution_list[i].y<worst.y){
+			worst = solution_list[i];
+		}
+	}
+
+	return worst;
+}
+
 Position_Manager.prototype.calculatePDValue = function (field, solution) {
 
 	var landingHeight = solution.y;

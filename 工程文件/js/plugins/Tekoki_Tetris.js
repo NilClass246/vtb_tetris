@@ -210,9 +210,10 @@ Scene_Tetris.prototype.initialize_Actor = function () {
 
 		mergeTrembleCount: 0,
 		rotated: false,
-		pic_pos: [200, 300]
+		pic_pos: [200, 300],
 	}
-
+	this.player.evadeNextAttackDamage = false;
+	this.player.NextAttackDamageMag = 1;
 	this.player.yposition -= TetrisManager.AboveLines * this.player.yrange;
 
 
@@ -330,6 +331,8 @@ Scene_Tetris.prototype.initialize_Enemy = function () {
 
 		this._enemies[i].yposition = this._enemies[i].assumeYpos - TetrisManager.AboveLines * this._enemies[i].yrange;
 		//数据修正
+		this._enemies[i].evadeNextAttackDamage = false;
+		this._enemies[i].NextAttackDamageMag = 1;
 		this._enemies[i].Damage_mag = 1
 		this._enemies[i].Critical_mag = 1;
 		this._enemies[i].Be_Damaged_mag = 1;
@@ -1598,6 +1601,11 @@ Scene_Tetris.prototype.createBox = function (battler) {
 	}
 }
 
+Scene_Tetris.prototype.getWorstType = function(battler){
+	var temp_pm = new Position_Manager();
+	
+}
+
 Scene_Tetris.prototype.addBox = function (battler, cur) {
 	if (cur.renderPos) {
 		cur.block.x = cur.renderPos * battler.xrange + TetrisManager.Xrevision;
@@ -1913,14 +1921,7 @@ Scene_Tetris.prototype.AttAck = function (source, target, damage) {
 	//		this.createXYanimationWindow(1, target.pictureBoard.x + target.pictureBoard.width / 2, target.pictureBoard.y + target.pictureBoard.height/2);
 	//	}
  //   }
-
 	TetrisManager.HarmSystem.dealDamage(source, target, damage, source.AtkType);
-	if (source.category == 'enemy') {
-		source.StateBoard.onAttack();
-	} else {
-		this._playerStateBoard.onAttack();
-		this.player.eng += 1;
-    }
 }
 
 Scene_Tetris.prototype.tryEscape = function () {

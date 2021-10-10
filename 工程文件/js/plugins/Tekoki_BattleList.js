@@ -2260,7 +2260,8 @@ TetrisManager.skill_List = {
 		},
 		MakeEffect: function () {
 			var scene = SceneManager._scene
-
+			scene._playerStateBoard.applyStates("18", 5);
+			scene._playerStateBoard.applyStates("19", 5);
 			
 		},
 		Reset: function () {
@@ -2963,6 +2964,45 @@ TetrisManager.state_List = {
 			this.owner.Be_Damaged_mag = 1;
 		},
 	},
+	"18": {
+		name: '多层护盾',
+		id: 18,
+		count: 0,
+		type: 'in_battle',
+		updated: false,
+		onGain: function (owner) {
+			this.owner = owner
+		},
+		onDamaged: function(atkType){
+			if(atkType=='normal'){
+				this.owner.evadeNextAttackDamage = true;
+				this.count-=1;
+			}
+			if(this.count<=0){
+				this.owner.removeState(18);
+			}
+		}
+	},
+	"19":{
+		name: '多重斩击',
+		id: 18,
+		count: 0,
+		type: 'in_battle',
+		updated: false,
+		onGain: function (owner) {
+			this.owner = owner
+		},
+		onAttack: function(atkType){
+			if(atkType=='normal'){
+				this.owner.NextAttackDamageMag += 0.2;
+				this.count-=1;
+			}
+			if(this.count<=0){
+				this.owner.removeState(19);
+			}
+		}
+	}
+
 }
 //TODO:改进颜色设置
 
@@ -3113,7 +3153,6 @@ TetrisManager.item_List = {
 		player.hold.block.move(scene.calPositionX(player.hold), 45)
 		player.holdWindow.addChild(player.hold.block);
 	},
-
 	"26": function () {
 		var player = SceneManager._scene.getPlayer();
 		TetrisManager.HarmSystem.dealDamage(null, player, -100, 'healing');

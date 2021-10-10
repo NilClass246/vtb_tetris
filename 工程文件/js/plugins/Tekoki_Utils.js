@@ -1589,6 +1589,12 @@ Game_Actor.prototype._updateSpecialParams = function(paramID, value){
 TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 	var scene = SceneManager._scene;
 	if (target) {
+		if (source.category == 'enemy') {
+			source.StateBoard.onAttack();
+		} else {
+			this._playerStateBoard.onAttack();
+			//this.player.eng += 1;
+		}
 		var finaldamage = amount
 		var atkType = type
 		var effective = false;
@@ -1624,6 +1630,10 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 		//伤害调整
 		if (finaldamage > 0) {
 			finaldamage = finaldamage * target.Be_Damaged_mag;
+			if(atkType=="normal"){
+				finaldamage = finaldamage * source.NextAttackDamageMag;
+				source.NextAttackDamageMag = 1;
+			}
 		}
 		//敌人的场合
 		if (target.category == "enemy") {
@@ -1667,14 +1677,19 @@ TetrisManager.HarmSystem.dealDamage = function (source, target, amount, type) {
 			//this.createXYanimationWindow(1, target.xposition + 5 * target.xrange, target.yposition + TetrisManager.AboveLines * target.yrange + 12 * target.yrange);
 		//玩家的场合
 		} else {
+			scene._playerStateBoard.onDamaged(atkType);
 			if (atkType == 'healing') {
 				target.actor.gainHp(-finaldamage);
 			} else {
-				if (finaldamage >= 0) {
-					target.actor.gainHp(-finaldamage);
-				} else {
-					finaldamage = 0;
-                }
+				if(target.evadeNextAttackDamage && atkType =='normal'){
+					TetrisManager.HarmSystem.skipNextAttackDamage = false;
+				}else{
+					if (finaldamage >= 0) {
+						target.actor.gainHp(-finaldamage);
+					} else {
+							finaldamage = 0;
+					}
+				}
 			}
 			var pop = new PopNumber(new FNumber(Math.abs(finaldamage), 7));
 			scene._blockLayer.addChild(pop)
@@ -2633,6 +2648,14 @@ stateBoard.prototype.onAttack = function () {
 	for (var strid in this._statelist) {
 		if (this._statelist[strid] && this._statelist[strid].onAttack) {
 			this._statelist[strid].onAttack();
+        }
+    }
+}
+
+stateBoard.prototype.onDamaged = function(atkType){
+	for (var strid in this._statelist) {
+		if (this._statelist[strid] && this._statelist[strid].onDamaged) {
+			this._statelist[strid].onDamaged(atkType);
         }
     }
 }

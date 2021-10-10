@@ -23,7 +23,12 @@ ysp.Preloader.GLOBAL = {
     IMAGES: [
         'system/Window',
         'characters/Actor1',
-        'pictures/bars/testFrame3'
+        'pictures/bars/testFrame3',
+        "pictures/Darkness",
+        "pictures/CharacterTachi/mea/有军大衣无帽-普通",
+        "pictures/CharacterTachi/mea/有军大衣无帽-生气",
+        "pictures/CharacterTachi/mea/有军大衣无帽-说话",
+        "pictures/CharacterTachi/mea/有军大衣无帽-微笑",
     ],
 
     VIDEOS: [
